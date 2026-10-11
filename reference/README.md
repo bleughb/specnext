@@ -37,15 +37,18 @@ expects ../specnext next to the nexclash clone (or NEXCLASH_REFERENCE=path/to/re
 | rainbow_sprites.nex | bffd9357d772e2df975ec5f40dc9e4cb | modified game (sprites) |
 | rainbownew.rzx | 47bb2b163a947724c343a2bc1b039458 | recording (RZX) |
 
-## Treasure Island Dizzy - `treasure_island_dizzy/` (games/tid_engine.md; hardware: plain runs; in-game snapshot dizzy2_game.z80 still to upload)
+## Treasure Island Dizzy - `treasure_island_dizzy/` (games/tid_engine.md; hardware: plain runs)
 
 | File | MD5 | What |
 |---|---|---|
 | dizzy2.z80 | 9443f0cc4c32415849b0419750f1bff3 | snapshot (title screen) |
+| dizzy2_game.z80 | 7578947fcc8dbc4ba822e2c565499d54 | snapshot (in game) |
 | dizzy2newrzx | 4d708b014db515382005dc2632244408 | recording (RZX) |
 | dizzy2rzx | 973fee73fc535e48eb6b64382537c80d | recording (RZX) |
 | treasure_island_title.nex | 70890aba7d821fba8a41e63636eb58be | plain conversion, from the title snapshot dizzy2.z80 |
 | treasure_island_title_sprites.nex | 85e054fe4bce8e4b3a8e336aac432f58 | modified game (sprites), from the title snapshot dizzy2.z80 |
+| treasure_island_dizzy.nex | 4dae1a3a15b2158642a5d5b82de92ef7 | plain conversion, from the in-game snapshot |
+| treasure_island_dizzy_sprites.nex | 8b4d0847d68fce3215bd43a0e116e682 | modified game (sprites), from the in-game snapshot |
 
 ## Dizzy: The Ultimate Cartoon Adventure - `dizzy1/` (games/dizzy1.md; hardware: untested)
 
@@ -101,9 +104,7 @@ expects ../specnext next to the nexclash clone (or NEXCLASH_REFERENCE=path/to/re
 | dizzy7128k.z80 | 0cb1cb260b2f17305ef41c30af0e1f8f | snapshot (128K) |
 | dizzy7_auto.rzx | 53fd13edbbf1d77b8436cbc289b0d051 | recording (RZX) |
 
-## Still to upload
-- Treasure Island Dizzy in-game snapshot (dizzy2_game.z80, md5 7578947fcc8dbc4ba822e2c565499d54)
-
+## Adding files
 Upload into the game's folder (GitHub: open the folder, Add file -> Upload files). New game:
 make a folder named like its nexclash/games/ file.
 
