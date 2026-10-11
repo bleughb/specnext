@@ -12,6 +12,10 @@ without a pinned MD5 by the name below (selftest prints their MD5: pin it in sel
 | wallyrzx.rzx | 72c7d1f6c99407bc21d892d423e89964 | Dean's Wally recording | yes |
 | rainbow.z80 | (pin) | Rainbow Islands 128K | upload |
 | rainbow.rzx, rainbownew.rzx | (pin) | Dean's two Rainbow recordings | upload |
+
+Rainbow Islands: once these three are here, `python selftest.py` (in nexclash) must reproduce
+rainbow.nex 7ac543fb51c7a3c4137778eeb3cdc175 and rainbow_sprites.nex bffd9357d772e2df975ec5f40dc9e4cb
+(objects on the tilemap, 2026-10-11) - the first time that build is rebuilt outside its session.
 | any name | 7578947fcc8dbc4ba822e2c565499d54 | Treasure Island Dizzy in-game (dizzy2_game.z80) | upload |
 | dizzy2.z80 | 9443f0cc4c32415849b0419750f1bff3 | Treasure Island Dizzy title | yes |
 | any name | 0659328fd54fd446e39d1740bafd02e7 / 99d9c4c086d06a46ba7a781e5321dc3e | Dizzy 1 .z80 / .rzx | yes |
@@ -27,3 +31,9 @@ Upload from Windows (in the repo clone): copy the files here, then
 
 Also here: Dizzy_V_auto.rzx, dizzy2rzx / dizzy2newrzx (Treasure Island), Everyone's A Wally.tzx.
 Still missing: dizzy2_game.z80 (Treasure Island in game), rainbow.z80 + rainbow.rzx + rainbownew.rzx, Dizzy6.z80.
+
+## Review material (private: shows game graphics)
+Put images an agent made for Dean's review in docs/review/<game>/ here, not in the public repo.
+Rainbow Islands, from the collectables session (2026-10-11), if you still have them:
+rainbow_B_mask_sheet.png (layer B: dark-blue partial tiles - awaiting your review),
+rainbow_objects.png + rainbow_objects.json (object/tile catalogue of both recordings).
