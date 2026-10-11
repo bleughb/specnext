@@ -3,7 +3,8 @@
 
     python selftest.py [FOLDER] [--human] [--no-repro] [--fast]
 
-FOLDER (default: reference/ next to this file) holds the reference inputs under any
+FOLDER (default: $NEXCLASH_REFERENCE, ./reference or ../specnext/reference - the maintainers'
+private reference repo; game files are never in the public package) holds the reference inputs under any
 names (recognised by MD5; the engine games below also by their canonical name). Runs
 `nexclash.py auto` on each snapshot (auto recording, deterministic seed) and
 checks the .nex MD5s (default strategy = altrom where proven) and that every
@@ -36,7 +37,7 @@ RZX_GAMES = {        # engine games: inputs (canonical name, md5 or None = match
     'chuckie_egg': {'files': [('chuckie_egg.z80', 'cddc0cfea8259d0c497b50fae0acd27e'),
                               ('chuckie_egg.rzx', '7697943d44c33dbef1c073332e36dfc0')],
                     'nex': ('ec0df71e70fae35836eaed521f300777', 'bfad6be1e7c8a2c797a6242d7f339e35')},
-    'wally': {'files': [('wally.z80', None), ('wally.rzx', None)], 'alias': {'wallyrzx.rzx': 'wally.rzx'},
+    'wally': {'files': [('wally.z80', 'a9eeb555a327e5794b0ba19bc80dccf0'), ('wally.rzx', '72c7d1f6c99407bc21d892d423e89964')], 'alias': {'wallyrzx.rzx': 'wally.rzx'},
               'nex': ('2e615b3e7ae995e6d6a6ed9e3f586d4d', 'f7605489c3af55b8e8c6a580c1c26150')},
     'rainbow': {'files': [('rainbow.z80', None), ('rainbow.rzx', None), ('rainbownew.rzx', None)],
                 'nex': ('7ac543fb51c7a3c4137778eeb3cdc175', 'eb9836fe60a70df02087920603c673b4'), 'slow': True},
@@ -70,7 +71,8 @@ def md5(p):
 
 def main():
     pos = [x for x in sys.argv[1:] if not x.startswith('--')]
-    src = pos[0] if pos else os.path.join(HERE, 'reference')
+    src = pos[0] if pos else next((d for d in (os.environ.get('NEXCLASH_REFERENCE'), os.path.join(HERE, 'reference'),
+                                               os.path.join(HERE, '..', 'specnext', 'reference')) if d and os.path.isdir(d)), '')
     if not os.path.isdir(src):
         sys.exit(__doc__)
     human, repro, fast = '--human' in sys.argv, '--no-repro' not in sys.argv, '--fast' in sys.argv

@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """nexclash - ZX Spectrum .z80 -> Spectrum Next .nex, with the player drawn as hardware sprites.
+Copyright (C) 2026 the nexclash contributors. GPL-3.0-or-later (see LICENSE).
 
+  python nexclash.py patch GAME.z80                     YOUR game: plain + sprite .nex, says if verified
+  python nexclash.py new GAME.z80                       not supported yet: session folder to add it
+  python nexclash.py contribute NAME [--report R]       zip what a session added, for upload
   python nexclash.py auto GAME.z80 [--rzx MY.rzx ...]   everything: plain + patched .nex + report
       --strategy altrom|printer|slot1   patch memory (default: altrom where proven; old builds: printer/slot1)
   python nexclash.py identify GAME.z80                  which engine (and the derived profile)
@@ -247,8 +251,7 @@ def cmd_auto(a):
         if not ok:
             say('RESULT    : sprite build FAILED verification - do not use; send this folder to the agent')
     else:
-        say('Sprites   : not built - unknown engine. Send this report and a recording to the agent')
-        say('            (docs/dean/PROMPTS.md prompt 1).')
+        say('Sprites   : not built - unknown engine. Add it with Claude: python nexclash.py new %s' % os.path.basename(z80))
     _finish(out, name, rep)
 
 
@@ -406,15 +409,19 @@ def _finish(out, name, rep):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest='cmd', required=True)
-    p = sub.add_parser('auto'); p.add_argument('z80'); p.add_argument('--rzx', action='append')
-    p.add_argument('--no-record', action='store_true'); p.add_argument('-o', '--out')
-    p.add_argument('--quick', type=int, help='analyse/verify only the first N frames of each recording')
-    p.add_argument('--strategy', choices=B.STRATEGIES,
-                   help='patch memory: altrom (default where proven), printer or slot1 (reproduce old builds)')
-    rec_args(p)
-    p.add_argument('--ink', help="rainbow engine: sprite ink colour (white, black, blue, #RRGGBB)")
-    p.add_argument('--outline', help="rainbow engine: mask-only pixels (black, blue, transparent, #RRGGBB)")
-    p.add_argument('--class-colours', help='rainbow engine: JSON {"pages": {"D6": 1}, "palettes": {"1": {"ink": "#00FF00"}}}')
+    for cmd in ('auto', 'patch', 'new'):
+        p = sub.add_parser(cmd); p.add_argument('z80'); p.add_argument('--rzx', action='append')
+        p.add_argument('--no-record', action='store_true'); p.add_argument('-o', '--out')
+        p.add_argument('--quick', type=int, help='analyse/verify only the first N frames of each recording')
+        p.add_argument('--strategy', choices=B.STRATEGIES,
+                       help='patch memory: altrom (default where proven), printer or slot1 (reproduce old builds)')
+        rec_args(p)
+        p.add_argument('--ink', help="rainbow engine: sprite ink colour (white, black, blue, #RRGGBB)")
+        p.add_argument('--outline', help="rainbow engine: mask-only pixels (black, blue, transparent, #RRGGBB)")
+        p.add_argument('--class-colours', help='rainbow engine: JSON {"pages": {"D6": 1}, "palettes": {"1": {"ink": "#00FF00"}}}')
+    p = sub.add_parser('contribute'); p.add_argument('name', help='game name (zip name)')
+    p.add_argument('--report', action='append', help='nexclash report(s) to include (GAME_report.txt)')
+    p.add_argument('--note', help='one line for the maintainers'); p.add_argument('-o', '--output')
     p = sub.add_parser('identify'); p.add_argument('z80')
     p = sub.add_parser('record'); p.add_argument('z80'); p.add_argument('-o', '--output'); rec_args(p)
     p = sub.add_parser('convert'); p.add_argument('z80'); p.add_argument('--rzx', action='append'); p.add_argument('-o', '--output')
@@ -426,6 +433,10 @@ def main():
     a = ap.parse_args()
     if a.cmd == 'auto':
         cmd_auto(a)
+    elif a.cmd in ('patch', 'new', 'contribute'):
+        from nexclash import userflow as U
+        sys.exit(U.cmd_patch(a, cmd_auto) if a.cmd == 'patch' else U.cmd_new(a, cmd_auto) if a.cmd == 'new'
+                 else U.cmd_contribute(a))
     elif a.cmd == 'identify':
         prof = identify(Snapshot.get(a.z80).memory[0:65536])
         print(json.dumps(prof, indent=1))
