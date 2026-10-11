@@ -27,14 +27,15 @@ expects ../specnext next to the nexclash clone (or NEXCLASH_REFERENCE=path/to/re
 | wally_sprites.nex | f7605489c3af55b8e8c6a580c1c26150 | modified game (sprites) |
 | wallyrzx.rzx | 72c7d1f6c99407bc21d892d423e89964 | recording (RZX) |
 
-## Rainbow Islands (128K) - `rainbow_islands/` (games/rainbow_islands.md; hardware: bffd9357 untested (earlier builds run))
+## Rainbow Islands (128K) - `rainbow_islands/` (games/rainbow_islands.md; hardware: e50733b2 / diag 8f25bc61 untested; bffd9357 had random corruption + slowdowns)
 
 | File | MD5 | What |
 |---|---|---|
 | rainbow.nex | 7ac543fb51c7a3c4137778eeb3cdc175 | plain conversion |
 | rainbow.rzx | 55046d1893bba0a4faf314ecd3a9638b | recording (RZX) |
 | rainbow.z80 | 4c98b980b1726af545fccc99665ef29b | snapshot |
-| rainbow_sprites.nex | bffd9357d772e2df975ec5f40dc9e4cb | modified game (sprites) |
+| rainbow_sprites.nex | e50733b2b7e2db32f004c1436a2e0461 | modified game (sprites; collectables without border) |
+| rainbow_sprites_diag.nex | 8f25bc6146b9d7f7ae1f12a1d227447e | diagnostic build (border colours = raster wait / tile built / frame overran) |
 | rainbownew.rzx | 47bb2b163a947724c343a2bc1b039458 | recording (RZX) |
 
 ## Treasure Island Dizzy - `treasure_island_dizzy/` (games/tid_engine.md; hardware: plain runs)
