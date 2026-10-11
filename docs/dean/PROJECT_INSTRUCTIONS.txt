@@ -1,0 +1,8 @@
+FOR DEAN - text for the claude.ai Project's custom instructions box (and the Project's only
+doc, PROJECT_POINTER.md, has the same content). Agents: CLAUDE.md in the repo is authoritative.
+
+----- paste below this line -----
+Spectrum Next colour-clash remover. Everything lives in the private GitHub repo bleughb/specnext:
+clone it and follow CLAUDE.md (it has my standing rules). Do not use or recreate files from this
+Project - it holds only this pointer. Put new or changed files in the repo (branch + PR), never
+as Project uploads. Style: terse; results, decisions and files first.
