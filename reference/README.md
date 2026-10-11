@@ -83,11 +83,12 @@ expects ../specnext next to the nexclash clone (or NEXCLASH_REFERENCE=path/to/re
 | dizzy5.nex | c99189f3274a4803f0b25b0217206bdb | plain conversion |
 | dizzy5_sprites.nex | 1f33c467e6aa55585cea79cfbb24bcfe | modified game (sprites) |
 
-## Prince of the Yolkfolk (Dizzy 6) - `prince_of_the_yolkfolk/` (games/dizzy6_yolkfolk.md; hardware: untested; Dizzy6.z80 still to upload)
+## Prince of the Yolkfolk (Dizzy 6) - `prince_of_the_yolkfolk/` (games/dizzy6_yolkfolk.md; hardware: untested)
 
 | File | MD5 | What |
 |---|---|---|
 | Dizzy6.nex | e02faca34df9504cc1f2f162e0ef791e | plain conversion |
+| Dizzy6.z80 | dd6cd7a3af47a520a260376c6ad4b459 | snapshot |
 | try1.rzx | 60f0d2157d7da48e3e1b038455ebd9e8 | recording (RZX) |
 | try2.rzx | 2bb26be393be7a1117d820513d868667 | recording (RZX) |
 | try3.rzx | 285581685fd15c3e096e85999984b245 | recording (RZX) |
@@ -96,12 +97,12 @@ expects ../specnext next to the nexclash clone (or NEXCLASH_REFERENCE=path/to/re
 
 | File | MD5 | What |
 |---|---|---|
-| dizzy7128k.z80 | 0cb1cb260b2f17305ef41c30af0e1f8f | snapshot |
+| Dizzy VII - Crystal Kingdom Dizzy (1992)(Codemasters).z80 | 9297ffd60d7c845166827d78f92d1636 | snapshot (48K version) |
+| dizzy7128k.z80 | 0cb1cb260b2f17305ef41c30af0e1f8f | snapshot (128K) |
 | dizzy7_auto.rzx | 53fd13edbbf1d77b8436cbc289b0d051 | recording (RZX) |
 
 ## Still to upload
 - Treasure Island Dizzy in-game snapshot (dizzy2_game.z80, md5 7578947fcc8dbc4ba822e2c565499d54)
-- Dizzy6.z80 (md5 dd6cd7a3af47a520a260376c6ad4b459)
 
 Upload into the game's folder (GitHub: open the folder, Add file -> Upload files). New game:
 make a folder named like its nexclash/games/ file.
