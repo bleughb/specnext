@@ -124,7 +124,7 @@ def cmd_new(a, cmd_auto):
         rep = os.path.join(a.out, game + '_report.txt')
         if os.path.exists(rep):
             lines = [x for x in open(rep).read().split('\n') if x.startswith(('Engine', 'Sprites'))]
-            why = '; '.join(x.split(':', 1)[1].strip() for x in lines) or why
+            why = '; '.join(x.split(':', 1)[1].split('. Add it')[0].strip() for x in lines) or why
     except Exception as e:                      # the plain conversion may still be there
         why = 'nexclash stopped: %s' % e
     c = json.load(open(CONTRIB)) if os.path.exists(CONTRIB) else {}
