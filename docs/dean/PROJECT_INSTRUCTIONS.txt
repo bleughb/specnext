@@ -1,8 +1,9 @@
-FOR DEAN - text for the claude.ai Project's custom instructions box (and the Project's only
-doc, PROJECT_POINTER.md, has the same content). Agents: CLAUDE.md in the repo is authoritative.
+FOR DEAN - text for the claude.ai Project's custom instructions box. Agents: CLAUDE.md in the
+public repo bleughb/nexclash is authoritative.
 
 ----- paste below this line -----
-Spectrum Next colour-clash remover. Everything lives in the private GitHub repo bleughb/specnext:
-clone it and follow CLAUDE.md (it has my standing rules). Do not use or recreate files from this
-Project - it holds only this pointer. Put new or changed files in the repo (branch + PR), never
-as Project uploads. Style: terse; results, decisions and files first.
+Spectrum Next colour-clash remover (nexclash). Code and docs: public GitHub repo bleughb/nexclash -
+follow its CLAUDE.md. Game files (snapshots, recordings) and the Next manual/dev guide: private
+repo bleughb/specnext - never copy them into the public repo. Do not use or recreate files from
+this Project. Changes go to the repos as branch + PR. Style: terse; results, decisions and files
+first.
