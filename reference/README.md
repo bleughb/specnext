@@ -12,7 +12,6 @@ without a pinned MD5 by the name below (selftest prints their MD5: pin it in sel
 | wallyrzx.rzx | 72c7d1f6c99407bc21d892d423e89964 | Dean's Wally recording | yes |
 | rainbow.z80 | (pin) | Rainbow Islands 128K | upload |
 | rainbow.rzx, rainbownew.rzx | (pin) | Dean's two Rainbow recordings | upload |
-
 | any name | 7578947fcc8dbc4ba822e2c565499d54 | Treasure Island Dizzy in-game (dizzy2_game.z80) | upload |
 | dizzy2.z80 | 9443f0cc4c32415849b0419750f1bff3 | Treasure Island Dizzy title | yes |
 | any name | 0659328fd54fd446e39d1740bafd02e7 / 99d9c4c086d06a46ba7a781e5321dc3e | Dizzy 1 .z80 / .rzx | yes |
