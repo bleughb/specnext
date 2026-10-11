@@ -4,9 +4,11 @@ Start sessions with both repos selected: bleughb/nexclash (public toolkit) and b
 (private reference files). Attach new game files in the first message; one game per chat.
 
 ## New game (maintainer session)
-> Repos: bleughb/nexclash (follow CLAUDE.md) + bleughb/specnext (references). Task: add <GAME>
-> (<file>.z80 + my RZX attached - put them in specnext/reference). Sprites: <which figures>.
-> Everything else stays on the ULA unless analysis shows it clashes (then ask me).
+> Repos: bleughb/nexclash (follow its CLAUDE.md) + bleughb/specnext (references).
+> New game: <GAME>. Snapshot + my RZX attached: put them in specnext/reference/<game>/.
+> Sprites: <which figures>. Everything else stays on the ULA unless analysis shows it clashes
+> (then ask me). Regression check: `selftest.py --smoke` only (Chuckie Egg) - do not re-test the
+> other games. Deliver: the .nex files, a hardware checklist, PRs in both repos.
 
 ## A contribution arrived (upload link)
 > Repo: bleughb/nexclash. Review the attached nexclash_contribution_<GAME>.zip
