@@ -13,9 +13,6 @@ without a pinned MD5 by the name below (selftest prints their MD5: pin it in sel
 | rainbow.z80 | (pin) | Rainbow Islands 128K | upload |
 | rainbow.rzx, rainbownew.rzx | (pin) | Dean's two Rainbow recordings | upload |
 
-Rainbow Islands: once these three are here, `python selftest.py` (in nexclash) must reproduce
-rainbow.nex 7ac543fb51c7a3c4137778eeb3cdc175 and rainbow_sprites.nex bffd9357d772e2df975ec5f40dc9e4cb
-(objects on the tilemap, 2026-10-11) - the first time that build is rebuilt outside its session.
 | any name | 7578947fcc8dbc4ba822e2c565499d54 | Treasure Island Dizzy in-game (dizzy2_game.z80) | upload |
 | dizzy2.z80 | 9443f0cc4c32415849b0419750f1bff3 | Treasure Island Dizzy title | yes |
 | any name | 0659328fd54fd446e39d1740bafd02e7 / 99d9c4c086d06a46ba7a781e5321dc3e | Dizzy 1 .z80 / .rzx | yes |
@@ -24,6 +21,10 @@ rainbow.nex 7ac543fb51c7a3c4137778eeb3cdc175 and rainbow_sprites.nex bffd9357d77
 | any name | 703c934aa64c1c1d37d5041dd28cf9c7 | Dizzy V (Dizzy_V.z80, loader stage) | yes |
 | Dizzy6.z80 + try1.rzx | dd6cd7a3af47a520a260376c6ad4b459 / 60f0d2157d7da48e3e1b038455ebd9e8 | Dizzy 6 (not in selftest yet) | try1-3.rzx + Dizzy6.nex yes, Dizzy6.z80 upload |
 | dizzy7128k.z80, dizzy7_auto.rzx | 0cb1cb260b2f17305ef41c30af0e1f8f | Crystal Kingdom Dizzy (plain only) | yes |
+
+Rainbow Islands: once these three are here, `python selftest.py` (in nexclash) must reproduce
+rainbow.nex 7ac543fb51c7a3c4137778eeb3cdc175 and rainbow_sprites.nex bffd9357d772e2df975ec5f40dc9e4cb
+(objects on the tilemap, 2026-10-11) - the first time that build is rebuilt outside its session.
 
 Upload from Windows (in the repo clone): copy the files here, then
 `git add reference && git commit -m "Reference files" && git push`
@@ -36,4 +37,5 @@ Still missing: dizzy2_game.z80 (Treasure Island in game), rainbow.z80 + rainbow.
 Put images an agent made for Dean's review in docs/review/<game>/ here, not in the public repo.
 Rainbow Islands, from the collectables session (2026-10-11), if you still have them:
 rainbow_B_mask_sheet.png (layer B: dark-blue partial tiles - awaiting your review),
-rainbow_objects.png + rainbow_objects.json (object/tile catalogue of both recordings).
+rainbow_objects.png + rainbow_objects.json (object/tile catalogue of both recordings) - uploaded to
+docs/review/rainbow/.
