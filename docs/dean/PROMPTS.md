@@ -1,29 +1,26 @@
 # Dean's prompts - FOR DEAN, not agent instructions
 
-The repo is the master copy; agents read CLAUDE.md themselves. Attach the game's .z80/.rzx in
-the first message (or say they are already in reference/). One game per chat.
+Start sessions with both repos selected: bleughb/nexclash (public toolkit) and bleughb/specnext
+(private reference files). Attach new game files in the first message; one game per chat.
 
-## New game (the setup prompt)
-> Repo: github.com/bleughb/specnext (follow CLAUDE.md). Task: remove attribute clash from
-> <GAME> (<file>.z80, attached with my RZX). Sprites: <which figures>. Everything else stays on
-> the ULA unless analysis shows it clashes (then ask me).
+## New game (maintainer session)
+> Repos: bleughb/nexclash (follow CLAUDE.md) + bleughb/specnext (references). Task: add <GAME>
+> (<file>.z80 + my RZX attached - put them in specnext/reference). Sprites: <which figures>.
+> Everything else stays on the ULA unless analysis shows it clashes (then ask me).
 
-## Report says FAILED / unknown engine / virtual read needed
-> Repo: github.com/bleughb/specnext. `nexclash auto` on <GAME> says <...>; report folder, .z80
-> and my RZX attached. Diagnose and extend nexclash so `auto` handles it.
+## A contribution arrived (upload link)
+> Repo: bleughb/nexclash. Review the attached nexclash_contribution_<GAME>.zip
+> (tools/merge_contribution.py), check it against CLAUDE.md's rules, run selftest if shared code
+> changed, open a PR.
 
-## Hardware problem
-> Repo: github.com/bleughb/specnext. <GAME>_sprites.nex on the Next: <symptom>. RZX attached
-> (autosave off). Find the cause, fix, re-verify.
+## Hardware problem / result
+> Repos: nexclash + specnext. <GAME>_sprites.nex on the Next: <symptom or checklist results>.
+> RZX attached if faulty (autosave off). Fix or record it.
 
-## Hardware result
-> Repo: github.com/bleughb/specnext. <GAME>_sprites.nex on the Next: <runs / fault>.
-> Checklist: <1 ok, 2 ok, ...>. Record it (games file + STATUS).
-
-## Toolkit work
-> Repo: github.com/bleughb/specnext. Do STATUS.md open work item <N>.
+## Release
+> Repo: bleughb/nexclash. Make release <VERSION>: run selftest, bump VERSION,
+> tools/make_package.py, publish the zip as a GitHub release.
 
 ## Hygiene
-- Merge the agent's pull request on GitHub, then `git pull` locally.
-- Recordings: Fuse, autosave OFF ("Record from snapshot"), keyboard controls
-  (docs/RECORDING_CHECKLIST.md). Name them like the game: <game>.z80 / <game>.rzx.
+- Merge agent PRs on GitHub, then `git pull` both repos.
+- Recordings: Fuse, autosave OFF ("Record from snapshot"), keyboard controls.
