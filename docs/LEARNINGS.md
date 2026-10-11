@@ -272,6 +272,11 @@ Each line is settled unless marked otherwise.
 - Right-edge figures: the ULA wraps an overflowing byte into the next column/row (INC E / INC HL)
   where a sprite clips. Classify those unit cases as "not a game case" (Rainbow precedent; Chuckie
   player/duck x > 240, hens x = 248) - any real occurrence with pixels fails the RZX pixel check.
+- A check added to SHARED verification code for one engine can fail every other engine that
+  reuses it: Rainbow's "setup zeroes pattern RAM" (2026-09-29) went into rainbow.boot_check, which
+  Wally also calls; Wally uploads full patterns, so its unchanged, hardware-proven build reported
+  FAILED for 13 days, unseen because nobody re-ran it. Scope engine invariants to that engine and
+  re-run every game after touching shared checks (selftest covers them now).
 - A deliberately broken stub must fail the boot check (no 1FFD write, no unlock, hooks not copied).
 - Model the NEX launch state from hardware evidence, not the worst case: a "7FFD locked at launch"
   model rejected every hardware-proven build.

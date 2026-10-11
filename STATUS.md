@@ -9,8 +9,8 @@ One row per game. Details, decisions and checklists: games/<file>. MD5s: docs/VE
 | Everyone's a Wally | wally (everyones_a_wally.md) | wally_sprites.nex f7605489 | RZX IDENTICAL, unit PASS | boots and runs | detailed checklist |
 | Spellbound Dizzy (Dizzy V) | dizzy5 (dizzy5_spellbound.md) | Dizzy_V_sprites.nex 1f33c467 (altrom) | verified (2 RZX) | untested | hardware test |
 | Prince of the Yolkfolk (Dizzy 6) | tid_mirror (dizzy6_yolkfolk.md) | Dizzy6_sprites.nex f491e1f6 (slot1) | verified (try1.rzx + mirror selftest) | untested | hardware test; mirror-room RZX |
-| Fantasy World Dizzy | tid generic (tid_engine.md) | altrom: not baselined | verified | untested | selftest baseline |
-| Magicland Dizzy | tid generic (tid_engine.md) | altrom: not baselined | verified | untested | selftest baseline, hardware |
+| Fantasy World Dizzy | tid generic (tid_engine.md) | dizzy3_sprites.nex 9182f2f8 (altrom) | verified | untested | hardware test |
+| Magicland Dizzy | tid generic (tid_engine.md) | dizzy4_sprites.nex bf137d41 (altrom) | verified | untested | hardware test |
 | Treasure Island Dizzy | dedicated (tid_engine.md) | dizzy2_game_sprites.nex 8b4d0847 | verified | plain build runs | recorder start/keys |
 | Dizzy 1 | dedicated XOR (dizzy1.md) | dizzy1_sprites.nex 05d2bce9 | verified | untested | - |
 | Crystal Kingdom Dizzy (128K) | plain only (crystal_kingdom_dizzy.md) | - | - | plain runs | sprites deferred |

@@ -418,8 +418,8 @@ def boot_check(nex, z80, patch=None, tail=None):
         bad.append(('MMU', st['mmu']))
     if patch is not None and st['nr'].get(0x15) != 1:
         bad.append(('sprites not enabled by setup', st['nr'].get(0x15)))
-    if patch is not None:
-        z = setup_zeroes_patterns(patch)
+    if isinstance(patch, RainbowPatch):         # Rainbow writes only the top 64 bytes of each pattern;
+        z = setup_zeroes_patterns(patch)        # other engines (Wally) upload full patterns
         if z:
             bad.append(('setup', z))
     return bad
