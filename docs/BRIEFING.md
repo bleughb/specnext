@@ -19,7 +19,8 @@ Layers - never mix their facts:
   call is capped at 10 minutes: poll with sleeps under that.
 - Shell heredocs that write docs: quote the delimiter (`<<'EOF'`) or the shell runs every
   backticked example in the text (2026-10-11: it cloned sjasmplus into the repo and ran a pkill).
-- docs/reference/zx-next-dev-guide-r3.txt = the Next dev guide r3 as text: `grep -n PATTERN`.
+- Next dev guide r3 (Tomaz Kragelj): github.com/tomaz/zx-next-dev-guide (PDF; `pdftotext` it, then grep).
+  Maintainers also keep a text copy in the private reference repo.
 - SkoolKit: `Snapshot.get(f).memory[0:65536]` - slices need an explicit stop.
 - SkoolKit Disassembler (for flagged routines): `Disassembler(mem_list, cfg)` with cfg =
   SimpleNamespace(defb_size=8, defm_size=65, defw_size=1, handle_rst=False, wrap=False, opcodes='',
@@ -33,8 +34,9 @@ Layers - never mix their facts:
   drops the autosave snapshots.
 - The auto-recorder is deterministic (same seed -> same RZX MD5); .nex bytes do not depend on
   the input file name.
-- Reference inputs live in reference/ (reference/README.md) and are recognised by MD5
-  (selftest.py INPUTS / RZX_GAMES).
+- Reference inputs (game snapshots + recordings) live in the maintainers' PRIVATE repo
+  bleughb/specnext (reference/), never in this public one; selftest finds them via
+  $NEXCLASH_REFERENCE or ../specnext/reference and recognises them by MD5 (INPUTS / RZX_GAMES).
 - `pkill -f PATTERN` also kills the tool's own shell when PATTERN is in its command line: use
   pgrep, then kill by PID.
 - Rebuilding one game with another strategy: `nexclash.py auto G.z80 --no-record --rzx
@@ -48,7 +50,7 @@ Layers - never mix their facts:
 
 ### A0. Reference sources (in order of authority)
 1. Hardware test on Dean's Next - overrides everything below (e.g. $8C alt ROM, 4-bit attr4 halves).
-2. docs/reference/zx-next-dev-guide-r3.txt (`grep -n`). Cite as "guide r3 p.N".
+2. Next dev guide r3 (github.com/tomaz/zx-next-dev-guide; text copy in the private reference repo). Cite as "guide r3 p.N".
 2b. Core VHDL = ground truth for behaviour: `git clone --depth 1
    https://github.com/avlixa/zx_spectrum_next_03.01.09` works in the sandbox (GitHub mirror of core
    3.01.09; src/zxnext.vhd, ports.txt). Official repo (GitLab, blocked in the sandbox):

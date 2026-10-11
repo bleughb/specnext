@@ -18,9 +18,9 @@ One row per game. Details, decisions and checklists: games/<file>. MD5s: docs/VE
 Platform on hardware: alt ROM ($8C) PASS 2026-09-27; plain 48K and 128K conversion run.
 
 ## Open work (toolkit)
-1. Dean: upload the missing reference files to reference/ (reference/README.md lists them), then
-   run `python selftest.py` once to confirm the repo reproduces every MD5 (never run in one go:
-   the 2026-10-11 session had only the Chuckie Egg files).
+1. Maintainers: pin the Rainbow snapshot MD5 (verified.json, selftest RZX_GAMES) once rainbow.z80 +
+   both RZX are in the private reference repo; add Treasure Island in-game (dizzy2_game.z80) and
+   Dizzy6.z80 there too.
 2. Engine registry: each engine registers identify/auto instead of a dispatch block in
    nexclash.py (do it once selftest covers every game).
 3. `identify` reports unknown for Rainbow and Chuckie Egg (auto dispatches by signature): add
