@@ -1,0 +1,442 @@
+{
+ "objects": {
+  "opaque": {
+   "1": {
+    "group": "rainbow",
+    "_seen": "123 draws, first at frame 601"
+   },
+   "2": {
+    "group": "rainbow",
+    "_seen": "119 draws, first at frame 601"
+   },
+   "3": {
+    "group": "rainbow",
+    "_seen": "124 draws, first at frame 1489"
+   },
+   "4": {
+    "group": "rainbow",
+    "_seen": "134 draws, first at frame 1489"
+   },
+   "5": {
+    "group": "rainbow",
+    "_seen": "109 draws, first at frame 601"
+   },
+   "6": {
+    "group": "rainbow",
+    "_seen": "119 draws, first at frame 601"
+   },
+   "7": {
+    "group": "rainbow",
+    "_seen": "124 draws, first at frame 604"
+   },
+   "8": {
+    "group": "rainbow",
+    "_seen": "130 draws, first at frame 604"
+   },
+   "9": {
+    "group": "rainbow",
+    "_seen": "115 draws, first at frame 1495"
+   },
+   "10": {
+    "group": "rainbow",
+    "_seen": "126 draws, first at frame 1495"
+   },
+   "11": {
+    "group": "rainbow",
+    "_seen": "125 draws, first at frame 607"
+   },
+   "12": {
+    "group": "rainbow",
+    "_seen": "127 draws, first at frame 607"
+   },
+   "13": {
+    "group": "rainbow",
+    "_seen": "113 draws, first at frame 1495"
+   },
+   "14": {
+    "group": "rainbow",
+    "_seen": "113 draws, first at frame 607"
+   },
+   "15": {
+    "group": "item",
+    "_seen": "164 draws, first at frame 601"
+   },
+   "16": {
+    "group": "item",
+    "_seen": "168 draws, first at frame 604"
+   },
+   "17": {
+    "group": "item",
+    "_seen": "173 draws, first at frame 598"
+   },
+   "18": {
+    "group": "item",
+    "_seen": "193 draws, first at frame 607"
+   },
+   "23": {
+    "group": "item",
+    "_seen": "30 draws, first at frame 1697"
+   },
+   "24": {
+    "group": "item",
+    "_seen": "32 draws, first at frame 1697"
+   },
+   "25": {
+    "group": "item",
+    "_seen": "31 draws, first at frame 1694"
+   },
+   "26": {
+    "group": "item",
+    "_seen": "33 draws, first at frame 1694"
+   },
+   "27": {
+    "group": "item",
+    "_seen": "4 draws, first at frame 3078"
+   },
+   "28": {
+    "group": "item",
+    "_seen": "4 draws, first at frame 3078"
+   },
+   "29": {
+    "group": "item",
+    "_seen": "4 draws, first at frame 3078"
+   },
+   "30": {
+    "group": "item",
+    "_seen": "4 draws, first at frame 3078"
+   },
+   "31": {
+    "group": "item",
+    "_seen": "13 draws, first at frame 2566"
+   },
+   "32": {
+    "group": "item",
+    "_seen": "13 draws, first at frame 2566"
+   },
+   "33": {
+    "group": "item",
+    "_seen": "15 draws, first at frame 2566"
+   },
+   "34": {
+    "group": "item",
+    "_seen": "15 draws, first at frame 2566"
+   },
+   "43": {
+    "group": "item",
+    "_seen": "5 draws, first at frame 3627"
+   },
+   "44": {
+    "group": "item",
+    "_seen": "4 draws, first at frame 3627"
+   },
+   "45": {
+    "group": "item",
+    "_seen": "6 draws, first at frame 3627"
+   },
+   "46": {
+    "group": "item",
+    "_seen": "5 draws, first at frame 3627"
+   },
+   "47": {
+    "group": "item",
+    "_seen": "10 draws, first at frame 2663"
+   },
+   "48": {
+    "group": "item",
+    "_seen": "10 draws, first at frame 2663"
+   },
+   "49": {
+    "group": "item",
+    "_seen": "10 draws, first at frame 2663"
+   },
+   "50": {
+    "group": "item",
+    "_seen": "10 draws, first at frame 2663"
+   },
+   "51": {
+    "group": "item",
+    "_seen": "4 draws, first at frame 2484"
+   },
+   "52": {
+    "group": "item",
+    "_seen": "4 draws, first at frame 2484"
+   },
+   "53": {
+    "group": "item",
+    "_seen": "4 draws, first at frame 2484"
+   },
+   "54": {
+    "group": "item",
+    "_seen": "4 draws, first at frame 2484"
+   },
+   "55": {
+    "group": "item",
+    "_seen": "11 draws, first at frame 7963"
+   },
+   "56": {
+    "group": "item",
+    "_seen": "11 draws, first at frame 7963"
+   },
+   "57": {
+    "group": "item",
+    "_seen": "11 draws, first at frame 7963"
+   },
+   "58": {
+    "group": "item",
+    "_seen": "11 draws, first at frame 7963"
+   },
+   "59": {
+    "group": "item",
+    "_seen": "15 draws, first at frame 2432"
+   },
+   "60": {
+    "group": "item",
+    "_seen": "15 draws, first at frame 2432"
+   },
+   "61": {
+    "group": "item",
+    "_seen": "15 draws, first at frame 2432"
+   },
+   "62": {
+    "group": "item",
+    "_seen": "15 draws, first at frame 2432"
+   },
+   "63": {
+    "group": "item",
+    "_seen": "1 draws, first at frame 9776"
+   },
+   "64": {
+    "group": "item",
+    "_seen": "1 draws, first at frame 9776"
+   },
+   "65": {
+    "group": "item",
+    "_seen": "1 draws, first at frame 9773"
+   },
+   "66": {
+    "group": "item",
+    "_seen": "1 draws, first at frame 9773"
+   },
+   "91": {
+    "group": "item",
+    "_seen": "22 draws, first at frame 1784"
+   },
+   "92": {
+    "group": "item",
+    "_seen": "22 draws, first at frame 1784"
+   },
+   "93": {
+    "group": "item",
+    "_seen": "21 draws, first at frame 1780"
+   },
+   "94": {
+    "group": "item",
+    "_seen": "21 draws, first at frame 1780"
+   },
+   "95": {
+    "group": "item",
+    "_seen": "59 draws, first at frame 264"
+   },
+   "96": {
+    "group": "item",
+    "_seen": "60 draws, first at frame 264"
+   },
+   "97": {
+    "group": "item",
+    "_seen": "63 draws, first at frame 264"
+   },
+   "98": {
+    "group": "item",
+    "_seen": "64 draws, first at frame 264"
+   },
+   "99": {
+    "group": "item",
+    "_seen": "15 draws, first at frame 2959"
+   },
+   "100": {
+    "group": "item",
+    "_seen": "15 draws, first at frame 2959"
+   },
+   "101": {
+    "group": "item",
+    "_seen": "15 draws, first at frame 2959"
+   },
+   "102": {
+    "group": "item",
+    "_seen": "15 draws, first at frame 2959"
+   },
+   "107": {
+    "group": "item",
+    "_seen": "9 draws, first at frame 1583"
+   },
+   "108": {
+    "group": "item",
+    "_seen": "9 draws, first at frame 1583"
+   },
+   "109": {
+    "group": "item",
+    "_seen": "9 draws, first at frame 1583"
+   },
+   "110": {
+    "group": "item",
+    "_seen": "9 draws, first at frame 1583"
+   },
+   "139": {
+    "group": "item",
+    "_seen": "17 draws, first at frame 864"
+   },
+   "140": {
+    "group": "item",
+    "_seen": "17 draws, first at frame 864"
+   },
+   "141": {
+    "group": "item",
+    "_seen": "15 draws, first at frame 860"
+   },
+   "142": {
+    "group": "item",
+    "_seen": "15 draws, first at frame 860"
+   },
+   "147": {
+    "group": "item",
+    "_seen": "7 draws, first at frame 1984"
+   },
+   "148": {
+    "group": "item",
+    "_seen": "8 draws, first at frame 1984"
+   },
+   "149": {
+    "group": "item",
+    "_seen": "5 draws, first at frame 1984"
+   },
+   "150": {
+    "group": "item",
+    "_seen": "6 draws, first at frame 1984"
+   },
+   "163": {
+    "group": "item",
+    "_seen": "4 draws, first at frame 3105"
+   },
+   "164": {
+    "group": "item",
+    "_seen": "4 draws, first at frame 3105"
+   },
+   "165": {
+    "group": "item",
+    "_seen": "5 draws, first at frame 3105"
+   },
+   "166": {
+    "group": "item",
+    "_seen": "5 draws, first at frame 3105"
+   },
+   "179": {
+    "group": "item",
+    "_seen": "61 draws, first at frame 2267"
+   },
+   "180": {
+    "group": "item",
+    "_seen": "62 draws, first at frame 2267"
+   },
+   "181": {
+    "group": "item",
+    "_seen": "59 draws, first at frame 2267"
+   },
+   "182": {
+    "group": "item",
+    "_seen": "60 draws, first at frame 2267"
+   },
+   "183": {
+    "group": "item",
+    "_seen": "39 draws, first at frame 2279"
+   },
+   "184": {
+    "group": "item",
+    "_seen": "41 draws, first at frame 2279"
+   },
+   "185": {
+    "group": "item",
+    "_seen": "36 draws, first at frame 3066"
+   },
+   "186": {
+    "group": "item",
+    "_seen": "38 draws, first at frame 3066"
+   },
+   "187": {
+    "group": "item",
+    "_seen": "39 draws, first at frame 2291"
+   },
+   "188": {
+    "group": "item",
+    "_seen": "42 draws, first at frame 2291"
+   },
+   "189": {
+    "group": "item",
+    "_seen": "36 draws, first at frame 3072"
+   },
+   "190": {
+    "group": "item",
+    "_seen": "39 draws, first at frame 3072"
+   }
+  },
+  "masked": {
+   "1": {
+    "group": "rainbow",
+    "_seen": "41 draws, first at frame 2741"
+   },
+   "2": {
+    "group": "rainbow",
+    "_seen": "47 draws, first at frame 2741"
+   },
+   "3": {
+    "group": "rainbow",
+    "_seen": "45 draws, first at frame 604"
+   },
+   "4": {
+    "group": "rainbow",
+    "_seen": "38 draws, first at frame 604"
+   },
+   "5": {
+    "group": "rainbow",
+    "_seen": "60 draws, first at frame 2741"
+   },
+   "6": {
+    "group": "rainbow",
+    "_seen": "46 draws, first at frame 1761"
+   },
+   "7": {
+    "group": "rainbow",
+    "_seen": "42 draws, first at frame 1764"
+   },
+   "8": {
+    "group": "rainbow",
+    "_seen": "62 draws, first at frame 2738"
+   },
+   "9": {
+    "group": "rainbow",
+    "_seen": "59 draws, first at frame 598"
+   },
+   "10": {
+    "group": "rainbow",
+    "_seen": "41 draws, first at frame 598"
+   },
+   "11": {
+    "group": "rainbow",
+    "_seen": "46 draws, first at frame 2735"
+   },
+   "12": {
+    "group": "rainbow",
+    "_seen": "70 draws, first at frame 2735"
+   },
+   "13": {
+    "group": "rainbow",
+    "_seen": "54 draws, first at frame 598"
+   },
+   "14": {
+    "group": "rainbow",
+    "_seen": "59 draws, first at frame 1870"
+   }
+  },
+  "background": {},
+  "_doc": "Objects drawn into back-buffer cells (shown on the tilemap). Per code or range under opaque (60839) / masked (60965): group rainbow|item, ula true = leave the cell as the game draws it, border false = no black border, ink 0-7 + bright = fixed colour. background: {tile: tile} = show another map tile under objects. Codes not listed: item, border, cell ink."
+ }
+}
