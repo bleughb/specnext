@@ -31,8 +31,8 @@ profile): boot OK; printer/slot1/plain outputs of that build byte-identical to t
 Default builds (strategy `altrom` where proven; dedicated builders are printer-only):
 - `Dizzy_V_sprites.nex` 1f33c467e6aa55585cea79cfbb24bcfe (altrom; NOT yet hardware-tested)
 - `Dizzy_V.nex` c99189f3274a4803f0b25b0217206bdb
-- `dizzy3_sprites.nex` (Fantasy World, altrom): NOT BASELINED - reference files not supplied 2026-09-28; run selftest
-- `dizzy4_sprites.nex` (Magicland, altrom): NOT BASELINED - as above
+- `dizzy3_sprites.nex` (Fantasy World, altrom) 9182f2f8b4b0dc55b59a69728568b403 (baselined 2026-10-11: selftest, auto RZX verification PASSED, boot OK)
+- `dizzy4_sprites.nex` (Magicland, altrom) bf137d41d3cc08221bf6fdda153c9de2 (baselined 2026-10-11: as above)
 - `dizzy3.nex` cd620010e2f61af0002e76718945716f, `dizzy4.nex` 09eb18496cff334ea17bfc0b0c94585d (plain: unchanged)
 - `dizzy2_game_sprites.nex` 8b4d0847d68fce3215bd43a0e116e682 (dedicated, printer)
 - `dizzy2_title_sprites.nex` 85e054fe4bce8e4b3a8e336aac432f58 (dedicated, printer; re-checked 2026-09-28), `dizzy2.nex` (title, no recording) 70890aba7d821fba8a41e63636eb58be
@@ -169,6 +169,9 @@ Same command. Changed: rainbow.py, rainbow_hooks.asm, rainbow_islands.json (hook
 - unit tests: 2664 plot cases (1626 converted, 1038 guard/full-table passthrough), 3 commit cases,
   negative control (ink/outline swapped NIBTAB) detected 12/12 - PASS
 - Hardware: boots and runs (Dean, 2026-09-29); detailed visual checklist results not reported
+- 2026-10-11 selftest (Dean's wally.z80 a9eeb555 + wallyrzx.rzx 72c7d1f6): both MD5s reproduced, RZX
+  IDENTICAL, unit PASS; the report said FAILED only because Rainbow's pattern-RAM zero check had been
+  applied to Wally's boot check (Wally uploads full patterns) - check scoped to Rainbow.
 
 ## Chuckie Egg (48K, engine `chuckie`) - 2026-10-11
 `nexclash.py auto Chuckie_Egg.z80 --rzx Chuckie_Egg.rzx --no-record`

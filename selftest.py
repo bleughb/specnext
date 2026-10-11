@@ -50,9 +50,9 @@ EXPECTED = {           # default build (altrom era); None = not baselined yet (n
     'dizzy1.nex': '7892b2e0f1f3f9f19165516db307cbe0',
     'dizzy1_sprites.nex': '05d2bce99f4d7654d4e1c9c9c04dc391',
     'fantasy_world_dizzy.nex': 'cd620010e2f61af0002e76718945716f',
-    'fantasy_world_dizzy_sprites.nex': None,                                  # altrom (was printer)
+    'fantasy_world_dizzy_sprites.nex': '9182f2f8b4b0dc55b59a69728568b403',   # altrom (was printer); baselined 2026-10-11
     'magicland_dizzy.nex': '09eb18496cff334ea17bfc0b0c94585d',
-    'magicland_dizzy_sprites.nex': None,                                      # altrom (was slot1)
+    'magicland_dizzy_sprites.nex': 'bf137d41d3cc08221bf6fdda153c9de2',       # altrom (was slot1); baselined 2026-10-11
     'dizzy5.nex': 'c99189f3274a4803f0b25b0217206bdb',
     'treasure_island_title.nex': '70890aba7d821fba8a41e63636eb58be',
     'treasure_island_title_sprites.nex': '85e054fe4bce8e4b3a8e336aac432f58',   # = dizzy2_title_sprites.nex

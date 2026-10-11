@@ -13,7 +13,7 @@ magicland_dizzy.z80 + .rzx.
 | dizzy2_game_sprites.nex (Treasure Island, printer) | 8b4d0847d68fce3215bd43a0e116e682 | verified |
 | dizzy2_title_sprites.nex / dizzy2.nex (title) | 85e054fe4bce8e4b3a8e336aac432f58 / 70890aba7d821fba8a41e63636eb58be | verified |
 | dizzy3.nex / dizzy4.nex (plain) | cd620010e2f61af0002e76718945716f / 09eb18496cff334ea17bfc0b0c94585d | verified |
-| dizzy3_sprites.nex / dizzy4_sprites.nex (altrom) | NOT BASELINED (run selftest with the reference files) | hardware untested |
+| dizzy3_sprites.nex / dizzy4_sprites.nex (altrom) | 9182f2f8b4b0dc55b59a69728568b403 / bf137d41d3cc08221bf6fdda153c9de2 (baselined 2026-10-11) | hardware untested |
 | `--strategy printer` dizzy3 / `--strategy slot1` dizzy4 (old builds) | c09213beaec1572c0228985dae89bd77 / d3b37c05d4c47ada07294fa2d7c1ae76 | verified |
 
 Plain TID build runs on hardware.
@@ -55,6 +55,5 @@ Fantasy World and Dizzy 1 execute `LD R,A`; Magicland's object plotter self-modi
 ## Open
 - Treasure Island's game snapshot: the auto-recorder gets no response to input (start/controls
   not found) - needs --start/--keys or a user RZX.
-- Baseline the Fantasy World / Magicland altrom MD5s (selftest prints NEW; paste into selftest
-  EXPECTED and docs/VERIFICATION.md), then hardware-test Magicland.
+- Hardware-test the Fantasy World / Magicland altrom builds.
 - TID `--poke` cheat option (immunity 29289,201) not built.
