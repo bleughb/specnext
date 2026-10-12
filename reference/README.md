@@ -17,7 +17,7 @@ expects ../specnext next to the nexclash clone (or NEXCLASH_REFERENCE=path/to/re
 | chuckie_egg.nex | ec0df71e70fae35836eaed521f300777 | plain conversion |
 | chuckie_egg_sprites.nex | bfad6be1e7c8a2c797a6242d7f339e35 | modified game (sprites) |
 
-## Commando (128K) - `commando/` (games/commando.md; hardware: 5ab928e9 runs; 5c1081b7 flicker/logo/dots; 541e34e2 crashed (code at 0x3D00, DivMMC trap); d601385e runs)
+## Commando (128K) - `commando/` (games/commando.md; hardware: 5ab928e9 runs; 5c1081b7 flicker/logo/dots; 541e34e2 crashed (code at 0x3D00, probably the DivMMC automap); d601385e runs)
 
 | File | MD5 | What |
 |---|---|---|
@@ -106,13 +106,14 @@ expects ../specnext next to the nexclash clone (or NEXCLASH_REFERENCE=path/to/re
 | try2.rzx | 2bb26be393be7a1117d820513d868667 | recording (RZX) |
 | try3.rzx | 285581685fd15c3e096e85999984b245 | recording (RZX) |
 
-## Crystal Kingdom Dizzy (128K, plain only) - `crystal_kingdom_dizzy/` (games/crystal_kingdom_dizzy.md; hardware: plain runs (no build kept here))
+## Crystal Kingdom Dizzy (128K, plain only) - `crystal_kingdom_dizzy/` (games/crystal_kingdom_dizzy.md; hardware: plain runs)
 
 | File | MD5 | What |
 |---|---|---|
 | Dizzy VII - Crystal Kingdom Dizzy (1992)(Codemasters).z80 | 9297ffd60d7c845166827d78f92d1636 | snapshot (48K version) |
 | dizzy7128k.z80 | 0cb1cb260b2f17305ef41c30af0e1f8f | snapshot (128K) |
 | dizzy7_auto.rzx | 53fd13edbbf1d77b8436cbc289b0d051 | recording (RZX) |
+| dizzy7.nex | 99975f65172dc86ecefbac07db2c0c00 | plain conversion (= `nexclash.py convert dizzy7128k.z80`, checked 2026-10-12) |
 
 ## Adding files
 Upload into the game's folder (GitHub: open the folder, Add file -> Upload files). New game:
