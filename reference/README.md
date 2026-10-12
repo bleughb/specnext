@@ -3,7 +3,7 @@
 One folder per game: the original snapshot and Dean's recordings (the references the toolkit is
 verified against), and the built games: `<game>.nex` (plain) and `<game>_sprites.nex` (the
 modified game), exactly as `python selftest.py` (in nexclash) rebuilds them. Game notes:
-nexclash/games/<file>. Never copy anything from here into the public repo.
+nexclash/games/<folder name>.md (one per game, same name as the folder). Never copy anything from here into the public repo.
 
 selftest.py finds files anywhere under reference/ by MD5 (names do not matter); it also
 expects ../specnext next to the nexclash clone (or NEXCLASH_REFERENCE=path/to/reference).
@@ -38,7 +38,7 @@ expects ../specnext next to the nexclash clone (or NEXCLASH_REFERENCE=path/to/re
 | rainbow_sprites_diag.nex | 8f25bc6146b9d7f7ae1f12a1d227447e | diagnostic build (border colours = raster wait / tile built / frame overran) |
 | rainbownew.rzx | 47bb2b163a947724c343a2bc1b039458 | recording (RZX) |
 
-## Treasure Island Dizzy - `treasure_island_dizzy/` (games/tid_engine.md; hardware: plain runs)
+## Treasure Island Dizzy - `treasure_island_dizzy/` (games/treasure_island_dizzy.md; hardware: plain runs)
 
 | File | MD5 | What |
 |---|---|---|
@@ -51,7 +51,7 @@ expects ../specnext next to the nexclash clone (or NEXCLASH_REFERENCE=path/to/re
 | treasure_island_dizzy.nex | 4dae1a3a15b2158642a5d5b82de92ef7 | plain conversion, from the in-game snapshot |
 | treasure_island_dizzy_sprites.nex | 8b4d0847d68fce3215bd43a0e116e682 | modified game (sprites), from the in-game snapshot |
 
-## Dizzy: The Ultimate Cartoon Adventure - `dizzy1/` (games/dizzy1.md; hardware: untested)
+## Dizzy: The Ultimate Cartoon Adventure - `dizzy_ultimate_cartoon_adventure/` (games/dizzy_ultimate_cartoon_adventure.md; hardware: untested)
 
 | File | MD5 | What |
 |---|---|---|
@@ -60,7 +60,7 @@ expects ../specnext next to the nexclash clone (or NEXCLASH_REFERENCE=path/to/re
 | dizzy1_sprites.nex | 05d2bce99f4d7654d4e1c9c9c04dc391 | modified game (sprites) |
 | dizzy1rzx | 99d9c4c086d06a46ba7a781e5321dc3e | recording (RZX) |
 
-## Fantasy World Dizzy - `fantasy_world_dizzy/` (games/tid_engine.md; hardware: untested)
+## Fantasy World Dizzy - `fantasy_world_dizzy/` (games/fantasy_world_dizzy.md; hardware: untested)
 
 | File | MD5 | What |
 |---|---|---|
@@ -69,7 +69,7 @@ expects ../specnext next to the nexclash clone (or NEXCLASH_REFERENCE=path/to/re
 | fantasy_world_dizzy.nex | cd620010e2f61af0002e76718945716f | plain conversion |
 | fantasy_world_dizzy_sprites.nex | 9182f2f8b4b0dc55b59a69728568b403 | modified game (sprites) |
 
-## Magicland Dizzy - `magicland_dizzy/` (games/tid_engine.md; hardware: untested)
+## Magicland Dizzy - `magicland_dizzy/` (games/magicland_dizzy.md; hardware: untested)
 
 | File | MD5 | What |
 |---|---|---|
@@ -78,7 +78,7 @@ expects ../specnext next to the nexclash clone (or NEXCLASH_REFERENCE=path/to/re
 | magicland_dizzy.nex | 09eb18496cff334ea17bfc0b0c94585d | plain conversion |
 | magicland_dizzy_sprites.nex | bf137d41d3cc08221bf6fdda153c9de2 | modified game (sprites) |
 
-## Spellbound Dizzy (Dizzy V) - `spellbound_dizzy/` (games/dizzy5_spellbound.md; hardware: untested)
+## Spellbound Dizzy (Dizzy V) - `spellbound_dizzy/` (games/spellbound_dizzy.md; hardware: untested)
 
 | File | MD5 | What |
 |---|---|---|
@@ -87,7 +87,7 @@ expects ../specnext next to the nexclash clone (or NEXCLASH_REFERENCE=path/to/re
 | dizzy5.nex | c99189f3274a4803f0b25b0217206bdb | plain conversion |
 | dizzy5_sprites.nex | 1f33c467e6aa55585cea79cfbb24bcfe | modified game (sprites) |
 
-## Prince of the Yolkfolk (Dizzy 6) - `prince_of_the_yolkfolk/` (games/dizzy6_yolkfolk.md; hardware: untested)
+## Prince of the Yolkfolk (Dizzy 6) - `prince_of_the_yolkfolk/` (games/prince_of_the_yolkfolk.md; hardware: untested)
 
 | File | MD5 | What |
 |---|---|---|
