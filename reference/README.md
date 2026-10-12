@@ -17,7 +17,7 @@ expects ../specnext next to the nexclash clone (or NEXCLASH_REFERENCE=path/to/re
 | chuckie_egg.nex | ec0df71e70fae35836eaed521f300777 | plain conversion |
 | chuckie_egg_sprites.nex | bfad6be1e7c8a2c797a6242d7f339e35 | modified game (sprites) |
 
-## Midnight Resistance (128K) - `midnight_resistance/` (games/midnight_resistance.md; hardware: untested)
+## Midnight Resistance (128K) - `midnight_resistance/` (games/midnight_resistance.md; hardware: e8f0ece9 runs, Dean 2026-10-13)
 
 | File | MD5 | What |
 |---|---|---|
