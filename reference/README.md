@@ -17,14 +17,14 @@ expects ../specnext next to the nexclash clone (or NEXCLASH_REFERENCE=path/to/re
 | chuckie_egg.nex | ec0df71e70fae35836eaed521f300777 | plain conversion |
 | chuckie_egg_sprites.nex | bfad6be1e7c8a2c797a6242d7f339e35 | modified game (sprites) |
 
-## Commando (128K) - `commando/` (games/commando.md; hardware: 5ab928e9 runs; 5c1081b7 untested)
+## Commando (128K) - `commando/` (games/commando.md; hardware: 5ab928e9 runs; 5c1081b7 flicker/logo/dots; 541e34e2 untested)
 
 | File | MD5 | What |
 |---|---|---|
 | Commando_1985_Elite_Systems_t_128K.RZX | b3350a66a14db07add43c878eb872169 | recording (RZX; 8 autosave snapshots, stripped by `auto`) |
 | Commando_1985_Elite_Systems_t_128K.z80 | c9af5668191462d77c5859900268c24b | snapshot (BASIC loader, trainer version) |
 | commando.nex | a206f950c12f58a8e7f26b366f5a2480 | plain conversion (starts in the front end) |
-| commando_sprites.nex | 5c1081b73765978a7f3e055a66578542 | modified game (sprites, depth by the walk boxes, scenery restore) |
+| commando_sprites.nex | 541e34e2c14a4be5000ad9ed0636b94d | modified game (solid sprites with yellow body, solid objects by the walk-box depth rule, scenery restore, pattern cache) |
 
 ## Everyone's a Wally - `everyones_a_wally/` (games/everyones_a_wally.md; hardware: boots and runs)
 
