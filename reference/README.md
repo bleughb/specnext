@@ -17,6 +17,15 @@ expects ../specnext next to the nexclash clone (or NEXCLASH_REFERENCE=path/to/re
 | chuckie_egg.nex | ec0df71e70fae35836eaed521f300777 | plain conversion |
 | chuckie_egg_sprites.nex | bfad6be1e7c8a2c797a6242d7f339e35 | modified game (sprites) |
 
+## Commando (128K) - `commando/` (games/commando.md; hardware: untested)
+
+| File | MD5 | What |
+|---|---|---|
+| Commando_1985_Elite_Systems_t_128K.RZX | b3350a66a14db07add43c878eb872169 | recording (RZX; 8 autosave snapshots, stripped by `auto`) |
+| Commando_1985_Elite_Systems_t_128K.z80 | c9af5668191462d77c5859900268c24b | snapshot (BASIC loader, trainer version) |
+| commando.nex | 5642e4b4d2a4b3f53cb7311eebeedecf | plain conversion |
+| commando_sprites.nex | f22a9452822b52163023de897f3358aa | modified game (sprites) |
+
 ## Everyone's a Wally - `everyones_a_wally/` (games/everyones_a_wally.md; hardware: boots and runs)
 
 | File | MD5 | What |
