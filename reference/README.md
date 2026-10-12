@@ -17,6 +17,16 @@ expects ../specnext next to the nexclash clone (or NEXCLASH_REFERENCE=path/to/re
 | chuckie_egg.nex | ec0df71e70fae35836eaed521f300777 | plain conversion |
 | chuckie_egg_sprites.nex | bfad6be1e7c8a2c797a6242d7f339e35 | modified game (sprites) |
 
+## Midnight Resistance (128K) - `midnight_resistance/` (games/midnight_resistance.md; hardware: untested)
+
+| File | MD5 | What |
+|---|---|---|
+| Midnight_Resistance_1990_Ocean_128K.rzx | b75ecd5f60c3ec67fe463a0aa606f6a1 | recording (RZX; 8 autosave snapshots, stripped by `auto`; title, level 1 to the tank, game over) |
+| Midnight_Resistance_1990_Ocean_128K.z80 | 67bf05d356d51b2b402d88c5f0cdfb21 | snapshot (title screen) |
+| midnight_resistance.nex | 17239acaaf67b0f8011478053e17829d | plain conversion |
+| midnight_resistance_sprites.nex | e8f0ece9e41c314d76471c96f4595854 | modified game (player green, soldiers white, jeep / tank in their cell colours) |
+| midnight_resistance_preview.png | 703915c6bbc0afb66c086edd1a73db4d | design preview shown to Dean (original / fixed colours / cell colours) |
+
 ## Commando (128K) - `commando/` (games/commando.md; hardware: 5ab928e9 runs; 5c1081b7 flicker/logo/dots; 541e34e2 crashed (code at 0x3D00, probably the DivMMC automap); d601385e runs)
 
 | File | MD5 | What |
