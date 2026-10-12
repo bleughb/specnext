@@ -8,5 +8,5 @@ holds only what may not be published:
 - docs/dean/ - Dean's prompts and Project instructions.
 
 Self-test (maintainers): clone both side by side, then in nexclash/:
-    python selftest.py              (finds ../specnext/reference; --fast skips Rainbow)
+    python selftest.py              (finds ../specnext/reference; --fast skips Rainbow and Commando)
 or set NEXCLASH_REFERENCE to this repo's reference/ folder.
