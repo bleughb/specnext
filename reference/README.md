@@ -111,6 +111,7 @@ names under reference/ and checks their MD5s: keep file names and folders as lis
 | File | MD5 | What |
 |---|---|---|
 | Dizzy6.nex | e02faca34df9504cc1f2f162e0ef791e | plain conversion |
+| Dizzy6_sprites.nex | f491e1f6621559ccc4d36de3535ff5d0 | modified game (sprites, slot1; rebuilt by selftest 2026-10-13 = the record's MD5) |
 | Dizzy6.z80 | dd6cd7a3af47a520a260376c6ad4b459 | snapshot |
 | try1.rzx | 60f0d2157d7da48e3e1b038455ebd9e8 | recording (RZX) |
 | try2.rzx | 2bb26be393be7a1117d820513d868667 | recording (RZX) |
