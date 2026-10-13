@@ -5,8 +5,9 @@ verified against), and the built games: `<game>.nex` (plain) and `<game>_sprites
 modified game), exactly as `python selftest.py` (in nexclash) rebuilds them. Game notes:
 nexclash/games/<folder name>.md (one per game, same name as the folder). Never copy anything from here into the public repo.
 
-selftest.py finds files anywhere under reference/ by MD5 (names do not matter); it also
-expects ../specnext next to the nexclash clone (or NEXCLASH_REFERENCE=path/to/reference).
+selftest.py copies each game's inputs from the `path` its record (nexclash docs/records/<game>.json)
+names under reference/ and checks their MD5s: keep file names and folders as listed here. It expects
+../specnext next to the nexclash clone (or NEXCLASH_REFERENCE=path/to/reference).
 
 ## Chuckie Egg - `chuckie_egg/` (games/chuckie_egg.md; hardware: untested)
 
@@ -25,7 +26,6 @@ expects ../specnext next to the nexclash clone (or NEXCLASH_REFERENCE=path/to/re
 | Midnight_Resistance_1990_Ocean_128K.z80 | 67bf05d356d51b2b402d88c5f0cdfb21 | snapshot (title screen) |
 | midnight_resistance.nex | 17239acaaf67b0f8011478053e17829d | plain conversion |
 | midnight_resistance_sprites.nex | e8f0ece9e41c314d76471c96f4595854 | modified game (player green, soldiers white, jeep / tank in their cell colours) |
-| midnight_resistance_preview.png | 703915c6bbc0afb66c086edd1a73db4d | design preview shown to Dean (original / fixed colours / cell colours) |
 
 ## Commando (128K) - `commando/` (games/commando.md; hardware: 5ab928e9 runs; 5c1081b7 flicker/logo/dots; 541e34e2 crashed (code at 0x3D00, probably the DivMMC automap); d601385e runs)
 
@@ -46,7 +46,7 @@ expects ../specnext next to the nexclash clone (or NEXCLASH_REFERENCE=path/to/re
 | wally_sprites.nex | f7605489c3af55b8e8c6a580c1c26150 | modified game (sprites) |
 | wallyrzx.rzx | 72c7d1f6c99407bc21d892d423e89964 | recording (RZX) |
 
-## Rainbow Islands (128K) - `rainbow_islands/` (games/rainbow_islands.md; hardware: e50733b2 / diag 8f25bc61 untested; bffd9357 had random corruption + slowdowns)
+## Rainbow Islands (128K) - `rainbow_islands/` (games/rainbow_islands.md; EXCLUDED from automatic selftest checks; hardware: e50733b2 / diag 8f25bc61 untested; bffd9357 had random corruption + slowdowns)
 
 | File | MD5 | What |
 |---|---|---|
