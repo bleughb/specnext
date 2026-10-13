@@ -27,7 +27,7 @@ names under reference/ and checks their MD5s: keep file names and folders as lis
 | smash_tv.nex | c72ea298486b14036ac1a87ac89c3f0e | plain conversion (the loader as it is) |
 | smash_tv_sprites_outline_cell_paper.nex | 6227481f8f2514faa0d9648b6bc972e8 | modified game (every figure as sprites in its cell inks, outline in the cell paper; prompt front end) |
 
-## Midnight Resistance (128K) - `midnight_resistance/` (games/midnight_resistance.md; hardware: e8f0ece9 runs, Dean 2026-10-13; a4fb69a2 untested)
+## Midnight Resistance (128K) - `midnight_resistance/` (games/midnight_resistance.md; hardware: e8f0ece9 runs, Dean 2026-10-13; a4fb69a2 tests OK, Dean 2026-10-14)
 
 | File | MD5 | What |
 |---|---|---|
