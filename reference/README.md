@@ -27,14 +27,16 @@ names under reference/ and checks their MD5s: keep file names and folders as lis
 | smash_tv.nex | c72ea298486b14036ac1a87ac89c3f0e | plain conversion (the loader as it is) |
 | smash_tv_sprites_outline_cell_paper.nex | 6227481f8f2514faa0d9648b6bc972e8 | modified game (every figure as sprites in its cell inks, outline in the cell paper; prompt front end) |
 
-## Midnight Resistance (128K) - `midnight_resistance/` (games/midnight_resistance.md; hardware: e8f0ece9 runs, Dean 2026-10-13)
+## Midnight Resistance (128K) - `midnight_resistance/` (games/midnight_resistance.md; hardware: e8f0ece9 runs, Dean 2026-10-13; bd0d4d3e untested)
 
 | File | MD5 | What |
 |---|---|---|
 | Midnight_Resistance_1990_Ocean_128K.rzx | b75ecd5f60c3ec67fe463a0aa606f6a1 | recording (RZX; 8 autosave snapshots, stripped by `auto`; title, level 1 to the tank, game over) |
 | Midnight_Resistance_1990_Ocean_128K.z80 | 67bf05d356d51b2b402d88c5f0cdfb21 | snapshot (title screen) |
 | midnight_resistance.nex | 17239acaaf67b0f8011478053e17829d | plain conversion |
-| midnight_resistance_sprites.nex | e8f0ece9e41c314d76471c96f4595854 | modified game (player green, soldiers white, jeep / tank in their cell colours) |
+| midnight_resistance_sprites.nex | bd0d4d3e9042ca55ce84b553799527e9 | modified game (player green, soldiers white, keys yellow, jeep / tank in their cell colours; sprites hidden at the end-of-level exit; no colour map yet) |
+| mr_colours.png | - | colour sheet to paint (1:1, level 1 figures; `python -m nexclash.midres sheet`) |
+| mr_colours_layout.json | - | its layout: needed to read the painted sheet back (`python -m nexclash.midres colours`) |
 
 ## Commando (128K) - `commando/` (games/commando.md; hardware: 5ab928e9 runs; 5c1081b7 flicker/logo/dots; 541e34e2 crashed (code at 0x3D00, probably the DivMMC automap); d601385e runs)
 
