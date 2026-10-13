@@ -18,6 +18,15 @@ names under reference/ and checks their MD5s: keep file names and folders as lis
 | chuckie_egg.nex | ec0df71e70fae35836eaed521f300777 | plain conversion |
 | chuckie_egg_sprites.nex | bfad6be1e7c8a2c797a6242d7f339e35 | modified game (sprites) |
 
+## Smash TV - `smash_tv/` (games/smash_tv.md; hardware: untested)
+
+| File | MD5 | What |
+|---|---|---|
+| Smash_TV.rzx | ed4ee1a08ce14101cb7b1246dcdaf040 | recording (RZX; Fuse autosave on: 8 autosave snapshots, stripped by `auto`; title, arenas 1-2, game over; N = not invulnerable) |
+| Smash_TV.z80 | 3b89344c6d7e6433bf044bef1880a2f1 | snapshot (BASIC loader at the trainer prompt "DO YOU WANT TO BE INVULNERABLE ?") |
+| smash_tv.nex | c72ea298486b14036ac1a87ac89c3f0e | plain conversion (the loader as it is) |
+| smash_tv_sprites.nex | 03979d5438cf55410ecec8aac76f05ec | modified game (every figure as sprites in its cell inks, see-through outline; prompt front end) |
+
 ## Midnight Resistance (128K) - `midnight_resistance/` (games/midnight_resistance.md; hardware: e8f0ece9 runs, Dean 2026-10-13)
 
 | File | MD5 | What |
