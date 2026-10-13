@@ -4,13 +4,8 @@ Start sessions with both repos selected: bleughb/nexclash (public toolkit) and b
 (private reference files). Attach new game files in the first message; one game per chat.
 
 ## New game (maintainer session)
-> Repos: bleughb/nexclash (follow its CLAUDE.md) + bleughb/specnext (references).
-> New game: <GAME>. Snapshot + my RZX attached: put them in specnext/reference/<game>/.
-> Sprites: <which figures - fill in, or "show me a preview first">. Everything else stays on the
-> ULA unless analysis shows it clashes (then ask me). While developing: `selftest.py --canary`
-> only - do not re-test the other games. At the end: references to specnext, PRs in both repos,
-> then `selftest.py --affected --verify --stamp` in a separate worktree before I merge (Rainbow
-> Islands stays excluded). Deliver: the .nex files, a hardware checklist.
+> New game: <GAME>. Snapshot and RZX attached. Repos: bleughb/nexclash + bleughb/specnext -
+> follow nexclash/CLAUDE.md.
 
 ## A contribution arrived (upload link)
 > Repo: bleughb/nexclash. Review the attached nexclash_contribution_<GAME>.zip
