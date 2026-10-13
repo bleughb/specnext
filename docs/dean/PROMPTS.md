@@ -6,9 +6,11 @@ Start sessions with both repos selected: bleughb/nexclash (public toolkit) and b
 ## New game (maintainer session)
 > Repos: bleughb/nexclash (follow its CLAUDE.md) + bleughb/specnext (references).
 > New game: <GAME>. Snapshot + my RZX attached: put them in specnext/reference/<game>/.
-> Sprites: <which figures>. Everything else stays on the ULA unless analysis shows it clashes
-> (then ask me). Regression check: `selftest.py --smoke` only (Chuckie Egg) - do not re-test the
-> other games. Deliver: the .nex files, a hardware checklist, PRs in both repos.
+> Sprites: <which figures - fill in, or "show me a preview first">. Everything else stays on the
+> ULA unless analysis shows it clashes (then ask me). While developing: `selftest.py --canary`
+> only - do not re-test the other games. At the end: references to specnext, PRs in both repos,
+> then `selftest.py --affected --verify --stamp` in a separate worktree before I merge (Rainbow
+> Islands stays excluded). Deliver: the .nex files, a hardware checklist.
 
 ## A contribution arrived (upload link)
 > Repo: bleughb/nexclash. Review the attached nexclash_contribution_<GAME>.zip
@@ -20,8 +22,9 @@ Start sessions with both repos selected: bleughb/nexclash (public toolkit) and b
 > RZX attached if faulty (autosave off). Fix or record it.
 
 ## Release
-> Repo: bleughb/nexclash. Make release <VERSION>: run selftest, bump VERSION,
-> tools/make_package.py, publish the zip as a GitHub release.
+> Repo: bleughb/nexclash. Make release <VERSION>: `selftest.py --stamp` must pass, bump VERSION,
+> merge; I publish the release with tag v<VERSION> in the GitHub UI (the release workflow builds
+> and attaches the zip).
 
 ## Hygiene
 - Merge agent PRs on GitHub, then `git pull` both repos.
