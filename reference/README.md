@@ -90,8 +90,12 @@ names under reference/ and checks their MD5s: keep file names and folders as lis
 |---|---|---|
 | Dizzy_The_Ultimate_Cartoon_Adventure_1987_Codemasters.z80 | 0659328fd54fd446e39d1740bafd02e7 | snapshot |
 | dizzy1.nex | 7892b2e0f1f3f9f19165516db307cbe0 | plain conversion |
-| dizzy1_sprites.nex | 05d2bce99f4d7654d4e1c9c9c04dc391 | modified game (sprites) |
+| dizzy1_sprites.nex | a0622431da321709695abf2fbe97f09e | modified game: every figure on Layer 2 (shadow screen), default colours; HUD and room tiles on the ULA (2026-10-14; replaces 05d2bce9, Dizzy-only sprite) |
 | dizzy1rzx | 99d9c4c086d06a46ba7a781e5321dc3e | recording (RZX) |
+| dizzy1_PAINTING_SPRITES.png | 0dea706e0cf567eac27121d118418638 | sheet to paint: every graphic once, in the current colours (`python -m nexclash.dizzy1 sheet dizzy1rzx --z80 SNAPSHOT -o dizzy1`) |
+| dizzy1_PAINTING_SPRITES_layout.json | 949ea987dc08091d3226f20d1b0052bc | its layout: reads the painted sheet back (`python -m nexclash.dizzy1 colours PAINTED.png --layout ...`) |
+| dizzy1_REFERENCE_ALL_SPRITES.png | efb5b9a38eb73f77e59f93b503716fc6 | every figure whole, as the build colours it (not read back) |
+| dizzy1_preview.png | 356c2d7da38e97f16163f5ccb0a1e0ae | phase-A preview: original / planned build at RZX frames 264, 1584, 2640, 3168, 4752, 5544 |
 
 ## Fantasy World Dizzy - `fantasy_world_dizzy/` (games/fantasy_world_dizzy.md; hardware: untested)
 
