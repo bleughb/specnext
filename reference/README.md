@@ -84,7 +84,7 @@ names under reference/ and checks their MD5s: keep file names and folders as lis
 | treasure_island_dizzy.nex | 4dae1a3a15b2158642a5d5b82de92ef7 | plain conversion, from the in-game snapshot |
 | treasure_island_dizzy_sprites.nex | 8b4d0847d68fce3215bd43a0e116e682 | modified game (sprites), from the in-game snapshot |
 
-## Dizzy: The Ultimate Cartoon Adventure - `dizzy_ultimate_cartoon_adventure/` (games/dizzy_ultimate_cartoon_adventure.md; hardware: untested)
+## Dizzy: The Ultimate Cartoon Adventure - `dizzy_ultimate_cartoon_adventure/` (games/dizzy_ultimate_cartoon_adventure.md; hardware: 83ea050d works, Dean 2026-10-14)
 
 | File | MD5 | What |
 |---|---|---|
