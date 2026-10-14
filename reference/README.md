@@ -159,3 +159,16 @@ make a folder named like its nexclash/games/ file.
 
 ## Review material
 Images an agent made for review (they show game graphics) go in docs/review/<game>/.
+
+## Target Renegade (128K) - `target_renegade/` (games/target_renegade.md; hardware: untested)
+
+| File | MD5 | What |
+|---|---|---|
+| Renegade_II_Target_Renegade_1988_Imagine_Software_128K.z80 | 1895877d638a4a5f37a9402bed18f59a | snapshot (128K BASIC loader at its last PAUSE 0, loading screen) |
+| Renegade_II_Target_Renegade_1988_Imagine_Software_128K.rzx | 464d4eeaa005e2d16fb1d65737325285 | recording (RZX; Fuse, its own SZX at the game menu, 9 autosaves stripped by `auto`; level 1) |
+| target_renegade.nex | a0be8dc03a1be8c6d67dc3e0229abc35 | plain conversion (loader run in the toolkit, loading-screen front end) |
+| target_renegade_sprites.nex | e0b246e35d028c34170e1d1c52f00f5f | modified game (every figure a sprite: ink black, body grey) |
+| target_renegade_PAINTING_SPRITES.png | - | sheet to paint (+ _layout.json): every graphic once, in the build's colours (`python -m nexclash.renegade sheet RZX`) |
+| target_renegade_REFERENCE_ALL_SPRITES.png | - | every figure whole, in the build's colours (not read back) |
+| target_renegade_PREVIEW.png | - | four RZX frames: original, ULA layer, ULA + sprites |
+| target_renegade_entry.z80 / target_renegade_plain_test.nex | - / 23647948ff22fc10e26b589cf1b83193 | phase A: the loader's state after the entry code; a plain test without front end |
