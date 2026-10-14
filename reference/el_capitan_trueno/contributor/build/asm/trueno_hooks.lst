@@ -1,0 +1,1421 @@
+# file opened: trueno_hooks.asm
+   1  0000              ; El Capitan Trueno (Dinamic, 1990, 48K) - figures as hardware sprites, foreground in Layer 2.
+   2  0000              ; The game plots every figure into a window back buffer (0xF2E0, 30 x 112) and its attribute buffer
+   3  0000              ; (0xF13C, 30 x 14); the ISR task 0x8865 copies both to the screen when a render is ready, then
+   4  0000              ; restores the scenery under the figures. The plotter already has a "behind the foreground" mode: for
+   5  0000              ; a cell set in the foreground map it saves the scenery under the figure (restore list as usual) but
+   6  0000              ; draws no pixel and paints no attribute. A data patch (0x87BE) points the plotter at a map of all
+   7  0000              ; 0xFF bytes in the ROM (0x3B00, the 48K ROM's unused block, the same in the alt ROM), so no figure
+   8  0000              ; reaches the buffer or the attributes: the ULA shows the scenery only (host's idea, 2026-10-13), and
+   9  0000              ; every other byte of game memory is as the original. Each figure is shown as sprites instead.
+  10  0000              ; Foreground cells of the real map 0xEF60 are copied into Layer 2 with the palette priority bit, so
+  11  0000              ; bushes and grass stay in front of the sprites as in the original.
+  12  0000              ; Entry/exit stubs live in alt ROM image 1 at 0x386E; hook bodies, state and tables live in Next RAM
+  13  0000              ; page PAGE_S, mapped at MMU slot 0 while a hook runs (the game's IM2 handler never touches slot 0;
+  14  0000              ; the ISR hooks save and restore the slot 0 page they find).
+  15  0000              ;
+  16  0000              ; Patch sites (original bytes verified by trueno.py):
+  17  0000              ;   0x82DF  DD CB 03 46  BIT 0,(IX+3)   -> JP e_fig  (figure entry: record frame, x, y, flags)
+  18  0000              ;   0x88A2  21 08 E6     LD HL,0xE608   -> JP e_cm   (ISR, screen copy done: show the sprites)
+  19  0000              ;   0x8865  3A 08 E6     LD A,(0xE608)  -> JP e_tk   (ISR task, every interrupt: pending clear)
+  20  0000              ;   0x887D  3F 1F 32     CCF / RRA / LD (0xE608),A -> JP e_shk (ISR: the shaken copy, 8 lines lower,
+  21  0000              ;                                                    e.g. Goliath landing: flag it for the commit)
+  22  0000              ;   0x6410  21 60 EF     LD HL,0xEF60   -> JP e_scr  (foreground map rebuilt: new screen)
+  23  0000              ;   0xA207  21 00 58     LD HL,0x5800   -> JP e_cls  (screen clear: menu, game over)
+  24  0000              ;   0xA375  C3 01 A5     JP 0xA501      -> JP e_mnu  (in-game pause menu: Layer 2 and sprites off
+  25  0000              ;                                                    while its window is up, 2026-10-13)
+  26  0000              ;   0x5DCD  CD 0E 5E     CALL 0x5E0E    -> JP e_end  (screen 60, the end of part 1: the access code
+  27  0000              ;                                                    screen, ULA only: Layer 2 and sprites off; the next
+  28  0000              ;                                                    game's first screen turns them on, 2026-10-13)
+  29  0000              ;   0x889B  21 3C F1     LD HL,0xF13C   -> JP e_att  (ISR copy, attribute source: 0xEF98, the scenery
+  30  0000              ;                                                    without figures; screen 34 (the dragon, clear mode):
+  31  0000              ;                                                    0xF13C as the original, for its energy bar drawn
+  32  0000              ;                                                    via 0x82E4 past the figure hook, 2026-10-13)
+  33  0000              ; NextReg 0x7F (user register) carries the requests: bit 0 = rebuild Layer 2 at the next commit,
+  34  0000              ; bit 6 = this copy is shaken (8 lines lower), bit 7 = clear Layer 2 and the sprites at the next
+  35  0000              ; interrupt. The main-code stubs only write it
+  36  0000              ; with NEXTREG (no register, flag or memory change); only the ISR reads it.
+  37  0000
+  38  0000                      DEVICE ZXSPECTRUMNEXT
+  39  0000
+  40  0000              PAGE_S  EQU 26                  ; hook page (bank 13, first half)
+  41  0000              PAT0    EQU 28                  ; first pattern data page (bank 14 on)
+  42  0000              L2BANK  EQU 27                  ; Layer 2: banks 27-29 = pages 54-59 (patterns use banks 14-26)
+  43  0000              L2PAGE  EQU 54
+  44  0000              MAXF    EQU 64                  ; figures per render
+  45  0000              NSPR    EQU 128                 ; sprites / 4-bit patterns
+  46  0000              TRANSP  EQU 0xE3                ; Layer 2 transparent colour (NextReg 0x14 default)
+  47  0000              BWPAGE  EQU 60                  ; bush and fix cells made on the PC (build/bush_walls.py), pages 60 on:
+  48  0000                                              ; page 60 = page per screen (64 bytes, 0 = none), then its offset in
+  49  0000                                              ; that page (64 words at 0x40); a screen's block: count, then per cell
+  50  0000                                              ; row, column, 64 Layer 2 bytes. Blocks are packed (2026-10-14)
+  51  0000              L2COL   EQU 16                  ; Layer 2 palette index 16 + colour (0-7, +8 bright), priority set
+  52  0000              L2NP    EQU 32                  ; the same colours without priority (wall ropes, under the sprites)
+  53  0000
+  54  0000              G_FLAGS EQU 0xE608              ; bit 0 = render ready (the ISR copies it)
+  55  0000              G_MODE  EQU 0xE60B              ; 34 = clear mode (blank buffer)
+  56  0000              G_MAP   EQU 0xEF60              ; foreground cell map: 4 bytes per cell row, 14 rows, bit 7 = column 0
+  57  0000              G_ATTR  EQU 0xEF98              ; window attributes without figures, 30 x 14
+  58  0000              G_BUF   EQU 0xF2E0              ; window pixels, 30 bytes x 112 lines (screen x 8, y 16)
+  59  0000
+  60  0000              ; ---- hook page layout ----
+  61  0000              V_SP    EQU 0x0000              ; game SP in the figure hook
+  62  0000              V_SP2   EQU 0x0002              ; game SP in the ISR hooks
+  63  0000              V_SLOT0 EQU 0x0004              ; slot 0 page found by an ISR hook
+  64  0000              V_N     EQU 0x0005              ; figures recorded this render
+  65  0000              V_PREV  EQU 0x0006              ; sprites shown now
+  66  0000              V_NEXT  EQU 0x0007              ; next free 4-bit pattern
+  67  0000              V_S     EQU 0x0008              ; next sprite (commit)
+  68  0000              V_OVF   EQU 0x0009              ; pattern memory full in this pass
+  69  0000              V_PAT   EQU 0x000A              ; figure: first pattern
+  70  0000              V_FX    EQU 0x000B              ; figure: descriptor x, y, flags
+  71  0000              V_FY    EQU 0x000C
+  72  0000              V_FF    EQU 0x000D
+  73  0000              V_COLS  EQU 0x000E
+  74  0000              V_ROWS  EQU 0x000F
+  75  0000              V_DX    EQU 0x0010
+  76  0000              V_DY    EQU 0x0011
+  77  0000              V_PADS  EQU 0x0012
+  78  0000              V_MX    EQU 0x0013
+  79  0000              V_MY    EQU 0x0014
+  80  0000              V_ATTR2 EQU 0x0015
+  81  0000              V_X0    EQU 0x0016              ; 2: box x in sprite coordinates
+  82  0000              V_Y0    EQU 0x0018
+  83  0000              V_R     EQU 0x0019
+  84  0000              V_C     EQU 0x001A
+  85  0000              V_RSRC  EQU 0x001C              ; 2: Layer 2 pass: buffer row of this cell row
+  86  0000              V_RATT  EQU 0x001E              ; 2: attribute row
+  87  0000              V_NEW   EQU 0x0020              ; 2: the map to show
+  88  0000              V_LDST  EQU 0x0022              ; 2: Layer 2 address of the cell
+  89  0000              V_INK   EQU 0x0024              ; Layer 2 colours of the cell
+  90  0000              V_PAP   EQU 0x0025
+  91  0000              V_LY    EQU 0x0028              ; Layer 2 pass: first screen line of the cell row
+  92  0000              V_LN    EQU 0x0029              ; line in the cell row (0-7)
+  93  0000              V_C0    EQU 0x002A              ; run of foreground cells: first, last column
+  94  0000              V_C1    EQU 0x002B
+  95  0000              V_XL    EQU 0x002C              ; leftmost / rightmost ink pixel of the run, current x
+  96  0000              V_XR    EQU 0x002D
+  97  0000              V_X     EQU 0x002E
+  98  0000              V_REQ   EQU 0x002F              ; NextReg 0x7F as read by the commit
+  99  0000              V_SHK   EQU 0x0030              ; 8 when this copy is shaken, else 0
+ 100  0000              V_LI    EQU 0x0031              ; rope cell: left neighbour ink, paper (Layer 2 indices)
+ 101  0000              V_LP    EQU 0x0032
+ 102  0000              V_RI    EQU 0x0033              ; right neighbour ink, paper
+ 103  0000              V_RP    EQU 0x0034
+ 104  0000              V_RT    EQU 0x0035              ; 2: rope mask table, current row
+ 105  0000              V_FAC   EQU 0x0026              ; figure: stored facing (bit 7)
+ 106  0000              V_BLK   EQU 0x0027              ; renders shown (bit 0: blink phase)
+ 107  0000              V_BW    EQU 0x0036              ; 1 = this screen's bush cells came from the table (no pass 2b)
+ 108  0000              STK1    EQU 0x0100              ; figure hook stack (0x0040-0x00FF; the ISR may push 34 bytes on it)
+ 109  0000              RESF    EQU 0x0F00              ; per frame: first pattern + 1 of its hit-flash shape
+ 110  0000              FIGS    EQU 0x1000              ; MAXF x (frame, x, y, flags)
+ 111  0000              RES     EQU 0x1100              ; per frame: first pattern + 1 (0 = not in pattern memory)
+ 112  0000              SDIR    EQU 0x1200              ; per frame (220 x 8): page, first | facing << 7, cols, rows, dx, dy, pads, mdx
+ 113  0000              OLDMAP  EQU 0x1900              ; the foreground map Layer 2 shows now (56 bytes)
+ 114  0000              ZMAP    EQU 0x1940              ; 56 zero bytes (the empty map)
+ 115  0000              OLDROPE EQU 0x1980              ; the rope cells Layer 2 shows now (56 bytes, map layout)
+ 116  0000              FDIR    EQU 0x1A00              ; per frame (220 x 2): page, first of its hit-flash silhouette shape
+ 117  0000              BLINK   EQU 0x1C00              ; per frame: 1 = the hit flash blinks (normal / silhouette)
+ 118  0000              STK2    EQU 0x2000              ; ISR hook stack (0x1D00-0x1FFF)
+ 119  0000
+ 120  0000              ; ---- alt ROM stubs ----
+ 121  0000                      ORG 0x386E
+ 122  386E ED 91 50 1A  e_fig:  nextreg 0x50,PAGE_S
+ 123  3872 C3 00 01             jp s_fig
+ 124  3875 ED 91 50 FF  x_fig:  nextreg 0x50,0xFF
+ 125  3879 DD CB 03 46          bit 0,(ix+3)
+ 126  387D C3 E3 82             jp 0x82E3
+ 127  3880 01 3B 24     e_cm:   ld bc,0x243B            ; AF BC DE HL are dead here (all set before use by 0x88A5 on)
+ 128  3883 3E 50                ld a,0x50
+ 129  3885 ED 79                out (c),a
+ 130  3887 04                   inc b
+ 131  3888 ED 78                in a,(c)
+ 132  388A ED 91 50 1A          nextreg 0x50,PAGE_S
+ 133  388E 32 04 00             ld (V_SLOT0),a
+ 134  3891 C3 3C 01             jp s_cm
+ 135  3894 ED 92 50     x_cm:   nextreg 0x50,a
+ 136  3897 21 08 E6             ld hl,G_FLAGS
+ 137  389A C3 A5 88             jp 0x88A5
+ 138  389D 01 3B 24     e_tk:   ld bc,0x243B            ; AF BC DE HL are dead here (task entry: LD A,(nn) / RRA / RET NC ...)
+ 139  38A0 3E 7F                ld a,0x7F
+ 140  38A2 ED 79                out (c),a
+ 141  38A4 04                   inc b
+ 142  38A5 ED 78                in a,(c)
+ 143  38A7 17                   rla
+ 144  38A8 38 06                jr c,e_tkc
+ 145  38AA 3A 08 E6     x_tk:   ld a,(G_FLAGS)
+ 146  38AD C3 68 88             jp 0x8868
+ 147  38B0 05           e_tkc:  dec b
+ 148  38B1 3E 50                ld a,0x50
+ 149  38B3 ED 79                out (c),a
+ 150  38B5 04                   inc b
+ 151  38B6 ED 78                in a,(c)
+ 152  38B8 ED 91 50 1A          nextreg 0x50,PAGE_S
+ 153  38BC 32 04 00             ld (V_SLOT0),a
+ 154  38BF C3 B2 01             jp s_tk
+ 155  38C2 ED 92 50     x_tk2:  nextreg 0x50,a
+ 156  38C5 18 E3                jr x_tk
+ 157  38C7 3F           e_shk:  ccf                     ; the original three instructions
+ 158  38C8 1F                   rra
+ 159  38C9 32 08 E6             ld (G_FLAGS),a
+ 160  38CC 01 3B 24             ld bc,0x243B            ; BC A F are dead here (LD BC / LD DE / XOR A follow): flag bit 6
+ 161  38CF 3E 7F                ld a,0x7F
+ 162  38D1 ED 79                out (c),a
+ 163  38D3 04                   inc b
+ 164  38D4 ED 78                in a,(c)
+ 165  38D6 F6 40                or 0x40
+ 166  38D8 ED 79                out (c),a
+ 167  38DA C3 82 88             jp 0x8882
+ 168  38DD ED 91 7F 01  e_scr:  nextreg 0x7F,1          ; new screen: rebuild Layer 2 at the next commit (drops a pending clear:
+ 169  38E1                                              ; the rebuild clears every cell that is not foreground any more)
+ 170  38E1 ED 91 69 80          nextreg 0x69,0x80       ; Layer 2 on (off if the pause menu was left without its RET)
+ 171  38E5 ED 91 50 1A          nextreg 0x50,PAGE_S     ; forget the figures recorded so far in this render: they belong to
+ 172  38E9 21 05 00             ld hl,V_N               ; the old screen (the original overwrites them in the buffer; here
+ 173  38EC 36 00                ld (hl),0               ; they showed as sprites on the new screen's first copy). HL is set next
+ 174  38EE ED 91 50 FF          nextreg 0x50,0xFF
+ 175  38F2 ED 91 15 00          nextreg 0x15,0x00       ; sprites off until the next commit: the copy takes most of a frame,
+ 176  38F6                                              ; the old sprites flashed over the new screen meanwhile
+ 177  38F6 21 60 EF             ld hl,G_MAP
+ 178  38F9 C3 13 64             jp 0x6413
+ 179  38FC ED 91 7F 81  e_cls:  nextreg 0x7F,0x81       ; clear Layer 2 and the sprites, then rebuild at the next commit
+ 180  3900 21 00 58             ld hl,0x5800
+ 181  3903 C3 0A A2             jp 0xA20A
+ 182  3906 ED 91 15 00  e_end:  nextreg 0x15,0x00       ; the access code screen (no screen is built: the old screen's
+ 183  390A ED 91 69 00          nextreg 0x69,0x00       ; Layer 2 and sprites stayed over it). NEXTREG keeps every register
+ 184  390E CD 0E 5E             call 0x5E0E
+ 185  3911 C3 D0 5D             jp 0x5DD0
+ 186  3914 F5           e_att:  push af                 ; the copy's attribute source (HL', set before CALL 0x8915)
+ 187  3915 21 98 EF             ld hl,0xEF98
+ 188  3918 3A 0B E6             ld a,(0xE60B)
+ 189  391B FE 22                cp 34
+ 190  391D 20 03                jr nz,.a
+ 191  391F 21 3C F1             ld hl,0xF13C
+ 192  3922 F1           .a:     pop af
+ 193  3923 C3 9E 88             jp 0x889E
+ 194  3926 ED 91 15 00  e_mnu:  nextreg 0x15,0x00       ; pause menu (0xA36C tail-jumps to it; it returns with RET NC/C):
+ 195  392A ED 91 69 00          nextreg 0x69,0x00       ; its window is drawn in the ULA, so hide Layer 2 and the sprites
+ 196  392E CD 01 A5             call 0xA501             ; while it is up. NEXTREG keeps every register and flag
+ 197  3931 ED 91 69 80          nextreg 0x69,0x80
+ 198  3935 ED 91 15 01          nextreg 0x15,0x01
+ 199  3939 C9                   ret
+ 200  393A              rom_end:
+ 201  393A
+ 202  393A              ; ---- hook page code ----
+ 203  393A                      ORG 0x0100
+ 204  0100              ; figure entry 0x82DF, IX = descriptor: record it when visible. Keeps every register and flag.
+ 205  0100 ED 73 00 00  s_fig:  ld (V_SP),sp
+ 206  0104 31 00 01             ld sp,STK1
+ 207  0107 F5                   push af
+ 208  0108 E5                   push hl
+ 209  0109 DD CB 03 46          bit 0,(ix+3)
+ 210  010D 28 24                jr z,.out
+ 211  010F 3A 05 00             ld a,(V_N)
+ 212  0112 FE 40                cp MAXF
+ 213  0114 30 1D                jr nc,.out
+ 214  0116 3C                   inc a
+ 215  0117 32 05 00             ld (V_N),a
+ 216  011A 3D                   dec a
+ 217  011B 87                   add a,a
+ 218  011C 87                   add a,a
+ 219  011D 6F                   ld l,a
+ 220  011E 26 10                ld h,high FIGS
+ 221  0120 DD 7E 00             ld a,(ix+0)
+ 222  0123 77                   ld (hl),a
+ 223  0124 2C                   inc l
+ 224  0125 DD 7E 01             ld a,(ix+1)
+ 225  0128 77                   ld (hl),a
+ 226  0129 2C                   inc l
+ 227  012A DD 7E 02             ld a,(ix+2)
+ 228  012D 77                   ld (hl),a
+ 229  012E 2C                   inc l
+ 230  012F DD 7E 03             ld a,(ix+3)
+ 231  0132 77                   ld (hl),a
+ 232  0133 E1           .out:   pop hl
+ 233  0134 F1                   pop af
+ 234  0135 ED 7B 00 00          ld sp,(V_SP)
+ 235  0139 C3 75 38             jp x_fig
+ 236  013C
+ 237  013C              ; ISR, after the screen copy (0x88A2): Layer 2 if a new screen, patterns, sprites, hide the rest.
+ 238  013C ED 73 02 00  s_cm:   ld (V_SP2),sp
+ 239  0140 31 00 20             ld sp,STK2
+ 240  0143 ED 91 07 03          nextreg 0x07,3
+ 241  0147 21 27 00             ld hl,V_BLK
+ 242  014A 34                   inc (hl)
+ 243  014B 01 3B 24             ld bc,0x243B
+ 244  014E 3E 7F                ld a,0x7F
+ 245  0150 ED 79                out (c),a
+ 246  0152 04                   inc b
+ 247  0153 ED 78                in a,(c)
+ 248  0155 32 2F 00             ld (V_REQ),a
+ 249  0158 E6 40                and 0x40                ; shaken copy: Layer 2 and the sprites 8 lines lower too
+ 250  015A 0F                   rrca
+ 251  015B 0F                   rrca
+ 252  015C 0F                   rrca
+ 253  015D 32 30 00             ld (V_SHK),a            ; 8 or 0
+ 254  0160 ED 44                neg
+ 255  0162 28 02                jr z,.ns
+ 256  0164 C6 C0                add a,192               ; Layer 2 y offset 192 - 8
+ 257  0166 ED 92 17     .ns:    nextreg 0x17,a
+ 258  0169 3A 2F 00             ld a,(V_REQ)
+ 259  016C E6 81                and 0x81                ; bit 6 consumed
+ 260  016E 32 2F 00             ld (V_REQ),a
+ 261  0171 1F                   rra
+ 262  0172 30 18                jr nc,.req
+ 263  0174 3A 2F 00             ld a,(V_REQ)
+ 264  0177 E6 80                and 0x80
+ 265  0179 32 2F 00             ld (V_REQ),a
+ 266  017C 21 60 EF             ld hl,G_MAP
+ 267  017F 3A 0B E6             ld a,(G_MODE)           ; screen 34 (the dragon, clear mode: the buffer is blank): Layer 2
+ 268  0182 FE 22                cp 34                   ; cleared (the old screen's foreground stayed there, 2026-10-13)
+ 269  0184 20 03                jr nz,.map
+ 270  0186 21 40 19             ld hl,ZMAP
+ 271  0189 CD 55 04     .map:   call l2map
+ 272  018C 3A 2F 00     .req:   ld a,(V_REQ)
+ 273  018F ED 92 7F             nextreg 0x7F,a
+ 274  0192 CD 2A 02     .figs:  call pats
+ 275  0195 3A 09 00             ld a,(V_OVF)
+ 276  0198 B7                   or a
+ 277  0199 28 06                jr z,.emit
+ 278  019B CD 13 02             call flush              ; pattern memory full: start again with this render's shapes
+ 279  019E CD 2A 02             call pats
+ 280  01A1 CD DD 02     .emit:  call emit
+ 281  01A4 CD F2 01             call hide
+ 282  01A7 ED 91 15 01          nextreg 0x15,0x01       ; sprites on (off since a new screen was built), order S L U
+ 283  01AB AF                   xor a
+ 284  01AC 32 05 00             ld (V_N),a
+ 285  01AF C3 E0 01             jp isrx
+ 286  01B2
+ 287  01B2              ; ISR task entry (0x8865) with a clear request: Layer 2 and sprites off.
+ 288  01B2 ED 73 02 00  s_tk:   ld (V_SP2),sp
+ 289  01B6 31 00 20             ld sp,STK2
+ 290  01B9 ED 91 07 03          nextreg 0x07,3
+ 291  01BD ED 91 7F 01          nextreg 0x7F,1          ; done; rebuild at the next commit
+ 292  01C1 21 40 19             ld hl,ZMAP
+ 293  01C4 CD 55 04             call l2map
+ 294  01C7 AF                   xor a
+ 295  01C8 32 08 00             ld (V_S),a
+ 296  01CB CD F2 01             call hide
+ 297  01CE 3A 04 00             ld a,(V_SLOT0)
+ 298  01D1 ED 91 07 00          nextreg 0x07,0
+ 299  01D5 ED 91 51 FF          nextreg 0x51,0xFF
+ 300  01D9 ED 7B 02 00          ld sp,(V_SP2)
+ 301  01DD C3 C2 38             jp x_tk2
+ 302  01E0
+ 303  01E0 ED 91 07 00  isrx:   nextreg 0x07,0
+ 304  01E4 ED 91 51 FF          nextreg 0x51,0xFF
+ 305  01E8 3A 04 00             ld a,(V_SLOT0)
+ 306  01EB ED 7B 02 00          ld sp,(V_SP2)
+ 307  01EF C3 94 38             jp x_cm
+ 308  01F2
+ 309  01F2              ; hide sprites V_S .. V_PREV-1, V_PREV = V_S
+ 310  01F2 3A 06 00     hide:   ld a,(V_PREV)
+ 311  01F5 5F                   ld e,a
+ 312  01F6 3A 08 00             ld a,(V_S)
+ 313  01F9 32 06 00             ld (V_PREV),a
+ 314  01FC BB           .h:     cp e
+ 315  01FD D0                   ret nc
+ 316  01FE ED 92 34             nextreg 0x34,a
+ 317  0201 ED 91 38 00          nextreg 0x38,0
+ 318  0205 3C                   inc a
+ 319  0206 18 F4                jr .h
+ 320  0208
+ 321  0208              ; HL = SDIR + E * 8
+ 322  0208 6B           sdir:   ld l,e
+ 323  0209 26 00                ld h,0
+ 324  020B 29                   add hl,hl
+ 325  020C 29                   add hl,hl
+ 326  020D 29                   add hl,hl
+ 327  020E 7C                   ld a,h
+ 328  020F C6 12                add a,high SDIR
+ 329  0211 67                   ld h,a
+ 330  0212 C9                   ret
+ 331  0213
+ 332  0213 21 00 11     flush:  ld hl,RES                ; forget every resident shape (normal and hit flash)
+ 333  0216 06 00                ld b,0
+ 334  0218 36 00        .z:     ld (hl),0
+ 335  021A 23                   inc hl
+ 336  021B 10 FB                djnz .z
+ 337  021D 21 00 0F             ld hl,RESF
+ 338  0220 36 00        .zf:    ld (hl),0
+ 339  0222 23                   inc hl
+ 340  0223 10 FB                djnz .zf
+ 341  0225 AF                   xor a
+ 342  0226 32 07 00             ld (V_NEXT),a
+ 343  0229 C9                   ret
+ 344  022A
+ 345  022A              ; make every recorded figure's shape resident in pattern memory (V_OVF = 1 when it does not fit)
+ 346  022A AF           pats:   xor a
+ 347  022B 32 09 00             ld (V_OVF),a
+ 348  022E 3A 05 00             ld a,(V_N)
+ 349  0231 B7                   or a
+ 350  0232 C8                   ret z
+ 351  0233 47                   ld b,a
+ 352  0234 21 00 10             ld hl,FIGS
+ 353  0237 C5           .f:     push bc
+ 354  0238 E5                   push hl
+ 355  0239 CD 4D 02             call resd
+ 356  023C CD 69 02             call ensure
+ 357  023F E1                   pop hl
+ 358  0240 C1                   pop bc
+ 359  0241 3A 09 00             ld a,(V_OVF)
+ 360  0244 B7                   or a
+ 361  0245 C0                   ret nz
+ 362  0246 2C                   inc l
+ 363  0247 2C                   inc l
+ 364  0248 2C                   inc l
+ 365  0249 2C                   inc l
+ 366  024A 10 EB                djnz .f
+ 367  024C C9                   ret
+ 368  024D
+ 369  024D              ; HL = figure record -> E = frame, D = high RES, or high RESF for a hit flash (flags bit 1)
+ 370  024D 5E           resd:   ld e,(hl)
+ 371  024E 16 11                ld d,high RES
+ 372  0250 E5                   push hl
+ 373  0251 2C                   inc l
+ 374  0252 2C                   inc l
+ 375  0253 2C                   inc l
+ 376  0254 7E                   ld a,(hl)
+ 377  0255 E1                   pop hl
+ 378  0256 E6 02                and 2
+ 379  0258 C8                   ret z                   ; no hit flash
+ 380  0259 16 1C                ld d,high BLINK         ; a blinking figure shows its normal shape on odd renders
+ 381  025B 1A                   ld a,(de)
+ 382  025C 16 11                ld d,high RES
+ 383  025E B7                   or a
+ 384  025F 28 05                jr z,.f
+ 385  0261 3A 27 00             ld a,(V_BLK)
+ 386  0264 1F                   rra
+ 387  0265 D8                   ret c
+ 388  0266 16 0F        .f:     ld d,high RESF
+ 389  0268 C9                   ret
+ 390  0269
+ 391  0269              ; DE = residency entry (resd): upload the shape's patterns unless resident (or no shape)
+ 392  0269 1A           ensure: ld a,(de)
+ 393  026A B7                   or a
+ 394  026B C0                   ret nz
+ 395  026C CD 08 02             call sdir
+ 396  026F 7E                   ld a,(hl)
+ 397  0270 FE FF                cp 0xFF
+ 398  0272 C8                   ret z
+ 399  0273 4F                   ld c,a                  ; page and first of the normal shape
+ 400  0274 23                   inc hl
+ 401  0275 7E                   ld a,(hl)
+ 402  0276 E6 3F                and 0x3F
+ 403  0278 47                   ld b,a
+ 404  0279 23                   inc hl
+ 405  027A 7A                   ld a,d
+ 406  027B FE 0F                cp high RESF
+ 407  027D 20 0D                jr nz,.pg
+ 408  027F E5                   push hl                 ; the silhouette shape: page and first from FDIR
+ 409  0280 6B                   ld l,e
+ 410  0281 26 00                ld h,0
+ 411  0283 29                   add hl,hl
+ 412  0284 7C                   ld a,h
+ 413  0285 C6 1A                add a,high FDIR
+ 414  0287 67                   ld h,a
+ 415  0288 4E                   ld c,(hl)
+ 416  0289 23                   inc hl
+ 417  028A 46                   ld b,(hl)
+ 418  028B E1                   pop hl
+ 419  028C 78           .pg:    ld a,b
+ 420  028D 32 0A 00             ld (V_PAT),a            ; first pattern in the page
+ 421  0290 79                   ld a,c
+ 422  0291 C6 1C                add a,PAT0
+ 423  0293 ED 92 51             nextreg 0x51,a          ; its page at 0x2000
+ 424  0296 4E                   ld c,(hl)               ; cols
+ 425  0297 23                   inc hl
+ 426  0298 46                   ld b,(hl)               ; rows
+ 427  0299 AF                   xor a
+ 428  029A 81           .m:     add a,c
+ 429  029B 10 FD                djnz .m
+ 430  029D 4F                   ld c,a                  ; C = patterns
+ 431  029E 3A 07 00             ld a,(V_NEXT)
+ 432  02A1 81                   add a,c
+ 433  02A2 FE 81                cp NSPR+1
+ 434  02A4 30 31                jr nc,.ovf
+ 435  02A6 47                   ld b,a                  ; new V_NEXT
+ 436  02A7 3A 07 00             ld a,(V_NEXT)
+ 437  02AA 3C                   inc a
+ 438  02AB 12                   ld (de),a               ; RES = first + 1
+ 439  02AC 3D                   dec a
+ 440  02AD CB 3F                srl a                   ; 4-bit pattern N -> slot N/2, bit 7 = N&1
+ 441  02AF 30 02                jr nc,.e
+ 442  02B1 F6 80                or 0x80
+ 443  02B3 C5           .e:     push bc
+ 444  02B4 01 3B 30             ld bc,0x303B
+ 445  02B7 ED 79                out (c),a
+ 446  02B9 C1                   pop bc
+ 447  02BA 78                   ld a,b
+ 448  02BB 32 07 00             ld (V_NEXT),a
+ 449  02BE 3A 0A 00             ld a,(V_PAT)
+ 450  02C1 67                   ld h,a
+ 451  02C2 2E 00                ld l,0
+ 452  02C4 CB 3C                srl h
+ 453  02C6 CB 1D                rr l                    ; HL = first * 128
+ 454  02C8 7C                   ld a,h
+ 455  02C9 C6 20                add a,0x20
+ 456  02CB 67                   ld h,a
+ 457  02CC 41                   ld b,c
+ 458  02CD C5           .u:     push bc
+ 459  02CE 01 5B 80             ld bc,0x805B            ; 128 bytes to the pattern port
+ 460  02D1 ED B3                otir
+ 461  02D3 C1                   pop bc
+ 462  02D4 10 F7                djnz .u
+ 463  02D6 C9                   ret
+ 464  02D7 3E 01        .ovf:   ld a,1
+ 465  02D9 32 09 00             ld (V_OVF),a
+ 466  02DC C9                   ret
+ 467  02DD
+ 468  02DD              ; sprites for every recorded figure whose shape is resident, in plot order (later = in front)
+ 469  02DD AF           emit:   xor a
+ 470  02DE 32 08 00             ld (V_S),a
+ 471  02E1 3A 05 00             ld a,(V_N)
+ 472  02E4 B7                   or a
+ 473  02E5 C8                   ret z
+ 474  02E6 47                   ld b,a
+ 475  02E7 21 00 10             ld hl,FIGS
+ 476  02EA C5           .f:     push bc
+ 477  02EB E5                   push hl
+ 478  02EC CD F8 02             call fig1
+ 479  02EF E1                   pop hl
+ 480  02F0 C1                   pop bc
+ 481  02F1 2C                   inc l
+ 482  02F2 2C                   inc l
+ 483  02F3 2C                   inc l
+ 484  02F4 2C                   inc l
+ 485  02F5 10 F3                djnz .f
+ 486  02F7 C9                   ret
+ 487  02F8
+ 488  02F8              ; HL = figure record
+ 489  02F8 CD 4D 02     fig1:   call resd
+ 490  02FB 1A                   ld a,(de)
+ 491  02FC B7                   or a
+ 492  02FD C8                   ret z                   ; no shape: the figure stays on the ULA
+ 493  02FE 3D                   dec a
+ 494  02FF 32 0A 00             ld (V_PAT),a
+ 495  0302 2C                   inc l
+ 496  0303 7E                   ld a,(hl)
+ 497  0304 32 0B 00             ld (V_FX),a
+ 498  0307 2C                   inc l
+ 499  0308 7E                   ld a,(hl)
+ 500  0309 32 0C 00             ld (V_FY),a
+ 501  030C 2C                   inc l
+ 502  030D 7E                   ld a,(hl)
+ 503  030E 32 0D 00             ld (V_FF),a
+ 504  0311 0E 00                ld c,0                  ; palette offset (none: the hit flash has its own shape)
+ 505  0313 CD 08 02             call sdir
+ 506  0316 23                   inc hl
+ 507  0317 7E                   ld a,(hl)
+ 508  0318 E6 80                and 0x80
+ 509  031A 32 26 00             ld (V_FAC),a            ; facing of the stored graphic (bit 7)
+ 510  031D 23                   inc hl
+ 511  031E 7E                   ld a,(hl)
+ 512  031F 32 0E 00             ld (V_COLS),a
+ 513  0322 23                   inc hl
+ 514  0323 7E                   ld a,(hl)
+ 515  0324 32 0F 00             ld (V_ROWS),a
+ 516  0327 23                   inc hl
+ 517  0328 7E                   ld a,(hl)
+ 518  0329 32 10 00             ld (V_DX),a
+ 519  032C 23                   inc hl
+ 520  032D 7E                   ld a,(hl)
+ 521  032E 32 11 00             ld (V_DY),a
+ 522  0331 23                   inc hl
+ 523  0332 7E                   ld a,(hl)
+ 524  0333 32 12 00             ld (V_PADS),a
+ 525  0336 23                   inc hl                  ; HL -> mdx
+ 526  0337 3A 26 00             ld a,(V_FAC)
+ 527  033A 47                   ld b,a
+ 528  033B 3A 0D 00             ld a,(V_FF)
+ 529  033E A8                   xor b
+ 530  033F 07                   rlca
+ 531  0340 E6 01                and 1                   ; mirror x = descriptor bit 7 xor stored facing
+ 532  0342 28 06                jr z,.fm
+ 533  0344 7E                   ld a,(hl)               ; mirrored: the box x the game uses then
+ 534  0345 32 10 00             ld (V_DX),a
+ 535  0348 3E 01                ld a,1
+ 536  034A 32 13 00     .fm:    ld (V_MX),a
+ 537  034D 87                   add a,a
+ 538  034E 87                   add a,a
+ 539  034F 87                   add a,a
+ 540  0350 B1                   or c
+ 541  0351 4F                   ld c,a
+ 542  0352 3A 0D 00             ld a,(V_FF)
+ 543  0355 07                   rlca
+ 544  0356 07                   rlca
+ 545  0357 E6 01                and 1
+ 546  0359 32 14 00             ld (V_MY),a             ; mirror y = descriptor bit 6
+ 547  035C 87                   add a,a
+ 548  035D 87                   add a,a
+ 549  035E B1                   or c
+ 550  035F 32 15 00             ld (V_ATTR2),a
+ 551  0362                      ; box x = 4 * x - 88 + dx - (mirror x ? pad x : 0)   (screen = buffer + 8, sprite = screen + 32)
+ 552  0362 3A 0B 00             ld a,(V_FX)
+ 553  0365 6F                   ld l,a
+ 554  0366 26 00                ld h,0
+ 555  0368 29                   add hl,hl
+ 556  0369 29                   add hl,hl
+ 557  036A 11 A8 FF             ld de,-88
+ 558  036D 19                   add hl,de
+ 559  036E 3A 10 00             ld a,(V_DX)
+ 560  0371 5F                   ld e,a
+ 561  0372 16 00                ld d,0
+ 562  0374 CB 7F                bit 7,a
+ 563  0376 28 01                jr z,.dx
+ 564  0378 15                   dec d
+ 565  0379 19           .dx:    add hl,de
+ 566  037A 3A 13 00             ld a,(V_MX)
+ 567  037D B7                   or a
+ 568  037E 28 0B                jr z,.nx
+ 569  0380 3A 12 00             ld a,(V_PADS)
+ 570  0383 E6 0F                and 15
+ 571  0385 5F                   ld e,a
+ 572  0386 16 00                ld d,0
+ 573  0388 B7                   or a
+ 574  0389 ED 52                sbc hl,de
+ 575  038B 22 16 00     .nx:    ld (V_X0),hl
+ 576  038E                      ; box y = y - 20 + dy - (mirror y ? pad y : 0)   (screen = buffer + 16)
+ 577  038E 3A 11 00             ld a,(V_DY)
+ 578  0391 47                   ld b,a
+ 579  0392 3A 0C 00             ld a,(V_FY)
+ 580  0395 D6 14                sub 20
+ 581  0397 80                   add a,b
+ 582  0398 47                   ld b,a
+ 583  0399 3A 14 00             ld a,(V_MY)
+ 584  039C B7                   or a
+ 585  039D 28 0D                jr z,.ny
+ 586  039F 3A 12 00             ld a,(V_PADS)
+ 587  03A2 0F                   rrca
+ 588  03A3 0F                   rrca
+ 589  03A4 0F                   rrca
+ 590  03A5 0F                   rrca
+ 591  03A6 E6 0F                and 15
+ 592  03A8 4F                   ld c,a
+ 593  03A9 78                   ld a,b
+ 594  03AA 91                   sub c
+ 595  03AB 47                   ld b,a
+ 596  03AC 3A 30 00     .ny:    ld a,(V_SHK)
+ 597  03AF 80                   add a,b
+ 598  03B0 32 18 00             ld (V_Y0),a
+ 599  03B3 AF                   xor a
+ 600  03B4 32 19 00             ld (V_R),a
+ 601  03B7 AF           .row:   xor a
+ 602  03B8 32 1A 00             ld (V_C),a
+ 603  03BB 3A 08 00     .col:   ld a,(V_S)
+ 604  03BE FE 80                cp NSPR
+ 605  03C0 D0                   ret nc
+ 606  03C1 ED 92 34             nextreg 0x34,a
+ 607  03C4 3C                   inc a
+ 608  03C5 32 08 00             ld (V_S),a
+ 609  03C8                      ; x = X0 + 16 * (mirror x ? cols - 1 - c : c)
+ 610  03C8 3A 13 00             ld a,(V_MX)
+ 611  03CB B7                   or a
+ 612  03CC 3A 1A 00             ld a,(V_C)
+ 613  03CF 28 06                jr z,.cx
+ 614  03D1 47                   ld b,a
+ 615  03D2 3A 0E 00             ld a,(V_COLS)
+ 616  03D5 3D                   dec a
+ 617  03D6 90                   sub b
+ 618  03D7 6F           .cx:    ld l,a
+ 619  03D8 26 00                ld h,0
+ 620  03DA 29                   add hl,hl
+ 621  03DB 29                   add hl,hl
+ 622  03DC 29                   add hl,hl
+ 623  03DD 29                   add hl,hl
+ 624  03DE ED 5B 16 00          ld de,(V_X0)
+ 625  03E2 19                   add hl,de
+ 626  03E3 7D                   ld a,l
+ 627  03E4 ED 92 35             nextreg 0x35,a
+ 628  03E7                      ; y = Y0 + 16 * (mirror y ? rows - 1 - r : r)
+ 629  03E7 3A 14 00             ld a,(V_MY)
+ 630  03EA B7                   or a
+ 631  03EB 3A 19 00             ld a,(V_R)
+ 632  03EE 28 06                jr z,.cy
+ 633  03F0 47                   ld b,a
+ 634  03F1 3A 0F 00             ld a,(V_ROWS)
+ 635  03F4 3D                   dec a
+ 636  03F5 90                   sub b
+ 637  03F6 87           .cy:    add a,a
+ 638  03F7 87                   add a,a
+ 639  03F8 87                   add a,a
+ 640  03F9 87                   add a,a
+ 641  03FA 47                   ld b,a
+ 642  03FB 3A 18 00             ld a,(V_Y0)
+ 643  03FE 80                   add a,b
+ 644  03FF ED 92 36             nextreg 0x36,a
+ 645  0402 7C                   ld a,h
+ 646  0403 E6 01                and 1
+ 647  0405 47                   ld b,a
+ 648  0406 3A 15 00             ld a,(V_ATTR2)
+ 649  0409 B0                   or b
+ 650  040A ED 92 37             nextreg 0x37,a
+ 651  040D                      ; pattern N = first + r * cols + c
+ 652  040D 3A 0E 00             ld a,(V_COLS)
+ 653  0410 47                   ld b,a
+ 654  0411 3A 19 00             ld a,(V_R)
+ 655  0414 4F                   ld c,a
+ 656  0415 3A 0A 00             ld a,(V_PAT)
+ 657  0418 0C                   inc c
+ 658  0419 18 01                jr .rm
+ 659  041B 80           .rl:    add a,b
+ 660  041C 0D           .rm:    dec c
+ 661  041D 20 FC                jr nz,.rl
+ 662  041F 47                   ld b,a
+ 663  0420 3A 1A 00             ld a,(V_C)
+ 664  0423 80                   add a,b
+ 665  0424 47                   ld b,a
+ 666  0425 CB 3F                srl a
+ 667  0427 F6 C0                or 0xC0                 ; visible, 5th attribute byte
+ 668  0429 ED 92 38             nextreg 0x38,a
+ 669  042C 78                   ld a,b
+ 670  042D E6 01                and 1
+ 671  042F 0F                   rrca
+ 672  0430 0F                   rrca                    ; N bit 0 -> bit 6
+ 673  0431 F6 80                or 0x80                 ; 4-bit pattern
+ 674  0433 ED 92 39             nextreg 0x39,a
+ 675  0436 3A 0E 00             ld a,(V_COLS)
+ 676  0439 47                   ld b,a
+ 677  043A 3A 1A 00             ld a,(V_C)
+ 678  043D 3C                   inc a
+ 679  043E 32 1A 00             ld (V_C),a
+ 680  0441 B8                   cp b
+ 681  0442 DA BB 03             jp c,.col
+ 682  0445 3A 0F 00             ld a,(V_ROWS)
+ 683  0448 47                   ld b,a
+ 684  0449 3A 19 00             ld a,(V_R)
+ 685  044C 3C                   inc a
+ 686  044D 32 19 00             ld (V_R),a
+ 687  0450 B8                   cp b
+ 688  0451 DA B7 03             jp c,.row
+ 689  0454 C9                   ret
+ 690  0455
+ 691  0455              ; Layer 2 = the map at HL (G_MAP for a new screen, ZMAP to clear). (1) every cell in the old or the
+ 692  0455              ; new map becomes transparent; (2a) every foreground cell that is not a bush is drawn whole, as the
+ 693  0455              ; original hides figures (pillars, masonry, grass); (2b) bushes (bright green ink, attribute & 0x47 =
+ 694  0455              ; 0x44): per pixel line, every run of bush cells is drawn from its leftmost to its rightmost ink pixel,
+ 695  0455              ; the rest stays transparent: solid silhouettes whose edges follow the leaves, not the cells. Ink in
+ 696  0455              ; the cell's ink colour, paper in its paper colour, all with the priority bit (host's rules,
+ 697  0455              ; 2026-10-13); (3) the window's top frame line (y 14, x 6-249) is drawn whole in bright blue except
+ 698  0455              ; where a panel icon has a pixel (ZMAP: cleared). Then OLDMAP = the map.
+ 699  0455 22 20 00     l2map:  ld (V_NEW),hl
+ 700  0458 AF                   xor a                   ; (1) clear old and new cells
+ 701  0459 32 19 00             ld (V_R),a
+ 702  045C CD 14 07     .crow:  call l2page
+ 703  045F AF                   xor a
+ 704  0460 32 1A 00             ld (V_C),a
+ 705  0463 CD 2A 07     .ccol:  call mapbit             ; C = bit, E = byte offset
+ 706  0466 2A 20 00             ld hl,(V_NEW)
+ 707  0469 16 00                ld d,0
+ 708  046B 19                   add hl,de
+ 709  046C 7E                   ld a,(hl)
+ 710  046D 21 00 19             ld hl,OLDMAP
+ 711  0470 19                   add hl,de
+ 712  0471 B6                   or (hl)
+ 713  0472 21 80 19             ld hl,OLDROPE
+ 714  0475 19                   add hl,de
+ 715  0476 B6                   or (hl)
+ 716  0477 A1                   and c
+ 717  0478 28 15                jr z,.cnext
+ 718  047A CD B1 08             call cellxy             ; HL = Layer 2 address of the cell
+ 719  047D 06 08                ld b,8
+ 720  047F C5           .cl:    push bc
+ 721  0480 06 08                ld b,8
+ 722  0482 36 E3        .cp:    ld (hl),TRANSP
+ 723  0484 2C                   inc l
+ 724  0485 10 FB                djnz .cp
+ 725  0487 7D                   ld a,l
+ 726  0488 D6 08                sub 8
+ 727  048A 6F                   ld l,a
+ 728  048B 24                   inc h
+ 729  048C C1                   pop bc
+ 730  048D 10 F0                djnz .cl
+ 731  048F 3A 1A 00     .cnext: ld a,(V_C)
+ 732  0492 3C                   inc a
+ 733  0493 32 1A 00             ld (V_C),a
+ 734  0496 FE 1E                cp 30
+ 735  0498 38 C9                jr c,.ccol
+ 736  049A 3A 19 00             ld a,(V_R)
+ 737  049D 3C                   inc a
+ 738  049E 32 19 00             ld (V_R),a
+ 739  04A1 FE 0E                cp 14
+ 740  04A3 38 B7                jr c,.crow
+ 741  04A5 21 40 19             ld hl,ZMAP              ; the old rope cells are cleared: forget them
+ 742  04A8 11 80 19             ld de,OLDROPE
+ 743  04AB 01 38 00             ld bc,56
+ 744  04AE ED B0                ldir
+ 745  04B0 AF                   xor a                   ; (2a) whole cells, every foreground cell but bushes; ropes
+ 746  04B1                                              ; on the other cells
+ 747  04B1 32 19 00             ld (V_R),a
+ 748  04B4 CD 14 07     .wrow:  call l2page
+ 749  04B7 CD 48 07             call rattr
+ 750  04BA 3A 19 00             ld a,(V_R)              ; buffer row: G_BUF + r * 240
+ 751  04BD 6F                   ld l,a
+ 752  04BE 26 00                ld h,0
+ 753  04C0 54                   ld d,h
+ 754  04C1 5D                   ld e,l
+ 755  04C2 29                   add hl,hl
+ 756  04C3 29                   add hl,hl
+ 757  04C4 29                   add hl,hl
+ 758  04C5 29                   add hl,hl
+ 759  04C6 B7                   or a
+ 760  04C7 ED 52                sbc hl,de               ; * 15
+ 761  04C9 29                   add hl,hl
+ 762  04CA 29                   add hl,hl
+ 763  04CB 29                   add hl,hl
+ 764  04CC 29                   add hl,hl               ; * 240
+ 765  04CD 11 E0 F2             ld de,G_BUF
+ 766  04D0 19                   add hl,de
+ 767  04D1 22 1C 00             ld (V_RSRC),hl
+ 768  04D4 AF                   xor a
+ 769  04D5 32 1A 00             ld (V_C),a
+ 770  04D8 CD 60 07     .wcol:  call fgk
+ 771  04DB B7                   or a
+ 772  04DC 20 05                jr nz,.wfg
+ 773  04DE CD 7E 07             call ropec              ; not foreground: a wall rope cell goes under the sprites
+ 774  04E1 18 36                jr .wnext
+ 775  04E3 FE 01        .wfg:   cp 1
+ 776  04E5 20 32                jr nz,.wnext
+ 777  04E7 7E                   ld a,(hl)               ; HL = the cell's attribute
+ 778  04E8 5F                   ld e,a
+ 779  04E9 E6 07                and 7
+ 780  04EB CB 73                bit 6,e
+ 781  04ED 28 02                jr z,.wi
+ 782  04EF F6 08                or 8
+ 783  04F1 C6 10        .wi:    add a,L2COL
+ 784  04F3 32 24 00             ld (V_INK),a
+ 785  04F6 7B                   ld a,e
+ 786  04F7 0F                   rrca
+ 787  04F8 0F                   rrca
+ 788  04F9 0F                   rrca
+ 789  04FA E6 07                and 7
+ 790  04FC CB 73                bit 6,e
+ 791  04FE 28 02                jr z,.wp
+ 792  0500 F6 08                or 8
+ 793  0502 C6 10        .wp:    add a,L2COL
+ 794  0504 32 25 00             ld (V_PAP),a
+ 795  0507 CD B1 08             call cellxy
+ 796  050A EB                   ex de,hl                ; DE = Layer 2 address of the cell
+ 797  050B 2A 1C 00             ld hl,(V_RSRC)
+ 798  050E 3A 1A 00             ld a,(V_C)
+ 799  0511 85                   add a,l
+ 800  0512 6F                   ld l,a
+ 801  0513 30 01                jr nc,.ws
+ 802  0515 24                   inc h
+ 803  0516 CD 90 08     .ws:    call cell8              ; HL = the cell's first source byte
+ 804  0519 3A 1A 00     .wnext: ld a,(V_C)
+ 805  051C 3C                   inc a
+ 806  051D 32 1A 00             ld (V_C),a
+ 807  0520 FE 1E                cp 30
+ 808  0522 38 B4                jr c,.wcol
+ 809  0524 3A 19 00             ld a,(V_R)
+ 810  0527 3C                   inc a
+ 811  0528 32 19 00             ld (V_R),a
+ 812  052B FE 0E                cp 14
+ 813  052D DA B4 04             jp c,.wrow
+ 814  0530 AF                   xor a                   ; (2w) bush and fix cells of a screen in the table: copied whole (the
+ 815  0531 32 36 00             ld (V_BW),a             ; host's bushes with priority, see-through pixels = the wall without it;
+ 816  0534                                              ; fix cells without priority, build/fix_cells.py)
+ 817  0534 2A 20 00             ld hl,(V_NEW)
+ 818  0537 7D                   ld a,l
+ 819  0538 FE 40                cp low ZMAP
+ 820  053A 28 5D                jr z,.nobw
+ 821  053C 3A 0B E6             ld a,(G_MODE)
+ 822  053F FE 40                cp 64
+ 823  0541 30 56                jr nc,.nobw
+ 824  0543 ED 91 52 3C          nextreg 0x52,BWPAGE     ; slot 2 (the ULA reads bank 5 directly; restored below)
+ 825  0547 6F                   ld l,a
+ 826  0548 26 40                ld h,0x40
+ 827  054A 7E                   ld a,(hl)               ; the screen's page (0 = none) ...
+ 828  054B B7                   or a
+ 829  054C 28 4B                jr z,.nobw
+ 830  054E 47                   ld b,a
+ 831  054F 7D                   ld a,l
+ 832  0550 87                   add a,a
+ 833  0551 C6 40                add a,0x40
+ 834  0553 6F                   ld l,a
+ 835  0554 5E                   ld e,(hl)               ; ... and its offset in that page (0x4040 + 2 * screen)
+ 836  0555 2C                   inc l
+ 837  0556 56                   ld d,(hl)
+ 838  0557 78                   ld a,b
+ 839  0558 ED 92 52             nextreg 0x52,a
+ 840  055B 3E 01                ld a,1
+ 841  055D 32 36 00             ld (V_BW),a
+ 842  0560 21 00 40             ld hl,0x4000
+ 843  0563 19                   add hl,de
+ 844  0564 46                   ld b,(hl)
+ 845  0565 23                   inc hl
+ 846  0566 C5           .bwl:   push bc
+ 847  0567 7E                   ld a,(hl)
+ 848  0568 32 19 00             ld (V_R),a
+ 849  056B 23                   inc hl
+ 850  056C 7E                   ld a,(hl)
+ 851  056D 32 1A 00             ld (V_C),a
+ 852  0570 23                   inc hl
+ 853  0571 E5                   push hl
+ 854  0572 CD 2A 07             call mapbit             ; mark the cell in OLDROPE: a table cell that is not foreground
+ 855  0575 21 80 19             ld hl,OLDROPE           ; (fix cells, 2026-10-13) is cleared at the next rebuild too
+ 856  0578 16 00                ld d,0
+ 857  057A 19                   add hl,de
+ 858  057B 7E                   ld a,(hl)
+ 859  057C B1                   or c
+ 860  057D 77                   ld (hl),a
+ 861  057E CD 14 07             call l2page
+ 862  0581 CD B1 08             call cellxy
+ 863  0584 EB                   ex de,hl                ; DE = Layer 2 address of the cell
+ 864  0585 E1                   pop hl
+ 865  0586 06 08                ld b,8
+ 866  0588 C5           .bwr:   push bc
+ 867  0589 01 08 00             ld bc,8
+ 868  058C ED B0                ldir
+ 869  058E 7B                   ld a,e
+ 870  058F D6 08                sub 8
+ 871  0591 5F                   ld e,a
+ 872  0592 14                   inc d
+ 873  0593 C1                   pop bc
+ 874  0594 10 F2                djnz .bwr
+ 875  0596 C1                   pop bc
+ 876  0597 10 CD                djnz .bwl
+ 877  0599 ED 91 52 0A  .nobw:  nextreg 0x52,10
+ 878  059D 3A 36 00             ld a,(V_BW)
+ 879  05A0 B7                   or a
+ 880  05A1 C2 C5 06             jp nz,.frame
+ 881  05A4 AF                   xor a                   ; (2b) the bush runs, line by line (screens not in the table)
+ 882  05A5 32 19 00             ld (V_R),a
+ 883  05A8 CD 14 07     .row:   call l2page
+ 884  05AB CD 48 07             call rattr
+ 885  05AE AF                   xor a
+ 886  05AF 32 29 00             ld (V_LN),a
+ 887  05B2 3A 19 00     .line:  ld a,(V_R)              ; source line = G_BUF + (r * 8 + line) * 30
+ 888  05B5 87                   add a,a
+ 889  05B6 87                   add a,a
+ 890  05B7 87                   add a,a
+ 891  05B8 47                   ld b,a
+ 892  05B9 3A 29 00             ld a,(V_LN)
+ 893  05BC 80                   add a,b
+ 894  05BD 6F                   ld l,a
+ 895  05BE 26 00                ld h,0
+ 896  05C0 54                   ld d,h
+ 897  05C1 5D                   ld e,l
+ 898  05C2 29                   add hl,hl
+ 899  05C3 29                   add hl,hl
+ 900  05C4 29                   add hl,hl
+ 901  05C5 29                   add hl,hl
+ 902  05C6 B7                   or a
+ 903  05C7 ED 52                sbc hl,de               ; * 15
+ 904  05C9 29                   add hl,hl               ; * 30
+ 905  05CA 11 E0 F2             ld de,G_BUF
+ 906  05CD 19                   add hl,de
+ 907  05CE 22 1C 00             ld (V_RSRC),hl
+ 908  05D1 3A 28 00             ld a,(V_LY)             ; Layer 2 line address: 0x2000 + (y & 31) * 256 + 8
+ 909  05D4 47                   ld b,a
+ 910  05D5 3A 29 00             ld a,(V_LN)
+ 911  05D8 80                   add a,b
+ 912  05D9 E6 1F                and 31
+ 913  05DB C6 20                add a,0x20
+ 914  05DD 67                   ld h,a
+ 915  05DE 2E 08                ld l,8
+ 916  05E0 22 22 00             ld (V_LDST),hl
+ 917  05E3 AF                   xor a
+ 918  05E4 32 1A 00             ld (V_C),a
+ 919  05E7 3A 1A 00     .seek:  ld a,(V_C)              ; next run of bush cells
+ 920  05EA FE 1E                cp 30
+ 921  05EC D2 AD 06             jp nc,.lnext
+ 922  05EF CD 60 07             call fgk
+ 923  05F2 FE 02                cp 2
+ 924  05F4 28 06                jr z,.run
+ 925  05F6 21 1A 00             ld hl,V_C
+ 926  05F9 34                   inc (hl)
+ 927  05FA 18 EB                jr .seek
+ 928  05FC 3A 1A 00     .run:   ld a,(V_C)
+ 929  05FF 32 2A 00             ld (V_C0),a
+ 930  0602 21 1A 00     .rend:  ld hl,V_C
+ 931  0605 34                   inc (hl)
+ 932  0606 7E                   ld a,(hl)
+ 933  0607 FE 1E                cp 30
+ 934  0609 30 07                jr nc,.rdone
+ 935  060B CD 60 07             call fgk
+ 936  060E FE 02                cp 2
+ 937  0610 28 F0                jr z,.rend
+ 938  0612 3A 1A 00     .rdone: ld a,(V_C)
+ 939  0615 3D                   dec a
+ 940  0616 32 2B 00             ld (V_C1),a
+ 941  0619 3A 2A 00             ld a,(V_C0)             ; leftmost ink pixel: first non-zero byte from C0
+ 942  061C 47                   ld b,a
+ 943  061D CD C3 08     .lf:    call srcb
+ 944  0620 B7                   or a
+ 945  0621 20 0A                jr nz,.lfound
+ 946  0623 04                   inc b
+ 947  0624 3A 2B 00             ld a,(V_C1)
+ 948  0627 B8                   cp b
+ 949  0628 30 F3                jr nc,.lf
+ 950  062A C3 E7 05             jp .seek                ; no ink on this line of the run
+ 951  062D 0E 00        .lfound:ld c,0
+ 952  062F 07           .lz:    rlca
+ 953  0630 38 03                jr c,.lz1
+ 954  0632 0C                   inc c
+ 955  0633 18 FA                jr .lz
+ 956  0635 78           .lz1:   ld a,b
+ 957  0636 87                   add a,a
+ 958  0637 87                   add a,a
+ 959  0638 87                   add a,a
+ 960  0639 81                   add a,c
+ 961  063A 32 2C 00             ld (V_XL),a
+ 962  063D 3A 2B 00             ld a,(V_C1)             ; rightmost ink pixel: last non-zero byte back from C1
+ 963  0640 47                   ld b,a
+ 964  0641 CD C3 08     .rf:    call srcb
+ 965  0644 B7                   or a
+ 966  0645 20 03                jr nz,.rfound
+ 967  0647 05                   dec b
+ 968  0648 18 F7                jr .rf
+ 969  064A 0E 07        .rfound:ld c,7
+ 970  064C 0F           .rz:    rrca
+ 971  064D 38 03                jr c,.rz1
+ 972  064F 0D                   dec c
+ 973  0650 18 FA                jr .rz
+ 974  0652 78           .rz1:   ld a,b
+ 975  0653 87                   add a,a
+ 976  0654 87                   add a,a
+ 977  0655 87                   add a,a
+ 978  0656 81                   add a,c
+ 979  0657 32 2D 00             ld (V_XR),a
+ 980  065A 3A 2C 00             ld a,(V_XL)             ; draw x = XL .. XR
+ 981  065D 32 2E 00             ld (V_X),a
+ 982  0660 3A 2E 00     .px:    ld a,(V_X)
+ 983  0663 0F                   rrca
+ 984  0664 0F                   rrca
+ 985  0665 0F                   rrca
+ 986  0666 E6 1F                and 31
+ 987  0668 47                   ld b,a                  ; cell column
+ 988  0669 CD C3 08             call srcb
+ 989  066C 5F                   ld e,a                  ; source byte
+ 990  066D 3A 2E 00             ld a,(V_X)
+ 991  0670 E6 07                and 7
+ 992  0672 3C                   inc a
+ 993  0673 57                   ld d,a
+ 994  0674 7B                   ld a,e
+ 995  0675 07           .sh:    rlca
+ 996  0676 15                   dec d
+ 997  0677 20 FC                jr nz,.sh               ; carry = the pixel
+ 998  0679 F5                   push af
+ 999  067A 2A 1E 00             ld hl,(V_RATT)          ; attribute of (r, column)
+1000  067D 58                   ld e,b
+1001  067E 16 00                ld d,0
+1002  0680 19                   add hl,de
+1003  0681 5E                   ld e,(hl)
+1004  0682 F1                   pop af
+1005  0683 7B                   ld a,e
+1006  0684 38 03                jr c,.ink
+1007  0686 0F                   rrca
+1008  0687 0F                   rrca
+1009  0688 0F                   rrca
+1010  0689 E6 07        .ink:   and 7
+1011  068B CB 73                bit 6,e
+1012  068D 28 02                jr z,.nb
+1013  068F F6 08                or 8
+1014  0691 C6 10        .nb:    add a,L2COL
+1015  0693 5F                   ld e,a
+1016  0694 2A 22 00             ld hl,(V_LDST)
+1017  0697 3A 2E 00             ld a,(V_X)
+1018  069A 85                   add a,l
+1019  069B 6F                   ld l,a
+1020  069C 73                   ld (hl),e
+1021  069D 3A 2E 00             ld a,(V_X)
+1022  06A0 21 2D 00             ld hl,V_XR
+1023  06A3 BE                   cp (hl)
+1024  06A4 D2 E7 05             jp nc,.seek             ; run done (V_C is already past it)
+1025  06A7 3C                   inc a
+1026  06A8 32 2E 00             ld (V_X),a
+1027  06AB 18 B3                jr .px
+1028  06AD 3A 29 00     .lnext: ld a,(V_LN)
+1029  06B0 3C                   inc a
+1030  06B1 32 29 00             ld (V_LN),a
+1031  06B4 FE 08                cp 8
+1032  06B6 DA B2 05             jp c,.line
+1033  06B9 3A 19 00             ld a,(V_R)
+1034  06BC 3C                   inc a
+1035  06BD 32 19 00             ld (V_R),a
+1036  06C0 FE 0E                cp 14
+1037  06C2 DA A8 05             jp c,.row
+1038  06C5 ED 91 51 36  .frame: nextreg 0x51,L2PAGE     ; (3) frame line: y 14 = 0x2E00 in the first page
+1039  06C9 21 06 2E             ld hl,0x2E06
+1040  06CC 7D           .fl:    ld a,l                  ; screen byte at (x = L, 14): 0x4620 + x / 8
+1041  06CD 0F                   rrca
+1042  06CE 0F                   rrca
+1043  06CF 0F                   rrca
+1044  06D0 E6 1F                and 31
+1045  06D2 5F                   ld e,a
+1046  06D3 16 46                ld d,0x46
+1047  06D5 7B                   ld a,e
+1048  06D6 C6 20                add a,0x20
+1049  06D8 5F                   ld e,a
+1050  06D9 1A                   ld a,(de)
+1051  06DA 4F                   ld c,a
+1052  06DB 7D                   ld a,l
+1053  06DC E6 07                and 7
+1054  06DE 3C                   inc a
+1055  06DF CB 01        .fs:    rlc c
+1056  06E1 3D                   dec a
+1057  06E2 20 FB                jr nz,.fs
+1058  06E4 30 0D                jr nc,.fw               ; no pixel: draw the line
+1059  06E6 7B                   ld a,e                  ; a pixel: its attribute 0x5820 + x / 8
+1060  06E7 5F                   ld e,a
+1061  06E8 16 58                ld d,0x58
+1062  06EA 1A                   ld a,(de)
+1063  06EB E6 07                and 7
+1064  06ED FE 01                cp 1                    ; blue ink: the line itself
+1065  06EF 3E E3                ld a,TRANSP
+1066  06F1 20 0E                jr nz,.fset             ; a panel icon: keep the ULA
+1067  06F3 E5           .fw:    push hl
+1068  06F4 2A 20 00             ld hl,(V_NEW)
+1069  06F7 7D                   ld a,l
+1070  06F8 E1                   pop hl
+1071  06F9 FE 40                cp low ZMAP
+1072  06FB 3E E3                ld a,TRANSP
+1073  06FD 28 02                jr z,.fset              ; clearing: no line
+1074  06FF 3E 19                ld a,L2COL+9            ; bright blue
+1075  0701 77           .fset:  ld (hl),a
+1076  0702 2C                   inc l
+1077  0703 7D                   ld a,l
+1078  0704 FE FA                cp 250
+1079  0706 38 C4                jr c,.fl
+1080  0708 2A 20 00             ld hl,(V_NEW)           ; Layer 2 now shows this map
+1081  070B 11 00 19             ld de,OLDMAP
+1082  070E 01 38 00             ld bc,56
+1083  0711 ED B0                ldir
+1084  0713 C9                   ret
+1085  0714
+1086  0714              ; Layer 2 page of cell row V_R at slot 1; V_LY = its first screen line (16 + r * 8)
+1087  0714 3A 19 00     l2page: ld a,(V_R)
+1088  0717 87                   add a,a
+1089  0718 87                   add a,a
+1090  0719 87                   add a,a
+1091  071A C6 10                add a,16
+1092  071C 32 28 00             ld (V_LY),a
+1093  071F 07                   rlca
+1094  0720 07                   rlca
+1095  0721 07                   rlca
+1096  0722 E6 07                and 7
+1097  0724 C6 36                add a,L2PAGE
+1098  0726 ED 92 51             nextreg 0x51,a
+1099  0729 C9                   ret
+1100  072A
+1101  072A              ; cell (V_R, V_C): E = map byte offset (r * 4 + c / 8), C = its bit (0x80 >> (c & 7))
+1102  072A 3A 19 00     mapbit: ld a,(V_R)
+1103  072D 87                   add a,a
+1104  072E 87                   add a,a
+1105  072F 47                   ld b,a
+1106  0730 3A 1A 00             ld a,(V_C)
+1107  0733 0F                   rrca
+1108  0734 0F                   rrca
+1109  0735 0F                   rrca
+1110  0736 E6 03                and 3
+1111  0738 80                   add a,b
+1112  0739 5F                   ld e,a
+1113  073A 3A 1A 00             ld a,(V_C)
+1114  073D E6 07                and 7
+1115  073F 47                   ld b,a
+1116  0740 04                   inc b
+1117  0741 3E 01                ld a,1
+1118  0743 0F           .bm:    rrca
+1119  0744 10 FD                djnz .bm
+1120  0746 4F                   ld c,a
+1121  0747 C9                   ret
+1122  0748
+1123  0748              ; V_RATT = attribute row of V_R: G_ATTR + r * 30
+1124  0748 3A 19 00     rattr:  ld a,(V_R)
+1125  074B 6F                   ld l,a
+1126  074C 26 00                ld h,0
+1127  074E 54                   ld d,h
+1128  074F 5D                   ld e,l
+1129  0750 29                   add hl,hl
+1130  0751 29                   add hl,hl
+1131  0752 29                   add hl,hl
+1132  0753 29                   add hl,hl
+1133  0754 B7                   or a
+1134  0755 ED 52                sbc hl,de
+1135  0757 29                   add hl,hl
+1136  0758 11 98 EF             ld de,G_ATTR
+1137  075B 19                   add hl,de
+1138  075C 22 1E 00             ld (V_RATT),hl
+1139  075F C9                   ret
+1140  0760
+1141  0760              ; cell (V_R, V_C) of the map V_NEW: A = 0 not foreground, 1 foreground, 2 bush (attribute & 0x47 =
+1142  0760              ; 0x44, bright green ink); HL = its attribute (V_RATT set) when foreground
+1143  0760 CD 2A 07     fgk:    call mapbit
+1144  0763 2A 20 00             ld hl,(V_NEW)
+1145  0766 16 00                ld d,0
+1146  0768 19                   add hl,de
+1147  0769 7E                   ld a,(hl)
+1148  076A A1                   and c
+1149  076B C8                   ret z
+1150  076C 2A 1E 00             ld hl,(V_RATT)
+1151  076F 3A 1A 00             ld a,(V_C)
+1152  0772 5F                   ld e,a
+1153  0773 19                   add hl,de
+1154  0774 7E                   ld a,(hl)
+1155  0775 E6 47                and 0x47
+1156  0777 FE 44                cp 0x44
+1157  0779 3E 01                ld a,1
+1158  077B C0                   ret nz
+1159  077C 3C                   inc a
+1160  077D C9                   ret
+1161  077E
+1162  077E              ; Wall rope (host, 2026-10-13): a scenery cell holding a rope link (frame 162, x 2-5 of the cell) or
+1163  077E              ; knot (frame 161) takes one attribute, so the wall pixels beside the rope clash. Such a cell (its
+1164  077E              ; pixels under the link / knot mask equal the rope's) goes into Layer 2 without priority (under the
+1165  077E              ; sprites): rope pixels in its own colours, the other pixels in the left neighbour's colours (x 0-3)
+1166  077E              ; or the right neighbour's (x 4-7). Cell (V_R, V_C), V_RSRC = buffer row, V_RATT = attribute row.
+1167  077E 2A 20 00     ropec:  ld hl,(V_NEW)           ; clearing: no rope
+1168  0781 7D                   ld a,l
+1169  0782 FE 40                cp low ZMAP
+1170  0784 C8                   ret z
+1171  0785 2A 1C 00             ld hl,(V_RSRC)
+1172  0788 3A 1A 00             ld a,(V_C)
+1173  078B 85                   add a,l
+1174  078C 6F                   ld l,a
+1175  078D 30 01                jr nc,.s
+1176  078F 24                   inc h
+1177  0790 E5           .s:     push hl                 ; the cell's first source byte
+1178  0791 11 70 08             ld de,LINKT
+1179  0794 CD 35 08             call rmatch
+1180  0797 28 08                jr z,.yes
+1181  0799 E1                   pop hl
+1182  079A E5                   push hl
+1183  079B 11 80 08             ld de,KNOTT
+1184  079E CD 35 08             call rmatch
+1185  07A1 E1           .yes:   pop hl
+1186  07A2 C0                   ret nz
+1187  07A3 E5                   push hl
+1188  07A4 2A 1E 00             ld hl,(V_RATT)          ; colours: its own, left, right
+1189  07A7 3A 1A 00             ld a,(V_C)
+1190  07AA 5F                   ld e,a
+1191  07AB 16 00                ld d,0
+1192  07AD 19                   add hl,de
+1193  07AE 7E                   ld a,(hl)
+1194  07AF CD 53 08             call acol
+1195  07B2 ED 43 24 00          ld (V_INK),bc
+1196  07B6 E5                   push hl
+1197  07B7 3A 1A 00             ld a,(V_C)
+1198  07BA B7                   or a
+1199  07BB 28 01                jr z,.l0
+1200  07BD 2B                   dec hl
+1201  07BE 7E           .l0:    ld a,(hl)
+1202  07BF CD 53 08             call acol
+1203  07C2 ED 43 31 00          ld (V_LI),bc
+1204  07C6 E1                   pop hl
+1205  07C7 3A 1A 00             ld a,(V_C)
+1206  07CA FE 1D                cp 29
+1207  07CC 28 01                jr z,.r0
+1208  07CE 23                   inc hl
+1209  07CF 7E           .r0:    ld a,(hl)
+1210  07D0 CD 53 08             call acol
+1211  07D3 ED 43 33 00          ld (V_RI),bc
+1212  07D7 CD 2A 07             call mapbit             ; remembered for the next clear
+1213  07DA 21 80 19             ld hl,OLDROPE
+1214  07DD 16 00                ld d,0
+1215  07DF 19                   add hl,de
+1216  07E0 7E                   ld a,(hl)
+1217  07E1 B1                   or c
+1218  07E2 77                   ld (hl),a
+1219  07E3 CD B1 08             call cellxy
+1220  07E6 EB                   ex de,hl                ; DE = Layer 2 address
+1221  07E7 E1                   pop hl                  ; HL = source
+1222  07E8 06 08                ld b,8
+1223  07EA C5           .ln:    push bc
+1224  07EB E5                   push hl
+1225  07EC 4E                   ld c,(hl)               ; pixels
+1226  07ED 2A 35 00             ld hl,(V_RT)
+1227  07F0 7E                   ld a,(hl)               ; mask row
+1228  07F1 23                   inc hl
+1229  07F2 22 35 00             ld (V_RT),hl
+1230  07F5 67                   ld h,a
+1231  07F6 06 08                ld b,8
+1232  07F8 CB 14        .px:    rl h                    ; carry = rope pixel
+1233  07FA 30 0C                jr nc,.wall
+1234  07FC 3A 24 00             ld a,(V_INK)
+1235  07FF CB 11                rl c
+1236  0801 38 20                jr c,.put
+1237  0803 3A 25 00             ld a,(V_PAP)
+1238  0806 18 1B                jr .put
+1239  0808 78           .wall:  ld a,b
+1240  0809 FE 05                cp 5                    ; B 8..5 = x 0..3: the left neighbour
+1241  080B 38 0C                jr c,.right
+1242  080D 3A 31 00             ld a,(V_LI)
+1243  0810 CB 11                rl c
+1244  0812 38 0F                jr c,.put
+1245  0814 3A 32 00             ld a,(V_LP)
+1246  0817 18 0A                jr .put
+1247  0819 3A 33 00     .right: ld a,(V_RI)
+1248  081C CB 11                rl c
+1249  081E 38 03                jr c,.put
+1250  0820 3A 34 00             ld a,(V_RP)
+1251  0823 12           .put:   ld (de),a
+1252  0824 1C                   inc e
+1253  0825 10 D1                djnz .px
+1254  0827 7B                   ld a,e
+1255  0828 D6 08                sub 8
+1256  082A 5F                   ld e,a
+1257  082B 14                   inc d
+1258  082C E1                   pop hl
+1259  082D 01 1E 00             ld bc,30
+1260  0830 09                   add hl,bc
+1261  0831 C1                   pop bc
+1262  0832 10 B6                djnz .ln
+1263  0834 C9                   ret
+1264  0835
+1265  0835              ; Z = the 8 bytes at HL (stride 30) masked with the table at DE equal its ink rows; V_RT = DE
+1266  0835 ED 53 35 00  rmatch: ld (V_RT),de
+1267  0839 06 08                ld b,8
+1268  083B 1A           .m:     ld a,(de)
+1269  083C A6                   and (hl)
+1270  083D 4F                   ld c,a
+1271  083E 7B                   ld a,e
+1272  083F C6 08                add a,8
+1273  0841 5F                   ld e,a
+1274  0842 1A                   ld a,(de)
+1275  0843 B9                   cp c
+1276  0844 C0                   ret nz
+1277  0845 7B                   ld a,e
+1278  0846 D6 07                sub 7
+1279  0848 5F                   ld e,a
+1280  0849 C5                   push bc
+1281  084A 01 1E 00             ld bc,30
+1282  084D 09                   add hl,bc
+1283  084E C1                   pop bc
+1284  084F 10 EA                djnz .m
+1285  0851 AF                   xor a                   ; Z: all 8 rows matched
+1286  0852 C9                   ret
+1287  0853
+1288  0853              ; attribute A -> C = ink, B = paper (Layer 2 indices without priority)
+1289  0853 5F           acol:   ld e,a
+1290  0854 E6 07                and 7
+1291  0856 CB 73                bit 6,e
+1292  0858 28 02                jr z,.i
+1293  085A F6 08                or 8
+1294  085C C6 20        .i:     add a,L2NP
+1295  085E 4F                   ld c,a
+1296  085F 7B                   ld a,e
+1297  0860 0F                   rrca
+1298  0861 0F                   rrca
+1299  0862 0F                   rrca
+1300  0863 E6 07                and 7
+1301  0865 CB 73                bit 6,e
+1302  0867 28 02                jr z,.p
+1303  0869 F6 08                or 8
+1304  086B C6 20        .p:     add a,L2NP
+1305  086D 47                   ld b,a
+1306  086E C9                   ret
+1307  086F
+1308  086F 00                   ALIGN 16                ; mask rows, then ink rows (no 256-byte crossing)
+1309  0870 3C 3C 3C 3C  LINKT:  db 0x3C,0x3C,0x3C,0x3C,0x3C,0x3C,0x3C,0x3C, 0x10,0x08,0x18,0x18,0x10,0x08,0x18,0x18
+1309  0874 3C 3C 3C 3C
+1309  0878 10 08 18 18
+1309  087C 10 08 18 18
+1310  0880 3C 3C FF FF  KNOTT:  db 0x3C,0x3C,0xFF,0xFF,0xFF,0xFF,0xFC,0xFC, 0x10,0x08,0x18,0x1E,0x2E,0x70,0x18,0x18
+1310  0884 FF FF FC FC
+1310  0888 10 08 18 1E
+1310  088C 2E 70 18 18
+1311  0890
+1312  0890              ; one cell into Layer 2: HL = first source byte (stride 30), DE = Layer 2 address, V_INK / V_PAP
+1313  0890 06 08        cell8:  ld b,8
+1314  0892 C5           .ln:    push bc
+1315  0893 4E                   ld c,(hl)
+1316  0894 06 08                ld b,8
+1317  0896 3A 24 00     .px:    ld a,(V_INK)
+1318  0899 CB 11                rl c
+1319  089B 38 03                jr c,.set
+1320  089D 3A 25 00             ld a,(V_PAP)
+1321  08A0 12           .set:   ld (de),a
+1322  08A1 1C                   inc e
+1323  08A2 10 F2                djnz .px
+1324  08A4 7B                   ld a,e
+1325  08A5 D6 08                sub 8
+1326  08A7 5F                   ld e,a
+1327  08A8 14                   inc d
+1328  08A9 01 1E 00             ld bc,30
+1329  08AC 09                   add hl,bc
+1330  08AD C1                   pop bc
+1331  08AE 10 E2                djnz .ln
+1332  08B0 C9                   ret
+1333  08B1
+1334  08B1              ; HL = Layer 2 address of cell (V_R, V_C) (V_LY from l2page)
+1335  08B1 3A 28 00     cellxy: ld a,(V_LY)
+1336  08B4 E6 1F                and 31
+1337  08B6 C6 20                add a,0x20
+1338  08B8 67                   ld h,a
+1339  08B9 3A 1A 00             ld a,(V_C)
+1340  08BC 87                   add a,a
+1341  08BD 87                   add a,a
+1342  08BE 87                   add a,a
+1343  08BF C6 08                add a,8
+1344  08C1 6F                   ld l,a
+1345  08C2 C9                   ret
+1346  08C3
+1347  08C3              ; A = source byte of column B on the current line (V_RSRC); keeps B
+1348  08C3 2A 1C 00     srcb:   ld hl,(V_RSRC)
+1349  08C6 7D                   ld a,l
+1350  08C7 80                   add a,b
+1351  08C8 6F                   ld l,a
+1352  08C9 30 01                jr nc,.n
+1353  08CB 24                   inc h
+1354  08CC 7E           .n:     ld a,(hl)
+1355  08CD C9                   ret
+1356  08CE              code_end:
+1357  08CE
+1358  08CE              ; ---- setup (stub bank, 0xD000): palettes, transparency, sprites hidden, clip, Layer 2 on ----
+1359  08CE                      ORG 0xD000
+1360  D000 ED 91 43 20  setup:  nextreg 0x43,0x20       ; sprite palette 0, auto-increment
+1361  D004 ED 91 40 00          nextreg 0x40,0
+1362  D008 21 80 D0             ld hl,spal
+1363  D00B 06 00                ld b,0
+1364  D00D 7E           .p:     ld a,(hl)
+1365  D00E ED 92 41             nextreg 0x41,a
+1366  D011 23                   inc hl
+1367  D012 10 F9                djnz .p
+1368  D014 ED 91 43 10          nextreg 0x43,0x10       ; Layer 2 palette 0: 16 priority colours from L2COL, 16 plain from L2NP
+1369  D018 ED 91 40 10          nextreg 0x40,L2COL
+1370  D01C 21 80 D1             ld hl,lpal
+1371  D01F 06 40                ld b,64
+1372  D021 7E           .q:     ld a,(hl)
+1373  D022 ED 92 44             nextreg 0x44,a
+1374  D025 23                   inc hl
+1375  D026 10 F9                djnz .q
+1376  D028 ED 91 43 00          nextreg 0x43,0x00
+1377  D02C ED 91 4B 00          nextreg 0x4B,0          ; sprite index 0 transparent
+1378  D030 AF                   xor a
+1379  D031 ED 92 34     .h:     nextreg 0x34,a
+1380  D034 ED 91 38 00          nextreg 0x38,0
+1381  D038 3C                   inc a
+1382  D039 FE 80                cp NSPR
+1383  D03B 20 F4                jr nz,.h
+1384  D03D ED 91 1C 02          nextreg 0x1C,2          ; sprite clip = the play window (screen x 8-247, y 16-127)
+1385  D041 ED 91 19 08          nextreg 0x19,8
+1386  D045 ED 91 19 F7          nextreg 0x19,247
+1387  D049 ED 91 19 10          nextreg 0x19,16
+1388  D04D ED 91 19 7F          nextreg 0x19,127
+1389  D051 3E 36                ld a,L2PAGE             ; Layer 2 transparent (not stored in the .nex: 48K of one byte)
+1390  D053 ED 92 52     .l2:    nextreg 0x52,a
+1391  D056 21 00 40             ld hl,0x4000
+1392  D059 36 E3                ld (hl),TRANSP
+1393  D05B 11 01 40             ld de,0x4001
+1394  D05E 01 FF 1F             ld bc,8191
+1395  D061 ED B0                ldir
+1396  D063 3C                   inc a
+1397  D064 FE 3C                cp L2PAGE+6
+1398  D066 20 EB                jr nz,.l2
+1399  D068 ED 91 52 0A          nextreg 0x52,10
+1400  D06C ED 91 12 1B          nextreg 0x12,L2BANK
+1401  D070 ED 91 7F 00          nextreg 0x7F,0
+1402  D074 01 3B 12             ld bc,0x123B
+1403  D077 3E 02                ld a,2                  ; Layer 2 visible
+1404  D079 ED 79                out (c),a
+1405  D07B ED 91 15 01          nextreg 0x15,0x01       ; sprites on, order S L U
+1406  D07F C9                   ret
+1407  D080              spal:                           ; 256 sprite palette bytes, then 32 Layer 2 palette bytes (9-bit pairs)
+1408  D080              lpal    EQU spal+256
+1409  D080
+1410  D080                      SAVEBIN "tr_rom.bin",0x386E,rom_end-0x386E
+1411  D080                      SAVEBIN "tr_page.bin",0x0100,code_end-0x0100
+1412  D080                      SAVEBIN "tr_setup.bin",0xD000,spal-0xD000
+1413  D080
+# file closed: trueno_hooks.asm

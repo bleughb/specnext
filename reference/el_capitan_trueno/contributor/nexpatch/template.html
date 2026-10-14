@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}} - {{SUBTITLE}}</title>
+<style>
+  :root { --bg: #f6f5f1; --fg: #1d1d1b; --muted: #5f5d57; --card: #ffffff; --line: #d9d6cc;
+          --accent: #1f5fbf; --accent-fg: #ffffff; --ok: #1d7a3a; --bad: #b3261e; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #17181a; --fg: #ecebe6; --muted: #a7a59d; --card: #222326; --line: #3a3b3f;
+            --accent: #6ea2ff; --accent-fg: #0d1117; --ok: #6fd08c; --bad: #ff8a80; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg);
+         font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 640px; margin: 0 auto; padding: 32px 16px 48px; }
+  h1 { font-size: 1.6rem; line-height: 1.25; margin: 0 0 4px; }
+  .sub { color: var(--muted); margin: 0 0 24px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 20px; margin: 0 0 16px; }
+  .card h2 { font-size: 1rem; margin: 0 0 8px; }
+  .card p { margin: 0 0 8px; }
+  .card p:last-child { margin-bottom: 0; }
+  code { font: 0.9em ui-monospace, Consolas, monospace; word-break: break-all; }
+  ol { margin: 0; padding-left: 1.3em; }
+  label.file { display: block; border: 2px dashed var(--line); border-radius: 10px; padding: 18px;
+               text-align: center; cursor: pointer; color: var(--muted); }
+  label.file:hover { border-color: var(--accent); }
+  input[type=file] { display: none; }
+  button { margin-top: 14px; width: 100%; padding: 12px; font: inherit; font-weight: 600;
+           border: 0; border-radius: 8px; background: var(--accent); color: var(--accent-fg); cursor: pointer; }
+  button:disabled { opacity: 0.45; cursor: default; }
+  #status { min-height: 1.5em; margin-top: 12px; }
+  #choices fieldset { border: 0; padding: 0; margin: 14px 0 0; }
+  #choices legend { font-weight: 600; padding: 0; margin-bottom: 4px; }
+  #choices label { display: inline-flex; align-items: center; gap: 6px; margin-right: 18px; cursor: pointer; }
+  .ok { color: var(--ok); } .bad { color: var(--bad); }
+  footer { color: var(--muted); font-size: 0.85rem; margin-top: 24px; }
+  footer p { margin: 0 0 8px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>{{TITLE}}</h1>
+  <p class="sub">{{SUBTITLE}}</p>
+
+  <div class="card">
+    <label class="file" id="drop">Choose the .z80 file<input type="file" id="file" accept=".z80"></label>
+    <div id="choices"></div>
+    <button id="make" disabled>Make NEX</button>
+    <div id="status" role="status"></div>
+  </div>
+
+  <div class="card">
+    <h2>How to use it</h2>
+    <ol>
+      <li>Choose the original snapshot:<br><code>{{Z80NAME}}</code> (CRC32 <code>{{CRC}}</code>).</li>
+      <li>Press <b>Make NEX</b>. Your browser saves the .nex file.</li>
+      <li>Copy it to the Next's SD card and run.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2>Details</h2>
+    <p>{{ABOUT}}</p>
+    <p>Nothing is uploaded anywhere: everything happens in your browser, and it works offline.</p>
+  </div>
+
+  <footer>
+    <p>{{NOTICE}}</p>
+    <p>{{CREDITS}}</p>
+  </footer>
+</main>
+<script>
+"use strict";
+const DATA = {{DATA}};
+
+// ---- CRC32 ----
+const CRC_T = (() => { const t = new Uint32Array(256);
+  for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; }
+  return t; })();
+function crc32(b) { let c = 0xFFFFFFFF; for (let i = 0; i < b.length; i++) c = CRC_T[(c ^ b[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+
+// ---- SHA-256 ----
+const SHA_K = new Uint32Array([0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+  0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,
+  0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,
+  0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,
+  0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,
+  0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,
+  0xc67178f2]);
+function sha256(msg) {
+  const l = msg.length, n = ((l + 9 + 63) >> 6) << 6, m = new Uint8Array(n);
+  m.set(msg); m[l] = 0x80; const bits = l * 8;
+  m[n - 4] = bits >>> 24; m[n - 3] = bits >>> 16; m[n - 2] = bits >>> 8; m[n - 1] = bits; m[n - 5] = Math.floor(bits / 2 ** 32);
+  const h = new Uint32Array([0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19]);
+  const w = new Uint32Array(64), r = (x, s) => (x >>> s) | (x << (32 - s));
+  for (let o = 0; o < n; o += 64) {
+    for (let i = 0; i < 16; i++) w[i] = m[o + 4 * i] << 24 | m[o + 4 * i + 1] << 16 | m[o + 4 * i + 2] << 8 | m[o + 4 * i + 3];
+    for (let i = 16; i < 64; i++) {
+      const s0 = r(w[i - 15], 7) ^ r(w[i - 15], 18) ^ (w[i - 15] >>> 3), s1 = r(w[i - 2], 17) ^ r(w[i - 2], 19) ^ (w[i - 2] >>> 10);
+      w[i] = w[i - 16] + s0 + w[i - 7] + s1;
+    }
+    let [a, b, c, d, e, f, g, hh] = h;
+    for (let i = 0; i < 64; i++) {
+      const t1 = hh + (r(e, 6) ^ r(e, 11) ^ r(e, 25)) + ((e & f) ^ (~e & g)) + SHA_K[i] + w[i] | 0;
+      const t2 = (r(a, 2) ^ r(a, 13) ^ r(a, 22)) + ((a & b) ^ (a & c) ^ (b & c)) | 0;
+      hh = g; g = f; f = e; e = d + t1 | 0; d = c; c = b; b = a; a = t1 + t2 | 0;
+    }
+    h[0] += a; h[1] += b; h[2] += c; h[3] += d; h[4] += e; h[5] += f; h[6] += g; h[7] += hh;
+  }
+  const out = new Uint8Array(32);
+  for (let i = 0; i < 8; i++) { out[4 * i] = h[i] >>> 24; out[4 * i + 1] = h[i] >>> 16; out[4 * i + 2] = h[i] >>> 8; out[4 * i + 3] = h[i]; }
+  return out;
+}
+
+// ---- ChaCha20 keystream (RFC 8439 block function, nonce 0) ----
+function chacha(key) {
+  const st = new Uint32Array(16), x = new Uint32Array(16), blk = new Uint8Array(64), dv = new DataView(key.buffer, key.byteOffset, 32);
+  st.set([0x61707865, 0x3320646e, 0x79622d32, 0x6b206574]);
+  for (let i = 0; i < 8; i++) st[4 + i] = dv.getUint32(4 * i, true);
+  let counter = 0, pos = 64;
+  const q = (a, b, c, d) => {
+    x[a] += x[b]; x[d] ^= x[a]; x[d] = x[d] << 16 | x[d] >>> 16;
+    x[c] += x[d]; x[b] ^= x[c]; x[b] = x[b] << 12 | x[b] >>> 20;
+    x[a] += x[b]; x[d] ^= x[a]; x[d] = x[d] << 8 | x[d] >>> 24;
+    x[c] += x[d]; x[b] ^= x[c]; x[b] = x[b] << 7 | x[b] >>> 25;
+  };
+  return () => {
+    if (pos === 64) {
+      st[12] = counter++; x.set(st);
+      for (let i = 0; i < 10; i++) { q(0,4,8,12); q(1,5,9,13); q(2,6,10,14); q(3,7,11,15); q(0,5,10,15); q(1,6,11,12); q(2,7,8,13); q(3,4,9,14); }
+      for (let i = 0; i < 16; i++) { const v = x[i] + st[i] >>> 0; blk[4*i] = v; blk[4*i+1] = v >>> 8; blk[4*i+2] = v >>> 16; blk[4*i+3] = v >>> 24; }
+      pos = 0;
+    }
+    return blk[pos++];
+  };
+}
+
+// ---- .z80 snapshot -> memory banks ----
+function unrle(d, len) {
+  const out = new Uint8Array(len); let o = 0, i = 0;
+  while (o < len && i < d.length) {
+    if (d[i] === 0xED && d[i + 1] === 0xED) { out.fill(d[i + 3], o, Math.min(len, o + d[i + 2])); o += d[i + 2]; i += 4; }
+    else out[o++] = d[i++];
+  }
+  if (o !== len) throw new Error("bad .z80 block");
+  return out;
+}
+function z80banks(d) {
+  if (d[6] | d[7]) {
+    const flags = d[12] === 255 ? 1 : d[12], body = d.subarray(30);
+    const mem = flags & 0x20 ? unrle(body, 49152) : body.subarray(0, 49152);
+    return { 5: mem.subarray(0, 16384), 2: mem.subarray(16384, 32768), 0: mem.subarray(32768) };
+  }
+  let pos = 32 + (d[30] | d[31] << 8); const pages = {};
+  while (pos + 3 <= d.length) {
+    const ln = d[pos] | d[pos + 1] << 8, page = d[pos + 2]; pos += 3;
+    if (ln === 0xFFFF) { pages[page] = d.subarray(pos, pos + 16384); pos += 16384; }
+    else { pages[page] = unrle(d.subarray(pos, pos + ln), 16384); pos += ln; }
+  }
+  const banks = {};
+  if (3 in pages) { for (const p in pages) if (p >= 3 && p <= 10) banks[p - 3] = pages[p]; }
+  else { const map = { 8: 5, 4: 2, 5: 0 }; for (const p in pages) if (p in map) banks[map[p]] = pages[p]; }
+  return banks;
+}
+function sourceOf(d) {
+  const banks = z80banks(d), keys = Object.keys(banks).map(Number).sort((a, b) => a - b);
+  const src = new Uint8Array(d.length + 16384 * keys.length);
+  src.set(d); keys.forEach((k, i) => src.set(banks[k], d.length + 16384 * i));
+  return src;
+}
+
+// ---- apply the patch ----
+function applyPatch(z80, patch) {
+  const dv = new DataView(patch.buffer);
+  if (String.fromCharCode(...patch.subarray(0, 4)) !== "NXP1") throw new Error("broken patch");
+  const crc = dv.getUint32(4, true), size = dv.getUint32(8, true), tlen = dv.getUint32(12, true);
+  if (crc32(z80) !== crc || z80.length !== size) throw new Error("This is not the expected .z80 file (CRC32 must be " + crc.toString(16).toUpperCase().padStart(8, "0") + ").");
+  const sha = patch.subarray(16, 48), src = sourceOf(z80), ks = chacha(sha256(z80)), out = new Uint8Array(tlen);
+  let pos = 48, o = 0;
+  const rd = () => { let v = 0, sh = 0, b; do { b = patch[pos++]; v += (b & 0x7F) * 2 ** sh; sh += 7; } while (b & 0x80); return v; };
+  while (pos < patch.length) {
+    const op = rd(), ln = Math.floor(op / 4) + 1, kind = op % 4;
+    if (kind === 0) { for (let i = 0; i < ln; i++) out[o++] = patch[pos++] ^ ks(); }
+    else if (kind === 1) { const at = rd(); out.set(src.subarray(at, at + ln), o); o += ln; }
+    else { out.fill(patch[pos++], o, o + ln); o += ln; }
+  }
+  const got = sha256(out);
+  if (o !== tlen || got.some((v, i) => v !== sha[i])) throw new Error("The result does not match the expected .nex.");
+  return out;
+}
+function nexName(name) {
+  return name.replace(/\.[^.]*$/, "").replace(/\([^)]*\)|\[[^\]]*\]/g, "").replace(/\s+/g, " ").trim() + ".nex";
+}
+
+// ---- the page ----
+const fileIn = document.getElementById("file"), btn = document.getElementById("make"),
+      status = document.getElementById("status"), drop = document.getElementById("drop");
+const b64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+(() => {   // versions (radio, the first chosen) and options (check boxes, off)
+  const box = document.getElementById("choices"), esc = t => t.replace(/[&<>"]/g, c => "&#" + c.charCodeAt(0) + ";");
+  let h = "";
+  if (DATA.variants.length > 1)
+    h += "<fieldset><legend>" + esc(DATA.choice) + "</legend>" + DATA.variants.map((v, i) =>
+      '<label><input type="radio" name="variant" value="' + i + '"' + (i ? "" : " checked") + "> " + esc(v.label) + "</label>").join("") + "</fieldset>";
+  if (DATA.options.length)
+    h += "<fieldset><legend>Options</legend>" + DATA.options.map((o, i) =>
+      '<label><input type="checkbox" name="option" value="' + i + '"> ' + esc(o.label) + "</label>").join("") + "</fieldset>";
+  box.innerHTML = h;
+})();
+let chosen = null;
+const say = (t, cls) => { status.textContent = t; status.className = cls || ""; };
+fileIn.addEventListener("change", async () => {
+  const f = fileIn.files[0]; chosen = null; btn.disabled = true;
+  if (!f) return;
+  const data = new Uint8Array(await f.arrayBuffer());
+  const want = new DataView(b64(DATA.variants[0].patch.slice(0, 16)).buffer).getUint32(4, true);
+  drop.firstChild.textContent = f.name;
+  if (crc32(data) !== want) { say("This is not the expected file: its CRC32 is " + crc32(data).toString(16).toUpperCase().padStart(8, "0") + ".", "bad"); return; }
+  chosen = { name: f.name, data }; btn.disabled = false; say("The file is right. Press Make NEX.", "ok");
+});
+btn.addEventListener("click", () => {
+  if (!chosen) return;
+  btn.disabled = true; say("Building...");
+  setTimeout(() => {
+    try {
+      const vi = +(document.querySelector('input[name="variant"]:checked') || { value: 0 }).value, v = DATA.variants[vi];
+      const opts = [...document.querySelectorAll('input[name="option"]:checked')].map(e => DATA.options[+e.value]);
+      const nex = applyPatch(chosen.data, b64(v.patch));
+      for (const o of opts) for (const [off, bytes] of o.edits) nex.set(bytes, off);
+      const a = document.createElement("a"), name = nexName(chosen.name).replace(/\.nex$/, "") + v.suffix + opts.map(o => o.suffix).join("") + ".nex";
+      a.href = URL.createObjectURL(new Blob([nex], { type: "application/octet-stream" }));
+      a.download = name; document.body.appendChild(a); a.click(); a.remove();
+      say("Done: " + name + " (" + nex.length + " bytes).", "ok");
+    } catch (e) { say(e.message, "bad"); }
+    btn.disabled = false;
+  }, 20);
+});
+</script>
+</body>
+</html>

@@ -142,18 +142,21 @@ names under reference/ and checks their MD5s: keep file names and folders as lis
 
 ## El Capitan Trueno - `el_capitan_trueno/` (games/el_capitan_trueno.md; contributed by Leonid (Leonis Silver), 2026-10-14; prototype outside the toolkit, no record yet; hardware: untested, MAME 0.289 played to the end of part 1 by the contributor)
 
-The contributor's archive (game project `trueno/`, `nex/`, `nexpatch/`) is private: keep it here only, never publish. Their cover letter: `CONTRIBUTOR_README.md`. Files marked "to upload" come from that archive; the MD5s are the contributor's (docs/VERIFICATION.md in nexclash).
+Private: the contributor asked that none of it be published. Their cover letter: `CONTRIBUTOR_README.md`. Their project (builder, sheets, nexpatch): `contributor/` (how to rebuild: `contributor/REBUILD.md`).
 
 | File | MD5 | What |
 |---|---|---|
 | CONTRIBUTOR_README.md | - | the contributor's cover letter (contents, build steps, questions to the maintainers) |
-| Capitan Trueno, El (1990)(Dinamic)(ES).z80 | 15e128b05c471678d2f0fae2fbb8cedc | snapshot (title screen; CRC32 320337B0) - to upload |
-| trueno1.rzx | d07fcc914f385aabfe42c4a5cbaf1bba | recording (RZX; the contributor's play, Spectaculator 0.61, 53,542 frames) - to upload |
-| Trueno.nex | 4b415b4c19cb4ff0c820fd2f79216cc7 | plain conversion (`--tail 0xA6C9`) - to upload |
-| Trueno_sprites.nex | a9befbb250a040734555ce80aea208b8 | modified game (every figure a sprite, foreground in Layer 2, fix cells drawn by the contributor) - to upload |
-| Trueno_sprites_en.nex | da3f1b0a1ba8226573c638bc06cb34d5 | option `--en` (English texts) - to upload |
-| Trueno_sprites_immortal.nex | deaf4577f982991774d7aa17f60d1aab | option `--immortal` (energy never drops) - to upload |
-| Trueno_sprites_en_immortal.nex | 867bda87225d060964772b36c0ed2aeb | both options - to upload |
+| Capitan Trueno, El (1990)(Dinamic)(ES).z80 | 15e128b05c471678d2f0fae2fbb8cedc | snapshot (title screen; CRC32 320337B0) |
+| trueno1.rzx | d07fcc914f385aabfe42c4a5cbaf1bba | recording (RZX; the contributor's play, Spectaculator 0.61, 53,542 frames) |
+| Trueno.nex | ca49e0f4c92da6fe96d71062c2ed15a3 | plain conversion (`nexclash.py convert ... --tail 0xA6C9`, v0.1.4 and main identical; boot sim OK). The contributor's listed 4b415b4c is the DEFAULT-tail build (tail below SP above 0xC000), which fails the boot sim - not kept |
+| Trueno_sprites.nex | a9befbb250a040734555ce80aea208b8 | modified game (every figure a sprite, foreground in Layer 2, fix cells drawn by the contributor); rebuilt byte-identical 2026-10-14 with their tk 0.1.4 and with nexclash main |
+| Trueno_sprites_en.nex | da3f1b0a1ba8226573c638bc06cb34d5 | option `--en` (English texts); rebuilt identical |
+| Trueno_sprites_immortal.nex | deaf4577f982991774d7aa17f60d1aab | option `--immortal` (energy never drops); rebuilt identical |
+| Trueno_sprites_en_immortal.nex | 867bda87225d060964772b36c0ed2aeb | both options; rebuilt identical |
+| contributor/ | - | build/ (builder + checks + generated tables), gfx/ (the contributor's sheets: game graphics), NOTES.md (working log), nexpatch/ (proposal; out/ holds the Trueno page = game-derived), toolkit_changes.diff (as sent) |
+
+The archive's `nex/` folder held the same four sprite builds under player names (`Capitan Trueno, El.nex`, `(Eng)`, `(Immortal)`, `(Eng) (Immortal)`); not duplicated here.
 
 ## Adding files
 Upload into the game's folder (GitHub: open the folder, Add file -> Upload files). New game:

@@ -1,0 +1,42 @@
+{
+"cell": 40,
+"pink": [
+255,
+105,
+180
+],
+"frames": [
+{
+"frame": 9,
+"x": 56,
+"y": 0,
+"w": 22,
+"h": 26,
+"flipped": false
+},
+{
+"frame": 10,
+"x": 98,
+"y": 0,
+"w": 20,
+"h": 25,
+"flipped": false
+},
+{
+"frame": 11,
+"x": 140,
+"y": 0,
+"w": 26,
+"h": 26,
+"flipped": false
+},
+{
+"frame": 12,
+"x": 182,
+"y": 0,
+"w": 26,
+"h": 26,
+"flipped": false
+}
+]
+}
