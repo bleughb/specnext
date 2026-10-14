@@ -25,7 +25,8 @@ names under reference/ and checks their MD5s: keep file names and folders as lis
 | Smash_TV.rzx | ed4ee1a08ce14101cb7b1246dcdaf040 | recording (RZX; Fuse autosave on: 8 autosave snapshots, stripped by `auto`; title, arenas 1-2, game over; N = not invulnerable) |
 | Smash_TV.z80 | 3b89344c6d7e6433bf044bef1880a2f1 | snapshot (BASIC loader at the trainer prompt "DO YOU WANT TO BE INVULNERABLE ?") |
 | smash_tv.nex | c72ea298486b14036ac1a87ac89c3f0e | plain conversion (the loader as it is) |
-| smash_tv_sprites_outline_cell_paper.nex | 6227481f8f2514faa0d9648b6bc972e8 | modified game (every figure as sprites in its cell inks, outline in the cell paper; prompt front end) |
+| smash_tv_sprites.nex | 03979d5438cf55410ecec8aac76f05ec | modified game = the record's build (every figure 4-bit sprites in its cell inks, see-through outline; pattern cache; prompt front end; supplied by Dean 2026-10-14) |
+| smash_tv_sprites_outline_cell_paper.nex | 6227481f8f2514faa0d9648b6bc972e8 | variant, not the record's build (every figure as sprites in its cell inks, outline in the cell paper; prompt front end) |
 
 ## Midnight Resistance (128K) - `midnight_resistance/` (games/midnight_resistance.md; hardware: e8f0ece9 runs, Dean 2026-10-13; 670f9403 tests OK, Dean 2026-10-14)
 
