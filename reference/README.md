@@ -37,10 +37,10 @@ names under reference/ and checks their MD5s: keep file names and folders as lis
 | midnight_resistance.nex | 17239acaaf67b0f8011478053e17829d | plain conversion |
 | Midnight_Resistance_1990_Ocean_128K_V2RZX.rzx | 3e0fa52ae2fbf9fbae62cebb70b83190 | second recording (Dean 2026-10-13; autosaves stripped by `auto`; more of level 1, the shop) |
 | midnight_resistance_sprites.nex | 670f94034af175ed56df97f8cdb1ef29 | modified game (every figure a sprite, also flipped and in the shop, in Dean's painted colours; sprites hidden on every loop exit) |
-| midnight_resistance_PAINTING_SPRITES.png | - | sheet to paint: every graphic once, drawn in the current colours; grey = paintable, the rest of a box background (2026-10-14: redrawn from its layout, `sheet` currently fails at RZX frame 251) (`python -m nexclash.midres sheet RZX RZX --z80 Z80`) |
+| midnight_resistance_PAINTING_SPRITES.png | - | sheet to paint: every graphic once, drawn in the current colours; grey = paintable, the rest of a box background (`python -m nexclash.midres sheet RZX RZX --z80 Z80`; regenerated 2026-10-14 after the autosave fix, nexclash #36) |
 | midnight_resistance_PAINTING_SPRITES_layout.json | - | its layout: reads the painted sheet back (`python -m nexclash.midres colours`) |
 | mr_colours_painted.png | - | Dean's first painting (2026-10-14; old single-sheet layout) -> docs/profiles/midnight_resistance_colours.json in nexclash |
-| midnight_resistance_REFERENCE_ALL_SPRITES.png | - | every figure whole, as the build colours it (not read back) |
+| midnight_resistance_REFERENCE_ALL_SPRITES.png | - | every figure whole, as the build colours it (not read back); grey only where paintable (2026-10-14) |
 
 ## Commando (128K) - `commando/` (games/commando.md; hardware: 5ab928e9 runs; 5c1081b7 flicker/logo/dots; 541e34e2 crashed (code at 0x3D00, probably the DivMMC automap); d601385e runs)
 
