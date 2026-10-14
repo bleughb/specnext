@@ -92,10 +92,10 @@ names under reference/ and checks their MD5s: keep file names and folders as lis
 | dizzy1.nex | 7892b2e0f1f3f9f19165516db307cbe0 | plain conversion |
 | dizzy1_sprites.nex | 38e1a4916eaf8548d9ba8886861ca147 | modified game: every figure on Layer 2 (shadow screen), Dizzy = hardware sprites in front, solid (enclosed paper black), Dean's painted colours (docs/profiles/dizzy1_colours.json); HUD and room tiles on the ULA (2026-10-14; replaces 83ea050d default colours) |
 | dizzy1rzx | 99d9c4c086d06a46ba7a781e5321dc3e | recording (RZX) |
-| dizzy1_PAINTING_SPRITES.png | 6595393fbc50d2ffc5bdedecd522431d | sheet to paint: every graphic once, in the current (painted) colours, enclosed paper black; grey (100,100,100) on an opaque pixel = transparent (`python -m nexclash.dizzy1 sheet dizzy1rzx --z80 SNAPSHOT -o dizzy1`) |
-| dizzy1_PAINTING_SPRITES_layout.json | 035fb24eec4f7b87bcb39a5418069784 | its layout (carries the current colour map: a repaint edits only changed pixels): reads the painted sheet back (`python -m nexclash.dizzy1 colours PAINTED.png --layout ...`) |
-| dizzy1_PAINTING_SPRITES_painted.png | deeafae4cdac8e5e8c073ffbe95d79a0 | Dean's painted sheet (2026-10-14), read with the layout of the previous commit (f0caf980) -> dizzy1_colours.json |
-| dizzy1_REFERENCE_ALL_SPRITES.png | 984d8fb1f4779adc87ef827242d90284 | every figure whole, as the build colours it (not read back) |
+| dizzy1_PAINTING_SPRITES.png | 002c2c81d5bfc86a6e23804559e723bd | sheet to paint: every graphic once, in the current (painted, outlined) colours, enclosed paper black; grey (100,100,100) on an opaque pixel = transparent; any colour on a paper pixel inside a figure's box = an outline (paint_clear, 2026-10-14) (`python -m nexclash.dizzy1 sheet dizzy1rzx --z80 SNAPSHOT -o dizzy1`) |
+| dizzy1_PAINTING_SPRITES_layout.json | 0f2e2b4aa3b5c58558438a80c3d6db59 | its layout (paint_clear: lists paper pixels too; carries the current colour map: a repaint edits only changed pixels): reads the painted sheet back (`python -m nexclash.dizzy1 colours PAINTED.png --layout ...`); an older layout drops outlines |
+| dizzy1_PAINTING_SPRITES_painted.png | 15770ebab5e8a89fbd7a1604354ce6f1 | Dean's outlined painting (2026-10-14, 2,471 outline pixels), read with the paint_clear layout -> dizzy1_sprites_painted.nex 79218527 (nexclash dizzy1-layer2 c915df7) |
+| dizzy1_REFERENCE_ALL_SPRITES.png | d62dc2a5d1ed515189ab5abd5d58954e | every figure whole, as the build colours it with the outlined map (not read back) |
 | dizzy1_preview.png | 06fc75bb4d22a2c247af37844e0784b2 | phase-A preview: original / planned build at RZX frames 264, 1584, 2640, 3168, 4752, 5544 |
 | dizzy1_preview_painted.png | 5d72432af591dda3071fb09845af262e | original / build in the painted colours at RZX frames 400, 900, 4000 |
 
