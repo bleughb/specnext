@@ -90,7 +90,7 @@ names under reference/ and checks their MD5s: keep file names and folders as lis
 |---|---|---|
 | Dizzy_The_Ultimate_Cartoon_Adventure_1987_Codemasters.z80 | 0659328fd54fd446e39d1740bafd02e7 | snapshot |
 | dizzy1.nex | 7892b2e0f1f3f9f19165516db307cbe0 | plain conversion |
-| dizzy1_sprites.nex | 38e1a4916eaf8548d9ba8886861ca147 | modified game: every figure on Layer 2 (shadow screen), Dizzy = hardware sprites in front, solid (enclosed paper black), Dean's painted colours (docs/profiles/dizzy1_colours.json); HUD and room tiles on the ULA (2026-10-14; replaces 83ea050d default colours) |
+| dizzy1_sprites.nex | fb4cb1482b3e337374ca99c3ff58edad | modified game: every figure on Layer 2 (shadow screen), Dizzy = hardware sprites in front, solid (enclosed paper black), Dean's painted colours (docs/profiles/dizzy1_colours.json); HUD and room tiles on the ULA (2026-10-14, nexclash #35: draws exactly as 38e1a491, only never-drawn paper nibbles differ; replaces 38e1a491 / 83ea050d) |
 | dizzy1rzx | 99d9c4c086d06a46ba7a781e5321dc3e | recording (RZX) |
 | dizzy1_PAINTING_SPRITES.png | 002c2c81d5bfc86a6e23804559e723bd | sheet to paint: every graphic once, in the current (painted, outlined) colours, enclosed paper black; grey (100,100,100) on an opaque pixel = transparent; any colour on a paper pixel inside a figure's box = an outline (paint_clear, 2026-10-14) (`python -m nexclash.dizzy1 sheet dizzy1rzx --z80 SNAPSHOT -o dizzy1`) |
 | dizzy1_PAINTING_SPRITES_layout.json | 0f2e2b4aa3b5c58558438a80c3d6db59 | its layout (paint_clear: lists paper pixels too; carries the current colour map: a repaint edits only changed pixels): reads the painted sheet back (`python -m nexclash.dizzy1 colours PAINTED.png --layout ...`); an older layout drops outlines |
