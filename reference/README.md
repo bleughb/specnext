@@ -140,6 +140,21 @@ names under reference/ and checks their MD5s: keep file names and folders as lis
 | dizzy7_auto.rzx | 53fd13edbbf1d77b8436cbc289b0d051 | recording (RZX) |
 | dizzy7.nex | 99975f65172dc86ecefbac07db2c0c00 | plain conversion (= `nexclash.py convert dizzy7128k.z80`, checked 2026-10-12) |
 
+## El Capitan Trueno - `el_capitan_trueno/` (games/el_capitan_trueno.md; contributed by Leonid (Leonis Silver), 2026-10-14; prototype outside the toolkit, no record yet; hardware: untested, MAME 0.289 played to the end of part 1 by the contributor)
+
+The contributor's archive (game project `trueno/`, `nex/`, `nexpatch/`) is private: keep it here only, never publish. Their cover letter: `CONTRIBUTOR_README.md`. Files marked "to upload" come from that archive; the MD5s are the contributor's (docs/VERIFICATION.md in nexclash).
+
+| File | MD5 | What |
+|---|---|---|
+| CONTRIBUTOR_README.md | - | the contributor's cover letter (contents, build steps, questions to the maintainers) |
+| Capitan Trueno, El (1990)(Dinamic)(ES).z80 | 15e128b05c471678d2f0fae2fbb8cedc | snapshot (title screen; CRC32 320337B0) - to upload |
+| trueno1.rzx | d07fcc914f385aabfe42c4a5cbaf1bba | recording (RZX; the contributor's play, Spectaculator 0.61, 53,542 frames) - to upload |
+| Trueno.nex | 4b415b4c19cb4ff0c820fd2f79216cc7 | plain conversion (`--tail 0xA6C9`) - to upload |
+| Trueno_sprites.nex | a9befbb250a040734555ce80aea208b8 | modified game (every figure a sprite, foreground in Layer 2, fix cells drawn by the contributor) - to upload |
+| Trueno_sprites_en.nex | da3f1b0a1ba8226573c638bc06cb34d5 | option `--en` (English texts) - to upload |
+| Trueno_sprites_immortal.nex | deaf4577f982991774d7aa17f60d1aab | option `--immortal` (energy never drops) - to upload |
+| Trueno_sprites_en_immortal.nex | 867bda87225d060964772b36c0ed2aeb | both options - to upload |
+
 ## Adding files
 Upload into the game's folder (GitHub: open the folder, Add file -> Upload files). New game:
 make a folder named like its nexclash/games/ file.
