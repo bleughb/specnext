@@ -51,7 +51,7 @@ names under reference/ and checks their MD5s: keep file names and folders as lis
 | commando.nex | a206f950c12f58a8e7f26b366f5a2480 | plain conversion (starts in the front end) |
 | commando_sprites.nex | d601385ee4aeb7f3d7c0771bdc27df6b | modified game (solid sprites with yellow body, solid objects by the walk-box depth rule, scenery restore, pattern cache) |
 
-## Everyone's a Wally - `everyones_a_wally/` (games/everyones_a_wally.md; hardware: boots and runs)
+## Everyone's a Wally - `everyones_a_wally/` (games/everyones_a_wally.md; FROZEN 2026-10-14, superseded by everyones_a_wally_updated; hardware: boots and runs)
 
 | File | MD5 | What |
 |---|---|---|
@@ -60,6 +60,20 @@ names under reference/ and checks their MD5s: keep file names and folders as lis
 | wally.z80 | a9eeb555a327e5794b0ba19bc80dccf0 | snapshot |
 | wally_sprites.nex | f7605489c3af55b8e8c6a580c1c26150 | modified game (sprites) |
 | wallyrzx.rzx | 72c7d1f6c99407bc21d892d423e89964 | recording (RZX) |
+
+## Everyone's a Wally, updated - `everyones_a_wally_updated/` (games/everyones_a_wally_updated.md; hardware: untested)
+
+Inputs: the snapshot and recording of `everyones_a_wally/` (wally.z80, wallyrzx.rzx; the record's
+input paths point there), not copied.
+
+| File | MD5 | What |
+|---|---|---|
+| everyones_a_wally_updated.nex | 2e615b3e7ae995e6d6a6ed9e3f586d4d | plain conversion (= the frozen version's) |
+| everyones_a_wally_updated_sprites.nex | 31c3ef131330d26238b01a69b35c647e | modified game: every figure on Layer 2, one colour each, black 4-neighbour outline, default colours (nothing painted yet) |
+| everyones_a_wally_updated_PAINTING_SPRITES.png | - | sheet to paint: every graphic once with its outline ring, in the build's colours; grey = paintable (`python -m nexclash.wally2 sheet wallyrzx.rzx --z80 wally.z80`) |
+| everyones_a_wally_updated_PAINTING_SPRITES_layout.json | - | its layout: reads the painted sheet back (`python -m nexclash.wally2 colours`, or `nexclash.py recolour`) |
+| everyones_a_wally_updated_REFERENCE_ALL_SPRITES.png | - | every figure whole, as the build colours it (not read back) |
+| everyones_a_wally_updated_preview.png | - | 8 shots, 2x: the original (left) and the build (clean ULA + the Layer 2 figures the model draws) |
 
 ## Rainbow Islands (128K) - `rainbow_islands/` (games/rainbow_islands.md; EXCLUDED from automatic selftest checks; hardware: e50733b2 / diag 8f25bc61 untested; bffd9357 had random corruption + slowdowns)
 
