@@ -197,7 +197,7 @@ Images an agent made for review (they show game graphics) go in docs/review/<gam
 |---|---|---|
 | Jetpac_1983_Ultimate_Play_The_Game_a_16K.z80 | 5875d535442974a0de82737652854f1f | snapshot (BASIC loader state, game code at PC 29026; no recording - Dean, 2026-10-19) |
 | jetpac.nex | feff51b7038606d21c03c260055481e4 | plain conversion |
-| jetpac_sprites.nex | c963b42f0e685d648d552656fde4d6f9 | modified game (sprites; every figure, game colours) |
+| jetpac_sprites.nex | 2db185f7bf2a515898389f14e0f1651b | modified game (sprites; every figure, game colours) |
 | jetpac_PAINTING_SPRITES.png | 67302e7c259c3b011798d412ab6ad598 | colour sheet to paint (game default colours) |
 | jetpac_PAINTING_SPRITES_layout.json | d4b1106e3593dea13d05f6fede084442 | its layout |
 | jetpac_REFERENCE_ALL_SPRITES.png | df64f7b62826bd6022256c6f0f36a7f4 | every figure whole, game default colours |
