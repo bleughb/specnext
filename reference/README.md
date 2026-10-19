@@ -202,3 +202,19 @@ Images an agent made for review (they show game graphics) go in docs/review/<gam
 | jetpac_PAINTING_SPRITES_layout.json | d4b1106e3593dea13d05f6fede084442 | its layout |
 | jetpac_REFERENCE_ALL_SPRITES.png | df64f7b62826bd6022256c6f0f36a7f4 | every figure whole, game default colours |
 | jetpac_preview.png | 31264b7a6145ea459016ed1d8085e752 | phase A preview frames (free run) |
+
+## Lode Runner - `lode_runner/` (games/lode_runner.md; hardware: untested)
+
+| File | MD5 | What |
+|---|---|---|
+| LODERUNN.TAP | bf13792fddf8545e6e96d7383c05a10d | tape image (48K, cracked version; Dean 2026-10-19) |
+| LODERUNN.rzx | d491e25234e137d244121ba656f310c7 | recording (Fuse RZX; 8 autosave snapshots, stripped by `rzx strip`; key definition, level 1, two lives lost) |
+| lode_runner.z80 | 47c265e30f51a9b7eb5c98db6cd994c5 | snapshot = the RZX's first SZX converted (identical RAM and registers; key definition screen) |
+| Lode_Runner_-_128k.tzx | 0a3275c42d414200d1bb12a3c653873a | 128K version tape (sent first; not used: the recording is of the 48K TAP) |
+| lode_runner.nex | cd0c1659c8569b2fa80da74962af90d2 | plain conversion (tail 0xA400; boot check OK) |
+| lode_runner_sprites.nex | 85fe6afd593679bf59c787230ba0eaca | modified game (runner + guards = 4-bit sprites in the game's colours, scenery cells keep their colour, sprites hidden at the fade; hooks in RAM 0xA460; RZX + free run IDENTICAL) |
+| lode_runner_PAINTING_SPRITES.png | - | sheet to paint: runner 15 + guard 15 frames, every graphic once (`python -m nexclash.loderunner sheet RZX --z80 Z80`) |
+| lode_runner_PAINTING_SPRITES_layout.json | - | its layout: reads the painted sheet back (`python -m nexclash.loderunner colours`) |
+| lode_runner_REFERENCE_ALL_SPRITES.png | - | every figure whole, as the build colours it (not read back) |
+| lode_runner_REFERENCE_ALL_SPRITES_layout.json | - | its layout |
+| lode_runner_preview.png | - | phase A preview: original / planned build at 8 frames |
