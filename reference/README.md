@@ -75,16 +75,20 @@ input paths point there), not copied.
 | everyones_a_wally_updated_REFERENCE_ALL_SPRITES.png | - | every figure whole, as the build colours it (not read back) |
 | everyones_a_wally_updated_preview.png | - | 8 shots, 2x: the original (left) and the build (clean ULA + the Layer 2 figures the model draws) |
 
-## Rainbow Islands (128K) - `rainbow_islands/` (games/rainbow_islands.md; EXCLUDED from automatic selftest checks; hardware: fe34236c / diag 60bda664 untested (2026-10-19: no raster wait, music queue; diag 71222105 video: yellow unreliable); bffd9357 had random corruption + slowdowns)
+## Rainbow Islands (128K) - `rainbow_islands/` (games/rainbow_islands.md; EXCLUDED from automatic selftest checks; hardware: cf017271 / diag c16751b0 untested (2026-10-19: no rainbow border, collectable insides); c5e1823d "seems better")
 
 | File | MD5 | What |
 |---|---|---|
 | rainbow.nex | 7ac543fb51c7a3c4137778eeb3cdc175 | plain conversion |
 | rainbow.rzx | 55046d1893bba0a4faf314ecd3a9638b | recording (RZX) |
 | rainbow.z80 | 4c98b980b1726af545fccc99665ef29b | snapshot |
-| rainbow_sprites.nex | fe34236c476290cfec10183ef90d6141 | modified game (sprites; no raster wait, music one AY tick per interrupt, faster tiles + commit) |
-| rainbow_sprites_diag.nex | 60bda66413c381ba918bf39e7b70b5b7 | diagnostic build (border: blue = deferred commit, red = tile built, yellow = overrun, magenta = overrun flag unreliable) |
+| rainbow_sprites.nex | cf017271dfc01bdd0c7cf2f599b03628 | modified game (sprites; no rainbow border, collectable insides black / white, thrown rainbow without outline) |
+| rainbow_sprites_diag.nex | c16751b0255ee3d83a4e342bf9a8c411 | diagnostic build (border: blue = deferred commit, red = tile built, yellow = overrun, magenta = overrun flag unreliable) |
 | rainbownew.rzx | 47bb2b163a947724c343a2bc1b039458 | recording (RZX) |
+| leebee/rainbowislands_LeeBee.rzx | 92bbaa0a24102b3e5169d5c6432e4928 | whole-game playthrough (195,356 frames, all islands): do NOT replay in full - use the bookmarks |
+| leebee/leebee_rNN_islandI_roundR.rzx, leebee_ending.rzx | (leebee_bookmarks.json) | BOOKMARKS: one RZX per round, starting where the round variable 0x636F changes (rzx.cut) |
+| sheets/rainbow_islands_{PLAYER,ISLAND1-7,COLLECTABLES}_PAINTING_SPRITES.png + _layout.json | - | colour sheets to paint (whole figures, today's colours, collectables per colour; layout = read-back map) |
+| sheets/rainbow_islands_*_REFERENCE_ALL_SPRITES.png | - | every figure / colour as the build draws it (not read back) |
 
 ## Treasure Island Dizzy - `treasure_island_dizzy/` (games/treasure_island_dizzy.md; hardware: plain runs)
 
