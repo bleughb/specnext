@@ -75,15 +75,15 @@ input paths point there), not copied.
 | everyones_a_wally_updated_REFERENCE_ALL_SPRITES.png | - | every figure whole, as the build colours it (not read back) |
 | everyones_a_wally_updated_preview.png | - | 8 shots, 2x: the original (left) and the build (clean ULA + the Layer 2 figures the model draws) |
 
-## Rainbow Islands (128K) - `rainbow_islands/` (games/rainbow_islands.md; EXCLUDED from automatic selftest checks; hardware: c5e1823d / diag 71222105 untested (2026-10-19: no raster wait, music queue); bffd9357 had random corruption + slowdowns)
+## Rainbow Islands (128K) - `rainbow_islands/` (games/rainbow_islands.md; EXCLUDED from automatic selftest checks; hardware: fe34236c / diag 60bda664 untested (2026-10-19: no raster wait, music queue; diag 71222105 video: yellow unreliable); bffd9357 had random corruption + slowdowns)
 
 | File | MD5 | What |
 |---|---|---|
 | rainbow.nex | 7ac543fb51c7a3c4137778eeb3cdc175 | plain conversion |
 | rainbow.rzx | 55046d1893bba0a4faf314ecd3a9638b | recording (RZX) |
 | rainbow.z80 | 4c98b980b1726af545fccc99665ef29b | snapshot |
-| rainbow_sprites.nex | c5e1823de3a66b3c468961ebb72d383d | modified game (sprites; no raster wait, music one AY tick per interrupt, faster tiles + commit) |
-| rainbow_sprites_diag.nex | 712221059d9351bece24629e3ae7a77d | diagnostic build (border colours: blue = deferred commit at the interrupt, red = tile built, yellow = frame overran) |
+| rainbow_sprites.nex | fe34236c476290cfec10183ef90d6141 | modified game (sprites; no raster wait, music one AY tick per interrupt, faster tiles + commit) |
+| rainbow_sprites_diag.nex | 60bda66413c381ba918bf39e7b70b5b7 | diagnostic build (border: blue = deferred commit, red = tile built, yellow = overrun, magenta = overrun flag unreliable) |
 | rainbownew.rzx | 47bb2b163a947724c343a2bc1b039458 | recording (RZX) |
 
 ## Treasure Island Dizzy - `treasure_island_dizzy/` (games/treasure_island_dizzy.md; hardware: plain runs)
