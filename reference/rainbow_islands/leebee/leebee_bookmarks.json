@@ -1,0 +1,210 @@
+{
+ "source": "rainbowislands_leebee.rzx",
+ "md5": "92bbaa0a24102b3e5169d5c6432e4928",
+ "frames": 195356,
+ "note": "bookmark = frame where the round variable (0x636F) changes; each cut starts with the machine state at that frame",
+ "bookmarks": [
+  {
+   "round": 1,
+   "island": 1,
+   "file": "leebee_r01_island1_round1.rzx",
+   "start": 1345,
+   "frames": 5121
+  },
+  {
+   "round": 2,
+   "island": 1,
+   "file": "leebee_r02_island1_round2.rzx",
+   "start": 6466,
+   "frames": 4494
+  },
+  {
+   "round": 3,
+   "island": 1,
+   "file": "leebee_r03_island1_round3.rzx",
+   "start": 10960,
+   "frames": 4685
+  },
+  {
+   "round": 4,
+   "island": 1,
+   "file": "leebee_r04_island1_round4.rzx",
+   "start": 15645,
+   "frames": 5754
+  },
+  {
+   "round": 5,
+   "island": 2,
+   "file": "leebee_r05_island2_round1.rzx",
+   "start": 21399,
+   "frames": 6508
+  },
+  {
+   "round": 6,
+   "island": 2,
+   "file": "leebee_r06_island2_round2.rzx",
+   "start": 27907,
+   "frames": 6137
+  },
+  {
+   "round": 7,
+   "island": 2,
+   "file": "leebee_r07_island2_round3.rzx",
+   "start": 34044,
+   "frames": 6238
+  },
+  {
+   "round": 8,
+   "island": 2,
+   "file": "leebee_r08_island2_round4.rzx",
+   "start": 40282,
+   "frames": 5674
+  },
+  {
+   "round": 9,
+   "island": 3,
+   "file": "leebee_r09_island3_round1.rzx",
+   "start": 45956,
+   "frames": 5839
+  },
+  {
+   "round": 10,
+   "island": 3,
+   "file": "leebee_r10_island3_round2.rzx",
+   "start": 51795,
+   "frames": 7466
+  },
+  {
+   "round": 11,
+   "island": 3,
+   "file": "leebee_r11_island3_round3.rzx",
+   "start": 59261,
+   "frames": 5231
+  },
+  {
+   "round": 12,
+   "island": 3,
+   "file": "leebee_r12_island3_round4.rzx",
+   "start": 64492,
+   "frames": 8488
+  },
+  {
+   "round": 13,
+   "island": 4,
+   "file": "leebee_r13_island4_round1.rzx",
+   "start": 72980,
+   "frames": 6098
+  },
+  {
+   "round": 14,
+   "island": 4,
+   "file": "leebee_r14_island4_round2.rzx",
+   "start": 79078,
+   "frames": 6170
+  },
+  {
+   "round": 15,
+   "island": 4,
+   "file": "leebee_r15_island4_round3.rzx",
+   "start": 85248,
+   "frames": 6772
+  },
+  {
+   "round": 16,
+   "island": 4,
+   "file": "leebee_r16_island4_round4.rzx",
+   "start": 92020,
+   "frames": 11235
+  },
+  {
+   "round": 17,
+   "island": 5,
+   "file": "leebee_r17_island5_round1.rzx",
+   "start": 103255,
+   "frames": 6525
+  },
+  {
+   "round": 18,
+   "island": 5,
+   "file": "leebee_r18_island5_round2.rzx",
+   "start": 109780,
+   "frames": 4787
+  },
+  {
+   "round": 19,
+   "island": 5,
+   "file": "leebee_r19_island5_round3.rzx",
+   "start": 114567,
+   "frames": 3327
+  },
+  {
+   "round": 20,
+   "island": 5,
+   "file": "leebee_r20_island5_round4.rzx",
+   "start": 117894,
+   "frames": 5895
+  },
+  {
+   "round": 21,
+   "island": 6,
+   "file": "leebee_r21_island6_round1.rzx",
+   "start": 123789,
+   "frames": 9441
+  },
+  {
+   "round": 22,
+   "island": 6,
+   "file": "leebee_r22_island6_round2.rzx",
+   "start": 133230,
+   "frames": 7978
+  },
+  {
+   "round": 23,
+   "island": 6,
+   "file": "leebee_r23_island6_round3.rzx",
+   "start": 141208,
+   "frames": 6660
+  },
+  {
+   "round": 24,
+   "island": 6,
+   "file": "leebee_r24_island6_round4.rzx",
+   "start": 147868,
+   "frames": 8753
+  },
+  {
+   "round": 25,
+   "island": 7,
+   "file": "leebee_r25_island7_round1.rzx",
+   "start": 156621,
+   "frames": 8007
+  },
+  {
+   "round": 26,
+   "island": 7,
+   "file": "leebee_r26_island7_round2.rzx",
+   "start": 164628,
+   "frames": 7323
+  },
+  {
+   "round": 27,
+   "island": 7,
+   "file": "leebee_r27_island7_round3.rzx",
+   "start": 171951,
+   "frames": 7641
+  },
+  {
+   "round": 28,
+   "island": 7,
+   "file": "leebee_r28_island7_round4.rzx",
+   "start": 179592,
+   "frames": 10928
+  },
+  {
+   "round": "ending",
+   "file": "leebee_ending.rzx",
+   "start": 190520,
+   "frames": 4836
+  }
+ ]
+}
