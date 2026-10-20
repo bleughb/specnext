@@ -218,3 +218,16 @@ Images an agent made for review (they show game graphics) go in docs/review/<gam
 | lode_runner_REFERENCE_ALL_SPRITES.png | - | every figure whole, as the build colours it (not read back) |
 | lode_runner_REFERENCE_ALL_SPRITES_layout.json | - | its layout |
 | lode_runner_preview.png | - | phase A preview: original / planned build at 8 frames |
+
+## Match Day - `match_day/` (games/match_day.md; phase A, no build yet)
+
+| File | MD5 | What |
+|---|---|---|
+| Match_Day_1985_Ocean.rzx | 79427a4aa442948ff7d8f6f15e178512 | recording (RZX, Dean 2026-10-20: title, menu, walk-on, ~6 match minutes, a goal, a keeper dive) |
+| Match_Day_spectrumcomputing.rzx | 04fd855b05d1849c117a91ee1199b9a3 | second recording (50403 frames, 1008 s; spectrumcomputing.co.uk entry 3067, supplied by Dean 2026-10-20; its own start snapshot, same code at every plotter / line writer) |
+| Match_Day_1985_Ocean.z80 | d5ea19e487141ce922d0e96c02fd9054 | snapshot (48K, title/menu) |
+| match_day_PAINTING_SPRITES.png | - | sheet to paint (+ _layout.json): fewest whole figures with every graphics byte, from both recordings; swatch 1 = strip colour, 2 = socks colour, 3-15 fixed (`python -m nexclash.matchday sheet Z80 RZX RZX`) |
+| match_day_REFERENCE_ALL_SPRITES.png | - | every figure drawn (+ _layout.json), not read back |
+| match_day_PREVIEW.png | - | original / planned at RZX frames 2200, 3760, 5400, 6100 |
+| match_day_PREVIEW_solid.png | - | same, players solid: enclosed gaps in the pitch green (Dean 2026-10-20) |
+| match_day_PREVIEW_dive.png | - | keeper dive at frames 3746-3790: top original (torn), bottom planned (halves locked) |
