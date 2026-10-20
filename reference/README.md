@@ -228,3 +228,4 @@ Images an agent made for review (they show game graphics) go in docs/review/<gam
 | match_day_PAINTING_SPRITES.png | - | sheet to paint (+ _layout.json): fewest whole figures with every graphics byte; swatch 1 = strip colour, 2 = socks colour, 3-15 fixed (`python -m nexclash.matchday sheet Z80 RZX`) |
 | match_day_REFERENCE_ALL_SPRITES.png | - | every figure drawn (+ _layout.json), not read back |
 | match_day_PREVIEW.png | - | original / planned at RZX frames 2200, 3760, 5400, 6100 |
+| match_day_PREVIEW_solid.png | - | same, players solid: enclosed gaps in the opposite team's colours (Dean 2026-10-20) |
