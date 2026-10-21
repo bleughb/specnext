@@ -251,3 +251,20 @@ Images an agent made for review (they show game graphics) go in docs/review/<gam
 | cyclone_REFERENCE_ALL_SPRITES.png (+ _layout.json) | - | every figure drawing (102), not read back |
 | cyclone_scc_crash_17800.rzx | 1e29775cc6df7f289dd2094169a410ba | bookmark of cyclone_scc.rzx (rzx.cut, 700 frames; a crash and the next life) |
 | cyclone_scc_gameover_179500.rzx | 5f792e811ed695461f950e87b30bb567 | bookmark of cyclone_scc.rzx (rzx.cut, 428 frames; last crash, game over, back to the menu) |
+
+## Hardware test: Z80N instructions - `hwtests/z80ntest/` (not a game; nexclash tools/hwtests/README.md "z80ntest")
+
+The test .nex and the photos of its runs: every Z80N instruction's result, flags and T-states on a
+real Next against nexclash/z80n.py. Results and what they settled: nexclash tools/hwtests/README.md
+(board results, CSpect) and the nexclash/z80n.py docstring. Rebuild: `python tools/hwtests/build.py
+z80ntest` in nexclash (same MD5 from nexclash #60).
+
+| File | MD5 | What |
+|---|---|---|
+| z80ntest.nex | 28528e1035cf193227e4d6402f6b6e43 | z80ntest v2 (nexclash 4a2b4a9 / main after #60) |
+| board_v1_func.webp | 5cc8f6a69ebecdecfee9353cc0dfc8bb | v1 on the board, core 3.02.00: FUNC page (LDWSF yellow -> LDWS fix; LDPIRX red) |
+| board_v1_time.webp | 3fb234c4806ac9a1743e0589e6645b54 | v1 on the board: TIME page, all green (LDWS 13.9) |
+| board_v2_func.webp | f26ba903d9dfc6528131f9a433e08138 | v2 on the board, core 3.02.00: all green but LDPIRX (fixed in core 3.02.02) |
+| board_v2_time.webp | 03e5aecc8ce7eb6e31f3f1ee099d1634 | v2 on the board: TIME page, all green |
+| cspect_3.3.1.0_func.webp | 5bb14fadf402f396d729ffd1916c68f7 | v2 in CSpect 3.3.1.0 (reports core 4.00.00): ADD rr,A, LDIX-family, LDWS, JP (C) flags differ from the board |
+| cspect_3.3.1.0_time.webp | fb8264ded709082503e412f5328ae4ad | v2 in CSpect: PUSH nn 19.0 T (board 23) |
