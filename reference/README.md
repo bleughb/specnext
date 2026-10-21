@@ -234,7 +234,7 @@ Images an agent made for review (they show game graphics) go in docs/review/<gam
 | match_day_PREVIEW_solid.png | - | same, players solid: enclosed gaps in the pitch green (Dean 2026-10-20) |
 | match_day_PREVIEW_dive.png | - | keeper dive at frames 3746-3790: top original (torn), bottom planned (halves locked) |
 
-## Cyclone - `cyclone/` (games/cyclone.md; phase A; hardware: untested)
+## Cyclone - `cyclone/` (games/cyclone.md; sprite build verified in software; hardware: untested)
 
 | File | MD5 | What |
 |---|---|---|
@@ -242,9 +242,12 @@ Images an agent made for review (they show game graphics) go in docs/review/<gam
 | Cyclone_1985_Vortex_Software_a.rzx | d17bb2f7ca6aa8afbd1ed8caa7061dca | recording as sent (Fuse, 8 autosave snapshots; 4700 frames) |
 | cyclone.z80 | 745cb8f59f865db5118e6dc98d09e385 | the RZX's first snapshot (SZX -> .z80; RAM and registers identical) |
 | cyclone.rzx | 77010f7b6d806fbe44bf6c5dcfc7bec8 | the recording stripped (`rzx strip`: 8 autosaves dropped); take-off, land, sea, map screen |
-| cyclone.nex | 6071b59ceb016f2632f354e68d49a5e5 | plain conversion (`convert cyclone.z80 --tail 0x5D24`; boot sim OK) |
+| cyclone.nex | 390516396ca4d385c94b7f7bd2315d31 | plain conversion (tail 0x5D24, printer buffer put back: the main loop lives at 0x5B00; boot sim with NEXLOAD OK). Replaces 6071b59c (2026-10-21 morning), which lacked the printer-buffer fix and would not run on hardware |
+| cyclone_sprites.nex | 25c1b1e070b07565fe4d1a38f69e3024 | modified game = the record's build (helicopter + aircraft as sprites with a white mask, shadows dithered; default colours) |
 | cyclone_scc.rzx | 6fd92e589e12fb0b3152c5cb725fbd1b | whole-game recording (spectrumcomputing.co.uk entry 1206, sent by the user 2026-10-21): 179928 frames, starts at the menu, no autosaves; never replayed in full again - use bookmarks |
 | cyclone_scc_aircraft_24500.rzx | c737e6252c1a7a8457263e151b2a4448 | bookmark of cyclone_scc.rzx (rzx.cut, 2000 frames; aircraft) |
 | cyclone_scc_aircraft_167000.rzx | 6044da5a8458ad042f9e0cb55bc5e38d | bookmark of cyclone_scc.rzx (rzx.cut, 2000 frames; aircraft) |
 | cyclone_PAINTING_SPRITES.png (+ _layout.json) | - | sheet to paint (`python -m nexclash.cyclone sheet cyclone.rzx cyclone_scc_aircraft_24500.rzx cyclone_scc_aircraft_167000.rzx --z80 cyclone.z80`), 84 figures; helicopter + aircraft with mask |
 | cyclone_REFERENCE_ALL_SPRITES.png (+ _layout.json) | - | every figure drawing (102), not read back |
+| cyclone_scc_crash_17800.rzx | 1e29775cc6df7f289dd2094169a410ba | bookmark of cyclone_scc.rzx (rzx.cut, 700 frames; a crash and the next life) |
+| cyclone_scc_gameover_179500.rzx | 5f792e811ed695461f950e87b30bb567 | bookmark of cyclone_scc.rzx (rzx.cut, 428 frames; last crash, game over, back to the menu) |
