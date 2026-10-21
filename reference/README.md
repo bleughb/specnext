@@ -234,7 +234,7 @@ Images an agent made for review (they show game graphics) go in docs/review/<gam
 | match_day_PREVIEW_solid.png | - | same, players solid: enclosed gaps in the pitch green (Dean 2026-10-20) |
 | match_day_PREVIEW_dive.png | - | keeper dive at frames 3746-3790: top original (torn), bottom planned (halves locked) |
 
-## Cyclone - `cyclone/` (games/cyclone.md; sprite build verified in software; hardware: untested)
+## Cyclone - `cyclone/` (games/cyclone.md; sprite build verified in software; hardware: 25c1b1e0 loads, runs and plays for a few minutes, user 2026-10-21)
 
 | File | MD5 | What |
 |---|---|---|
