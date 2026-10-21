@@ -233,3 +233,13 @@ Images an agent made for review (they show game graphics) go in docs/review/<gam
 | match_day_PREVIEW.png | - | original / planned at RZX frames 2200, 3760, 5400, 6100 |
 | match_day_PREVIEW_solid.png | - | same, players solid: enclosed gaps in the pitch green (Dean 2026-10-20) |
 | match_day_PREVIEW_dive.png | - | keeper dive at frames 3746-3790: top original (torn), bottom planned (halves locked) |
+
+## Cyclone - `cyclone/` (games/cyclone.md; phase A; hardware: untested)
+
+| File | MD5 | What |
+|---|---|---|
+| Cyclone_1985_Vortex_Software_a.z80 | c69e10137827958f8d39483cdf84f159 | snapshot as sent (saved MID TAPE LOAD, PC in ROM LD-BYTES: not used) |
+| Cyclone_1985_Vortex_Software_a.rzx | d17bb2f7ca6aa8afbd1ed8caa7061dca | recording as sent (Fuse, 8 autosave snapshots; 4700 frames) |
+| cyclone.z80 | 745cb8f59f865db5118e6dc98d09e385 | the RZX's first snapshot (SZX -> .z80; RAM and registers identical) |
+| cyclone.rzx | 77010f7b6d806fbe44bf6c5dcfc7bec8 | the recording stripped (`rzx strip`: 8 autosaves dropped); take-off, land, sea, map screen |
+| cyclone.nex | 6071b59ceb016f2632f354e68d49a5e5 | plain conversion (`convert cyclone.z80 --tail 0x5D24`; boot sim OK) |
