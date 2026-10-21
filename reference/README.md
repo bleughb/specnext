@@ -246,5 +246,5 @@ Images an agent made for review (they show game graphics) go in docs/review/<gam
 | cyclone_scc.rzx | 6fd92e589e12fb0b3152c5cb725fbd1b | whole-game recording (spectrumcomputing.co.uk entry 1206, sent by the user 2026-10-21): 179928 frames, starts at the menu, no autosaves; never replayed in full again - use bookmarks |
 | cyclone_scc_aircraft_24500.rzx | c737e6252c1a7a8457263e151b2a4448 | bookmark of cyclone_scc.rzx (rzx.cut, 2000 frames; aircraft) |
 | cyclone_scc_aircraft_167000.rzx | 6044da5a8458ad042f9e0cb55bc5e38d | bookmark of cyclone_scc.rzx (rzx.cut, 2000 frames; aircraft) |
-| cyclone_PAINTING_SPRITES.png (+ _layout.json) | - | sheet to paint (`python -m nexclash.cyclone sheet cyclone.rzx cyclone_scc_aircraft_24500.rzx cyclone_scc_aircraft_167000.rzx --z80 cyclone.z80`), 71 figures |
+| cyclone_PAINTING_SPRITES.png (+ _layout.json) | - | sheet to paint (`python -m nexclash.cyclone sheet cyclone.rzx cyclone_scc_aircraft_24500.rzx cyclone_scc_aircraft_167000.rzx --z80 cyclone.z80`), 84 figures; helicopter + aircraft with mask |
 | cyclone_REFERENCE_ALL_SPRITES.png (+ _layout.json) | - | every figure drawing (102), not read back |
