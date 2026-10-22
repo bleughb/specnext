@@ -77,6 +77,9 @@ input paths point there), not copied.
 
 ## Rainbow Islands (128K) - `rainbow_islands/` (games/rainbow_islands.md; EXCLUDED from automatic selftest checks; hardware: cf017271 / diag c16751b0 untested (2026-10-19: no rainbow border, collectable insides); c5e1823d "seems better")
 
+DEPRECATED (2026-10-21): superseded by `rainbow_z80n/` (below); these files stay as they are, and the
+inputs here are also rainbow_z80n's inputs.
+
 | File | MD5 | What |
 |---|---|---|
 | rainbow.nex | 7ac543fb51c7a3c4137778eeb3cdc175 | plain conversion |
@@ -268,3 +271,15 @@ z80ntest` in nexclash (same MD5 from nexclash #60).
 | board_v2_time.webp | 03e5aecc8ce7eb6e31f3f1ee099d1634 | v2 on the board: TIME page, all green |
 | cspect_3.3.1.0_func.webp | 5bb14fadf402f396d729ffd1916c68f7 | v2 in CSpect 3.3.1.0 (reports core 4.00.00): ADD rr,A, LDIX-family, LDWS, JP (C) flags differ from the board |
 | cspect_3.3.1.0_time.webp | fb8264ded709082503e412f5328ae4ad | v2 in CSpect: PUSH nn 19.0 T (board 23) |
+
+## Rainbow Islands, Z80N version - `rainbow_z80n/` (games/rainbow_z80n.md; the version going forward; hardware: untested)
+
+Inputs are the deprecated version's files in `rainbow_islands/` (rainbow.z80, rainbow.rzx, rainbownew.rzx, leebee/),
+not copied: the record's paths point there. Built by `selftest.py --game rainbow_z80n --verify --stamp`
+(2026-10-22, both RZX IDENTICAL).
+
+| File | MD5 | What |
+|---|---|---|
+| rainbow_z80n.nex | 7ac543fb51c7a3c4137778eeb3cdc175 | plain conversion (identical to rainbow_islands/rainbow.nex) |
+| rainbow_z80n_sprites.nex | bda21ab675fa271b6f51f332aae14206 | modified game: as rainbow_sprites cf017271 + Z80N hooks (SWAPNIB, MIRROR A, ADD HL,A) + raster pair read until it agrees |
+| rainbow_z80n_sprites_diag.nex | bb2058c8bb9d593364aa1515a38a130c | the same + diagnostic border (blue = commit deferred, red = tile built, yellow = overrun) |
