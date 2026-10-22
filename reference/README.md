@@ -283,3 +283,14 @@ not copied: the record's paths point there. Built by `selftest.py --game rainbow
 | rainbow_z80n.nex | 7ac543fb51c7a3c4137778eeb3cdc175 | plain conversion (identical to rainbow_islands/rainbow.nex) |
 | rainbow_z80n_sprites.nex | bda21ab675fa271b6f51f332aae14206 | modified game: as rainbow_sprites cf017271 + Z80N hooks (SWAPNIB, MIRROR A, ADD HL,A) + raster pair read until it agrees |
 | rainbow_z80n_sprites_diag.nex | bb2058c8bb9d593364aa1515a38a130c | the same + diagnostic border (blue = commit deferred, red = tile built, yellow = overrun) |
+
+## Hardware test: technique costs - `hwtests/nextbench/` (not a game; nexclash tools/hwtests/README.md "nextbench")
+
+The benchmark .nex and the photos of its first board run. Table and conclusions: nexclash
+docs/TECHNIQUES.md 1.0.
+
+| File | MD5 | What |
+|---|---|---|
+| nextbench.nex | c78bde9c5a6a3a88cb91be72edcfbfbd | nextbench v1 (nexclash 0b51cc9) |
+| board_v1_p1.webp | 2fd5d98d921a504e6d035373ac0351b0 | board, core 3.02.00: copies, fills, pattern uploads (DMA "!" at 3.5 MHz: wrong copies) |
+| board_v1_p2.webp | 1451b57c68f599948d5b39adfa60fe00 | board: attributes, registers, paging, cells, scroll, palette, copper |
