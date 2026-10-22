@@ -300,4 +300,9 @@ docs/TECHNIQUES.md 1.0 (v1) and 1.0b (v2).
 | board_v2_p3.webp | b45117bbb42548335cf6e239a72c1fe4 | uploads OUTI / DMA, attributes, hides, registers |
 | board_v2_p4.webp | e42607a25880053a5c1827e800b0fb01 | paging, cells, flips, scroll, palette, copper load |
 | board_v2_p5.webp | fdd65f7784d72bf46f9e5da417cfccda | LDIR with the copper running; CP WAIT 122 / 120, CP APART 0, CP SHARE 255 |
-| nextbench_v3.nex | a188e0d560a28c59656646b05fc0bca5 | nextbench v3 (v2's 88 rows x 5 runs, "~" = varies between runs, variation page; line read fixed; nexclash 625df06) - not yet run on a board |
+| nextbench_v3.nex | a188e0d560a28c59656646b05fc0bca5 | nextbench v3 (v2's 88 rows x 5 runs, "~" = varies between runs, variation page; line read fixed; nexclash 625df06); board run 2026-10-22: no value varied between the 5 runs |
+| board_v3_p1.webp | a91824a514bf87edf398e609c51c2eeb | v3 on the board, core 3.02.00 (5 runs, means): copies LDIR / LDI / stack / DMA 1-256 |
+| board_v3_p2.webp | b875fb660e94ef4d9b5d6dabb50f5ea7 | DMA 1K-2K, rtg / rrun / burst, LDIRX, fills, OTIR uploads |
+| board_v3_p3.webp | 7fad1e7e571d1efb28d6c79df154a3ee | uploads OUTI / DMA, attributes, hides, registers |
+| board_v3_p4.webp | 05a30e2b70aab960f396c73f189123b6 | paging, cells, flips, scroll, palette, copper load |
+| board_v3_p5.webp | c2cdf6f12a11f05d730b05f51f3d48df | LDIR with the copper running; CP WAIT 120 / 120, CP APART 0, CP SHARE 255 (variation page 6: none, not photographed) |
