@@ -300,3 +300,4 @@ docs/TECHNIQUES.md 1.0 (v1) and 1.0b (v2).
 | board_v2_p3.webp | b45117bbb42548335cf6e239a72c1fe4 | uploads OUTI / DMA, attributes, hides, registers |
 | board_v2_p4.webp | e42607a25880053a5c1827e800b0fb01 | paging, cells, flips, scroll, palette, copper load |
 | board_v2_p5.webp | fdd65f7784d72bf46f9e5da417cfccda | LDIR with the copper running; CP WAIT 122 / 120, CP APART 0, CP SHARE 255 |
+| nextbench_v3.nex | a188e0d560a28c59656646b05fc0bca5 | nextbench v3 (v2's 88 rows x 5 runs, "~" = varies between runs, variation page; line read fixed; nexclash 625df06) - not yet run on a board |
