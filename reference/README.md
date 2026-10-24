@@ -306,3 +306,12 @@ docs/TECHNIQUES.md 1.0 (v1) and 1.0b (v2).
 | board_v3_p3.webp | 7fad1e7e571d1efb28d6c79df154a3ee | uploads OUTI / DMA, attributes, hides, registers |
 | board_v3_p4.webp | 05a30e2b70aab960f396c73f189123b6 | paging, cells, flips, scroll, palette, copper load |
 | board_v3_p5.webp | c2cdf6f12a11f05d730b05f51f3d48df | LDIR with the copper running; CP WAIT 120 / 120, CP APART 0, CP SHARE 255 (variation page 6: none, not photographed) |
+
+## Incredible Shrinking Fireman — `incredible_shrinking_fireman-add-GPT6_ASTRA/`
+
+Phase A only, branch `claude/incredible-shrinking-fireman-add-GPT6_ASTRA`. Inputs are the user's
+attached snapshot and RZX, renamed with the run suffix. Full RZX replay: 32,492 frames, no desync.
+Includes original-game preview, whole-figure painting/reference PNGs with layouts, separate
+collectable sheets, phaseA_results JSON, and plain NEX (simulated normal/NEXLOAD boot PASS).
+No sprite build or hardware verification yet. Notes and reproduction commands:
+`nexclash/games/incredible_shrinking_fireman-add-GPT6_ASTRA.md`.

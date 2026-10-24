@@ -1,0 +1,29 @@
+{
+  "phase": "A \u2014 awaiting visual confirmation",
+  "rzx_frames": 32492,
+  "rzx_desync": null,
+  "painting_figures": 192,
+  "reference_figures": 198,
+  "plain_boot": {
+    "normal": "PASS",
+    "nexload": "PASS",
+    "tail": [
+      24128,
+      24208
+    ]
+  },
+  "sprite_conversion": "not implemented",
+  "hardware": "untested",
+  "inputs": {
+    "incredible_shrinking_fireman-add-GPT6_ASTRA.z80": {
+      "bytes": 36200,
+      "md5": "fc8e7535fc42afb60c12625b5fdfd064",
+      "sha256": "26e46ab725442acfc078dd2552957cf66f0f67b8a7c6ab976ff7f1efc37e6103"
+    },
+    "incrediblefireman-add-GPT6_ASTRA.rzx": {
+      "bytes": 78831,
+      "md5": "8154d148d90b0f3cc94229bc143bac68",
+      "sha256": "73ec4e7f288c4bc9c120012d651add3098240ec06389c6272a5cd5f2e54de6c1"
+    }
+  }
+}
