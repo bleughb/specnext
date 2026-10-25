@@ -194,6 +194,15 @@ Images an agent made for review (they show game graphics) go in docs/review/<gam
 | target_renegade_PREVIEW.png | - | four RZX frames: original, ULA layer, ULA + sprites |
 | target_renegade_entry.z80 / target_renegade_plain_test.nex | - / 23647948ff22fc10e26b589cf1b83193 | phase A: the loader's state after the entry code; a plain test without front end |
 
+## Atic Atac - `atic_atac/` (games/atic_atac.md; stage 0 done 2026-10-26; hardware: untested)
+
+| File | MD5 | What |
+|---|---|---|
+| Atic_Atac_1983_Ultimate_Play_The_Game_a.z80 | 06b11e63d60401666332a61626a5789c | snapshot (48K; loader state: PC 0x5B89 inside the RRD descramble loop at 0x5B80, then JP 24576; Dean 2026-10-26) |
+| AticAtac.rzx | 3e3845a6391f2533d7fa45d4ad828e79 | recording from that snapshot (18,278 frames, 6 min; play to the escape / "Congratulations" screen; no game over) |
+| atic_atac.nex | e710fa8785802f1aa51f214d95c82343 | plain conversion (tail 0x5B00; boot check OK) |
+| atic_atac_preview.png | 3cb1e9f83e861b24125d95a2ecf01e41 | survey preview (8 frames, plot routines by caller) |
+
 ## Jetpac - `jetpac/` (games/jetpac.md; hardware: untested)
 
 | File | MD5 | What |
