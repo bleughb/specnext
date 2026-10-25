@@ -7,6 +7,12 @@ Start sessions with both repos selected: bleughb/nexclash (public toolkit) and b
 > New game: <GAME>. Snapshot and RZX attached. Repos: bleughb/nexclash + bleughb/specnext -
 > follow nexclash/CLAUDE.md.
 
+## Continue a game (a NEW chat for each phase; nexclash PLAYBOOK "Sessions")
+> Continue <GAME> in nexclash. Repos: bleughb/nexclash + bleughb/specnext - follow
+> nexclash/CLAUDE.md, start from the "Next session" block in games/<game>.md.
+
+Design question (end of phase A): reply "defaults", or the numbers to change.
+
 ## A contribution arrived (upload link)
 > Repo: bleughb/nexclash. Review the attached nexclash_contribution_<GAME>.zip
 > (tools/merge_contribution.py), check it against CLAUDE.md's rules, run selftest if shared code
