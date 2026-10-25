@@ -4,7 +4,7 @@ rem run_cspect_incredible_shrinking_fireman-add-OPUS.bat
 rem Runs The Incredible Shrinking Fireman sprite build in CSpect.
 rem
 rem Keep this file in the same folder as
-rem   incredible_shrinking_fireman-add-OPUS_sprites.nex   (5f7e59ed, the sprite build)
+rem   incredible_shrinking_fireman-add-OPUS_sprites.nex   (53f2665e, the sprite build)
 rem and double-click it. To run another .nex (e.g. the plain build
 rem incredible_shrinking_fireman-add-OPUS.nex, or a recoloured
 rem ..._sprites_painted.nex), drag it onto this file.
