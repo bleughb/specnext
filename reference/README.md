@@ -309,9 +309,22 @@ docs/TECHNIQUES.md 1.0 (v1) and 1.0b (v2).
 
 ## Incredible Shrinking Fireman — `incredible_shrinking_fireman-add-GPT6_ASTRA/`
 
-Phase A only, branch `claude/incredible-shrinking-fireman-add-GPT6_ASTRA`. Inputs are the user's
-attached snapshot and RZX, renamed with the run suffix. Full RZX replay: 32,492 frames, no desync.
-Includes original-game preview, whole-figure painting/reference PNGs with layouts, separate
-collectable sheets, phaseA_results JSON, and plain NEX (simulated normal/NEXLOAD boot PASS).
-No sprite build or hardware verification yet. Notes and reproduction commands:
-`nexclash/games/incredible_shrinking_fireman-add-GPT6_ASTRA.md`.
+Branch `claude/incredible-shrinking-fireman-add-GPT6_ASTRA`. Inputs are the user's supplied
+snapshot and RZX, renamed with the run suffix. Full source replay:32,492 frames, no desync.
+Contains plain and hardware-sprite NEX builds, original-game preview, whole-figure painting and
+reference PNGs with layouts, and separate collectable sheets. The sheets support per-pixel
+painting including transparent paper bits; unchanged-sheet read-back produces no edits.
+
+- Plain NEX MD5: `f8f213e55e3da01349827f8ae7d93bee`.
+- Sprite NEX MD5: `1ea61f0bcaf2b5f27514807f8753f263`.
+- Memory scan: `memory_scan-add-GPT6_ASTRA.log`.
+- Quick differential/unit evidence: `quick_final-add-GPT6_ASTRA.json`.
+- Final acceptance: full32,492-frame differential, frame-by-frame RAM convergence,2,705 units,
+  setup and five negative controls PASS; verified stamp saved. Hardware untested.
+- Final report: `verification_report-add-GPT6_ASTRA.txt`; model comparison:
+  `verified_preview-add-GPT6_ASTRA.png` (original left, sprite model right).
+
+Runtime is adapted from the existing Fireman engine; this is not an independent benchmark.
+Sprite build converts moving figures and collectables, retaining original attribute writes for
+logic and background colour behaviour. See the matching nexclash game notes for reproduction,
+recolour commands, validation scope and the CSpect/Next checklist.

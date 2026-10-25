@@ -1,0 +1,43 @@
+Game      : incredible_shrinking_fireman-add-GPT6_ASTRA
+Engine    : incredible_shrinking_fireman_add_GPT6_ASTRA (figures and collectables -> sprites)
+Plain     : incredible_shrinking_fireman_plain-add-GPT6_ASTRA.nex  f8f213e55e3da01349827f8ae7d93bee  boot OK
+Sprites   : incredible_shrinking_fireman_sprites-add-GPT6_ASTRA.nex  1ea61f0bcaf2b5f27514807f8753f263  boot OK
+Progress  : frame 1000
+Progress  : frame 2000
+Progress  : frame 3000
+Progress  : frame 4000
+Progress  : frame 5000
+Progress  : frame 6000
+Progress  : frame 7000
+Progress  : frame 8000
+Progress  : frame 9000
+Progress  : frame 10000
+Progress  : frame 11000
+Progress  : frame 12000
+Progress  : frame 13000
+Progress  : frame 14000
+Progress  : frame 15000
+Progress  : frame 16000
+Progress  : frame 17000
+Progress  : frame 18000
+Progress  : frame 19000
+Progress  : frame 20000
+Progress  : frame 21000
+Progress  : frame 22000
+Progress  : frame 23000
+Progress  : frame 24000
+Progress  : frame 25000
+Progress  : frame 26000
+Progress  : frame 27000
+Progress  : frame 28000
+Progress  : frame 29000
+Progress  : frame 30000
+Progress  : frame 31000
+Progress  : frame 32000
+Verify    : incrediblefireman-add-GPT6_ASTRA.rzx  32492 frames: {'collected isr': 3, 'isr': 29891, 'collected c': 3, 'c': 164, 'collected pl': 3, 'pl': 27883, 'collected ep': 3, 'ep': 27883, 'collected dia': 3, 'dia': 79, 'collected rd': 3, 'rd': 674333, 'ISR entry to hook site, T total': 530460069, 'ISR entry to hook site, T max': 68989, 'T original, kind isr': 717384, 'T patched, kind isr': 368744801, 'T patched, isr, worst': 53301, 'slot pixels compared': 7736176, 'hook instructions checked for interrupt safety': 702459, 'T original, kind c': 1640, 'T patched, kind c': 30504, 'T original, kind pl': 705497976, 'T patched, kind pl': 691772831, 'plots': 27883, 'removed bitmap stores tracked at write time': 2711913, 'T original, kind dia': 127585, 'T patched, kind dia': 139514, 'diamond pixels compared': 384200, 'T original, kind rd': 14581392, 'T patched, kind rd': 729427955, 'figure bytes overwritten by other writers': 10500, "plot ends with a different F / AF' (screen-derived leftover, see convergence)": 280, 'sprite update entered with interrupts enabled': 19} -> IDENTICAL
+F/AF' check: 32492 frames, F and AF' scrambled at 27883 plot ends -> memory identical at every frame end: YES
+Unit      : {'all-frame edge cases ok': 1792, 'multi-slot cases ok': 60, 'no slot shown cases ok': 1, 'collectable cases ok': 80, 'virtual read cases ok': 400, 'collectable virtual read ok': 350, 'identical enemy cancellation ok': 5, 'synthetic per-pixel paint ok': 15, 'negative control omitted paint: detected': 1, 'ISR entry IFF 0 ok': 1, 'ISR entry IFF 1 ok': 1, 'setup routine ok': 1, 'negative control wrong display colours: detected': 1, 'negative control no virtual read: detected': 1, 'negative control IY corruption in interruptible hook: detected': 1, 'negative control MMU mapping without DI: detected': 1} -> PASS
+Result    : PASSED
+
+Hardware checklist: starts; player visible and animating; hidden in boxes/room changes;
+title music unchanged. Problems: record an RZX (Fuse, autosave OFF) and send it.
