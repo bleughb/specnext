@@ -12,7 +12,11 @@ rem ------------------------------------------------------------------
 setlocal
 
 rem ==== Settings - edit these to match your PC ====================
-set "CSPECT=C:\CSpect\CSpect.exe"
+rem CSpect 3.3.1.0 in C:\CSpect3_3_1_0; if it is not there, a CSpect3_3_1_0 folder next to this
+rem file or one folder up is used.
+set "CSPECT=C:\CSpect3_3_1_0\CSpect.exe"
+if not exist "%CSPECT%" if exist "%~dp0CSpect3_3_1_0\CSpect.exe" set "CSPECT=%~dp0CSpect3_3_1_0\CSpect.exe"
+if not exist "%CSPECT%" if exist "%~dp0..\CSpect3_3_1_0\CSpect.exe" set "CSPECT=%~dp0..\CSpect3_3_1_0\CSpect.exe"
 
 rem CSpect options:
 rem   -zxnext   emulate the Next hardware (NextRegs, MMU, sprites)
