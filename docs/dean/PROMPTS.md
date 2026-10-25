@@ -7,11 +7,13 @@ Start sessions with both repos selected: bleughb/nexclash (public toolkit) and b
 > New game: <GAME>. Snapshot and RZX attached. Repos: bleughb/nexclash + bleughb/specnext -
 > follow nexclash/CLAUDE.md.
 
-## Continue a game (a NEW chat for each phase; nexclash PLAYBOOK "Sessions")
+## Continue a game (a NEW chat for each stage; nexclash PLAYBOOK "Sessions")
 > Continue <GAME> in nexclash. Repos: bleughb/nexclash + bleughb/specnext - follow
 > nexclash/CLAUDE.md, start from the "Next session" block in games/<game>.md.
 
-Design question (end of phase A): reply "defaults", or the numbers to change.
+Design question (end of stage 1): reply "defaults", or the numbers to change. Painting the colour
+sheet comes with the first sprite build (stage 3), together with the hardware test.
+Model: Opus on medium for stages 1-3; recolour and close-out sessions can run on low effort.
 
 ## A contribution arrived (upload link)
 > Repo: bleughb/nexclash. Review the attached nexclash_contribution_<GAME>.zip
