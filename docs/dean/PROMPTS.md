@@ -10,6 +10,7 @@ Start sessions with both repos selected: bleughb/nexclash (public toolkit) and b
 ## Continue a game (a NEW chat for each stage; nexclash PLAYBOOK "Sessions")
 > Continue <GAME> in nexclash. Repos: bleughb/nexclash + bleughb/specnext - follow
 > nexclash/CLAUDE.md, start from the "Next session" block in games/<game>.md.
+> <your answers to the last question, or "defaults">
 
 Design question (end of stage 1): reply "defaults", or the numbers to change. Painting the colour
 sheet comes with the first sprite build (stage 3), together with the hardware test.
