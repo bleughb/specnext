@@ -255,6 +255,21 @@ Images an agent made for review (they show game graphics) go in docs/review/<gam
 | cyclone_scc_crash_17800.rzx | 1e29775cc6df7f289dd2094169a410ba | bookmark of cyclone_scc.rzx (rzx.cut, 700 frames; a crash and the next life) |
 | cyclone_scc_gameover_179500.rzx | 5f792e811ed695461f950e87b30bb567 | bookmark of cyclone_scc.rzx (rzx.cut, 428 frames; last crash, game over, back to the menu) |
 
+## The Incredible Shrinking Fireman - `incredible_shrinking_fireman-add-OPUS/` (games/incredible_shrinking_fireman-add-OPUS.md; sprite build verified in software 2026-10-25; hardware untested)
+
+The "-add-OPUS" suffix is this run's naming (Dean, 2026-10-25). The record stages the snapshot as
+incredible_shrinking_fireman-add-OPUS.z80.
+
+| File | MD5 | What |
+|---|---|---|
+| Incredible_Shrinking_Fireman_The_1986_Mastertronic.z80 | fc8e7535fc42afb60c12625b5fdfd064 | snapshot as sent (48K, in game code, IM 2 via ROM 0x39FF) |
+| incrediblefireman.rzx | 8154d148d90b0f3cc94229bc143bac68 | Dean's recording (Fuse, 32492 frames, no autosaves): title, many rooms, option / carrying screens |
+| incredible_shrinking_fireman-add-OPUS.nex | feb706fcdaa29f13844a7b4982dc21fa | plain conversion (tail 0x5D00, printer buffer put back; boot sim with NEXLOAD OK) |
+| incredible_shrinking_fireman-add-OPUS_sprites.nex | dc65565ca8f029de908e5d9f519f798e | modified game = the record's build (fireman, room figures, diamonds as sprites over the ULA; live inks) |
+| incredible_shrinking_fireman-add-OPUS_PAINTING_SPRITES.png (+ _layout.json) | - | sheet to paint (`python -m nexclash.incredible_shrinking_fireman_add_opus sheet incrediblefireman.rzx --z80 Incredible_Shrinking_Fireman_The_1986_Mastertronic.z80 -o incredible_shrinking_fireman-add-OPUS`), 86 figures |
+| incredible_shrinking_fireman-add-OPUS_REFERENCE_ALL_SPRITES.png (+ _layout.json) | - | every figure drawing (103, incl. 21 never drawn in the RZX), not read back |
+| incredible_shrinking_fireman-add-OPUS_phaseA_preview.png / _phaseA_callers.png | - | phase A: original / planned frames, the plotter's callers |
+
 ## Hardware test: Z80N instructions - `hwtests/z80ntest/` (not a game; nexclash tools/hwtests/README.md "z80ntest")
 
 The test .nex and the photos of its runs: every Z80N instruction's result, flags and T-states on a
