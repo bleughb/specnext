@@ -269,6 +269,7 @@ incredible_shrinking_fireman-add-OPUS.z80.
 | incredible_shrinking_fireman-add-OPUS_PAINTING_SPRITES.png (+ _layout.json) | - | sheet to paint (`python -m nexclash.incredible_shrinking_fireman_add_opus sheet incrediblefireman.rzx --z80 Incredible_Shrinking_Fireman_The_1986_Mastertronic.z80 -o incredible_shrinking_fireman-add-OPUS`), 86 figures |
 | incredible_shrinking_fireman-add-OPUS_REFERENCE_ALL_SPRITES.png (+ _layout.json) | - | every figure drawing (103, incl. 21 never drawn in the RZX), not read back |
 | incredible_shrinking_fireman-add-OPUS_phaseA_preview.png / _phaseA_callers.png | - | phase A: original / planned frames, the plotter's callers |
+| run_cspect_incredible_shrinking_fireman-add-OPUS.bat | - | double-click: runs the sprite build in CSpect (-zxnext -nextrom); drag another .nex onto it to run that |
 
 ## Hardware test: Z80N instructions - `hwtests/z80ntest/` (not a game; nexclash tools/hwtests/README.md "z80ntest")
 
