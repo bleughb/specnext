@@ -1,0 +1,18 @@
+Source    : ../specnext-add-GPT6_ASTRA/reference/incredible_shrinking_fireman-add-GPT6_ASTRA/incrediblefireman-add-GPT6_ASTRA.rzx, 32492 frames
+Counting  : from the start
+Lowest SP : 16384 (0x4000) (any SP value: games that use SP as a data pointer show it here)
+Range 0x386E-0x3CFF: 1168 of 1170 bytes untouched
+  untouched   0x3A01-0x3CFF (767 bytes)
+  untouched   0x386E-0x39FE (401 bytes)
+  touched     0x39FF-0x3A00 (2 bytes, r), first: read at PC 50451
+  writers   0 instructions
+  readers   286 instructions: 51115 (0xC7AB) x15080, 51127 (0xC7B7) x14986, 51180 (0xC7EC) x2768, 51367 (0xC8A7) x2564, 52499 (0xCD13) x2444, 50899 (0xC6D3) x1438, 50967 (0xC717) x1316, 51397 (0xC8C5) x1264, 51005 (0xC73D) x1216, 50370 (0xC4C2) x1210
+  readers+  276 more instructions in 77 routine span(s): 46025-46025 (0xB3C9) x2, 46042-46077 (0xB3DA) x158, 46263-46263 (0xB4B7) x4, 47451-47451 (0xB95B) x2, 47470-47470 (0xB96E) x2, 47698-47698 (0xBA52) x4, 47880-47880 (0xBB08) x2, 47906-47906 (0xBB22) x2, 47927-47927 (0xBB37) x2, 47939-47939 (0xBB43) x2, 47963-47968 (0xBB5B) x8, 47998-47998 (0xBB7E) x8, 48012-48021 (0xBB8C) x26, 48041-48041 (0xBBA9) x2, 48050-48050 (0xBBB2) x2, 48059-48066 (0xBBBB) x4, 48080-48091 (0xBBD0) x12, 48233-48233 (0xBC69) x2, 48270-48270 (0xBC8E) x2, 48283-48283 (0xBC9B) x2 ...
+Range 0x5E40-0x5F3F: 256 of 256 bytes untouched
+  untouched   0x5E40-0x5F3F (256 bytes)
+  writers   0 instructions
+  readers   0 instructions
+Range 0xF400-0xF41F: 32 of 32 bytes untouched
+  untouched   0xF400-0xF41F (32 bytes)
+  writers   0 instructions
+  readers   0 instructions
