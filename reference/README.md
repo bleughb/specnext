@@ -9,6 +9,13 @@ selftest.py copies each game's inputs from the `path` its record (nexclash docs/
 names under reference/ and checks their MD5s: keep file names and folders as listed here. It expects
 ../specnext next to the nexclash clone (or NEXCLASH_REFERENCE=path/to/reference).
 
+## Cauldron - `cauldron/` (games/cauldron.md; technique-card pilot; not yet surveyed)
+
+| File | MD5 | What |
+|---|---|---|
+| Cauldron_1985_Palace_Software_a.z80 | 00ee637a4f63ffe61fc3503de42d7822 | snapshot (supplied by Dean 2026-10-26) |
+| cauldron.rzx | 6974898953de6e279369a77d796407ea | recording (RZX, supplied by Dean 2026-10-26) |
+
 ## Chuckie Egg - `chuckie_egg/` (games/chuckie_egg.md; hardware: untested)
 
 | File | MD5 | What |
