@@ -323,3 +323,26 @@ docs/TECHNIQUES.md 1.0 (v1) and 1.0b (v2).
 | board_v3_p3.webp | 7fad1e7e571d1efb28d6c79df154a3ee | uploads OUTI / DMA, attributes, hides, registers |
 | board_v3_p4.webp | 05a30e2b70aab960f396c73f189123b6 | paging, cells, flips, scroll, palette, copper load |
 | board_v3_p5.webp | c2cdf6f12a11f05d730b05f51f3d48df | LDIR with the copper running; CP WAIT 120 / 120, CP APART 0, CP SHARE 255 (variation page 6: none, not photographed) |
+
+## Incredible Shrinking Fireman — `incredible_shrinking_fireman-add-GPT6_ASTRA/`
+
+Branch `claude/incredible-shrinking-fireman-add-GPT6_ASTRA`. Inputs are the user's supplied
+snapshot and RZX, renamed with the run suffix. Full source replay:32,492 frames, no desync.
+Contains plain and hardware-sprite NEX builds, original-game preview, whole-figure painting and
+reference PNGs with layouts, and separate collectable sheets. The sheets support per-pixel
+painting including transparent paper bits; unchanged-sheet read-back produces no edits.
+
+- Plain NEX MD5: `f8f213e55e3da01349827f8ae7d93bee`.
+- Sprite NEX MD5: `1ea61f0bcaf2b5f27514807f8753f263`.
+- Memory scan: `memory_scan-add-GPT6_ASTRA.log`.
+- Quick differential/unit evidence: `quick_final-add-GPT6_ASTRA.json`.
+- Final acceptance: full32,492-frame differential, frame-by-frame RAM convergence,2,705 units,
+  setup and five negative controls PASS; verified stamp saved. User reports "game runs ok" (2026-10-26); platform and
+  test coverage unspecified, so remaining hardware checklist stays open.
+- Final report: `verification_report-add-GPT6_ASTRA.txt`; model comparison:
+  `verified_preview-add-GPT6_ASTRA.png` (original left, sprite model right).
+
+Runtime is adapted from the existing Fireman engine; this is not an independent benchmark.
+Sprite build converts moving figures and collectables, retaining original attribute writes for
+logic and background colour behaviour. See the matching nexclash game notes for reproduction,
+recolour commands, validation scope and the CSpect/Next checklist.
