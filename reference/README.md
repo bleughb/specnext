@@ -320,7 +320,8 @@ painting including transparent paper bits; unchanged-sheet read-back produces no
 - Memory scan: `memory_scan-add-GPT6_ASTRA.log`.
 - Quick differential/unit evidence: `quick_final-add-GPT6_ASTRA.json`.
 - Final acceptance: full32,492-frame differential, frame-by-frame RAM convergence,2,705 units,
-  setup and five negative controls PASS; verified stamp saved. Hardware untested.
+  setup and five negative controls PASS; verified stamp saved. User reports "game runs ok" (2026-10-26); platform and
+  test coverage unspecified, so remaining hardware checklist stays open.
 - Final report: `verification_report-add-GPT6_ASTRA.txt`; model comparison:
   `verified_preview-add-GPT6_ASTRA.png` (original left, sprite model right).
 
