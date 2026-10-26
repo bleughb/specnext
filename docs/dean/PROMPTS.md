@@ -32,3 +32,20 @@ Model: Opus on medium for stages 1-3; recolour and close-out sessions can run on
 ## Hygiene
 - Merge agent PRs on GitHub, then `git pull` both repos.
 - Recordings: Fuse, autosave OFF ("Record from snapshot"), keyboard controls.
+
+## Technique-card pilot (2026-10-26; nexclash PR #75, specnext PR #52 merged first)
+Same model and effort for every pilot run (Opus, medium). After each session note its token use
+from the app's usage view in the game's Pilot log (the agent cannot see its own tokens).
+
+Cauldron, new workflow (stages 0 + 1, one session):
+> Add Cauldron to nexclash - technique-card pilot. Clone bleughb/nexclash and bleughb/specnext
+> side by side and follow nexclash/CLAUDE.md. Inputs: specnext/reference/cauldron/
+> (Cauldron_1985_Palace_Software_a.z80, cauldron.rzx). Do stage 0 (survey) and stage 1 (design)
+> with the patch-plan workflow (PLAYBOOK 2, docs/techniques/STANDARD.md): docs/techniques/index.json
+> first, at most 3 cards, then only the functions a card names; never another game's whole engine
+> module without a reason in the Stage log. Per figure routine: observations with basis
+> (observed / inferred / unknown) and scope, eligible cards (every requires true, every rejects
+> false), unknowns -> the card's probe, rejected cards with reasons; if no card fits, say so.
+> End with the stage-1 design question. Keep a "## Pilot log" in games/cauldron.md: tool calls
+> (roughly), files read more than once (name x count), cards opened, card choices later corrected,
+> wall time to the design question, user rounds.
