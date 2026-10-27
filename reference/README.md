@@ -9,7 +9,7 @@ selftest.py copies each game's inputs from the `path` its record (nexclash docs/
 names under reference/ and checks their MD5s: keep file names and folders as listed here. It expects
 ../specnext next to the nexclash clone (or NEXCLASH_REFERENCE=path/to/reference).
 
-## Cauldron - `cauldron/` (games/cauldron.md; hardware: 55ed40f8 works, 43c1ca49 untested)
+## Cauldron - `cauldron/` (games/cauldron.md; hardware: 43c1ca49 works, Dean 2026-10-27)
 
 | File | MD5 | What |
 |---|---|---|
