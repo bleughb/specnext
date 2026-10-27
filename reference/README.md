@@ -9,12 +9,16 @@ selftest.py copies each game's inputs from the `path` its record (nexclash docs/
 names under reference/ and checks their MD5s: keep file names and folders as listed here. It expects
 ../specnext next to the nexclash clone (or NEXCLASH_REFERENCE=path/to/reference).
 
-## Cauldron - `cauldron/` (games/cauldron.md; technique-card pilot; not yet surveyed)
+## Cauldron - `cauldron/` (games/cauldron.md; hardware: 43c1ca49 works, Dean 2026-10-27)
 
 | File | MD5 | What |
 |---|---|---|
 | Cauldron_1985_Palace_Software_a.z80 | 00ee637a4f63ffe61fc3503de42d7822 | snapshot (supplied by Dean 2026-10-26) |
 | cauldron.rzx | 6974898953de6e279369a77d796407ea | recording (RZX, supplied by Dean 2026-10-26) |
+| Cauldron_1985_Palace_Software_a.nex | b5b211f1fc6103ec0d42711dcc29cd0d | plain conversion (of the RZX's embedded snapshot) |
+| Cauldron_1985_Palace_Software_a_sprites.nex | 43c1ca492d7c1cc68541f02aaed9cb4c | modified game (sprites, outline, attribute shadow, colour map; no painting yet) |
+| cauldron_PAINTING_SPRITES.png | e0c3eb695138463cd4e548aeae470511 | colour sheet to paint (+ _layout.json) |
+| cauldron_REFERENCE_ALL_SPRITES.png | 4da4e7da836f278284d2d5d1805ca465 | every image (+ _layout.json; not read back) |
 
 ## Chuckie Egg - `chuckie_egg/` (games/chuckie_egg.md; hardware: untested)
 
