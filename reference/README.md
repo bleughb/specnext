@@ -300,17 +300,18 @@ z80ntest` in nexclash (same MD5 from nexclash #60).
 | cspect_3.3.1.0_func.webp | 5bb14fadf402f396d729ffd1916c68f7 | v2 in CSpect 3.3.1.0 (reports core 4.00.00): ADD rr,A, LDIX-family, LDWS, JP (C) flags differ from the board |
 | cspect_3.3.1.0_time.webp | fb8264ded709082503e412f5328ae4ad | v2 in CSpect: PUSH nn 19.0 T (board 23) |
 
-## Rainbow Islands, Z80N version - `rainbow_z80n/` (games/rainbow_z80n.md; the version going forward; hardware: untested)
+## Rainbow Islands, Z80N version - `rainbow_z80n/` (games/rainbow_z80n.md; the version going forward; hardware: 69369c89 untested, bda21ab6 works but slows down)
 
 Inputs are the deprecated version's files in `rainbow_islands/` (rainbow.z80, rainbow.rzx, rainbownew.rzx, leebee/),
 not copied: the record's paths point there. Built by `selftest.py --game rainbow_z80n --verify --stamp`
-(2026-10-22, both RZX IDENTICAL).
+(2026-10-31, both RZX IDENTICAL; all 28 LeeBee rounds verified as well). The previous build (bda21ab6 /
+diagnostic bb2058c8, 2026-10-22) is in this repo's history.
 
 | File | MD5 | What |
 |---|---|---|
 | rainbow_z80n.nex | 7ac543fb51c7a3c4137778eeb3cdc175 | plain conversion (identical to rainbow_islands/rainbow.nex) |
-| rainbow_z80n_sprites.nex | bda21ab675fa271b6f51f332aae14206 | modified game: as rainbow_sprites cf017271 + Z80N hooks (SWAPNIB, MIRROR A, ADD HL,A) + raster pair read until it agrees |
-| rainbow_z80n_sprites_diag.nex | bb2058c8bb9d593364aa1515a38a130c | the same + diagnostic border (blue = commit deferred, red = tile built, yellow = overrun) |
+| rainbow_z80n_sprites.nex | 69369c89035d39eac8e4211c2686503c | modified game: bda21ab6 (cf017271 + Z80N hooks + raster pair read) + overrun recovery (interrupts a long game frame misses are credited to the frame limiter) |
+| rainbow_z80n_sprites_diag.nex | 24e547de8e2e28982fe155611068f039 | the same + diagnostic border (blue = commit deferred, red = tile built, yellow = overrun) |
 
 ## Hardware test: technique costs - `hwtests/nextbench/` (not a game; nexclash tools/hwtests/README.md "nextbench")
 
