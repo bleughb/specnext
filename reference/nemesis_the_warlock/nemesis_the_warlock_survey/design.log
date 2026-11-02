@@ -1,0 +1,11 @@
+Source    : /home/user/specnext/reference/nemesis_the_warlock/nemesis_the_warlock.rzx, 34000 frames; shots at 3000, 9000, 16872, 25000, 33744
+Sheet     : /home/user/specnext/reference/nemesis_the_warlock/nemesis_the_warlock_survey/design.png (1048 x 588)
+Group 0   : plot 33614 (0x834E) from 33068 (0x812C): 84 calls, 0 bytes drawn, x -, y - (colour (255, 0, 0))
+Group 1   : plot 33614 (0x834E) from 33120 (0x8160): 387 calls, 0 bytes drawn, x -, y - (colour (0, 255, 0))
+Group 2   : plot 33536 (0x8300) from 33478 (0x82C6): 892 calls, 0 bytes drawn, x -, y - (colour (0, 128, 255))
+Group 3   : plot 31268 (0x7A24) from 28938 (0x710A): 3206 calls, 406940 bytes drawn, x 0-255, y 0-119 (colour (255, 0, 255))
+Group 4   : plot 31268 (0x7A24) from 34074 (0x851A): 13141 calls, 1624648 bytes drawn, x 0-255, y 0-124 (colour (255, 160, 0))
+Group 5   : plot 31362 (0x7A82) from 28944 (0x7110): 4281 calls, 547376 bytes drawn, x 0-255, y 0-119 (colour (0, 255, 255))
+Group 6   : plot 31362 (0x7A82) from 34080 (0x8520): 15178 calls, 1866822 bytes drawn, x 0-255, y 0-119 (colour (255, 255, 0))
+Group 7   : plot 31362 (0x7A82) from 29033 (0x7169): 52 calls, 6656 bytes drawn, x 0-223, y 0-119 (colour (160, 80, 255))
+Group 8   : plot 31268 (0x7A24) from 29025 (0x7161): 75 calls, 9600 bytes drawn, x 0-247, y 0-119 (colour (255, 128, 128))
