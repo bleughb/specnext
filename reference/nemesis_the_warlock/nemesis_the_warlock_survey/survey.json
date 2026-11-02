@@ -1,0 +1,290 @@
+{
+ "game": "nemesis_the_warlock",
+ "engine": "unknown",
+ "plain": {
+  "file": "nemesis_the_warlock.nex",
+  "tail": "WARNING: no proven-safe tail location; converter default used",
+  "boot": "OK (registers, RAM, ROM view, paging)"
+ },
+ "frames": 134977,
+ "routines": [
+  {
+   "routine": 32154,
+   "pixel_bytes": 92924160,
+   "attr_bytes": 0,
+   "block_copy_bytes": 92924160,
+   "calls": 27656,
+   "frames_active": 61032,
+   "callers_seen": {
+    "28957": 27605,
+    "37399": 27,
+    "28846": 24
+   },
+   "called_from_routines": {
+    "top": 27629,
+    "37378": 27
+   },
+   "T_median": 68314,
+   "T_max": 68314,
+   "call_sites": [
+    {
+     "at": 28846,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    },
+    {
+     "at": 28957,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    },
+    {
+     "at": 29893,
+     "kind": "CALL",
+     "code_ran_near": false,
+     "reached": false
+    },
+    {
+     "at": 37399,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    }
+   ],
+   "not_reached": []
+  },
+  {
+   "routine": 32040,
+   "pixel_bytes": 1794504,
+   "attr_bytes": 0,
+   "block_copy_bytes": 0,
+   "calls": 224313,
+   "frames_active": 29803,
+   "callers_seen": {
+    "32019": 194353,
+    "32036": 27609,
+    "38053": 2159,
+    "38252": 24,
+    "38261": 24,
+    "38270": 24,
+    "38279": 24,
+    "38288": 24,
+    "38297": 24,
+    "38306": 24,
+    "38315": 24
+   },
+   "called_from_routines": {
+    "31990": 221962,
+    "37992": 2159,
+    "38221": 192
+   },
+   "T_median": 308,
+   "T_max": 308,
+   "call_sites": [
+    {
+     "at": 32019,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    },
+    {
+     "at": 32036,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    },
+    {
+     "at": 38053,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    },
+    {
+     "at": 38252,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    },
+    {
+     "at": 38261,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    },
+    {
+     "at": 38270,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    },
+    {
+     "at": 38279,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    },
+    {
+     "at": 38288,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    },
+    {
+     "at": 38297,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    },
+    {
+     "at": 38306,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    },
+    {
+     "at": 38315,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    }
+   ],
+   "not_reached": []
+  },
+  {
+   "routine": 37953,
+   "pixel_bytes": 27136,
+   "attr_bytes": 0,
+   "block_copy_bytes": 27136,
+   "calls": 212,
+   "frames_active": 231,
+   "callers_seen": {
+    "37905": 188,
+    "28852": 24
+   },
+   "called_from_routines": {
+    "37892": 188,
+    "top": 24
+   },
+   "T_median": 4386,
+   "T_max": 4386,
+   "call_sites": [
+    {
+     "at": 28852,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    },
+    {
+     "at": 37905,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    }
+   ],
+   "not_reached": []
+  },
+  {
+   "routine": 32982,
+   "pixel_bytes": 0,
+   "attr_bytes": 21420,
+   "block_copy_bytes": 0,
+   "calls": 51,
+   "frames_active": 72,
+   "callers_seen": {
+    "37402": 27,
+    "28849": 24
+   },
+   "called_from_routines": {
+    "37378": 27,
+    "top": 24
+   },
+   "T_median": 17672,
+   "T_max": 17672,
+   "call_sites": [
+    {
+     "at": 28849,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    },
+    {
+     "at": 29858,
+     "kind": "CALL",
+     "code_ran_near": false,
+     "reached": false
+    },
+    {
+     "at": 37402,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    }
+   ],
+   "not_reached": []
+  },
+  {
+   "routine": 37865,
+   "pixel_bytes": 12288,
+   "attr_bytes": 1538,
+   "block_copy_bytes": 13822,
+   "calls": 2,
+   "frames_active": 6,
+   "callers_seen": {
+    "28719": 2
+   },
+   "called_from_routines": {
+    "top": 2
+   },
+   "T_median": 145232,
+   "T_max": 145232,
+   "call_sites": [
+    {
+     "at": 28719,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    },
+    {
+     "at": 36832,
+     "kind": "CALL",
+     "code_ran_near": false,
+     "reached": false
+    },
+    {
+     "at": 36985,
+     "kind": "CALL",
+     "code_ran_near": false,
+     "reached": false
+    }
+   ],
+   "not_reached": []
+  },
+  {
+   "routine": 38221,
+   "pixel_bytes": 4632,
+   "attr_bytes": 0,
+   "block_copy_bytes": 0,
+   "calls": 24,
+   "frames_active": 24,
+   "callers_seen": {
+    "28805": 24
+   },
+   "called_from_routines": {
+    "top": 24
+   },
+   "T_median": 14853,
+   "T_max": 14853,
+   "call_sites": [
+    {
+     "at": 28805,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    }
+   ],
+   "not_reached": []
+  }
+ ],
+ "coverage_gaps": 0
+}
