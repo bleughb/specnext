@@ -1,0 +1,124 @@
+# Survey: nemesis_the_warlock (48K)
+Read this first (PLAYBOOK stage 0). Raw numbers: survey.json. Commands to dig further: PLAYBOOK 2-3.
+
+## Snapshot (inspect)
+```
+Machine   : 48K
+PC        : 28637 (0x6FDD) - RAM
+BASIC     : program 23755-23884, 7 line(s); USR targets: 28600 (0x6FB8)
+                10 BORDER 0: PAPER 0: INK 0: CLEAR 28599
+                20 LOAD ""SCREEN$ : POKE 23739,111
+                30 LOAD ""CODE 
+                40 LOAD ""SCREEN$ 
+                50 LOAD ""CODE 
+                60 LOAD ""SCREEN$ 
+                70 RANDOMIZE USR 28600
+RAMTOP    : 28599 (0x6FB7)
+Interrupts: IM 1, DI, I = 0x3F
+IM 1      : ROM 0x0038 (hooks that page slot 0 must DI)
+Stack     : SP 28576 (0x6FA0); top words 2D2B 3365 A2B2 10ED
+Border    : 0
+WARNING   : none
+```
+## Engine
+Generic engine `unknown` (identify): `python nexclash.py auto` builds it.
+
+## Recordings
+- nemesis_the_warlock.rzx: no autosave snapshots
+
+## Plain conversion
+- nemesis_the_warlock.nex: WARNING: no proven-safe tail location; converter default used; simulated boot: OK (registers, RAM, ROM view, paging). The user tests it on the Next with the stage-1 question.
+
+## Recording and coverage
+- 134977 frames analysed.
+- GATE: OK - every CALL site to the top plot routines in code that ran was reached
+
+## Screen writers by routine (innermost CALL running at the write)
+| Routine | pixel / attr bytes | calls | callers seen | T per call median / max | called from | coverage |
+|---|---|---|---|---|---|---|
+| 32154 (0x7D9A) | 92924160 / 0 (92924160 block copy) | 27656 | 3 | 68314 / 68314 | 37378 (0x9202), top | 3/4 CALL sites reached |
+| 32040 (0x7D28) | 1794504 / 0 | 224313 | 11 | 308 / 308 | 37992 (0x9468), 31990 (0x7CF6), 38221 (0x954D) | 11/11 CALL sites reached |
+| 37953 (0x9441) | 27136 / 0 (27136 block copy) | 212 | 2 | 4386 / 4386 | top, 37892 (0x9404) | 2/2 CALL sites reached |
+| 32982 (0x80D6) | 0 / 21420 | 51 | 2 | 17672 / 17672 | 37378 (0x9202), top | 2/3 CALL sites reached |
+| 37865 (0x93E9) | 12288 / 1538 (13822 block copy) | 2 | 1 | 145232 / 145232 | top | 1/3 CALL sites reached |
+| 38221 (0x954D) | 4632 / 0 | 24 | 1 | 14853 / 14853 | top | 1/1 CALL sites reached |
+Block copies (LDIR / LDI / PUSH) into the screen = probably a back buffer: `scan --range BUF --writers` on its source (PLAYBOOK 2). A routine in ROM (< 0x4000) is the ROM printing text.
+
+## Preview (preview.png: screen at frames 16872,33744,50616,67488,84360,101232,118104,134976, what each plot routine draws per caller)
+```
+Source    : /home/user/specnext/reference/nemesis_the_warlock/nemesis_the_warlock.rzx, 134975 frames; shots at 16872, 33744, 50616, 67488, 84360, 101232, 118104
+Sheet     : /home/user/specnext/reference/nemesis_the_warlock/nemesis_the_warlock_survey/preview.png (1040 x 392)
+Group 0   : plot 37865 (0x93E9) from 28722 (0x7032): 2 calls, 12288 bytes drawn, x 0-255, y 0-191 (colour (255, 0, 0))
+Group 1   : plot 32040 (0x7D28) from 38056 (0x94A8): 2159 calls, 17272 bytes drawn, x 48-207, y 24-135 (colour (0, 255, 0))
+Group 2   : plot 32040 (0x7D28) from 32022 (0x7D16): 194353 calls, 1554824 bytes drawn, x 48-215, y 0-167 (colour (0, 128, 255))
+Group 3   : plot 32040 (0x7D28) from 32039 (0x7D27): 27609 calls, 220872 bytes drawn, x 104-191, y 0-7 (colour (255, 0, 255))
+Group 4   : plot 32154 (0x7D9A) from 37402 (0x921A): 27 calls, 90720 bytes drawn, x 16-239, y 8-127 (colour (255, 160, 0))
+Group 5   : plot 32982 (0x80D6) from 37405 (0x921D): 27 calls, 0 bytes drawn, x -, y - (colour (0, 255, 255))
+Group 6   : plot 38221 (0x954D) from 28808 (0x7088): 24 calls, 4632 bytes drawn, x 104-151, y 144-177 (colour (255, 255, 0))
+Group 7   : plot 32040 (0x7D28) from 38255 (0x956F): 24 calls, 192 bytes drawn, x 144-151, y 144-151 (colour (160, 80, 255))
+Group 8   : plot 32040 (0x7D28) from 38264 (0x9578): 24 calls, 192 bytes drawn, x 144-151, y 152-159 (colour (255, 128, 128))
+Group 9   : plot 32040 (0x7D28) from 38273 (0x9581): 24 calls, 192 bytes drawn, x 144-151, y 160-167 (colour (128, 255, 128))
+Group 10  : plot 32040 (0x7D28) from 38282 (0x958A): 24 calls, 192 bytes drawn, x 144-151, y 168-175 (colour (128, 128, 255))
+Group 11  : plot 32040 (0x7D28) from 38291 (0x9593): 24 calls, 192 bytes drawn, x 136-143, y 168-175 (colour (200, 200, 0))
+```
+
+## Screen writers (scan --writers)
+```
+Source    : /home/user/specnext/reference/nemesis_the_warlock/nemesis_the_warlock.rzx, 134977 frames
+Counting  : from the start
+Lowest SP : 28558 (0x6F8E) (any SP value: games that use SP as a data pointer show it here)
+Range 0x4000-0x5AFF: 0 of 6912 bytes untouched
+  touched     0x4000-0x5AFF (6912 bytes, rw), first: read at PC 38103
+  write-first 0x4022-0x403D (28 bytes)
+  write-first 0x4042-0x405D (28 bytes)
+  write-first 0x4062-0x407D (28 bytes)
+  write-first 0x4082-0x409D (28 bytes)
+  write-first 0x40A2-0x40BD (28 bytes)
+  write-first 0x40C2-0x40DD (28 bytes)
+  writers   103 instructions: 32043 (0x7D2B) x1794504, 32285 (0x7E1D) x1769984, 32287 (0x7E1F) x1769984, 32289 (0x7E21) x1769984, 32291 (0x7E23) x1769984, 32293 (0x7E25) x1769984, 32295 (0x7E27) x1769984, 32297 (0x7E29) x1769984, 32299 (0x7E2B) x1769984, 32301 (0x7E2D) x1769984
+  writers+  93 more instructions in 21 routine span(s): 28731-28736 (0x703B) x768, 28793-28802 (0x7079) x96, 29235-29235 (0x7233) x49, 29375-29375 (0x72BF) x2045, 29456-29465 (0x7310) x48, 31567-31567 (0x7B4F) x10, 31658-31658 (0x7BAA) x10, 32174-32228 (0x7DAE) x43364608, 32303-32339 (0x7E2F) x33629696, 32994-32994 (0x80E2) x21420, 37409-37456 (0x9221) x66, 37465-37465 (0x9259) x256, 37871-37889 (0x93EF) x13826, 37967-37973 (0x944F) x27136, 38156-38156 (0x950C) x2048, 38167-38167 (0x9517) x768, 38178-38182 (0x9522) x256, 38191-38195 (0x952F) x256, 38213-38213 (0x9545) x256, 38231-38231 (0x9557) x4584 ...
+  readers   13 instructions: 37876 (0x93F4) x12288, 38082 (0x94C2) x4096, 38093 (0x94CD) x1536, 37889 (0x9401) x1536, 28736 (0x7040) x768, 38139 (0x94FB) x512, 38103 (0x94D7) x256, 38107 (0x94DB) x256, 38116 (0x94E4) x256, 38120 (0x94E8) x256
+  readers+  3 more instructions in 3 routine span(s): 29440-29440 (0x7300) x21, 31527-31527 (0x7B27) x10, 31544-31544 (0x7B38) x10
+```
+## Memory (scan: free memory for hook state, stack low-water)
+```
+Source    : /home/user/specnext/reference/nemesis_the_warlock/nemesis_the_warlock.rzx, 134977 frames
+Counting  : from the start
+Lowest SP : 28558 (0x6F8E) (any SP value: games that use SP as a data pointer show it here)
+Range 0x4000-0xBFFF: 1379 of 32768 bytes untouched
+  untouched   0x8FA7-0x90CA (292 bytes)
+  untouched   0x9166-0x9201 (156 bytes)
+  untouched   0x745C-0x74EE (147 bytes)
+  untouched   0x927C-0x9302 (135 bytes)
+  untouched   0x772C-0x778F (100 bytes)
+  untouched   0x6FA0-0x6FD9 (58 bytes)
+  touched     0x4000-0x5B11 (6930 bytes, rw), first: read at PC 38103
+  touched     0x5B1E-0x5B32 (21 bytes, rw), first: read at PC 31527
+  touched     0x5B3E-0x5B52 (21 bytes, rw), first: read at PC 31527
+  touched     0x5B5E-0x5B72 (21 bytes, rw), first: read at PC 31527
+  touched     0x5B7E-0x5B92 (21 bytes, rw), first: read at PC 31527
+  touched     0x5B9D-0x5BB3 (23 bytes, rw), first: read at PC 31527
+  touched     0x5BBD-0x5BD3 (23 bytes, rw), first: read at PC 31527
+  touched     0x5BDD-0x5BF3 (23 bytes, rw), first: read at PC 31527
+  touched     0x5BF6-0x6F75 (4992 bytes, rw), first: read at PC 31527
+  touched     0x6F8E-0x6F9F (18 bytes, rw), first: write at PC 37966
+  touched     0x6FDA-0x7189 (432 bytes, rx), first: exec at PC 28634
+  touched     0x718C-0x71DD (82 bytes, rx), first: exec at PC 29068
+  ... 39 more touched spans
+  write-first 0x4022-0x403D (28 bytes)
+  write-first 0x4042-0x405D (28 bytes)
+  write-first 0x4062-0x407D (28 bytes)
+  write-first 0x4082-0x409D (28 bytes)
+  write-first 0x40A2-0x40BD (28 bytes)
+```
+## Interrupt handler (isr: what hooks must keep intact)
+```
+Source    : /home/user/specnext/reference/nemesis_the_warlock/nemesis_the_warlock.rzx, 134977 frames, 0 interrupts accepted, 0 never returned before the next
+Snapshot  : IM 1, DI, I = 0x3F
+Snapshot  : ROM 0x0038 (hooks that page slot 0 must DI)
+Executed  : 0 distinct instructions in the handler(s)
+Stack     : up to 0 bytes below the interrupted SP
+Writes    : 0 distinct RAM addresses (incl. its stacks)
+Slots     : ; never touched: 0, 1, 2, 3, 4, 5, 6, 7 -> a hook may keep a RAM page mapped in slot 2/3/4/5 with interrupts on (LEARNINGS 1.3)
+A hook running with interrupts ON must keep: SP must point at a stack with >= 2 free bytes
+```
