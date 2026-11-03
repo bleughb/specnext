@@ -358,3 +358,9 @@ Runtime is adapted from the existing Fireman engine; this is not an independent 
 Sprite build converts moving figures and collectables, retaining original attribute writes for
 logic and background colour behaviour. See the matching nexclash game notes for reproduction,
 recolour commands, validation scope and the CSpect/Next checklist.
+
+## Nemesis the Warlock - `nemesis_the_warlock/` (games/nemesis_the_warlock.md; full verification PASSED 2026-11-03, hardware untested)
+- nemesis_the_warlock.z80 - the snapshot embedded in the RZX (SPIN 0.6; no separate .z80 from the user)
+- nemesis_the_warlock.rzx - 134,980 frames, no autosaves
+- nemesis_the_warlock.nex (f1497589), nemesis_the_warlock_sprites.nex (36c8a2e8)
+- nemesis_the_warlock_survey/ - stage 0 survey + design preview
