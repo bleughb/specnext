@@ -205,7 +205,7 @@ Images an agent made for review (they show game graphics) go in docs/review/<gam
 | target_renegade_PREVIEW.png | - | four RZX frames: original, ULA layer, ULA + sprites |
 | target_renegade_entry.z80 / target_renegade_plain_test.nex | - / 23647948ff22fc10e26b589cf1b83193 | phase A: the loader's state after the entry code; a plain test without front end |
 
-## Jetpac - `jetpac/` (games/jetpac.md; hardware: round 1 faults fixed, round 2 untested)
+## Jetpac - `jetpac/` (games/jetpac.md; hardware: round 2 PASSED, user 2026-11-03)
 
 | File | MD5 | What |
 |---|---|---|
