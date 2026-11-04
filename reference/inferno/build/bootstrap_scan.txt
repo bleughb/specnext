@@ -1,0 +1,7 @@
+Source    : free run (keys: none), 2000 frames
+Counting  : from the start
+Lowest SP : 24154 (0x5E5A) (any SP value: games that use SP as a data pointer show it here)
+Range 0x5D30-0x5E6F: 298 of 320 bytes untouched
+  untouched   0x5D30-0x5E59 (298 bytes)
+  touched     0x5E5A-0x5E6F (22 bytes, rw), first: write at PC 654
+  write-first 0x5E5A-0x5E6F (22 bytes)

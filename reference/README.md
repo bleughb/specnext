@@ -9,7 +9,7 @@ selftest.py copies each game's inputs from the `path` its record (nexclash docs/
 names under reference/ and checks their MD5s: keep file names and folders as listed here. It expects
 ../specnext next to the nexclash clone (or NEXCLASH_REFERENCE=path/to/reference).
 
-## Inferno - `inferno/` (games/inferno.md; design approved, build next, hardware untested)
+## Inferno - `inferno/` (games/inferno.md; stage-2 loader foundation, sprites absent, hardware untested)
 
 | File | MD5 | What |
 |---|---|---|
@@ -50,6 +50,11 @@ comparison, point captures, manifest and 25-tick image-reconstruction checks (al
 The approved design preserves original gameplay memory and collision composition; continuous
 loading, sprite hooks, timing and hardware checks remain outstanding. All visual choices were
 approved 2026-11-05: option B solid interiors, no outlines, figures/effects/pickups included.
+
+Stage-2 [`inferno/build/README.md`](inferno/build/README.md) holds the bank-loader foundation,
+original-ROM byte tests, all seven Na/Nb handoff-prefix checks and diagnostic bootstrap evidence.
+Stage 2 remains incomplete. The loader-only diagnostic NEX is NOT a hardware candidate; no sprite
+NEX, continuous-game proof, full verification or stamp is claimed. Checksums: build/manifest.json.
 
 ## Cauldron - `cauldron/` (games/cauldron.md; hardware: 43c1ca49 works, Dean 2026-10-27)
 

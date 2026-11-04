@@ -1,0 +1,26 @@
+{
+  "Inferno_bootstrap.z80": {
+    "bytes": 37042,
+    "md5": "9814983816aafb2b9efd99344dd8c221"
+  },
+  "Inferno_loader_diagnostic.nex": {
+    "bytes": 311808,
+    "md5": "33791e6ffafce8b8a447092476cd776b"
+  },
+  "bootstrap_checks.json": {
+    "bytes": 286,
+    "md5": "06ae2bc3b876a8223d288919cea16cb8"
+  },
+  "bootstrap_scan.txt": {
+    "bytes": 360,
+    "md5": "3ac742eb9e128d944335f0f9c3638539"
+  },
+  "continuation_checks.json": {
+    "bytes": 2113,
+    "md5": "fc08b1de0630072bb96a7aa2a1b72d47"
+  },
+  "loader_checks.json": {
+    "bytes": 387,
+    "md5": "339c2009340ffbdc24ecd16ac1112117"
+  }
+}
