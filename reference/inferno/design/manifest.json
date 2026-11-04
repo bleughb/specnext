@@ -1,0 +1,118 @@
+{
+  "actor_cost4.txt": {
+    "md5": "c63e27b1604d34e7ea95eadb3df7819a",
+    "bytes": 559
+  },
+  "design_comparison.png": {
+    "md5": "cf3fda58c14e87d91c55fe2773165d6a",
+    "bytes": 109563
+  },
+  "graphics_scan4.txt": {
+    "md5": "59346dc2e5ce6f41973f9e403e127208",
+    "bytes": 2092
+  },
+  "level1_ink.png": {
+    "md5": "d46dabf3e8559818517dc9160b168c44",
+    "bytes": 3677
+  },
+  "level1_original.png": {
+    "md5": "506bf1f4d05810334befa1837c84755c",
+    "bytes": 3685
+  },
+  "level1_solid.png": {
+    "md5": "d46dabf3e8559818517dc9160b168c44",
+    "bytes": 3677
+  },
+  "level2_ink.png": {
+    "md5": "d8f3579bab0b002505a85687897fd8bc",
+    "bytes": 5311
+  },
+  "level2_original.png": {
+    "md5": "2ff336023af1aac59a95cb22387150fc",
+    "bytes": 5176
+  },
+  "level2_solid.png": {
+    "md5": "bfe150751d3a52000bee8141bf8776e0",
+    "bytes": 5286
+  },
+  "level3_ink.png": {
+    "md5": "a85365012a283fdafb059c6748388496",
+    "bytes": 4021
+  },
+  "level3_original.png": {
+    "md5": "cc965ea443f2554060855a2281359241",
+    "bytes": 3913
+  },
+  "level3_solid.png": {
+    "md5": "c9ec12ee88d89ce5b95a1d3dc9d95c73",
+    "bytes": 4007
+  },
+  "level4_ink.png": {
+    "md5": "20e3bd4a26f4bb3e419ecf71eb360fca",
+    "bytes": 5085
+  },
+  "level4_original.png": {
+    "md5": "8ca9e6de68bd552ee207d6e2ee85571b",
+    "bytes": 4924
+  },
+  "level4_solid.png": {
+    "md5": "1ed24acd7af2071eab2b92127bcd54be",
+    "bytes": 5071
+  },
+  "level5_ink.png": {
+    "md5": "dc3532c6d987d375e6b6ac9cc7188614",
+    "bytes": 5344
+  },
+  "level5_original.png": {
+    "md5": "c76a18678e5e9f6bd1a411beb27ca1c4",
+    "bytes": 5124
+  },
+  "level5_solid.png": {
+    "md5": "7730654c400595d0b636347a31ff54c9",
+    "bytes": 5325
+  },
+  "level6_ink.png": {
+    "md5": "9fa6b45514a5ce68e9ed22f1dbd8f79b",
+    "bytes": 6885
+  },
+  "level6_original.png": {
+    "md5": "0453b90da9a3c2264ceb6b21ac58bea3",
+    "bytes": 6880
+  },
+  "level6_solid.png": {
+    "md5": "9fa6b45514a5ce68e9ed22f1dbd8f79b",
+    "bytes": 6885
+  },
+  "model_checks.json": {
+    "md5": "e2b72180a10af6a7261fab91a131ca69",
+    "bytes": 8233
+  },
+  "scene1.json.gz": {
+    "md5": "f454d999f386c99c07dd209ec54e51b0",
+    "bytes": 1314835
+  },
+  "scene2.json.gz": {
+    "md5": "facf9580061c3442a09b19c30bbb1690",
+    "bytes": 2324276
+  },
+  "scene3.json.gz": {
+    "md5": "6a85f262df516ba6edd81388e7fe8f8b",
+    "bytes": 1172443
+  },
+  "scene4.json.gz": {
+    "md5": "81e03117f645977a0b316751fff3ced5",
+    "bytes": 3763060
+  },
+  "scene5.json.gz": {
+    "md5": "38a27194ffacd53fabcef9d176f8e546",
+    "bytes": 2663084
+  },
+  "scene6.json.gz": {
+    "md5": "04c6ad0e4562a9f65c311d4960a90565",
+    "bytes": 1034228
+  },
+  "tape.txt": {
+    "md5": "97cfcf9e482354011cec833a35e4dd09",
+    "bytes": 5567
+  }
+}

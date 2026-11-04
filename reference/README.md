@@ -9,7 +9,7 @@ selftest.py copies each game's inputs from the `path` its record (nexclash docs/
 names under reference/ and checks their MD5s: keep file names and folders as listed here. It expects
 ../specnext next to the nexclash clone (or NEXCLASH_REFERENCE=path/to/reference).
 
-## Inferno - `inferno/` (games/inferno.md; intake surveys, hardware untested)
+## Inferno - `inferno/` (games/inferno.md; design proposal awaiting answer, hardware untested)
 
 | File | MD5 | What |
 |---|---|---|
@@ -33,6 +33,7 @@ names under reference/ and checks their MD5s: keep file names and folders as lis
 | Inferno.nex | 0a3bde4734c5b3f15ad0f2a55cc81e19 | plain level-1 conversion, tail 0x9A80, boot check PASS |
 | recording_overview.png | fe8c6d56e42906810d57c6be8d26833b | original-frame overview: intro, six levels, ending |
 | Inferno1_producer_census.json | f0e5de2fd03175b2f13e18a09387fbe0 | full level-1 address census; ten sites x13,869 |
+| Inferno2_producer_census.json | 46261ceb27a13580bddf0ea50d67ec5b | full level-2 address census; eight sites x11,921 |
 
 All eight supplied recordings are present (449,659 frames total). The duplicate TZX is identical.
 All full raw replays PASS (`replay_checks.txt`). Survey folders (`initial_survey` for level 1,
@@ -44,6 +45,10 @@ untested, and the plain level-1 NEX does not supply subsequent tape loads.
 `Inferno*_original.png` and `_preview.txt` hold unhighlighted samples across each full recording;
 `*_end.z80` captures each complete replay's end state, and `_inspect.txt` records snapshot facts.
 `Inferno1_frame1000.z80` is the runtime producer-inspection state. No sprite engine is built yet.
+Stage-1 [`inferno/design/README.md`](inferno/design/README.md) indexes the six-level original/A/B
+comparison, point captures, manifest and 25-tick image-reconstruction checks (all zero mismatches).
+The proposal preserves original gameplay memory and collision composition; design approval,
+continuous loading, sprite hooks, timing and hardware checks remain outstanding.
 
 ## Cauldron - `cauldron/` (games/cauldron.md; hardware: 43c1ca49 works, Dean 2026-10-27)
 

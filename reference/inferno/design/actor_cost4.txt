@@ -1,0 +1,6 @@
+Source    : ../specnext/reference/inferno/Inferno4.rzx, 2001 frames
+Routine   : 38197 (0x9535) - entered 367 times, 367 returned, 0 still running at the end
+T per call: median 1732, mean 1732, max 1732, min 1732  (median 0.49 ms at 3.5 MHz)
+Per frame : 0 call(s) in 1634 frames, 1 call(s) in 367 frames
+Share     : 0.5 % of all frame time (2001 frames x 69888 T); interrupt time inside calls excluded (450 T)
+Budget    : a hook adding X T per call costs X/69888 of a frame per call; busiest frame had 1 call(s). At 28 MHz hook T count 1/8 (plus wait states).

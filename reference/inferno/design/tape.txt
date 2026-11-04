@@ -1,0 +1,196 @@
+Version: 1.10
+1: Text description (0x30)
+  Text: Created with Ramsoft MakeTZX
+2: Standard speed data (0x10)
+  Pause: 246ms
+  Type: Header block
+  Program: INFERNO   
+  LINE: 10
+  Length: 19
+  Data: 0, 0, 73, 78, 70, 69, 82 ... 229, 18, 10, 0, 95, 0, 213
+3: Standard speed data (0x10)
+  Pause: 4355ms
+  Type: Data block
+  Length: 4839
+  Data: 255, 0, 10, 61, 0, 218, 192 ... 13, 7, 33, 3, 5, 69, 33
+4: Standard speed data (0x10)
+  Pause: 246ms
+  Type: Header block
+  Bytes: inferno cd
+  CODE: 24200,29499
+  Length: 19
+  Data: 0, 3, 105, 110, 102, 101, 114 ... 59, 115, 136, 94, 238, 54, 21
+5: Standard speed data (0x10)
+  Pause: 3932ms
+  Type: Data block
+  Length: 29501
+  Data: 255, 205, 254, 206, 205, 86, 211 ... 233, 226, 231, 157, 199, 178, 25
+6: 'Stop the tape' command (0x20)
+7: Standard speed data (0x10)
+  Pause: 244ms
+  Type: Header block
+  Bytes: level 0a  
+  CODE: 50000,4567
+  Length: 19
+  Data: 0, 3, 108, 101, 118, 101, 108 ... 215, 17, 80, 195, 100, 0, 53
+8: Standard speed data (0x10)
+  Pause: 4231ms
+  Type: Data block
+  Length: 4569
+  Data: 255, 1, 121, 0, 205, 82, 0 ... 5, 6, 57, 79, 67, 6, 152
+9: Standard speed data (0x10)
+  Pause: 245ms
+  Type: Header block
+  Bytes: level 0b  
+  CODE: 44000,19269
+  Length: 19
+  Data: 0, 3, 108, 101, 118, 101, 108 ... 69, 75, 224, 171, 0, 128, 194
+10: Standard speed data (0x10)
+  Pause: 3881ms
+  Type: Data block
+  Length: 19271
+  Data: 255, 205, 219, 236, 205, 22, 234 ... 38, 50, 36, 38, 50, 255, 9
+11: Standard speed data (0x10)
+  Pause: 247ms
+  Type: Header block
+  Bytes: level 1a  
+  CODE: 50000,3928
+  Length: 19
+  Data: 0, 3, 108, 101, 118, 101, 108 ... 88, 15, 80, 195, 100, 0, 165
+12: Standard speed data (0x10)
+  Pause: 4243ms
+  Type: Data block
+  Length: 3930
+  Data: 255, 1, 121, 0, 205, 82, 0 ... 5, 6, 57, 79, 67, 6, 113
+13: Standard speed data (0x10)
+  Pause: 219ms
+  Type: Header block
+  Bytes: level 1b  
+  CODE: 44000,18627
+  Length: 19
+  Data: 0, 3, 108, 101, 118, 101, 108 ... 195, 72, 224, 171, 0, 128, 70
+14: Standard speed data (0x10)
+  Pause: 3898ms
+  Type: Data block
+  Length: 18629
+  Data: 255, 205, 242, 236, 205, 45, 234 ... 47, 163, 47, 161, 48, 255, 230
+15: Standard speed data (0x10)
+  Pause: 244ms
+  Type: Header block
+  Bytes: level 2a  
+  CODE: 50000,4157
+  Length: 19
+  Data: 0, 3, 108, 101, 118, 101, 108 ... 61, 16, 80, 195, 100, 0, 220
+16: Standard speed data (0x10)
+  Pause: 4055ms
+  Type: Data block
+  Length: 4159
+  Data: 255, 1, 121, 0, 205, 82, 0 ... 5, 6, 57, 79, 67, 6, 134
+17: Standard speed data (0x10)
+  Pause: 247ms
+  Type: Header block
+  Bytes: level 2b  
+  CODE: 44000,18120
+  Length: 19
+  Data: 0, 3, 108, 101, 118, 101, 108 ... 200, 70, 224, 171, 228, 128, 164
+18: Standard speed data (0x10)
+  Pause: 3905ms
+  Type: Data block
+  Length: 18122
+  Data: 255, 205, 228, 233, 205, 31, 231 ... 38, 161, 36, 163, 38, 255, 227
+19: Standard speed data (0x10)
+  Pause: 246ms
+  Type: Header block
+  Bytes: level 3a  
+  CODE: 50000,4262
+  Length: 19
+  Data: 0, 3, 108, 101, 118, 101, 108 ... 166, 16, 80, 195, 100, 0, 70
+20: Standard speed data (0x10)
+  Pause: 4235ms
+  Type: Data block
+  Length: 4264
+  Data: 255, 1, 121, 0, 205, 82, 0 ... 5, 6, 57, 79, 67, 6, 51
+21: Standard speed data (0x10)
+  Pause: 247ms
+  Type: Header block
+  Bytes: level 3b  
+  CODE: 44000,18641
+  Length: 19
+  Data: 0, 3, 108, 101, 118, 101, 108 ... 209, 72, 224, 171, 0, 128, 86
+22: Standard speed data (0x10)
+  Pause: 3915ms
+  Type: Data block
+  Length: 18643
+  Data: 255, 205, 115, 234, 205, 174, 231 ... 161, 16, 16, 19, 20, 255, 38
+23: Standard speed data (0x10)
+  Pause: 246ms
+  Type: Header block
+  Bytes: level 4a  
+  CODE: 50000,4213
+  Length: 19
+  Data: 0, 3, 108, 101, 118, 101, 108 ... 117, 16, 80, 195, 100, 0, 146
+24: Standard speed data (0x10)
+  Pause: 4224ms
+  Type: Data block
+  Length: 4215
+  Data: 255, 1, 121, 0, 205, 82, 0 ... 5, 6, 57, 79, 67, 6, 142
+25: Standard speed data (0x10)
+  Pause: 244ms
+  Type: Header block
+  Bytes: level 4b  
+  CODE: 44000,18924
+  Length: 19
+  Data: 0, 3, 108, 101, 118, 101, 108 ... 236, 73, 224, 171, 5, 128, 104
+26: Standard speed data (0x10)
+  Pause: 3926ms
+  Type: Data block
+  Length: 18926
+  Data: 255, 205, 5, 236, 205, 64, 233 ... 45, 45, 45, 45, 45, 255, 11
+27: Standard speed data (0x10)
+  Pause: 235ms
+  Type: Header block
+  Bytes: level 5a  
+  CODE: 50000,4563
+  Length: 19
+  Data: 0, 3, 108, 101, 118, 101, 108 ... 211, 17, 80, 195, 100, 0, 52
+28: Standard speed data (0x10)
+  Pause: 4219ms
+  Type: Data block
+  Length: 4565
+  Data: 255, 1, 121, 0, 205, 82, 0 ... 5, 6, 57, 79, 67, 6, 19
+29: Standard speed data (0x10)
+  Pause: 246ms
+  Type: Header block
+  Bytes: level 5b  
+  CODE: 44000,20133
+  Length: 19
+  Data: 0, 3, 108, 101, 118, 101, 108 ... 165, 78, 224, 171, 0, 128, 34
+30: Standard speed data (0x10)
+  Pause: 3922ms
+  Type: Data block
+  Length: 20135
+  Data: 255, 205, 97, 241, 205, 156, 238 ... 64, 62, 60, 192, 62, 255, 247
+31: Standard speed data (0x10)
+  Pause: 237ms
+  Type: Header block
+  Bytes: level 6a  
+  CODE: 50000,4388
+  Length: 19
+  Data: 0, 3, 108, 101, 118, 101, 108 ... 36, 17, 80, 195, 0, 0, 164
+32: Standard speed data (0x10)
+  Pause: 4080ms
+  Type: Data block
+  Length: 4390
+  Data: 255, 1, 121, 0, 205, 82, 0 ... 0, 22, 255, 66, 23, 66, 200
+33: Standard speed data (0x10)
+  Pause: 247ms
+  Type: Header block
+  Bytes: level 6b  
+  CODE: 44000,12350
+  Length: 19
+  Data: 0, 3, 108, 101, 118, 101, 108 ... 62, 48, 224, 171, 227, 22, 177
+34: Standard speed data (0x10)
+  Pause: 44559ms
+  Type: Data block
+  Length: 12352
+  Data: 255, 205, 89, 217, 205, 82, 0 ... 151, 3, 228, 156, 141, 147, 185

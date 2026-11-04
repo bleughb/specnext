@@ -1,0 +1,433 @@
+[
+  {
+    "level": 1,
+    "frames": 10030,
+    "desync": null,
+    "ticks": [
+      {
+        "frame": 10002,
+        "objects": 4,
+        "map_byte_mismatches": 0,
+        "pixel_mismatches": 0,
+        "owners": [
+          "0xac44",
+          "0xd5ed",
+          "0xd5fc",
+          "0xd60b"
+        ]
+      },
+      {
+        "frame": 10006,
+        "objects": 4,
+        "map_byte_mismatches": 0,
+        "pixel_mismatches": 0,
+        "owners": [
+          "0xac44",
+          "0xd5ed",
+          "0xd5fc",
+          "0xd60b"
+        ]
+      },
+      {
+        "frame": 10010,
+        "objects": 4,
+        "map_byte_mismatches": 0,
+        "pixel_mismatches": 0,
+        "owners": [
+          "0xac44",
+          "0xd5ed",
+          "0xd5fc",
+          "0xd60b"
+        ]
+      },
+      {
+        "frame": 10014,
+        "objects": 4,
+        "map_byte_mismatches": 0,
+        "pixel_mismatches": 0,
+        "owners": [
+          "0xac44",
+          "0xd5ed",
+          "0xd5fc",
+          "0xd60b"
+        ]
+      }
+    ]
+  },
+  {
+    "level": 2,
+    "frames": 10030,
+    "desync": null,
+    "ticks": [
+      {
+        "frame": 10003,
+        "objects": 10,
+        "map_byte_mismatches": 0,
+        "pixel_mismatches": 0,
+        "owners": [
+          "0xac44",
+          "0xac5c",
+          "0xac66",
+          "0xacc4",
+          "0xacce",
+          "0xacd8",
+          "0xace2",
+          "0xacec",
+          "0xacf6",
+          "0xd2ca"
+        ]
+      },
+      {
+        "frame": 10007,
+        "objects": 9,
+        "map_byte_mismatches": 0,
+        "pixel_mismatches": 0,
+        "owners": [
+          "0xac44",
+          "0xac5c",
+          "0xac66",
+          "0xacc4",
+          "0xacce",
+          "0xace2",
+          "0xacec",
+          "0xacf6",
+          "0xd2ca"
+        ]
+      },
+      {
+        "frame": 10011,
+        "objects": 9,
+        "map_byte_mismatches": 0,
+        "pixel_mismatches": 0,
+        "owners": [
+          "0xac44",
+          "0xac5c",
+          "0xac66",
+          "0xacc4",
+          "0xacce",
+          "0xace2",
+          "0xacec",
+          "0xacf6",
+          "0xd2ca"
+        ]
+      },
+      {
+        "frame": 10015,
+        "objects": 9,
+        "map_byte_mismatches": 0,
+        "pixel_mismatches": 0,
+        "owners": [
+          "0xac44",
+          "0xac5c",
+          "0xac66",
+          "0xacc4",
+          "0xacce",
+          "0xace2",
+          "0xacec",
+          "0xacf6",
+          "0xd2ca"
+        ]
+      }
+    ]
+  },
+  {
+    "level": 3,
+    "frames": 10030,
+    "desync": null,
+    "ticks": [
+      {
+        "frame": 10003,
+        "objects": 3,
+        "map_byte_mismatches": 0,
+        "pixel_mismatches": 0,
+        "owners": [
+          "0xac44",
+          "0xac5c",
+          "0xd4a2"
+        ]
+      },
+      {
+        "frame": 10007,
+        "objects": 3,
+        "map_byte_mismatches": 0,
+        "pixel_mismatches": 0,
+        "owners": [
+          "0xac44",
+          "0xac5c",
+          "0xd4a2"
+        ]
+      },
+      {
+        "frame": 10011,
+        "objects": 4,
+        "map_byte_mismatches": 0,
+        "pixel_mismatches": 0,
+        "owners": [
+          "0xac44",
+          "0xac5c",
+          "0xac66",
+          "0xd4a2"
+        ]
+      },
+      {
+        "frame": 10015,
+        "objects": 4,
+        "map_byte_mismatches": 0,
+        "pixel_mismatches": 0,
+        "owners": [
+          "0xac44",
+          "0xac5c",
+          "0xac66",
+          "0xd4a2"
+        ]
+      }
+    ]
+  },
+  {
+    "level": 4,
+    "frames": 10030,
+    "desync": null,
+    "ticks": [
+      {
+        "frame": 10003,
+        "objects": 17,
+        "map_byte_mismatches": 0,
+        "pixel_mismatches": 0,
+        "owners": [
+          "0xac44",
+          "0xac5c",
+          "0xac66",
+          "0xac70",
+          "0xac84",
+          "0xac8e",
+          "0xac98",
+          "0xaca2",
+          "0xacac",
+          "0xacb6",
+          "0xd215",
+          "0xd224",
+          "0xd233",
+          "0xd242",
+          "0xd260",
+          "0xd26f",
+          "0xd27e"
+        ]
+      },
+      {
+        "frame": 10007,
+        "objects": 16,
+        "map_byte_mismatches": 0,
+        "pixel_mismatches": 0,
+        "owners": [
+          "0xac44",
+          "0xac5c",
+          "0xac66",
+          "0xac70",
+          "0xac7a",
+          "0xac84",
+          "0xaca2",
+          "0xacac",
+          "0xacb6",
+          "0xd215",
+          "0xd224",
+          "0xd233",
+          "0xd242",
+          "0xd260",
+          "0xd26f",
+          "0xd27e"
+        ]
+      },
+      {
+        "frame": 10011,
+        "objects": 17,
+        "map_byte_mismatches": 0,
+        "pixel_mismatches": 0,
+        "owners": [
+          "0xac44",
+          "0xac5c",
+          "0xac66",
+          "0xac70",
+          "0xac7a",
+          "0xac84",
+          "0xac8e",
+          "0xaca2",
+          "0xacac",
+          "0xacb6",
+          "0xd215",
+          "0xd224",
+          "0xd233",
+          "0xd242",
+          "0xd260",
+          "0xd26f",
+          "0xd27e"
+        ]
+      },
+      {
+        "frame": 10015,
+        "objects": 17,
+        "map_byte_mismatches": 0,
+        "pixel_mismatches": 0,
+        "owners": [
+          "0xac44",
+          "0xac66",
+          "0xac70",
+          "0xac7a",
+          "0xac84",
+          "0xac8e",
+          "0xac98",
+          "0xaca2",
+          "0xacac",
+          "0xacb6",
+          "0xd215",
+          "0xd224",
+          "0xd233",
+          "0xd242",
+          "0xd260",
+          "0xd26f",
+          "0xd27e"
+        ]
+      }
+    ]
+  },
+  {
+    "level": 5,
+    "frames": 10030,
+    "desync": null,
+    "ticks": [
+      {
+        "frame": 10002,
+        "objects": 12,
+        "map_byte_mismatches": 0,
+        "pixel_mismatches": 0,
+        "owners": [
+          "0xac44",
+          "0xac5c",
+          "0xac66",
+          "0xac70",
+          "0xac7a",
+          "0xac84",
+          "0xaca2",
+          "0xacce",
+          "0xacd8",
+          "0xace2",
+          "0xd74f",
+          "0xd77c"
+        ]
+      },
+      {
+        "frame": 10006,
+        "objects": 11,
+        "map_byte_mismatches": 0,
+        "pixel_mismatches": 0,
+        "owners": [
+          "0xac44",
+          "0xac5c",
+          "0xac66",
+          "0xac70",
+          "0xac7a",
+          "0xac84",
+          "0xaca2",
+          "0xacce",
+          "0xacd8",
+          "0xd74f",
+          "0xd77c"
+        ]
+      },
+      {
+        "frame": 10010,
+        "objects": 11,
+        "map_byte_mismatches": 0,
+        "pixel_mismatches": 0,
+        "owners": [
+          "0xac44",
+          "0xac5c",
+          "0xac66",
+          "0xac70",
+          "0xac7a",
+          "0xac84",
+          "0xaca2",
+          "0xacce",
+          "0xacd8",
+          "0xd74f",
+          "0xd77c"
+        ]
+      },
+      {
+        "frame": 10014,
+        "objects": 11,
+        "map_byte_mismatches": 0,
+        "pixel_mismatches": 0,
+        "owners": [
+          "0xac44",
+          "0xac5c",
+          "0xac66",
+          "0xac70",
+          "0xac7a",
+          "0xac84",
+          "0xaca2",
+          "0xacce",
+          "0xacd8",
+          "0xd74f",
+          "0xd77c"
+        ]
+      }
+    ]
+  },
+  {
+    "level": 6,
+    "frames": 10030,
+    "desync": null,
+    "ticks": [
+      {
+        "frame": 10001,
+        "objects": 2,
+        "map_byte_mismatches": 0,
+        "pixel_mismatches": 0,
+        "owners": [
+          "0xac44",
+          "0xd7d2"
+        ]
+      },
+      {
+        "frame": 10005,
+        "objects": 2,
+        "map_byte_mismatches": 0,
+        "pixel_mismatches": 0,
+        "owners": [
+          "0xac44",
+          "0xd7d2"
+        ]
+      },
+      {
+        "frame": 10009,
+        "objects": 2,
+        "map_byte_mismatches": 0,
+        "pixel_mismatches": 0,
+        "owners": [
+          "0xac44",
+          "0xd7d2"
+        ]
+      },
+      {
+        "frame": 10013,
+        "objects": 2,
+        "map_byte_mismatches": 0,
+        "pixel_mismatches": 0,
+        "owners": [
+          "0xac44",
+          "0xd7d2"
+        ]
+      },
+      {
+        "frame": 10017,
+        "objects": 2,
+        "map_byte_mismatches": 0,
+        "pixel_mismatches": 0,
+        "owners": [
+          "0xac44",
+          "0xd7d2"
+        ]
+      }
+    ]
+  }
+]
