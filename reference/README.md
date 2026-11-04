@@ -1,9 +1,9 @@
-# Reference games (private)
+# Reference games
 
 One folder per game: the original snapshot and Dean's recordings (the references the toolkit is
 verified against), and the built games: `<game>.nex` (plain) and `<game>_sprites.nex` (the
 modified game), exactly as `python selftest.py` (in nexclash) rebuilds them. Game notes:
-nexclash/games/<folder name>.md (one per game, same name as the folder). Never copy anything from here into the public repo.
+nexclash/games/<folder name>.md (one per game, same name as the folder). Never copy game assets into nexclash or contribution archives.
 
 selftest.py copies each game's inputs from the `path` its record (nexclash docs/records/<game>.json)
 names under reference/ and checks their MD5s: keep file names and folders as listed here. It expects
