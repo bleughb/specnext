@@ -155,6 +155,13 @@ Private: the contributor asked that none of it be published. Their cover letter:
 | Trueno_sprites_immortal.nex | deaf4577f982991774d7aa17f60d1aab | option `--immortal` (energy never drops); rebuilt identical |
 | Trueno_sprites_en_immortal.nex | 867bda87225d060964772b36c0ed2aeb | both options; rebuilt identical |
 | contributor/ | - | build/ (builder + checks + generated tables), gfx/ (the contributor's sheets: game graphics), NOTES.md (working log), nexpatch/ (proposal; out/ holds the Trueno page = game-derived), toolkit_changes.diff (as sent) |
+| Capitan Trueno, El (1990)(Dinamic)(ES).pok | ab8a31c64acf99e1d0ceae68911eea86 | cheats for the ORIGINAL 48K game (Fuse .pok: infinite lives, immortality, best sword); bytes checked against the snapshot by the contributor, not tried in an emulator (2026-11-04) |
+| release_1.2/Trueno.nex | 255eaebd4acbfdd7f22579b5f0ce85c2 | release 1.2 (2026-11-01): three languages, two colourings, 28 MHz, Layer 2 foreground; built by the contributor's chain, NOT verified, MAME 0.289 only |
+| release_1.2/Trueno_immortal.nex | c147153bb9231a70c94398eb5be6073d | 1.2 + immortality (1 byte at 0x7A1F) |
+| release_1.2/Trueno_sword.nex | af069b029ee37a9209c49b20c53758d3 | 1.2 + best sword (12 bytes at the four readers of 0xE634) |
+| release_1.2/Trueno_immortal_sword.nex | b817ec54568bdba6c7885046c00d5b60 | 1.2 + both cheats |
+| release_1.2/screenshots/ | - | 18 MAME screenshots of 1.2 (320x256) |
+| release_1.2/MATERIALS_README.txt | - | the contributor's cover note for these files (2026-11-04) |
 
 The archive's `nex/` folder held the same four sprite builds under player names (`Capitan Trueno, El.nex`, `(Eng)`, `(Immortal)`, `(Eng) (Immortal)`); not duplicated here.
 
