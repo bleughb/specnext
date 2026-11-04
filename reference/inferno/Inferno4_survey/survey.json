@@ -1,0 +1,241 @@
+{
+ "game": "Inferno4",
+ "engine": "unknown",
+ "plain": {
+  "file": "Inferno4.nex",
+  "tail": "WARNING: no proven-safe tail location; converter default used",
+  "boot": "OK (registers, RAM, ROM view, paging)"
+ },
+ "frames": 2001,
+ "routines": [
+  {
+   "routine": 38800,
+   "pixel_bytes": 647808,
+   "attr_bytes": 210816,
+   "block_copy_bytes": 210816,
+   "calls": 367,
+   "frames_active": 732,
+   "callers_seen": {
+    "36754": 367
+   },
+   "called_from_routines": {
+    "top": 367
+   },
+   "T_median": 201141,
+   "T_max": 268022,
+   "call_sites": [
+    {
+     "at": 36754,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    }
+   ],
+   "not_reached": []
+  },
+  {
+   "routine": 33414,
+   "pixel_bytes": 82432,
+   "attr_bytes": 10304,
+   "block_copy_bytes": 92736,
+   "calls": 322,
+   "frames_active": 44,
+   "callers_seen": {
+    "33389": 322
+   },
+   "called_from_routines": {
+    "33379": 322
+   },
+   "T_median": 6917,
+   "T_max": 7799,
+   "call_sites": [
+    {
+     "at": 33389,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    }
+   ],
+   "not_reached": []
+  },
+  {
+   "routine": 32496,
+   "pixel_bytes": 7672,
+   "attr_bytes": 0,
+   "block_copy_bytes": 0,
+   "calls": 959,
+   "frames_active": 12,
+   "callers_seen": {
+    "32441": 899,
+    "32431": 30,
+    "32453": 30
+   },
+   "called_from_routines": {
+    "32429": 895,
+    "32404": 64
+   },
+   "T_median": 528,
+   "T_max": 1410,
+   "call_sites": [
+    {
+     "at": 32431,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    },
+    {
+     "at": 32441,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    },
+    {
+     "at": 32453,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    }
+   ],
+   "not_reached": []
+  },
+  {
+   "routine": 33379,
+   "pixel_bytes": 5120,
+   "attr_bytes": 64,
+   "block_copy_bytes": 576,
+   "calls": 18,
+   "frames_active": 21,
+   "callers_seen": {
+    "30562": 18
+   },
+   "called_from_routines": {
+    "top": 18
+   },
+   "T_median": 136024,
+   "T_max": 136906,
+   "call_sites": [
+    {
+     "at": 30562,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    }
+   ],
+   "not_reached": []
+  },
+  {
+   "routine": 32517,
+   "pixel_bytes": 0,
+   "attr_bytes": 1678,
+   "block_copy_bytes": 0,
+   "calls": 1678,
+   "frames_active": 83,
+   "callers_seen": {
+    "32511": 960,
+    "33435": 324,
+    "33440": 324,
+    "33128": 62,
+    "31131": 8
+   },
+   "called_from_routines": {
+    "32496": 959,
+    "33414": 644,
+    "33106": 62
+   },
+   "T_median": 58,
+   "T_max": 940,
+   "call_sites": [
+    {
+     "at": 31131,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    },
+    {
+     "at": 32348,
+     "kind": "CALL",
+     "code_ran_near": false,
+     "reached": false
+    },
+    {
+     "at": 32371,
+     "kind": "CALL",
+     "code_ran_near": false,
+     "reached": false
+    },
+    {
+     "at": 32511,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    },
+    {
+     "at": 33128,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    },
+    {
+     "at": 33435,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    },
+    {
+     "at": 33440,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    }
+   ],
+   "not_reached": []
+  },
+  {
+   "routine": 36908,
+   "pixel_bytes": 1504,
+   "attr_bytes": 0,
+   "block_copy_bytes": 0,
+   "calls": 222,
+   "frames_active": 169,
+   "callers_seen": {
+    "36791": 101,
+    "36806": 91,
+    "36840": 19,
+    "36822": 11
+   },
+   "called_from_routines": {
+    "top": 222
+   },
+   "T_median": 682,
+   "T_max": 1224,
+   "call_sites": [
+    {
+     "at": 36791,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    },
+    {
+     "at": 36806,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    },
+    {
+     "at": 36822,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    },
+    {
+     "at": 36840,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    }
+   ],
+   "not_reached": []
+  }
+ ],
+ "coverage_gaps": 0
+}
