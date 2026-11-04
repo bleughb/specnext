@@ -1,6 +1,9 @@
 # Inferno stage-1 design proposal (2026-11-05)
 
-Design is awaiting the user's choice. No sprite engine or continuous loader is implemented.
+All design decisions approved 2026-11-05: option B (solid enclosed black interiors), no added
+outlines, all figures/effects/projectiles/pickups, original colours and depth, clean gameplay
+scenery with original ULA retained, original modal/intro/ending screens, and continuous automatic
+level loads preserving score, health and equipment. No sprite engine or continuous loader is implemented.
 
 - `design_comparison.png`: original / A see-through coloured ink / B enclosed black interiors
   for each of six levels. Both proposals use original tile colours and no added outline.
