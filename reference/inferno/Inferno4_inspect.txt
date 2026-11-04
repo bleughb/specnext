@@ -1,0 +1,13 @@
+Machine   : 48K
+PC        : 56 (0x0038) - ROM IM 1 handler
+Resume    : IM 1 stack return to RAM at 0xEA90; BASIC execution not established
+BASIC     : program 23755-23849, 3 line(s); USR targets: none
+                10 PAPER USR VAL "23853": POKE VAL "23624",USR VAL "24460": CLEAR VAL "24199": RANDOMIZE USR VAL "5e4": RAND
+                20 RANDOMIZE USR VAL "24200"
+                30 RANDOMIZE USR VAL "24200"
+RAMTOP    : 24199 (0x5E87)
+Interrupts: IM 1, DI, I = 0xA8
+IM 1      : ROM 0x0038 (hooks that page slot 0 must DI)
+Stack     : SP 34511 (0x86CF); top words EA90 ABE3 718F 73C6
+Border    : 0
+WARNING   : none

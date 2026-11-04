@@ -9,6 +9,32 @@ selftest.py copies each game's inputs from the `path` its record (nexclash docs/
 names under reference/ and checks their MD5s: keep file names and folders as listed here. It expects
 ../specnext next to the nexclash clone (or NEXCLASH_REFERENCE=path/to/reference).
 
+## Inferno - `inferno/` (games/inferno.md; intake surveys, hardware untested)
+
+| File | MD5 | What |
+|---|---|---|
+| Inferno.tzx | 335eec35a526f2044455cb87e8c77206 | supplied tape (2026-11-05) |
+| Inferno1.rzx | 4f19c037b054059f47e3301037a33f37 | supplied level-1 recording, 61,721 frames |
+| Inferno2.rzx | 613c8d902dd3630765ba2a6730da7bdc | level 2, 51,574 frames |
+| Inferno3.rzx | f977b434bfab4a4315ce8d63c3cc51fd | level 3, 58,280 frames |
+| Inferno4.rzx | 3b7d0a3d0e516329870fbc1d2b19aa76 | level 4, 78,344 frames |
+| Inferno5.rzx | ab1c293ecb3aa2cc58314675cb76cbff | level 5, 61,314 frames |
+| Inferno6.rzx | f5b2b116314f71f740040e01fae1e763 | level 6, 74,500 frames |
+| Inferno_intro.rzx | b1af564cc64a671699057c767956d136 | intro, 59,560 frames |
+| Inferno_outro.rzx | 496f8c896b0ab14ffda452b6cef2a00d | outro, 4,366 frames |
+| Inferno.z80 | 338a35ccf625f820c0cd6a2a4175aab2 | first embedded snapshot extracted from Inferno1.rzx |
+| Inferno2.z80 | 4c3d6347214c3f9d50e3cde79a0f644d | embedded level-2 snapshot |
+| Inferno3.z80 | 7baafd16f00f112555e5e919d83b01f7 | embedded level-3 snapshot |
+| Inferno4.z80 | af608ef7d0d6ce30cfd6cf73fbb12d43 | embedded level-4 snapshot |
+| Inferno5.z80 | 5a3b007befd9fd0ae71d34c72214e05a | embedded level-5 snapshot |
+| Inferno6.z80 | d646ce027245f1a3dbafdac9d23c98dd | embedded level-6 snapshot |
+| Inferno_intro.z80 | 65c1595868cf0c1beb909116b4a0a796 | embedded intro snapshot |
+| Inferno_outro.z80 | 755fc524bd78c3d6c4a0a7f448b72bbb | embedded outro snapshot |
+| Inferno.nex | 0a3bde4734c5b3f15ad0f2a55cc81e19 | plain level-1 conversion, tail 0x9A80, boot check PASS |
+
+All eight supplied recordings are present (449,659 frames total). The duplicate TZX is identical.
+Survey folders are preliminary 2,000-frame samples, not full verification or sprite builds.
+
 ## Cauldron - `cauldron/` (games/cauldron.md; hardware: 43c1ca49 works, Dean 2026-10-27)
 
 | File | MD5 | What |
