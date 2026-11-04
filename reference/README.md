@@ -31,9 +31,19 @@ names under reference/ and checks their MD5s: keep file names and folders as lis
 | Inferno_intro.z80 | 65c1595868cf0c1beb909116b4a0a796 | embedded intro snapshot |
 | Inferno_outro.z80 | 755fc524bd78c3d6c4a0a7f448b72bbb | embedded outro snapshot |
 | Inferno.nex | 0a3bde4734c5b3f15ad0f2a55cc81e19 | plain level-1 conversion, tail 0x9A80, boot check PASS |
+| recording_overview.png | fe8c6d56e42906810d57c6be8d26833b | original-frame overview: intro, six levels, ending |
+| Inferno1_producer_census.json | f0e5de2fd03175b2f13e18a09387fbe0 | full level-1 address census; ten sites x13,869 |
 
 All eight supplied recordings are present (449,659 frames total). The duplicate TZX is identical.
-Survey folders are preliminary 2,000-frame samples, not full verification or sprite builds.
+All full raw replays PASS (`replay_checks.txt`). Survey folders (`initial_survey` for level 1,
+`Inferno2_survey` through `Inferno6_survey`, `Inferno_intro_survey`, `Inferno_outro_survey`) retain
+raw reports and highlighted previews: 2,001 analysis frames each, every sampled caller gate PASS.
+The unproven default-tail NEX files for the six levels are not published. Use the corrected flat
+`Inferno.nex`; the intro/ending survey NEX files have passing tail and boot checks. Hardware is
+untested, and the plain level-1 NEX does not supply subsequent tape loads.
+`Inferno*_original.png` and `_preview.txt` hold unhighlighted samples across each full recording;
+`*_end.z80` captures each complete replay's end state, and `_inspect.txt` records snapshot facts.
+`Inferno1_frame1000.z80` is the runtime producer-inspection state. No sprite engine is built yet.
 
 ## Cauldron - `cauldron/` (games/cauldron.md; hardware: 43c1ca49 works, Dean 2026-10-27)
 
