@@ -1,0 +1,15 @@
+{
+  "counts": {
+    "assembled attribute/phase cases": 512,
+    "lookup rows": 32768,
+    "source/canvas boundary cases": 4,
+    "rejected before canvas writes": 10,
+    "conservative wrapped bounds cases (model)": 4608,
+    "negative controls detected": 3
+  },
+  "max_equivalent_T": 573.25,
+  "max_ms": 0.16378571428571428,
+  "lookup_bytes": 131072,
+  "canvas_bytes": 32768,
+  "scope": "assembled colour expansion only; whole-image fill/cache/uploads and frame integration remain open"
+}

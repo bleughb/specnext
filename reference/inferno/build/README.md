@@ -4,12 +4,14 @@ Stage 2 is INCOMPLETE. No sprite engine or sprite NEX exists. The diagnostic NEX
 hardware candidate: full tail lifetime, continuous gameplay and timing remain unproved.
 The approved visual design in ../design/ is unchanged.
 
-Latest checkpoint: [frame_pipeline.md](frame_pipeline.md) documents the checked post-copy
-hook, palette/clip setup, Copper queue and level-4 shop-return cancellation. Six 2,000-frame
-replays pass, including original RAM/register preservation. Capture + frame preparation costs
-up to **8.715 ms per game update**, plus about **0.55 ms** for the observed 58-sprite queue.
-Sprite construction/uploads are still missing; no complete-render timing PASS or sprite NEX.
-This supersedes the earlier “no frame hook/setup” status and FLASH pair-swapping description.
+Latest checkpoint: [actor_packing.md](actor_packing.md) adds the checked expanded-memory
+actor colour decoder and six-level cold-cache census. All six 2,000-frame correctness checks
+pass, but cold capture/scenery/packing costs **11.88 ms in level 6** and **46.48 ms in level 1**,
+before silhouette fill, cache lookup or uploads. Conservative offscreen culling does not reduce
+these worst cases. The **10 ms total target is not met**; no sprite NEX exists.
+
+[frame_pipeline.md](frame_pipeline.md) retains the post-copy/setup/Copper/shop-return evidence.
+Capture + scenery alone costs up to 8.715 ms, plus about 0.55 ms for the observed 58-sprite queue.
 
 ## Current architecture experiment
 
