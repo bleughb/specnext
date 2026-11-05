@@ -1,0 +1,52 @@
+{
+  "counts": {
+    "old complete frame retained": 6,
+    "pending ownership guard": 6,
+    "blank commit and one-shot HALT": 6,
+    "acknowledged queue reuse": 6,
+    "bounded upload / stale trailing sprite cases": 6,
+    "ready/target guard": 6,
+    "modal cancels pending copper": 1,
+    "active-raster control detected": 1
+  },
+  "max_queue_added_ms": 1.165,
+  "sized_uploads": [
+    {
+      "sprites": 0,
+      "previous": 0,
+      "bytes": 12,
+      "added_ms": 0.03628571428571428
+    },
+    {
+      "sprites": 1,
+      "previous": 0,
+      "bytes": 24,
+      "added_ms": 0.04446428571428571
+    },
+    {
+      "sprites": 58,
+      "previous": 0,
+      "bytes": 708,
+      "added_ms": 0.5472857142857143
+    },
+    {
+      "sprites": 2,
+      "previous": 58,
+      "bytes": 708,
+      "added_ms": 0.6392857142857142
+    },
+    {
+      "sprites": 0,
+      "previous": 58,
+      "bytes": 708,
+      "added_ms": 0.6425
+    },
+    {
+      "sprites": 128,
+      "previous": 128,
+      "bytes": 1548,
+      "added_ms": 1.165
+    }
+  ],
+  "scope": "assembled uploader + bounded Copper model; synthetic sprite records; no sprite compiler, installed frame hook or hardware raster proof"
+}

@@ -4,6 +4,13 @@ Stage 2 is INCOMPLETE. No sprite engine or sprite NEX exists. The diagnostic NEX
 hardware candidate: full tail lifetime, continuous gameplay and timing remain unproved.
 The approved visual design in ../design/ is unchanged.
 
+Latest checkpoint: [frame_pipeline.md](frame_pipeline.md) documents the checked post-copy
+hook, palette/clip setup, Copper queue and level-4 shop-return cancellation. Six 2,000-frame
+replays pass, including original RAM/register preservation. Capture + frame preparation costs
+up to **8.715 ms per game update**, plus about **0.55 ms** for the observed 58-sprite queue.
+Sprite construction/uploads are still missing; no complete-render timing PASS or sprite NEX.
+This supersedes the earlier “no frame hook/setup” status and FLASH pair-swapping description.
+
 ## Current architecture experiment
 
 See [timing_architecture.md](timing_architecture.md) for the evaluated Z80/Z80N, DMA,

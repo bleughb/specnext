@@ -1,0 +1,10 @@
+{
+  "counts": {
+    "viewport RGB pixels": 294912,
+    "palette/phase/buffer geometry": 8,
+    "setup guards": 3,
+    "palette/clip control detected": 2
+  },
+  "max_once_only_setup_ms": 2.0301785714285714,
+  "scope": "assembled palette/clip setup and documented geometry model; no video hardware or installed sprite renderer"
+}
