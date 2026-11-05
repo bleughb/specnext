@@ -1,0 +1,17 @@
+{
+  "counts": {
+    "real block": 32,
+    "instructions": 16946824,
+    "verify block": 32,
+    "capacity": 9,
+    "wrong flag": 1,
+    "bad checksum": 1,
+    "verify mismatch": 1,
+    "exhausted": 1,
+    "ROM/wrap destination": 3,
+    "ROM/wrap verify": 3,
+    "negative control": 2
+  },
+  "examples": [],
+  "scope": "byte decoder only; no pulse timing, bootstrap or full-game proof"
+}

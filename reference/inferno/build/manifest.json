@@ -1,0 +1,90 @@
+{
+  "Inferno_bootstrap.z80": {
+    "bytes": 37042,
+    "md5": "9814983816aafb2b9efd99344dd8c221"
+  },
+  "Inferno_capture_diagnostic.nex": {
+    "bytes": 311808,
+    "md5": "5ab0177a52acf48564c451837122a676"
+  },
+  "Inferno_loader_diagnostic.nex": {
+    "bytes": 311808,
+    "md5": "18d85ba705bc28771a97df573b451419"
+  },
+  "bootstrap_checks.json": {
+    "bytes": 286,
+    "md5": "cdc6a3d4670769cfdff0552403ea71ee"
+  },
+  "bootstrap_scan.txt": {
+    "bytes": 360,
+    "md5": "3ac742eb9e128d944335f0f9c3638539"
+  },
+  "capture1.json": {
+    "bytes": 1529,
+    "md5": "254fb0fe33dca2a7d0a0adefa3362f97"
+  },
+  "capture2.json": {
+    "bytes": 1537,
+    "md5": "eca4e04a0704e1c6e38bdf258c30fa5b"
+  },
+  "capture3.json": {
+    "bytes": 1480,
+    "md5": "6825739fcc5af9fc433d0c641896b5b4"
+  },
+  "capture4.json": {
+    "bytes": 1552,
+    "md5": "bf95719a9deb6c1926470fb3f3a4b14b"
+  },
+  "capture5.json": {
+    "bytes": 1205,
+    "md5": "1e40d0df6d37fa223fcd73f4a232280c"
+  },
+  "capture6.json": {
+    "bytes": 1691,
+    "md5": "8fe2cca7e1c577727947bb9399cceaad"
+  },
+  "capture_boot.json": {
+    "bytes": 272,
+    "md5": "44f4423ce69c0d3f898df6eb6e9aeeaf"
+  },
+  "capture_pool_check.json": {
+    "bytes": 1270,
+    "md5": "3202812601100ec0119bc41f260e5c8a"
+  },
+  "capture_summary.json": {
+    "bytes": 1628,
+    "md5": "eaf911436e2222a80ff01c611abb5927"
+  },
+  "capture_unpooled_check.json": {
+    "bytes": 1270,
+    "md5": "3202812601100ec0119bc41f260e5c8a"
+  },
+  "continuation_checks.json": {
+    "bytes": 2407,
+    "md5": "292e8e9e1749b0656a1a2163ddc7003f"
+  },
+  "game_rom_scan.txt": {
+    "bytes": 471,
+    "md5": "65cca47270d4dc833e8fabf62662ba4a"
+  },
+  "intro_rom_scan.txt": {
+    "bytes": 476,
+    "md5": "e3245f037b20868324b708ef82197dbc"
+  },
+  "loader_checks.json": {
+    "bytes": 387,
+    "md5": "339c2009340ffbdc24ecd16ac1112117"
+  },
+  "pulse_checks.json": {
+    "bytes": 249,
+    "md5": "c4986d4b4844b4ce70ee82f9776c5937"
+  },
+  "pulse_continuation.json": {
+    "bytes": 2869,
+    "md5": "229211a17355aef8aa396ad229e91da7"
+  },
+  "render_model_units.json": {
+    "bytes": 404,
+    "md5": "aed251687bd340ad50fa6f0fd8ae140e"
+  }
+}

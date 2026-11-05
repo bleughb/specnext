@@ -1,0 +1,23 @@
+Inferno_intro: PASS, 6.24 s
+Wrote ../specnext/reference/inferno/Inferno_intro_end.z80
+
+Inferno1: PASS, 9.91 s
+Wrote ../specnext/reference/inferno/Inferno1_end.z80
+
+Inferno2: PASS, 9.61 s
+Wrote ../specnext/reference/inferno/Inferno2_end.z80
+
+Inferno3: PASS, 18.83 s
+Wrote ../specnext/reference/inferno/Inferno3_end.z80
+
+Inferno4: PASS, 45.79 s
+Wrote ../specnext/reference/inferno/Inferno4_end.z80
+
+Inferno5: PASS, 16.09 s
+Wrote ../specnext/reference/inferno/Inferno5_end.z80
+
+Inferno6: PASS, 13.19 s
+Wrote ../specnext/reference/inferno/Inferno6_end.z80
+
+Inferno_outro: PASS, 0.63 s
+Wrote ../specnext/reference/inferno/Inferno_outro_end.z80

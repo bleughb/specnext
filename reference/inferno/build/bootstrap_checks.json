@@ -1,0 +1,13 @@
+{
+  "boot_checks": {
+    "Sinclair": [],
+    "foreign ROM3": []
+  },
+  "tail": [
+    23856,
+    23910
+  ],
+  "snapshot_md5": "9814983816aafb2b9efd99344dd8c221",
+  "nex_md5": "18d85ba705bc28771a97df573b451419",
+  "scope": "diagnostic boot only; no full continuation or sprite release"
+}
