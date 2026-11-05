@@ -88,8 +88,8 @@
     "md5": "aed251687bd340ad50fa6f0fd8ae140e"
   },
   "scene_renderer_checks.json": {
-    "bytes": 4021,
-    "md5": "d596e99887a8545ba083b4478b2956fa"
+    "bytes": 4061,
+    "md5": "a81e80078cfd7b5c8ef89eb5aea65cc5"
   },
   "scenery1.png": {
     "bytes": 2023,
@@ -116,8 +116,8 @@
     "md5": "a01971f876da84248d654d0d4bf6464c"
   },
   "scenery6_quick.json": {
-    "bytes": 1954,
-    "md5": "dc9d0c52de2f7aca240200740c8966f2"
+    "bytes": 1952,
+    "md5": "19cb25a7b2d7fae928583fc1ecce2c49"
   },
   "tile_batch_units.json": {
     "bytes": 471,

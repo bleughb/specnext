@@ -4,16 +4,17 @@
     "unchanged no-write scene": 6,
     "same-ID graphics mutation scene": 6,
     "viewport pixels compared": 663552,
-    "max cold equivalent T": 459051.75,
-    "max unchanged equivalent T": 37198.625,
-    "max mutated equivalent T": 278524.5,
+    "max cold equivalent T": 456830.75,
+    "max unchanged equivalent T": 32219.0,
+    "max mutated equivalent T": 276305.875,
     "independent buffer scene": 2,
     "scene input/front guard": 3,
     "stale-scene control detected": 1,
     "retained-validation control detected": 1,
     "whole-scene FLASH phase": 1,
     "whole-scene live attribute": 1,
-    "one-cell colliding map ID": 1
+    "one-cell colliding map ID": 1,
+    "validation flag page boundaries": 8
   },
   "cases": [
     {
@@ -22,22 +23,22 @@
       "cold": {
         "error": 0,
         "changed": 576,
-        "instructions": 309528,
-        "equivalent_T": 401147.875,
+        "instructions": 309082,
+        "equivalent_T": 398926.875,
         "pixel_writes": 40384
       },
       "unchanged": {
         "error": 0,
         "changed": 0,
-        "instructions": 23406,
-        "equivalent_T": 30394.625,
+        "instructions": 22200,
+        "equivalent_T": 26164.25,
         "pixel_writes": 0
       },
       "mutated": {
         "error": 0,
         "changed": 400,
-        "instructions": 209143,
-        "equivalent_T": 278524.5,
+        "instructions": 208700,
+        "equivalent_T": 276305.875,
         "pixel_writes": 25664
       }
     },
@@ -47,22 +48,22 @@
       "cold": {
         "error": 0,
         "changed": 576,
-        "instructions": 346823,
-        "equivalent_T": 445315.625,
+        "instructions": 346377,
+        "equivalent_T": 443094.625,
         "pixel_writes": 45056
       },
       "unchanged": {
         "error": 0,
         "changed": 0,
-        "instructions": 27761,
-        "equivalent_T": 35854.625,
+        "instructions": 26295,
+        "equivalent_T": 31023.0,
         "pixel_writes": 0
       },
       "mutated": {
         "error": 0,
         "changed": 353,
-        "instructions": 193168,
-        "equivalent_T": 258192.0,
+        "instructions": 192725,
+        "equivalent_T": 255973.375,
         "pixel_writes": 22656
       }
     },
@@ -72,22 +73,22 @@
       "cold": {
         "error": 0,
         "changed": 576,
-        "instructions": 320768,
-        "equivalent_T": 415108.25,
+        "instructions": 320322,
+        "equivalent_T": 412887.25,
         "pixel_writes": 41984
       },
       "unchanged": {
         "error": 0,
         "changed": 0,
-        "instructions": 25148,
-        "equivalent_T": 32578.625,
+        "instructions": 23838,
+        "equivalent_T": 28107.75,
         "pixel_writes": 0
       },
       "mutated": {
         "error": 0,
         "changed": 356,
-        "instructions": 191539,
-        "equivalent_T": 255996.0,
+        "instructions": 191096,
+        "equivalent_T": 253777.375,
         "pixel_writes": 22848
       }
     },
@@ -97,22 +98,22 @@
       "cold": {
         "error": 0,
         "changed": 576,
-        "instructions": 330053,
-        "equivalent_T": 426518.875,
+        "instructions": 329607,
+        "equivalent_T": 424297.875,
         "pixel_writes": 43264
       },
       "unchanged": {
         "error": 0,
         "changed": 0,
-        "instructions": 26421,
-        "equivalent_T": 34174.625,
+        "instructions": 25035,
+        "equivalent_T": 29528.0,
         "pixel_writes": 0
       },
       "mutated": {
         "error": 0,
         "changed": 371,
-        "instructions": 199658,
-        "equivalent_T": 266469.5,
+        "instructions": 199215,
+        "equivalent_T": 264250.875,
         "pixel_writes": 23808
       }
     },
@@ -122,22 +123,22 @@
       "cold": {
         "error": 0,
         "changed": 576,
-        "instructions": 319824,
-        "equivalent_T": 413792.5,
+        "instructions": 319378,
+        "equivalent_T": 411571.5,
         "pixel_writes": 41792
       },
       "unchanged": {
         "error": 0,
         "changed": 0,
-        "instructions": 23741,
-        "equivalent_T": 30814.625,
+        "instructions": 22515,
+        "equivalent_T": 26538.0,
         "pixel_writes": 0
       },
       "mutated": {
         "error": 0,
         "changed": 3,
-        "instructions": 32953,
-        "equivalent_T": 52311.125,
+        "instructions": 32510,
+        "equivalent_T": 50092.5,
         "pixel_writes": 256
       }
     },
@@ -147,22 +148,22 @@
       "cold": {
         "error": 0,
         "changed": 576,
-        "instructions": 359796,
-        "equivalent_T": 459051.75,
+        "instructions": 359350,
+        "equivalent_T": 456830.75,
         "pixel_writes": 46208
       },
       "unchanged": {
         "error": 0,
         "changed": 0,
-        "instructions": 28833,
-        "equivalent_T": 37198.625,
+        "instructions": 27303,
+        "equivalent_T": 32219.0,
         "pixel_writes": 0
       },
       "mutated": {
         "error": 0,
         "changed": 317,
-        "instructions": 178364,
-        "equivalent_T": 239231.0,
+        "instructions": 177921,
+        "equivalent_T": 237012.375,
         "pixel_writes": 20352
       }
     }
