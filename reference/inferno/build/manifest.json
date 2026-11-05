@@ -130,5 +130,53 @@
   "tile_renderer_units.json": {
     "bytes": 421,
     "md5": "cc5f6d1689152db766f43abb9d8283d6"
+  },
+  "textmap_units.json": {
+    "bytes": 1837,
+    "md5": "b7df680d7d37dfc12e508edc854f4b5d"
+  },
+  "textmap6_quick.json": {
+    "bytes": 1954,
+    "md5": "3019f49174479a3fe892c3bfdcb0e992"
+  },
+  "textmap_summary.json": {
+    "bytes": 1909,
+    "md5": "05d26705bb3c4c5cc97031f60235d2c9"
+  },
+  "textmap_shop_census.json": {
+    "bytes": 229,
+    "md5": "13c2c51e063b0e20aaa7bb5cffe6dd5f"
+  },
+  "textmap_shop_state.json": {
+    "bytes": 203448,
+    "md5": "c21b7567a6ee3238d79015fb11e28135"
+  },
+  "textmap1.json": {
+    "bytes": 1795,
+    "md5": "31a6fe35f41e7985652853a79c4d1201"
+  },
+  "textmap2.json": {
+    "bytes": 1808,
+    "md5": "f303e634d51bfc975f68d1a88123cbd2"
+  },
+  "textmap3.json": {
+    "bytes": 1746,
+    "md5": "1f78de8d1f5f48811e9dfdb7a84a5db6"
+  },
+  "textmap4.json": {
+    "bytes": 1821,
+    "md5": "96f82107a1e14164dc8a8ae6c8d9fa07"
+  },
+  "textmap5.json": {
+    "bytes": 1472,
+    "md5": "8b9b57a9f4a02a515276be6745836ce7"
+  },
+  "textmap6.json": {
+    "bytes": 1961,
+    "md5": "967d14673ce0b7f856fc9294c4735780"
+  },
+  "timing_architecture.md": {
+    "bytes": 9520,
+    "md5": "f3890d2cde9920e4a92ac80d37bba9f0"
   }
 }
