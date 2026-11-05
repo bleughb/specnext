@@ -95,6 +95,16 @@ python -m nexclash.inferno --capture-build ../specnext/reference/inferno --out w
 
 ## Assembled scenery baseline
 
+Validation optimization follow-up (2026-11-05): current `scene_renderer_checks.json` and
+`scenery6_quick.json` use aligned validation flags, private-stack flag clearing under DI and
+unrolled source comparisons. Six bounded scenes and eight flag-page boundary IDs pass, including
+the stale-source and retained-validation negative controls. Level-6 quick 2,000 retains all
+347 images / 12,791,808 pixels / 2,966 capture events / 347 map / 346 ULA comparisons.
+Its unchanged maximum falls from 37,782.875 to **32,738.5** equivalent T; bounded unchanged
+maximum is **32,219**. Level-6 cold/dirty maximum is still **455,240.75**. These numbers supersede
+the scene timings below. The TOTAL gate still fails, including capture and future sprite/commit
+costs. No frame integration, other-level replay milestone or shop-path change occurred.
+
 `tile_renderer_units.json`, `tile_cache_units.json`, `tile_batch_units.json` and
 `scene_renderer_checks.json` exercise actual assembled Z80/Z80N writes through modeled shadow
 write-only Layer 2 paging. The complete scenery worker uses the clean map retained by the capture
