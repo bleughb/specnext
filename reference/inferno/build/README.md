@@ -1,4 +1,4 @@
-# Inferno stage-2 loader foundation (2026-11-05)
+# Inferno stage-2 build evidence (2026-11-05)
 
 Stage 2 is INCOMPLETE. No sprite engine or sprite NEX exists. The diagnostic NEX is not a
 hardware candidate: full tail lifetime, continuous gameplay and timing remain unproved.
@@ -93,7 +93,47 @@ python -m nexclash.inferno --capture-build ../specnext/reference/inferno --out w
   and both original and foreign ROM3. It starts the existing level-1 snapshot with capture hooks;
   it is NOT the approved original-BASIC continuous frontend. No sprite/Layer 2 renderer is enabled.
 
-Next work is the actual budgeted sprite/Layer 2 renderer, content-validated cache, modal transitions,
-colour workflow and original-BASIC startup installation through all levels/ending. The engine
-remains unregistered and its record excluded/unstamped. Do not hardware-test these diagnostics as
-if they were a sprite release.
+## Assembled scenery baseline
+
+`tile_renderer_units.json`, `tile_cache_units.json`, `tile_batch_units.json` and
+`scene_renderer_checks.json` exercise actual assembled Z80/Z80N writes through modeled shadow
+write-only Layer 2 paging. The complete scenery worker uses the clean map retained by the capture
+kernel and live game graphics. This is an offline execution harness, not an installed frame hook.
+
+- All 384 attribute/FLASH combinations, uniform bitmap extremes, edge positions/sections, invalid
+  inputs and front protection pass. The direct 64-slot cache checks complete source content, ID
+  and relevant FLASH phase, including collisions, source mutation and a stale-key negative control.
+- Complete 576-cell batches pass; malformed jobs late in the list and invalid cache slots reject
+  before any pixel write. Broken shadow/visibility controls are detected.
+- Six bounded stage-1 scenes pass cold/unchanged/same-ID mutation comparisons (663,552 viewport
+  pixels). Independent front/back content keys, whole-scene attribute/FLASH changes and a single
+  colliding map ID are checked. Broken source comparison and retained validation flags are detected
+  using surviving private scratch and the good worker's real source/cache pages.
+- `scenery1.png` through `scenery6.png` show the clean 256x144 scenery produced by the assembled
+  worker, using a Spectrum colour lookup. They omit actors and HUD; they are not sprite previews.
+- `scenery6_quick.json`: representative 2,000-frame RZX iteration, 347 scenery images / 12,791,808
+  viewport pixels, 2,966 capture events, 347 map and 346 ULA comparisons; all invariants/IRQ and
+  negative controls pass. Host alternates inactive target banks; no runtime commit is tested.
+  Other levels retain bounded scene checks; all-six quick replays resume at integration milestones.
+- Timing model includes one extra cycle per modeled read at 28MHz, divided by eight. Primitive
+  maxima in these cases: tile 708.25, cache miss 1,238.375 / hit 484.5; prepared batch 307.12 per
+  tile (preparation excluded). Cold scene maximum 459,051.75. Distinct-source validation reduces
+  level-6 unchanged maximum from 58,200.625 to 37,782.875. **The total 35,000/tick gate fails**,
+  before capture, sprites or commit. No hardware-speed or complete-renderer timing claim.
+
+Run from nexclash; use level 6 during iteration, other levels at milestones (user preference):
+
+```bash
+python -m nexclash.inferno --tile-renderer-units --json work/tile_renderer_units.json
+python -m nexclash.inferno --tile-cache-units --json work/tile_cache_units.json
+python -m nexclash.inferno --tile-batch-units --json work/tile_batch_units.json
+python -m nexclash.inferno --scene-renderer-checks ../specnext/reference/inferno --out work/scenery --json work/scene_renderer_checks.json
+python -m nexclash.inferno --scenery-check ../specnext/reference/inferno/Inferno6.rzx --quick 2000 --json work/scenery6_quick.json
+# Integration milestone, not the per-edit loop:
+python -m nexclash.inferno --scenery-all ../specnext/reference/inferno --out work/scenery_quick --quick 2000 --json work/scenery_summary.json
+```
+
+Next: budgeted validation/dirty scheduling, frame hook and atomic commit, sprite compilation/upload,
+modal transitions, colour workflow and original-BASIC startup through all levels/ending. The engine
+remains unregistered and its record excluded/unstamped. Existing NEX diagnostics are unchanged;
+none contains the new scenery code or is a sprite release.

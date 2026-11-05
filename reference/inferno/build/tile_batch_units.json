@@ -1,0 +1,13 @@
+{
+  "counts": {
+    "empty/edge/full viewport": 9,
+    "full viewport equivalent T": 176903.875,
+    "full viewport per tile equivalent T": 307.1189236111111,
+    "late invalid job atomic rejection": 5,
+    "bank/count guard": 3,
+    "invalid cache atomic rejection": 1,
+    "wrong-buffer control detected": 1
+  },
+  "examples": [],
+  "scope": "assembled prepared-cache batch L2 writes; live-key validation, cache preparation and frame scheduling excluded from timing"
+}
