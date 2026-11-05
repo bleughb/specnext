@@ -1,0 +1,138 @@
+{
+  "cases": [
+    {
+      "io_writes": 16393,
+      "level": 0,
+      "calls": 4,
+      "instructions": 210270,
+      "unread_dead_stack": 13,
+      "next_block": 8,
+      "handoff_sp": 34509,
+      "handoff_pc": 29068,
+      "synchronized_refresh_reads": {
+        "7C37": 16384
+      },
+      "physical_return_convergences": [
+        "731C",
+        "731C",
+        "731C",
+        "731C"
+      ]
+    },
+    {
+      "io_writes": 16393,
+      "level": 1,
+      "calls": 4,
+      "instructions": 209055,
+      "unread_dead_stack": 13,
+      "next_block": 12,
+      "handoff_sp": 34509,
+      "handoff_pc": 29068,
+      "synchronized_refresh_reads": {
+        "7C37": 16384
+      },
+      "physical_return_convergences": [
+        "731C",
+        "731C",
+        "731C",
+        "731C"
+      ]
+    },
+    {
+      "io_writes": 16393,
+      "level": 2,
+      "calls": 4,
+      "instructions": 209434,
+      "unread_dead_stack": 13,
+      "next_block": 16,
+      "handoff_sp": 34509,
+      "handoff_pc": 29068,
+      "synchronized_refresh_reads": {
+        "7C37": 16384
+      },
+      "physical_return_convergences": [
+        "731C",
+        "731C",
+        "731C",
+        "731C"
+      ]
+    },
+    {
+      "io_writes": 16393,
+      "level": 3,
+      "calls": 4,
+      "instructions": 209542,
+      "unread_dead_stack": 13,
+      "next_block": 20,
+      "handoff_sp": 34509,
+      "handoff_pc": 29068,
+      "synchronized_refresh_reads": {
+        "7C37": 16384
+      },
+      "physical_return_convergences": [
+        "731C",
+        "731C",
+        "731C",
+        "731C"
+      ]
+    },
+    {
+      "io_writes": 16393,
+      "level": 4,
+      "calls": 4,
+      "instructions": 209622,
+      "unread_dead_stack": 13,
+      "next_block": 24,
+      "handoff_sp": 34509,
+      "handoff_pc": 29068,
+      "synchronized_refresh_reads": {
+        "7C37": 16384
+      },
+      "physical_return_convergences": [
+        "731C",
+        "731C",
+        "731C",
+        "731C"
+      ]
+    },
+    {
+      "io_writes": 16393,
+      "level": 5,
+      "calls": 4,
+      "instructions": 209849,
+      "unread_dead_stack": 13,
+      "next_block": 28,
+      "handoff_sp": 34509,
+      "handoff_pc": 29068,
+      "synchronized_refresh_reads": {
+        "7C37": 16384
+      },
+      "physical_return_convergences": [
+        "731C",
+        "731C",
+        "731C",
+        "731C"
+      ]
+    },
+    {
+      "io_writes": 16393,
+      "level": 6,
+      "calls": 4,
+      "instructions": 208567,
+      "unread_dead_stack": 13,
+      "next_block": 32,
+      "handoff_sp": 34509,
+      "handoff_pc": 29068,
+      "synchronized_refresh_reads": {
+        "7C37": 16384
+      },
+      "physical_return_convergences": [
+        "731C",
+        "731C",
+        "731C",
+        "731C"
+      ]
+    }
+  ],
+  "scope": "actual TZX pulses versus bank loader to 718C; equal R inputs; Nb not executed"
+}

@@ -1,0 +1,220 @@
+{
+ "game": "Inferno6",
+ "engine": "unknown",
+ "plain": {
+  "file": "Inferno6.nex",
+  "tail": "WARNING: no proven-safe tail location; converter default used",
+  "boot": "OK (registers, RAM, ROM view, paging)"
+ },
+ "frames": 2001,
+ "routines": [
+  {
+   "routine": 38800,
+   "pixel_bytes": 754480,
+   "attr_bytes": 199296,
+   "block_copy_bytes": 199296,
+   "calls": 347,
+   "frames_active": 692,
+   "callers_seen": {
+    "36754": 347
+   },
+   "called_from_routines": {
+    "top": 347
+   },
+   "T_median": 208663,
+   "T_max": 274392,
+   "call_sites": [
+    {
+     "at": 36754,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    }
+   ],
+   "not_reached": []
+  },
+  {
+   "routine": 33414,
+   "pixel_bytes": 82944,
+   "attr_bytes": 10368,
+   "block_copy_bytes": 93312,
+   "calls": 324,
+   "frames_active": 44,
+   "callers_seen": {
+    "33389": 324
+   },
+   "called_from_routines": {
+    "33379": 324
+   },
+   "T_median": 6917,
+   "T_max": 7799,
+   "call_sites": [
+    {
+     "at": 33389,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    }
+   ],
+   "not_reached": []
+  },
+  {
+   "routine": 32496,
+   "pixel_bytes": 7664,
+   "attr_bytes": 0,
+   "block_copy_bytes": 0,
+   "calls": 958,
+   "frames_active": 12,
+   "callers_seen": {
+    "32441": 898,
+    "32431": 30,
+    "32453": 30
+   },
+   "called_from_routines": {
+    "32429": 894,
+    "32404": 64
+   },
+   "T_median": 528,
+   "T_max": 1410,
+   "call_sites": [
+    {
+     "at": 32431,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    },
+    {
+     "at": 32441,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    },
+    {
+     "at": 32453,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    }
+   ],
+   "not_reached": []
+  },
+  {
+   "routine": 33379,
+   "pixel_bytes": 4608,
+   "attr_bytes": 0,
+   "block_copy_bytes": 0,
+   "calls": 18,
+   "frames_active": 21,
+   "callers_seen": {
+    "30562": 18
+   },
+   "called_from_routines": {
+    "top": 18
+   },
+   "T_median": 136024,
+   "T_max": 136906,
+   "call_sites": [
+    {
+     "at": 30562,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    }
+   ],
+   "not_reached": []
+  },
+  {
+   "routine": 32517,
+   "pixel_bytes": 0,
+   "attr_bytes": 1681,
+   "block_copy_bytes": 0,
+   "calls": 1681,
+   "frames_active": 84,
+   "callers_seen": {
+    "32511": 960,
+    "33435": 324,
+    "33440": 324,
+    "33128": 65,
+    "31131": 8
+   },
+   "called_from_routines": {
+    "32496": 958,
+    "33414": 648,
+    "33106": 65
+   },
+   "T_median": 58,
+   "T_max": 58,
+   "call_sites": [
+    {
+     "at": 31131,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    },
+    {
+     "at": 32348,
+     "kind": "CALL",
+     "code_ran_near": false,
+     "reached": false
+    },
+    {
+     "at": 32371,
+     "kind": "CALL",
+     "code_ran_near": false,
+     "reached": false
+    },
+    {
+     "at": 32511,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    },
+    {
+     "at": 33128,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    },
+    {
+     "at": 33435,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    },
+    {
+     "at": 33440,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    }
+   ],
+   "not_reached": []
+  },
+  {
+   "routine": 33106,
+   "pixel_bytes": 674,
+   "attr_bytes": 195,
+   "block_copy_bytes": 0,
+   "calls": 65,
+   "frames_active": 30,
+   "callers_seen": {
+    "32941": 65
+   },
+   "called_from_routines": {
+    "32669": 65
+   },
+   "T_median": 23999,
+   "T_max": 25265,
+   "call_sites": [
+    {
+     "at": 32941,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    }
+   ],
+   "not_reached": []
+  }
+ ],
+ "coverage_gaps": 0
+}

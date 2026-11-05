@@ -1,0 +1,47 @@
+{
+  "frames": 810,
+  "counts": {
+    "kernel events": 210,
+    "kernel instructions": 83251,
+    "max kernel cost 8F7C": 3562.625,
+    "scenery events": 30,
+    "max kernel cost 96A1": 758.0,
+    "actor events": 150,
+    "wrapped path": 119,
+    "max kernel cost 959B": 758.375,
+    "normal path": 31,
+    "max capture tick cost": 6302.625,
+    "max kernel cost 8F92": 97.75,
+    "dropped writer detected": 30,
+    "max image calls": 5,
+    "max visible chunks": 58,
+    "max unique patterns": 54,
+    "max pending pattern union": 54,
+    "tile checks": 30,
+    "ULA checks": 29,
+    "coordinate control detected": 1,
+    "position unit": 40,
+    "inactive unit": 4,
+    "full log unit": 2,
+    "overflow skip unit": 2,
+    "ordinal full unit": 2,
+    "commit phase unit": 3,
+    "site refusal unit": 4,
+    "ISR entry unit": 4,
+    "ISR forced unwind unit": 4,
+    "unsafe DI control detected": 1,
+    "interior jump control detected": 1,
+    "game RAM control detected": 1
+  },
+  "examples": [],
+  "scenery_dirty_histogram": {
+    "0": 25,
+    "108": 2,
+    "117": 2
+  },
+  "scenery_shifts": {
+    "(0, 0)": 29
+  },
+  "graphics_content_versions": 11,
+  "scope": "capture kernel + original reconstruction; no display layer, loader integration or total-render timing"
+}

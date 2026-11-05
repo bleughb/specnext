@@ -1,0 +1,2 @@
+Source    : ../specnext/reference/inferno/Inferno2.rzx, 51075 frames; shots at 5000, 17191, 34382, 51074
+Sheet     : ../specnext/reference/inferno/Inferno2_original.png (1040 x 196)

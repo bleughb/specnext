@@ -1,0 +1,15 @@
+{
+  "counts": {
+    "closed interior": 1,
+    "exterior transparent": 1,
+    "original ink colour": 1,
+    "open interior": 1,
+    "source-content cache": 1,
+    "overwrite order": 1,
+    "fill across tile seam": 1,
+    "bright palette": 1,
+    "missing-fill control detected": 1,
+    "viewport wrap/clip": 5
+  },
+  "scope": "software B silhouette/palette/resource model; no runtime sprite rasterizer"
+}

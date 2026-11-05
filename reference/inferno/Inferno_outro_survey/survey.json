@@ -1,0 +1,97 @@
+{
+ "game": "Inferno_outro",
+ "engine": "unknown",
+ "plain": {
+  "file": "Inferno_outro.nex",
+  "tail": "tail at 0x5B00 (printer buffer never used by the game)",
+  "boot": "OK (registers, RAM, ROM view, paging)"
+ },
+ "frames": 2001,
+ "routines": [
+  {
+   "routine": 48745,
+   "pixel_bytes": 155543,
+   "attr_bytes": 0,
+   "block_copy_bytes": 0,
+   "calls": 1842,
+   "frames_active": 1842,
+   "callers_seen": {
+    "48644": 1842
+   },
+   "called_from_routines": {
+    "ISR": 1842
+   },
+   "T_median": 18208,
+   "T_max": 18507,
+   "call_sites": [
+    {
+     "at": 48644,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    }
+   ],
+   "not_reached": []
+  },
+  {
+   "routine": 48351,
+   "pixel_bytes": 53784,
+   "attr_bytes": 0,
+   "block_copy_bytes": 0,
+   "calls": 748,
+   "frames_active": 747,
+   "callers_seen": {
+    "48261": 743,
+    "48221": 5
+   },
+   "called_from_routines": {
+    "48252": 743,
+    "48200": 3,
+    "48172": 2
+   },
+   "T_median": 138196,
+   "T_max": 214879,
+   "call_sites": [
+    {
+     "at": 48221,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    },
+    {
+     "at": 48261,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    }
+   ],
+   "not_reached": []
+  },
+  {
+   "routine": 48228,
+   "pixel_bytes": 6144,
+   "attr_bytes": 769,
+   "block_copy_bytes": 6911,
+   "calls": 1,
+   "frames_active": 4,
+   "callers_seen": {
+    "47014": 1
+   },
+   "called_from_routines": {
+    "44096": 1
+   },
+   "T_median": 145208,
+   "T_max": 145208,
+   "call_sites": [
+    {
+     "at": 47014,
+     "kind": "CALL",
+     "code_ran_near": true,
+     "reached": true
+    }
+   ],
+   "not_reached": []
+  }
+ ],
+ "coverage_gaps": 0
+}

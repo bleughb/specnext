@@ -1,0 +1,69 @@
+{
+  "frames": 12000,
+  "counts": {
+    "kernel events": 16903,
+    "kernel instructions": 4038809,
+    "max kernel cost 8F7C": 3562.625,
+    "scenery events": 1855,
+    "max kernel cost 96A1": 758.0,
+    "actor events": 13194,
+    "wrapped path": 10005,
+    "max kernel cost 959B": 758.375,
+    "normal path": 3189,
+    "max capture tick cost": 8342.625,
+    "max kernel cost 8F92": 97.75,
+    "dropped writer detected": 1666,
+    "max image calls": 21,
+    "max visible chunks": 58,
+    "max unique patterns": 56,
+    "max pending pattern union": 64,
+    "tile checks": 1854,
+    "ULA checks": 1850,
+    "coordinate control detected": 841,
+    "position unit": 240,
+    "inactive unit": 24,
+    "full log unit": 12,
+    "overflow skip unit": 12,
+    "ordinal full unit": 12,
+    "commit phase unit": 18,
+    "site refusal unit": 24,
+    "ISR entry unit": 24,
+    "ISR forced unwind unit": 24,
+    "unsafe DI control detected": 6,
+    "interior jump control detected": 6,
+    "game RAM control detected": 6
+  },
+  "cases": [
+    {
+      "level": 1,
+      "file": "capture1.json",
+      "failures": {}
+    },
+    {
+      "level": 2,
+      "file": "capture2.json",
+      "failures": {}
+    },
+    {
+      "level": 3,
+      "file": "capture3.json",
+      "failures": {}
+    },
+    {
+      "level": 4,
+      "file": "capture4.json",
+      "failures": {}
+    },
+    {
+      "level": 5,
+      "file": "capture5.json",
+      "failures": {}
+    },
+    {
+      "level": 6,
+      "file": "capture6.json",
+      "failures": {}
+    }
+  ],
+  "scope": "capture/model/invariant checks only; no sprite/Layer 2 renderer or continuous release"
+}

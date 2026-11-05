@@ -1,0 +1,8 @@
+{
+  "counts": {
+    "pulse load": 34,
+    "pulse verify": 33
+  },
+  "examples": [],
+  "scope": "unmodified ROM, actual TZX pulses, polarity 0, no fast load/accelerators; strict CMP/live RAM; short-tape timeout and other EAR polarities not proved"
+}
