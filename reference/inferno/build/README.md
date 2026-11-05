@@ -41,3 +41,59 @@ Next: pulse-level loader contract and real continuous startup/Na+Nb/game/ending 
 then complete original-memory-preserving sprite/Layer 2 hooks, modal transitions, instruction
 interrupt safety, resource bounds, measured timing, colour maps/sheets and quick RZX verification.
 Read nexclash/games/inferno.md for the exact current design, evidence and next-session prompt.
+
+## Capture kernel checkpoint (2026-11-05)
+
+The current decoder corrects canonical C to 7E using unmodified-ROM/TZX pulse tests. The loader
+NEX above is regenerated; use manifest.json for its current checksum. The capture NEX is a
+separate level-1 snapshot diagnostic, not a continuous release. Neither enables replacement layers.
+
+```bash
+python -m nexclash.inferno --pulse-tests ../specnext/reference/inferno/Inferno.tzx --json work/pulse_checks.json
+python -m nexclash.inferno --pulse-continuation ../specnext/reference/inferno --json work/pulse_continuation.json
+python -m nexclash.inferno --capture-all ../specnext/reference/inferno --out work --quick 2000 --json work/capture_summary.json
+python -m nexclash.inferno --render-model-units --json work/render_model_units.json
+python -m nexclash.inferno --capture-build ../specnext/reference/inferno --out work/inferno --json work/capture_boot.json
+```
+
+- pulse_checks.json: 32 loads, 32 verifies and 3 error cases against actual TZX pulse timings,
+  no fast load or pulse-loop accelerators. Strict CMP/live RAM comparison, including C and AF'.
+  Reference polarity 0; short-tape timeouts/other polarities remain unproved. pulse_continuation.json
+  extends every Na/Nb prefix to that oracle, matching each 731C return and final 718C handoff.
+- capture_summary.json and capture1..6.json: 12,000 frames in one process, 16,903 assembled-hook
+  comparisons, 13,194 whole actor draws, 1,854 tile-map checks and 1,850 complete ULA comparisons.
+  Capture sites are 8F7C, 959B, 96A1, 8F92. The actor hooks replace just DD 6E 04, retaining the
+  preceding LD H,C1. This preserves legitimate interrupt resumes between those instructions.
+- Every capture compares all CMP registers and all game RAM with the original displaced
+  instruction(s), including exact original CALL return bytes. Compiled site bytes must remain
+  intact. Private stack, clean map and raw run-list log use page 68 only; loader data is retained.
+  Every hook instruction checks interrupt-enabled state/mapping/clock invariants. No incomplete
+  image or overflow becomes ready. Positions are capture-parameter tests, not full-plot edge proof.
+- IRQ tests follow vector trampoline FFFF/FFF4 into 998B through RET. Each level has four source
+  contexts and four forced stack-unwind cases using the captured tables. An earlier prototype
+  stopped before the trampoline/handler; those results are superseded. No hardware IRQ timing
+  or instruction-interleaving guarantee is claimed.
+- Broken compiled controls remove DI, jump inside a replaced instruction, or overwrite a live
+  game byte. Each is detected using its own private data. Original-image controls drop a writer
+  and omit modulo-256 x: the latter fails 841 times across the six quick runs.
+- render_model_units.json tests approved B's closed/open interiors, whole-image fill across a
+  tile seam, content-key changes, original palette and wrap/clip. This is a software resource/mask
+  model, not a runtime sprite rasterizer or recolour implementation.
+- Sample maxima: 21 image calls, 58 visible chunks, 56 distinct patterns, 64 old+new pattern union.
+  Dirty histograms count tile IDs, not source-byte invalidation. DC00-FFFF has 9-109 byte states
+  per sampled recording; no permanent pointer-only graphics cache is justified. These are not
+  full-recording maxima and do not include future painting changes.
+- Capture-only cost model: max 8,342.625 equivalent 3.5MHz T/tick, <=758.375 per image, including
+  one extra 28MHz cycle per modeled memory read and conservative clock transitions. Rendering,
+  uploads, raster atomicity and real hardware waits/speed remain unmeasured.
+- capture_pool_check.json and capture_unpooled_check.json are identical 810-frame A/B checks.
+  intro_rom_scan.txt and game_rom_scan.txt: original intro and level-4 first 2,001 frames never
+  touch the decoder/register block or capture ROM areas. Other/full reader coverage remains open.
+- Inferno_capture_diagnostic.nex / capture_boot.json: boot checks pass with NEXLOAD printer damage
+  and both original and foreign ROM3. It starts the existing level-1 snapshot with capture hooks;
+  it is NOT the approved original-BASIC continuous frontend. No sprite/Layer 2 renderer is enabled.
+
+Next work is the actual budgeted sprite/Layer 2 renderer, content-validated cache, modal transitions,
+colour workflow and original-BASIC startup installation through all levels/ending. The engine
+remains unregistered and its record excluded/unstamped. Do not hardware-test these diagnostics as
+if they were a sprite release.

@@ -11,7 +11,8 @@
       "handoff_pc": 29068,
       "synchronized_refresh_reads": {
         "7C37": 16384
-      }
+      },
+      "physical_return_convergences": []
     },
     {
       "io_writes": 16393,
@@ -24,7 +25,8 @@
       "handoff_pc": 29068,
       "synchronized_refresh_reads": {
         "7C37": 16384
-      }
+      },
+      "physical_return_convergences": []
     },
     {
       "io_writes": 16393,
@@ -37,7 +39,8 @@
       "handoff_pc": 29068,
       "synchronized_refresh_reads": {
         "7C37": 16384
-      }
+      },
+      "physical_return_convergences": []
     },
     {
       "io_writes": 16393,
@@ -50,7 +53,8 @@
       "handoff_pc": 29068,
       "synchronized_refresh_reads": {
         "7C37": 16384
-      }
+      },
+      "physical_return_convergences": []
     },
     {
       "io_writes": 16393,
@@ -63,7 +67,8 @@
       "handoff_pc": 29068,
       "synchronized_refresh_reads": {
         "7C37": 16384
-      }
+      },
+      "physical_return_convergences": []
     },
     {
       "io_writes": 16393,
@@ -76,7 +81,8 @@
       "handoff_pc": 29068,
       "synchronized_refresh_reads": {
         "7C37": 16384
-      }
+      },
+      "physical_return_convergences": []
     },
     {
       "io_writes": 16393,
@@ -89,7 +95,8 @@
       "handoff_pc": 29068,
       "synchronized_refresh_reads": {
         "7C37": 16384
-      }
+      },
+      "physical_return_convergences": []
     }
   ],
   "scope": "crafted 7131 invocations to 718C; Na executed, Nb loaded but not executed; canonical bytes/equal R inputs"
