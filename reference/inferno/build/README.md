@@ -4,6 +4,28 @@ Stage 2 is INCOMPLETE. No sprite engine or sprite NEX exists. The diagnostic NEX
 hardware candidate: full tail lifetime, continuous gameplay and timing remain unproved.
 The approved visual design in ../design/ is unchanged.
 
+## Current architecture experiment
+
+See [timing_architecture.md](timing_architecture.md) for the evaluated Z80/Z80N, DMA,
+tilemap and expanded-memory choices. The new assembled 1-bit textmap worker reduces level-6
+worst scenery overhead from **130.069 ms to 6.547 ms per game update**. Capture plus scenery
+costs **8.708 ms**, leaving **1.292 ms** of the 10 ms total target for sprites/wrappers/commit.
+These are modeled assembly timings, not physical-Next measurements; the TOTAL gate is unproved.
+
+All six original quick replays pass: 12,000 frames, 1,855 scenery images / 68,382,720 pixels,
+16,903 capture comparisons. Units cover both buffers, all attribute/FLASH pairs, source overflow,
+live mutation and negative controls. Shop census exposes the need for a separate modal hook.
+The worker is experimental and enables no display registers; **no sprite NEX is ready**.
+
+```bash
+python -m nexclash.inferno --textmap-units ../specnext/reference/inferno --json work/textmap_units.json
+python -m nexclash.inferno --textmap-check ../specnext/reference/inferno/Inferno6.rzx --quick 2000 --json work/textmap6_quick.json
+# At an integration milestone:
+python -m nexclash.inferno --textmap-all ../specnext/reference/inferno --quick 2000 --out work/textmap_quick --json work/textmap_summary.json
+python tools/probes/rzx_census.py ../specnext/reference/inferno/Inferno4.rzx --pc 0x8F7C,0x8F92,0x9790 --stop 52500 --sample-frames 52229 --memory 0x4000:0xC000 --json > work/textmap_shop_census.json
+python tools/probes/rzx_census.py ../specnext/reference/inferno/Inferno4.rzx --pc 0xFFFF,0xFFF4,0x998B,0x0038 --stop 52231 --sample-frames 52229 --memory 0x4000:0xC000 --json > work/textmap_shop_state.json
+```
+
 From nexclash on codex/inferno (SkoolKit 10.1, bundled pinned sjasmplus):
 
 ```bash
