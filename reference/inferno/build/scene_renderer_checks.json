@@ -1,0 +1,171 @@
+{
+  "counts": {
+    "cold complete scene": 6,
+    "unchanged no-write scene": 6,
+    "same-ID graphics mutation scene": 6,
+    "viewport pixels compared": 663552,
+    "max cold equivalent T": 459051.75,
+    "max unchanged equivalent T": 37198.625,
+    "max mutated equivalent T": 278524.5,
+    "independent buffer scene": 2,
+    "scene input/front guard": 3,
+    "stale-scene control detected": 1,
+    "retained-validation control detected": 1,
+    "whole-scene FLASH phase": 1,
+    "whole-scene live attribute": 1,
+    "one-cell colliding map ID": 1
+  },
+  "cases": [
+    {
+      "level": 1,
+      "frame": 10001,
+      "cold": {
+        "error": 0,
+        "changed": 576,
+        "instructions": 309528,
+        "equivalent_T": 401147.875,
+        "pixel_writes": 40384
+      },
+      "unchanged": {
+        "error": 0,
+        "changed": 0,
+        "instructions": 23406,
+        "equivalent_T": 30394.625,
+        "pixel_writes": 0
+      },
+      "mutated": {
+        "error": 0,
+        "changed": 400,
+        "instructions": 209143,
+        "equivalent_T": 278524.5,
+        "pixel_writes": 25664
+      }
+    },
+    {
+      "level": 2,
+      "frame": 10002,
+      "cold": {
+        "error": 0,
+        "changed": 576,
+        "instructions": 346823,
+        "equivalent_T": 445315.625,
+        "pixel_writes": 45056
+      },
+      "unchanged": {
+        "error": 0,
+        "changed": 0,
+        "instructions": 27761,
+        "equivalent_T": 35854.625,
+        "pixel_writes": 0
+      },
+      "mutated": {
+        "error": 0,
+        "changed": 353,
+        "instructions": 193168,
+        "equivalent_T": 258192.0,
+        "pixel_writes": 22656
+      }
+    },
+    {
+      "level": 3,
+      "frame": 10002,
+      "cold": {
+        "error": 0,
+        "changed": 576,
+        "instructions": 320768,
+        "equivalent_T": 415108.25,
+        "pixel_writes": 41984
+      },
+      "unchanged": {
+        "error": 0,
+        "changed": 0,
+        "instructions": 25148,
+        "equivalent_T": 32578.625,
+        "pixel_writes": 0
+      },
+      "mutated": {
+        "error": 0,
+        "changed": 356,
+        "instructions": 191539,
+        "equivalent_T": 255996.0,
+        "pixel_writes": 22848
+      }
+    },
+    {
+      "level": 4,
+      "frame": 10002,
+      "cold": {
+        "error": 0,
+        "changed": 576,
+        "instructions": 330053,
+        "equivalent_T": 426518.875,
+        "pixel_writes": 43264
+      },
+      "unchanged": {
+        "error": 0,
+        "changed": 0,
+        "instructions": 26421,
+        "equivalent_T": 34174.625,
+        "pixel_writes": 0
+      },
+      "mutated": {
+        "error": 0,
+        "changed": 371,
+        "instructions": 199658,
+        "equivalent_T": 266469.5,
+        "pixel_writes": 23808
+      }
+    },
+    {
+      "level": 5,
+      "frame": 10002,
+      "cold": {
+        "error": 0,
+        "changed": 576,
+        "instructions": 319824,
+        "equivalent_T": 413792.5,
+        "pixel_writes": 41792
+      },
+      "unchanged": {
+        "error": 0,
+        "changed": 0,
+        "instructions": 23741,
+        "equivalent_T": 30814.625,
+        "pixel_writes": 0
+      },
+      "mutated": {
+        "error": 0,
+        "changed": 3,
+        "instructions": 32953,
+        "equivalent_T": 52311.125,
+        "pixel_writes": 256
+      }
+    },
+    {
+      "level": 6,
+      "frame": 10001,
+      "cold": {
+        "error": 0,
+        "changed": 576,
+        "instructions": 359796,
+        "equivalent_T": 459051.75,
+        "pixel_writes": 46208
+      },
+      "unchanged": {
+        "error": 0,
+        "changed": 0,
+        "instructions": 28833,
+        "equivalent_T": 37198.625,
+        "pixel_writes": 0
+      },
+      "mutated": {
+        "error": 0,
+        "changed": 317,
+        "instructions": 178364,
+        "equivalent_T": 239231.0,
+        "pixel_writes": 20352
+      }
+    }
+  ],
+  "scope": "assembled complete scenery baseline on bounded stage-1 captures, not a frame hook, budgeted renderer, sprite display or hardware proof"
+}

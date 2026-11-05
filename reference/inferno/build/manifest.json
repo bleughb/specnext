@@ -86,5 +86,49 @@
   "render_model_units.json": {
     "bytes": 404,
     "md5": "aed251687bd340ad50fa6f0fd8ae140e"
+  },
+  "scene_renderer_checks.json": {
+    "bytes": 4021,
+    "md5": "d596e99887a8545ba083b4478b2956fa"
+  },
+  "scenery1.png": {
+    "bytes": 2023,
+    "md5": "d9161ac236cd5611f6f90dbc50a2394f"
+  },
+  "scenery2.png": {
+    "bytes": 3434,
+    "md5": "55aa76bb3dea55fed98fc26154b7f719"
+  },
+  "scenery3.png": {
+    "bytes": 2395,
+    "md5": "a42f91ac7c7a235975cc187639a1d7a5"
+  },
+  "scenery4.png": {
+    "bytes": 2268,
+    "md5": "a3b0530b1bf6bc74e6cc995ed5bd2039"
+  },
+  "scenery5.png": {
+    "bytes": 3102,
+    "md5": "15783a8854c4222bad787cdc576fb648"
+  },
+  "scenery6.png": {
+    "bytes": 5319,
+    "md5": "a01971f876da84248d654d0d4bf6464c"
+  },
+  "scenery6_quick.json": {
+    "bytes": 1954,
+    "md5": "dc9d0c52de2f7aca240200740c8966f2"
+  },
+  "tile_batch_units.json": {
+    "bytes": 471,
+    "md5": "661e8d79f6e01b680d0c11a657fec201"
+  },
+  "tile_cache_units.json": {
+    "bytes": 466,
+    "md5": "11451d4d068ac6591962b8c6e6209195"
+  },
+  "tile_renderer_units.json": {
+    "bytes": 421,
+    "md5": "cc5f6d1689152db766f43abb9d8283d6"
   }
 }
