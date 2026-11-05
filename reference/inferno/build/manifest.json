@@ -1,4 +1,8 @@
 {
+  "CONTINUE.md": {
+    "bytes": 3008,
+    "md5": "699c8158f42f1bbc2fa6de90a438f68b"
+  },
   "Inferno_bootstrap.z80": {
     "bytes": 37042,
     "md5": "9814983816aafb2b9efd99344dd8c221"
@@ -102,6 +106,10 @@
   "continuation_checks.json": {
     "bytes": 2407,
     "md5": "292e8e9e1749b0656a1a2163ddc7003f"
+  },
+  "continuation_work.tar.gz": {
+    "bytes": 119655,
+    "md5": "82d793b2013f39495ffb7ebdbb41577e"
   },
   "display_checks.json": {
     "bytes": 328,
