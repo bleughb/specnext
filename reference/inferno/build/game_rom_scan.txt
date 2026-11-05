@@ -1,0 +1,11 @@
+Source    : ../specnext/reference/inferno/Inferno4.rzx, 2001 frames
+Counting  : from the start
+Lowest SP : 34475 (0x86AB) (any SP value: games that use SP as a data pointer show it here)
+Range 0x386E-0x3958: 235 of 235 bytes untouched
+  untouched   0x386E-0x3958 (235 bytes)
+  writers   0 instructions
+  readers   0 instructions
+Range 0x3A00-0x3B63: 356 of 356 bytes untouched
+  untouched   0x3A00-0x3B63 (356 bytes)
+  writers   0 instructions
+  readers   0 instructions
