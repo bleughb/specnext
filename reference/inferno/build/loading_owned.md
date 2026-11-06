@@ -1,5 +1,9 @@
 # Initialization pause and owned high-RAM cache — 2026-11-07
 
+Latest runtime evidence: [runtime_profile.md](runtime_profile.md): per-update component totals
+and row-bounded exact validation. Every byte is still compared; connected loading driver and
+full runtime timing remain open. Earlier measurements below are historical checkpoints.
+
 Stage 2 remains incomplete. No sprite NEX is built or enabled. The new assembled components
 are exercised differentially and through original replay states; the live-table scan, content
 selection, duplicate-index resolution and worker orchestration still run on the host. The pause

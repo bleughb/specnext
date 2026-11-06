@@ -1,5 +1,9 @@
 # Inferno immutable live-source jobs — 2026-11-07
 
+Latest runtime evidence: [runtime_profile.md](runtime_profile.md): per-update component totals
+and row-bounded exact validation. Every byte is still compared; connected loading driver and
+full runtime timing remain open. Earlier measurements below are historical checkpoints.
+
 Stage 2 remains incomplete. No sprite NEX is ready. The new page-78 worker and page-75
 pinned-source consumer are assembled standalone components, exercised against original live
 replay events. They are not installed hooks, a runtime cache, a scheduler or hardware proof.
