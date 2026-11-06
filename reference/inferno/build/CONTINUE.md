@@ -1,5 +1,9 @@
 # Continue Inferno stage 2 from GitHub
 
+Latest checkpoint: [loading_owned.md](loading_owned.md): checked 8EF9 initialization pause,
+assembled owned high-RAM store/dispatch and direct exact validation. Six quicks pass;
+warm totals 10.167–16.317 ms still FAIL. Runtime scan/driver/UI and full frame integration remain open.
+
 Latest work also optimizes exact bitmap/stream validation without weakening byte checks;
 use loading_fast_quick/ and loading_fast_summary.json for current six-level evidence.
 
