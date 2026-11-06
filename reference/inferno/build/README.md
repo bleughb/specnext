@@ -1,5 +1,10 @@
 # Inferno stage-2 build evidence (2026-11-05)
 
+Latest loading experiment: [loading_preparation.md](loading_preparation.md). User approves loading-time
+preparation. L6 prepares 118 live images in 6.32 s modeled CPU subtotal / 110875 bytes; all 2272
+sampled draws reuse prepared content. Warm capture/scenery/validation still FAILS at 20.957 ms.
+Host scan/dispatch/packing only; safe loading hook/UI/runtime cache are not installed.
+
 Stage 2 is INCOMPLETE. No sprite engine or sprite NEX exists. The diagnostic NEX is not a
 hardware candidate: full tail lifetime, continuous gameplay and timing remain unproved.
 The approved visual design in ../design/ is unchanged.
