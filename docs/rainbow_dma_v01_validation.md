@@ -5,8 +5,7 @@ These are complete game builds, based on the pinned sky rework. Existing release
 Hardware has not been tested. The source PR and validation report distinguish partial recording
 coverage from a complete recording; neither certifies a complete game or real hardware.
 
-GitHub currently marks specnext public. New binaries are provided as downloadable deliverables,
-not committed here. All original snapshots, recordings and pinned NEX files remain unchanged.
+GitHub currently marks specnext public. At the owner's request, the [complete NEX bundle and separate NXC patch](../reference/rainbow_z80n/experimental_dma_v01/README.md) are now hosted in this repository. All original snapshots, recordings and pinned NEX files remain unchanged.
 
 | Delivered file | MD5 | SHA-256 |
 |---|---|---|

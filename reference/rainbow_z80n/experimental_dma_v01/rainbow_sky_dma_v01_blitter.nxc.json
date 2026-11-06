@@ -1,0 +1,12 @@
+{
+  "file": "rainbow_sky_dma_v01_blitter.nxc",
+  "bytes": 20314,
+  "sha256": "51df03c5fa805d1f942059f99ae47d6d708be56b50c00408720061505107c1c7",
+  "target_file": "rainbow.z80",
+  "target_md5": "4c98b980b1726af545fccc99665ef29b",
+  "reconstructed_nex": "rainbow_sky_dma_v01_blitter.nex",
+  "reconstructed_nex_sha256": "9e041148906e23c5443dd4abfd7c8e71c5654c88ed7a7f896997ad97c6b0af23",
+  "round_trip": "PASS: byte-for-byte match with previously delivered blitter NEX",
+  "hardware_tested": false,
+  "source_pr": "https://github.com/bleughb/nexclash/pull/95"
+}

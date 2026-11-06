@@ -428,4 +428,4 @@ recolour commands, validation scope and the CSpect/Next checklist.
 
 ## Experimental Rainbow sky DMA v0.1
 
-Separate downloadable game builds, hashes, source PR and hardware handoff: [validation notes](../docs/rainbow_dma_v01_validation.md). Pinned files above are unchanged; new binaries are not committed to this currently public reference repository.
+Separate downloadable game builds, hashes, source PR and hardware handoff: [validation notes](../docs/rainbow_dma_v01_validation.md). Pinned files above are unchanged. The [complete bundle and separate NXC patch](rainbow_z80n/experimental_dma_v01/README.md) are now hosted here at the owner's request.
