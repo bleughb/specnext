@@ -1,5 +1,9 @@
 # Loading-time live preparation experiment — 2026-11-07
 
+Latest checkpoint: [loading_owned.md](loading_owned.md): checked 8EF9 initialization pause,
+assembled owned high-RAM store/dispatch and direct exact validation. Six quicks pass;
+warm totals 10.167–16.317 ms still FAIL. Runtime scan/driver/UI and full frame integration remain open.
+
 The user approves a brief blank/loading screen before gameplay to front-load image construction.
 This checkpoint implements an engine-local experiment using assembled components, not an installed
 loading hook or a playable sprite NEX. Original game RAM/register behaviour and approved B visuals

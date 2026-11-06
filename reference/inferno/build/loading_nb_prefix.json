@@ -1,0 +1,119 @@
+{
+  "cases": [
+    {
+      "io_writes": 16415,
+      "level": 0,
+      "calls": 4,
+      "instructions": 213897,
+      "unread_dead_stack": 7,
+      "halt_irqs": 0,
+      "boundary_iff": 1,
+      "boundary_im": 1,
+      "boundary_bytes": "cde8a03ad0a0b1b032d0a0cd91a2dd21",
+      "boundary_live_candidates": 11,
+      "next_block": 8,
+      "handoff_sp": 34503,
+      "handoff_pc": 41727,
+      "synchronized_refresh_reads": {
+        "7C37": 16384
+      },
+      "physical_return_convergences": []
+    },
+    {
+      "io_writes": 16415,
+      "level": 1,
+      "calls": 4,
+      "instructions": 212667,
+      "unread_dead_stack": 7,
+      "halt_irqs": 0,
+      "boundary_iff": 1,
+      "boundary_im": 1,
+      "boundary_bytes": "cde8a03ad0a0b1b032d0a0cd91a2dd21",
+      "boundary_live_candidates": 9,
+      "next_block": 12,
+      "handoff_sp": 34503,
+      "handoff_pc": 41727,
+      "synchronized_refresh_reads": {
+        "7C37": 16384
+      },
+      "physical_return_convergences": []
+    },
+    {
+      "io_writes": 16415,
+      "level": 2,
+      "calls": 4,
+      "instructions": 213065,
+      "unread_dead_stack": 7,
+      "halt_irqs": 0,
+      "boundary_iff": 1,
+      "boundary_im": 1,
+      "boundary_bytes": "cde8a03ad0a0b1b032d0a0cd91a2dd21",
+      "boundary_live_candidates": 13,
+      "next_block": 16,
+      "handoff_sp": 34503,
+      "handoff_pc": 41727,
+      "synchronized_refresh_reads": {
+        "7C37": 16384
+      },
+      "physical_return_convergences": []
+    },
+    {
+      "io_writes": 16415,
+      "level": 3,
+      "calls": 4,
+      "instructions": 213184,
+      "unread_dead_stack": 7,
+      "halt_irqs": 0,
+      "boundary_iff": 1,
+      "boundary_im": 1,
+      "boundary_bytes": "cde8a03ad0a0b1b032d0a0cd91a2dd21",
+      "boundary_live_candidates": 9,
+      "next_block": 20,
+      "handoff_sp": 34503,
+      "handoff_pc": 41727,
+      "synchronized_refresh_reads": {
+        "7C37": 16384
+      },
+      "physical_return_convergences": []
+    },
+    {
+      "io_writes": 19721,
+      "level": 4,
+      "calls": 4,
+      "instructions": 270612,
+      "unread_dead_stack": 1,
+      "halt_irqs": 150,
+      "boundary_iff": 1,
+      "boundary_im": 1,
+      "boundary_bytes": "cde8a03ad0a0b1b032d0a0cd91a2dd21",
+      "boundary_live_candidates": 14,
+      "next_block": 24,
+      "handoff_sp": 34503,
+      "handoff_pc": 41727,
+      "synchronized_refresh_reads": {
+        "7C37": 16384
+      },
+      "physical_return_convergences": []
+    },
+    {
+      "io_writes": 16415,
+      "level": 5,
+      "calls": 4,
+      "instructions": 213470,
+      "unread_dead_stack": 7,
+      "halt_irqs": 0,
+      "boundary_iff": 1,
+      "boundary_im": 1,
+      "boundary_bytes": "cde8a03ad0a0b1b032d0a0cd91a2dd21",
+      "boundary_live_candidates": 11,
+      "next_block": 28,
+      "handoff_sp": 34503,
+      "handoff_pc": 41727,
+      "synchronized_refresh_reads": {
+        "7C37": 16384
+      },
+      "physical_return_convergences": []
+    }
+  ],
+  "scope": "crafted 7131 invocations through Nb to A2FF input routine; common logical HALT IRQ wake-up, byte ROM oracle/equal R inputs; not timed IRQ or continuous gameplay"
+}

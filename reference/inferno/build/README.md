@@ -1,5 +1,9 @@
 # Inferno stage-2 build evidence (2026-11-05)
 
+Latest checkpoint: [loading_owned.md](loading_owned.md): checked 8EF9 initialization pause,
+assembled owned high-RAM store/dispatch and direct exact validation. Six quicks pass;
+warm totals 10.167–16.317 ms still FAIL. Runtime scan/driver/UI and full frame integration remain open.
+
 Latest loading experiment: [loading_preparation.md](loading_preparation.md). User approves loading-time
 preparation. L6 prepares 118 live images in 6.32 s modeled CPU subtotal / 110875 bytes; all 2272
 sampled draws reuse prepared content. Optimized six-level results are in loading_preparation.md; runtime timing still FAILS.

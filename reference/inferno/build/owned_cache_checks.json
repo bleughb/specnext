@@ -1,0 +1,18 @@
+{
+  "counts": {
+    "source and full canvas exact across page boundaries": 1,
+    "valid published after complete payload": 1,
+    "phase/paint candidate rejection": 3,
+    "immutable dispatch after scratch mutation": 1,
+    "owned reset rejected": 2,
+    "immutable entry overwrite rejected": 1,
+    "exact cache capacity and unpublished overflow": 1,
+    "single-page source alignment": 1,
+    "invalid request unpublished": 3,
+    "missing publication control detected": 1
+  },
+  "dispatch_ms": 0.021392857142857144,
+  "loading_store_ms": 138.86042857142857,
+  "capacity_bytes": 655360,
+  "scope": "assembled owned high-RAM append/store and candidate dispatch; exact live validation required separately; no game wrapper, loading UI, pattern ownership integration or display readiness"
+}
