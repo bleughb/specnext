@@ -1,5 +1,10 @@
 # Continue Inferno stage 2 from GitHub
 
+Latest loading experiment: [loading_preparation.md](loading_preparation.md). User approves loading-time
+preparation. L6 prepares 118 live images in 6.32 s modeled CPU subtotal / 110875 bytes; all 2272
+sampled draws reuse prepared content. Warm capture/scenery/validation still FAILS at 20.957 ms.
+Host scan/dispatch/packing only; safe loading hook/UI/runtime cache are not installed.
+
 The former local-only checkpoint is published on `codex/inferno` in both repositories:
 
 - https://github.com/bleughb/nexclash/tree/codex/inferno — implementation, commit `5a137ee`
