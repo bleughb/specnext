@@ -1,6 +1,10 @@
 # Loading-time live preparation experiment — 2026-11-07
 
-Latest checkpoint: [loading_owned.md](loading_owned.md): checked 8EF9 initialization pause,
+Latest runtime evidence: [runtime_profile.md](runtime_profile.md): per-update component totals
+and row-bounded exact validation. Every byte is still compared; connected loading driver and
+full runtime timing remain open. Earlier measurements below are historical checkpoints.
+
+Previous checkpoint: [loading_owned.md](loading_owned.md): checked 8EF9 initialization pause,
 assembled owned high-RAM store/dispatch and direct exact validation. Six quicks pass;
 warm totals 10.167–16.317 ms still FAIL. Runtime scan/driver/UI and full frame integration remain open.
 
