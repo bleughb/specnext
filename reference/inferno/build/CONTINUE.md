@@ -28,7 +28,11 @@ Scratch logs include historical runs and failed intermediate attempts; they do n
 
 ## Resume instructions
 
-Latest implementation/evidence: [actor_jobs.md](actor_jobs.md), on these same branches.
+Latest transfer work: [actor_high_dma.md](actor_high_dma.md): physical DDMA into high staging
+pages 216–223; CPU/ordinary DMA fallback retained. These pages are no longer general cache.
+Standalone synthetic checks, not installed transfers or hardware timing.
+
+Latest source implementation/evidence: [actor_jobs.md](actor_jobs.md), on these same branches.
 The immutable source worker is page 78 / pinned stream page 122; page 75 accepts copied raw tiles.
 Read actor-job unit/replay evidence before the historical B checkpoint below. All six quick
 correctness replays PASS: 128 captures / 13,066 exact validations. Snapshot-inclusive cold totals

@@ -4,7 +4,10 @@ Stage 2 is INCOMPLETE. No sprite engine or sprite NEX exists. The diagnostic NEX
 hardware candidate: full tail lifetime, continuous gameplay and timing remain unproved.
 The approved visual design in ../design/ is unchanged.
 
-Latest checkpoint: [actor_jobs.md](actor_jobs.md) adds assembled immutable live-source snapshots,
+Latest transfer component: [actor_high_dma.md](actor_high_dma.md) uses physical-address DDMA
+for owned high staging pages 216–223, with mapped DMA/CPU fallback. No runtime integration.
+
+Latest source checkpoint: [actor_jobs.md](actor_jobs.md) adds assembled immutable live-source snapshots,
 exact byte/phase/paint validation and a pinned-source colour consumer. Six quick correctness runs
 pass (128 captures / 13,066 validations). Snapshot-inclusive cold timing still FAILS: 899.45 ms L1,
 84.29 ms L6 against 10 ms total, excluding lookup/allocation/uploads/queue/wrappers. Tiny prepared
