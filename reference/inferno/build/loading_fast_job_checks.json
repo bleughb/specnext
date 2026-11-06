@@ -1,0 +1,24 @@
+{
+  "counts": {
+    "ordered live geometry/bitmap/attribute capture": 1,
+    "pinned assembled tile after original mutation": 3,
+    "pinned/invalid operation rejection": 3,
+    "live content mutation rejected": 29,
+    "phase/paint generation rejected": 3,
+    "relocated content and C1FF wrap": 1,
+    "release and recapture": 1,
+    "malformed unpublished": 5,
+    "invalid phase/inactive validation": 2,
+    "exact 8K snapshot boundary": 1,
+    "overflow unpublished": 1,
+    "missing bitmap comparison control detected": 8,
+    "missing exact comparison control detected": 1
+  },
+  "timing": {
+    "capture_ms": 23.112035714285714,
+    "exact_hit_ms": 0.20075,
+    "capacity_exact_hit_ms": 29.84325
+  },
+  "snapshot_capacity": 8192,
+  "scope": "assembled standalone pinned snapshot/exact validation and pinned tile consumer; no installed cache, scheduler, wrapper or display; software timings only"
+}
