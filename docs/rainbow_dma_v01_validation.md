@@ -10,10 +10,10 @@ not committed here. All original snapshots, recordings and pinned NEX files rema
 
 | Delivered file | MD5 | SHA-256 |
 |---|---|---|
-| rainbow_sky_dma_v01_blitter.nex | 505e27a12077926a9bc55ca645c30644 | fc26cac6f63eefe7792dcfa1500a5db96c6e4dbe22c7a25ee5d72151211c69d7 |
-| rainbow_sky_dma_v01_no_blitter.nex | 04d68dedb46de2c937b90ef7ade9e49c | 7b7e1e29d3f4a68425b0804ac9a0562eabe454de366f97e8f4185c6a5ce6fae1 |
-| rainbow_sky_dma_v01_cpu_only.nex | 6beabfecf7c882e8535e3290cc015df8 | 9f802db73410bdaeb2e75248021537ce86af008139246c8b8231c797253ac0d2 |
-| rainbow_sky_dma_v01_blitter_diag.nex | d6b90405d29face3f58938d69b1ec598 | d04ad176e7b8a9c0fd5637833cc3e17163943811295272626b81c4814f6f4eb9 |
+| rainbow_sky_dma_v01_blitter.nex | b7c96a5ec9d6bbf764ba4c24dd986158 | 9e041148906e23c5443dd4abfd7c8e71c5654c88ed7a7f896997ad97c6b0af23 |
+| rainbow_sky_dma_v01_no_blitter.nex | ed439dadd141fb385b2de71e81fbcf66 | ae534b561e3942cef52e939f0632ef109998db8f2a70ad6d7d7c44484c7130bb |
+| rainbow_sky_dma_v01_cpu_only.nex | a92c2c1ee8583c982d40be1914be3791 | d59f014d0c52b70f4e5a05813d8c24e5ded1bad307406e1730892bf0e3a18e6b |
+| rainbow_sky_dma_v01_blitter_diag.nex | 658a2647c74956a5d8652d4555b9050b | a849bcf85c031fc0dfb5fd8dd532267d56f7ec9624aa8cc6464b3ece2f0acdc0 |
 
 The blitter build prefers general virtual 2D DMA on core 3.03.00+ and uses ordinary DMA on older
 supported cores. No-blitter uses ordinary DMA/CPU; CPU-only retains an LDIR tilemap copy. All keep
@@ -31,3 +31,7 @@ file hash and policy. Check loading/menus, sky in all island groups, figures, th
 scrolling, tearing, death/continue, island/boss transitions, ending, steady music, IRQ delivery,
 raster budget/overrun recovery, quiet and busy gameplay pace. The diagnostic file shows the
 existing border signals. No timing, sound, interrupt or visual hardware success is claimed.
+
+## Software results
+
+Software results: complete rainbow.rzx, 7,178 observed replay frames, 2,212 commits; rainbownew.rzx sampled at 2,000 requested frames (2,008 observed), 489 commits; no-blitter, CPU-only, old-core and hardware-IM2 routes sampled at 200 requested frames each on an active island-1 boss segment. Twelve LeeBee gameplay cuts sampled (five boss cuts at 200 and seven round-start cuts at 1,200 requested frames), plus a 200-frame ending sample with no commit hook reached. All reported comparisons pass. The full recording still has 60 modeled frames over 20 ms, max 25.666 ms before wait states; recovery comparisons pass. The latter ending sample is not DMA gameplay proof. The legacy game unit suite uses six captured dispatch states from a 1,200-frame capture, plus its object/AY/raster cases and negative controls. Hardware is untested.
