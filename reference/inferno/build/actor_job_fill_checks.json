@@ -1,0 +1,284 @@
+{
+  "counts": {
+    "independent horizontal connectivity entries": 65536,
+    "uniform": 10,
+    "closed seam": 3,
+    "open seam": 3,
+    "winding exterior": 1,
+    "random": 12,
+    "reject before writes": 7,
+    "quota rejects before writes": 3,
+    "inactive/invalid resume rejects": 3,
+    "quota / clobbered-register resume cases": 4,
+    "negative controls detected": 4
+  },
+  "max_ms": 1985.5272142857143,
+  "max_sweep_pairs": 9,
+  "four_unit_service_max_ms": 0.20342857142857143,
+  "cases": [
+    {
+      "case": "uniform",
+      "width": 8,
+      "height": 1,
+      "added_ms": 0.2694285714285714,
+      "sweep_pairs": 2,
+      "service_calls": 2,
+      "max_service_ms": 0.15689285714285714
+    },
+    {
+      "case": "uniform",
+      "width": 8,
+      "height": 1,
+      "added_ms": 0.19507142857142856,
+      "sweep_pairs": 1,
+      "service_calls": 2,
+      "max_service_ms": 0.14867857142857144
+    },
+    {
+      "case": "uniform",
+      "width": 16,
+      "height": 16,
+      "added_ms": 7.36825,
+      "sweep_pairs": 2,
+      "service_calls": 42,
+      "max_service_ms": 0.19542857142857142
+    },
+    {
+      "case": "uniform",
+      "width": 16,
+      "height": 16,
+      "added_ms": 4.924428571428572,
+      "sweep_pairs": 1,
+      "service_calls": 29,
+      "max_service_ms": 0.19203571428571428
+    },
+    {
+      "case": "uniform",
+      "width": 136,
+      "height": 80,
+      "added_ms": 297.0302142857143,
+      "sweep_pairs": 2,
+      "service_calls": 1649,
+      "max_service_ms": 0.18742857142857142
+    },
+    {
+      "case": "uniform",
+      "width": 136,
+      "height": 80,
+      "added_ms": 198.13707142857143,
+      "sweep_pairs": 1,
+      "service_calls": 1105,
+      "max_service_ms": 0.18646428571428572
+    },
+    {
+      "case": "uniform",
+      "width": 8,
+      "height": 8192,
+      "added_ms": 1985.5272142857143,
+      "sweep_pairs": 2,
+      "service_calls": 11469,
+      "max_service_ms": 0.20342857142857143
+    },
+    {
+      "case": "uniform",
+      "width": 8,
+      "height": 8192,
+      "added_ms": 1327.1370714285715,
+      "sweep_pairs": 1,
+      "service_calls": 8193,
+      "max_service_ms": 0.2000357142857143
+    },
+    {
+      "case": "uniform",
+      "width": 1024,
+      "height": 64,
+      "added_ms": 1778.2331785714287,
+      "sweep_pairs": 2,
+      "service_calls": 9844,
+      "max_service_ms": 0.18742857142857142
+    },
+    {
+      "case": "uniform",
+      "width": 1024,
+      "height": 64,
+      "added_ms": 1186.0026428571427,
+      "sweep_pairs": 1,
+      "service_calls": 6567,
+      "max_service_ms": 0.18646428571428572
+    },
+    {
+      "case": "closed seam",
+      "width": 16,
+      "height": 16,
+      "added_ms": 7.36825,
+      "sweep_pairs": 2,
+      "service_calls": 42,
+      "max_service_ms": 0.19542857142857142
+    },
+    {
+      "case": "open seam",
+      "width": 16,
+      "height": 16,
+      "added_ms": 7.376392857142857,
+      "sweep_pairs": 2,
+      "service_calls": 42,
+      "max_service_ms": 0.19542857142857142
+    },
+    {
+      "case": "closed seam",
+      "width": 32,
+      "height": 24,
+      "added_ms": 21.426785714285714,
+      "sweep_pairs": 2,
+      "service_calls": 121,
+      "max_service_ms": 0.19021428571428572
+    },
+    {
+      "case": "open seam",
+      "width": 32,
+      "height": 24,
+      "added_ms": 21.46817857142857,
+      "sweep_pairs": 2,
+      "service_calls": 121,
+      "max_service_ms": 0.19075
+    },
+    {
+      "case": "closed seam",
+      "width": 136,
+      "height": 80,
+      "added_ms": 296.2362857142857,
+      "sweep_pairs": 2,
+      "service_calls": 1649,
+      "max_service_ms": 0.18646428571428572
+    },
+    {
+      "case": "open seam",
+      "width": 136,
+      "height": 80,
+      "added_ms": 297.06210714285714,
+      "sweep_pairs": 2,
+      "service_calls": 1649,
+      "max_service_ms": 0.18742857142857142
+    },
+    {
+      "case": "winding exterior",
+      "width": 32,
+      "height": 32,
+      "added_ms": 94.4745,
+      "sweep_pairs": 9,
+      "service_calls": 519,
+      "max_service_ms": 0.19075
+    },
+    {
+      "case": "random",
+      "width": 8,
+      "height": 8,
+      "added_ms": 1.9679642857142856,
+      "sweep_pairs": 2,
+      "service_calls": 12,
+      "max_service_ms": 0.20075
+    },
+    {
+      "case": "random",
+      "width": 16,
+      "height": 16,
+      "added_ms": 9.78357142857143,
+      "sweep_pairs": 3,
+      "service_calls": 55,
+      "max_service_ms": 0.19339285714285714
+    },
+    {
+      "case": "random",
+      "width": 24,
+      "height": 24,
+      "added_ms": 16.221464285714287,
+      "sweep_pairs": 2,
+      "service_calls": 92,
+      "max_service_ms": 0.19046428571428572
+    },
+    {
+      "case": "random",
+      "width": 32,
+      "height": 8,
+      "added_ms": 7.167142857142857,
+      "sweep_pairs": 2,
+      "service_calls": 41,
+      "max_service_ms": 0.19021428571428572
+    },
+    {
+      "case": "random",
+      "width": 8,
+      "height": 16,
+      "added_ms": 3.907714285714286,
+      "sweep_pairs": 2,
+      "service_calls": 23,
+      "max_service_ms": 0.20342857142857143
+    },
+    {
+      "case": "random",
+      "width": 16,
+      "height": 24,
+      "added_ms": 14.662928571428571,
+      "sweep_pairs": 3,
+      "service_calls": 82,
+      "max_service_ms": 0.19339285714285714
+    },
+    {
+      "case": "random",
+      "width": 24,
+      "height": 8,
+      "added_ms": 7.2178571428571425,
+      "sweep_pairs": 3,
+      "service_calls": 41,
+      "max_service_ms": 0.19075
+    },
+    {
+      "case": "random",
+      "width": 32,
+      "height": 16,
+      "added_ms": 18.990178571428572,
+      "sweep_pairs": 3,
+      "service_calls": 106,
+      "max_service_ms": 0.19021428571428572
+    },
+    {
+      "case": "random",
+      "width": 8,
+      "height": 24,
+      "added_ms": 5.846107142857143,
+      "sweep_pairs": 2,
+      "service_calls": 34,
+      "max_service_ms": 0.20342857142857143
+    },
+    {
+      "case": "random",
+      "width": 16,
+      "height": 8,
+      "added_ms": 3.6911785714285714,
+      "sweep_pairs": 2,
+      "service_calls": 21,
+      "max_service_ms": 0.19339285714285714
+    },
+    {
+      "case": "random",
+      "width": 24,
+      "height": 16,
+      "added_ms": 10.814535714285714,
+      "sweep_pairs": 2,
+      "service_calls": 61,
+      "max_service_ms": 0.19007142857142856
+    },
+    {
+      "case": "random",
+      "width": 32,
+      "height": 24,
+      "added_ms": 28.48635714285714,
+      "sweep_pairs": 3,
+      "service_calls": 159,
+      "max_service_ms": 0.19075
+    }
+  ],
+  "lookup_bytes": 66816,
+  "mask_bytes": 16384,
+  "scope": "assembled resumable whole-image B fill in private page 76/canvas; fixed work quota; no installed scheduler/cache/uploads/display or hardware timing"
+}
