@@ -5,6 +5,9 @@ holds only what may not be published:
 - reference/<game>/ - per game: the original snapshot and recordings the selftest verifies against,
   plus the built games (<game>.nex, <game>_sprites.nex); index + MD5s in reference/README.md,
 - docs/reference/ - Next dev guide r3 (text) and the Next manual (OCR),
+- docs/reference/zxnDDMA_guide.txt - user-supplied core 3.03.00 zxnDDMA guide
+  (CC BY-NC-SA, see its header); keep its example code and licence separate from GPL toolkit code.
+  The design checklist and existing-game review are in nexclash/docs/DDMA.md.
 - docs/dean/ - Dean's prompts and Project instructions.
 
 Self-test (maintainers): clone both side by side, then in nexclash/ (it finds ../specnext/reference,
