@@ -28,7 +28,19 @@ Scratch logs include historical runs and failed intermediate attempts; they do n
 
 ## Resume instructions
 
-Latest implementation/evidence: [actor_b_compiler.md](actor_b_compiler.md), on these same branches.
+Latest implementation/evidence: [actor_jobs.md](actor_jobs.md), on these same branches.
+The immutable source worker is page 78 / pinned stream page 122; page 75 accepts copied raw tiles.
+Read actor-job unit/replay evidence before the historical B checkpoint below. All six quick
+correctness replays PASS: 128 captures / 13,066 exact validations. Snapshot-inclusive cold totals
+FAIL: L1 899.447 ms / L6 84.289 ms, target 10 ms TOTAL; lookup/allocation/uploads/queue/wrappers
+excluded. Per-update source work alone reaches 24.650 ms. Do not install the synchronous walker
+as a long DI hook. Next: reduce exact-validation cost, prove source-lifetime deduplication if used,
+then assembled stream dispatch, runtime cache/allocator and safe early hook/scheduling. No sprite
+NEX. Preserve current/pending ownership, caller-speed/R and ORIGINAL-pace obligations. DMA/DDMA
+span probes retain gated larger copies/uploads and route single spans <64 bytes directly to CPU.
+This preserves original geometry/bitmap/attribute bytes; host cache selection is not runtime code.
+
+Historical B implementation/evidence: [actor_b_compiler.md](actor_b_compiler.md).
 Published implementation checkpoint: nexclash `4fd320c` (quota-serviced B fill and gated prepared transfers).
 It includes remote `6aa2992` / main `3efa10f` and matches the verified local tree at `042c460`
 (implementation `92b7fa0`, integration `6043a98`). Publication used the connected GitHub API because

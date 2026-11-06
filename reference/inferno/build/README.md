@@ -4,7 +4,13 @@ Stage 2 is INCOMPLETE. No sprite engine or sprite NEX exists. The diagnostic NEX
 hardware candidate: full tail lifetime, continuous gameplay and timing remain unproved.
 The approved visual design in ../design/ is unchanged.
 
-Latest checkpoint: [actor_b_compiler.md](actor_b_compiler.md) adds quota-serviced assembled
+Latest checkpoint: [actor_jobs.md](actor_jobs.md) adds assembled immutable live-source snapshots,
+exact byte/phase/paint validation and a pinned-source colour consumer. Six quick correctness runs
+pass (128 captures / 13,066 validations). Snapshot-inclusive cold timing still FAILS: 899.45 ms L1,
+84.29 ms L6 against 10 ms total, excluding lookup/allocation/uploads/queue/wrappers. Tiny prepared
+spans use CPU after DMA/DDMA evaluation. No runtime cache/scheduler or sprite NEX is installed.
+
+Previous checkpoint: [actor_b_compiler.md](actor_b_compiler.md) adds quota-serviced assembled
 whole-image B filling, early live-content census and prepared rectangle / protected pair transfers
 using the new shared blitter functions. Six quick correctness runs pass; runtime cache/scheduler,
 actor pattern layout and complete-frame integration remain open. All cold timing gates still FAIL:
