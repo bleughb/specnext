@@ -28,13 +28,30 @@ Scratch logs include historical runs and failed intermediate attempts; they do n
 
 ## Resume instructions
 
+Latest implementation/evidence: [actor_b_compiler.md](actor_b_compiler.md), on these same branches.
+Implementation checkpoint: nexclash `92b7fa0` (quota-serviced B fill and gated prepared transfers).
+The older commit IDs above identify the originating colour-only checkpoint. Whole-image B filling
+is now an assembled, resumable private worker; prepared rectangle and protected 256-byte pair
+uploads reuse the new shared blitter functions from nexclash PR #93. No new NEX is installed.
+Read the latest evidence before the historical colour-only status below. Next: pinned exact live
+job snapshots, runtime content cache and safe prewarming/scheduling, then actor pattern layout,
+allocator and complete-frame integration. Current/pending pair protection is tested in the transfer
+component; integrated ownership remains open. Default prefer-blitter policy must retain no-blitter
+and CPU fallback; DMA setup time excludes unknown physical transfer stalls.
+
+All six latest quick correctness runs and targeted shop units pass. Cold total work including
+fill still FAILS the 10 ms target: L1 882.15 ms / L6 77.56 ms, excluding runtime cache/uploads/queue.
+Sampled four-unit fill calls cost <=0.204 ms, excluding an external wrapper. A live-table host census
+finds every sampled first-use key >=85 recorded frames early; that is not a proved runtime schedule,
+asset catalogue or safe hook. Never read changing original sources across yields under a stale key.
+
 Read `nexclash/CLAUDE.md`, starting from the Next session block in `games/inferno.md`.
 Read this folder's `README.md`, `actor_packing.md`, `frame_pipeline.md` and `timing_architecture.md`.
 Preserve original RAM/register behavior and approved B appearance. Full expanded Next memory is
 authorized. Stage 2 is incomplete; no sprite NEX is ready.
 
-The actor tile colour decoder is assembled and checked; whole-image enclosed-black fill, runtime
-exact-content caching, uploads and complete-frame readiness remain open. Cache/culling census
+Historical colour-only checkpoint: the actor tile decoder is assembled and checked; whole-image
+enclosed-black fill, runtime exact-content caching, uploads and complete-frame readiness were open. Cache/culling census
 results are host models, not installed optimizations. Cold capture/scenery/packing costs 11.88 ms
 in level 6 and 46.48 ms in level 1, before fill, cache lookup or uploads. The target is 10 ms TOTAL
 added work per game update. Solve first-use construction through safe early preparation from live
