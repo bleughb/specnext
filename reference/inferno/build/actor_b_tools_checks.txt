@@ -1,0 +1,72 @@
+/workspace/nexclash/selftest.py:594: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  list(Image.open(rp).getdata()) == list(Image.open(rp2).getdata()) and
+OK   tools: records plan() on synthetic stamps
+OK   tools: no-push-access gate (refuses other games, allows --canary / own new game)
+OK   tools: coloursheet: 2 figures (body + legs joined, mirrored copy the same one), 1:1
+OK   tools: coloursheet: same role again -> two figures; a repeating role (wheels) -> one
+OK   tools: coloursheet: 8x8 swatches 1-15 in palette order
+OK   tools: coloursheet: read-back: 1 key, bit 1 = 10, clear pixel ignored
+OK   tools: coloursheet: read-back: no copy-spread reported for a figure shown once
+OK   tools: coloursheet: painting sheet: shared body once (2 figures, the second only its new legs)
+OK   tools: coloursheet: painting sheet: untouched -> the same map
+OK   tools: coloursheet: painting sheet: repaint edits only that pixel
+OK   tools: coloursheet: painting sheet: painted back to the default -> no entry
+OK   tools: coloursheet: grey on an opaque pixel without clear=True: kept default
+OK   tools: coloursheet: clear=True: grey -> transparent mask bit
+OK   tools: coloursheet: clear mask survives save / load
+OK   tools: coloursheet: sheet drawn with the mask: that pixel grey, re-read -> the same map
+OK   tools: coloursheet: transparent pixel painted back to its default -> no entry
+OK   tools: coloursheet: paint_clear: same boxes, layout marked
+OK   tools: coloursheet: paintable only: clear pixel background without paint_clear, grey with it; PNGs differ only there
+OK   tools: coloursheet: paintable only: untouched sheet -> no ignored paint (background is not paint)
+OK   tools: coloursheet: paint_clear: a clear pixel painted -> its nibble
+OK   tools: coloursheet: paint_clear: sheet drawn with it shows it, re-read -> the same map
+OK   tools: coloursheet: paint_clear: painted grey again -> no entry
+OK   tools: coloursheet: resized sheet refused
+OK   tools: coloursheet: set_state: colour + transparent
+OK   tools: coloursheet: set_state: back to default removes the override (entry gone)
+OK   tools: coloursheet: merge: user reset + transparent applied, newer current entries kept
+OK   tools: coloursheet: merge: changed on the sheet AND since -> conflict, nothing applied
+OK   tools: coloursheet: merge: the same change on both sides -> no conflict
+OK   tools: coloursheet: redraw from the layout with its own map = the written sheet, same layout
+OK   tools: coloursheet: changes: one pixel painted two ways in two figures -> conflict
+OK   tools: coloursheet: changes: painted the same in both copies -> one change
+OK   tools: coloursheet: redrawn with the merged map, read back -> no changes
+OK   tools: recolour .nex offsets / splice / refusals on a synthetic .nex
+OK   tools: z80n - every Z80N instruction against worked results (core 3.02.05 / guide r3)
+OK   tools: hooklib R kept: 160 random hooks against the original, R and every register
+OK   tools: hooklib every-site matrix: 7 hooks x 4 incoming clocks, exit = incoming, results equal
+OK   tools: hooklib pace limiter, wait at 28 MHz: 8 windows (4 clocks, 28 MHz factor 8 / 6.4) within 2 lines (worst 1.16); 6 runs of 6 plot + blit cycles with debt and carry within 0.5% (worst 0.27%)
+OK   tools: hooklib pace limiter, wait at the caller's clock: 8 windows (4 clocks, 28 MHz factor 8 / 6.4) within 2 lines (worst 1.20); 6 runs of 6 plot + blit cycles with debt and carry within 0.5% (worst 0.21%)
+OK   tools: hooklib pace limiter: no line counter -> gives up, no hang
+OK   tools: hooklib pace limiter across frame wraps: 392 waits of 700 lines (16 start phases, 4 clocks, 48K / 128K / 60 Hz timing, plain and interrupted), frame length kept
+OK   tools: hooklib content cache (256 x OUTI): rules (miss, hit, mutable invalidates, hide keeps, inval, reset) + 600 random uploads, 64 hits / 536 uploads
+OK   tools: hooklib content cache (OTIR): rules (miss, hit, mutable invalidates, hide keeps, inval, reset) + 600 random uploads, 64 hits / 536 uploads
+OK   tools: hooklib atomic commit: 33 frames, back half only, one burst, the right images shown
+OK   tools: hooklib negative control: forced 3.5 MHz exit -> "exit speed is not the incoming clock!" (3)
+OK   tools: hooklib negative control: wrong R on exit -> "R differs!" (160)
+OK   tools: hooklib negative control: limiter never waits -> "hook faster than the original (limiter not waiting)!" (3)
+OK   tools: hooklib negative control: missing cache invalidation -> "stale pattern!" (102)
+OK   tools: hooklib negative control: one pattern buffer -> "upload into a shown pattern!" (16384)
+OK   tools: hooklib negative control: attributes split by uploads -> "attribute writes split by uploads!" (21)
+OK   tools: shared DMA policies / fallback / negative controls
+OK   tools: rzx extract: Chuckie Egg RZX snapshot 0 = SZX, 11786 bytes, md5 a6c4560d
+OK   tools: inspect: 48K, IM 2, no loader warning
+OK   tools: inspect: retained BASIC at IM 1 entry returning to RAM is not a running loader
+OK   tools: inspect: BASIC MAIN-EXEC still warns about a loader
+OK   tools: inspect: IM 1 returning to ROM does not suppress a possible loader warning
+OK   tools: isr: handler 40092, no IX/IY reads
+OK   tools: isr: slots touched 0 r, 3 r, 4 x, 5 r, 7 rw (slot 2 free for a hook page)
+OK   tools: scan RZX (300 frames): printer buffer 0x5B00-0x5BFF untouched, screen written
+OK   tools: scan --writers (300 frames): screen writers 43909 x141017, 43916 x42204, 42409, 40068; 3 readers
+OK   tools: probe attr_census (3000 frames, every 50): 60 samples, 35 sets, commonest x6 starting 00 x106
+OK   tools: probe rzx_census (300 frames): ISR 40092 x299 from frame 0, 43909 x141017 (= scan --writers)
+OK   tools: probe rzx_census captures first hit per PC/frame before execution, exact code bytes
+OK   tools: probe rzx_census: two-hit bound per PC/frame, absent frame has no sample
+OK   tools: scan --writers: writers outside the top 10 joined into routine spans (100-104 x6, 120 x2)
+OK   tools: preview: 2 shots, plotter 39500 in 4 caller groups (40385: 184 calls, 8832 bytes)
+OK   tools: preview: frame-only C/Python capture identical (autosave RZX, ULA and buffer)
+OK   tools: cost plotter 39500 (1500 frames): 1402 calls, median 19535 T
+OK   tools: survey (600 frames): engine chuckie, plain boot OK, 43899 x1059 calls on top, 40000 x814 from 6 callers at 665 T
+OK   tools: survey: unknown engine directs stage 1 rather than recommending auto
+TOOLS PASSED

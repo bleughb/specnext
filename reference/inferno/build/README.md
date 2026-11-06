@@ -4,7 +4,14 @@ Stage 2 is INCOMPLETE. No sprite engine or sprite NEX exists. The diagnostic NEX
 hardware candidate: full tail lifetime, continuous gameplay and timing remain unproved.
 The approved visual design in ../design/ is unchanged.
 
-Latest checkpoint: [actor_packing.md](actor_packing.md) adds the checked expanded-memory
+Latest checkpoint: [actor_b_compiler.md](actor_b_compiler.md) adds quota-serviced assembled
+whole-image B filling, early live-content census and prepared rectangle / protected pair transfers
+using the new shared blitter functions. Six quick correctness runs pass; runtime cache/scheduler,
+actor pattern layout and complete-frame integration remain open. All cold timing gates still FAIL:
+882.15 ms level 1 / 77.56 ms level 6, target 10 ms total, before runtime cache/uploads/queue.
+DMA CPU setup timings exclude unknown transfer stalls. No sprite NEX is ready.
+
+Earlier checkpoint: [actor_packing.md](actor_packing.md) adds the checked expanded-memory
 actor colour decoder and six-level cold-cache census. All six 2,000-frame correctness checks
 pass, but cold capture/scenery/packing costs **11.88 ms in level 6** and **46.48 ms in level 1**,
 before silhouette fill, cache lookup or uploads. Conservative offscreen culling does not reduce
