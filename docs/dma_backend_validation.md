@@ -1,0 +1,13 @@
+# DMA backend validation handoff
+
+Implementation: [nexclash PR #93](https://github.com/bleughb/nexclash/pull/93), commit `034b56cd84de78af73626ad636135480be6b7981`. This adds a shared synchronous backend and a synthetic Rainbow rectangle prototype; no existing game binary has been replaced.
+
+Blitter is the default preference. New engines adopting the library must expose the no-blitter policy (`HLIB_NO_BLITTER`, runtime policy 1); CPU-only is also available. The data-free commands are `python -m nexclash.dma`, `python -m nexclash.dma --no-blitter`, and `python -m nexclash.dma --cpu-only`. These exercise the shared backend, not existing .nxc/.nex packages. Capability gating prevents extended commands on pre-3.03 cores; DMA ownership must be established and unsafe hardware-IM2 contexts use CPU fallback.
+
+Ikari profiling used `reference/ikari_warriors/ik_2pw.rzx` from branch `nxc-reference-files` (MD5 `08f44dc34a3407b9ce5beb103b4de5c8`). With the active default colour set, 1,200 recording frames covered 221 sync intervals. Variant-aware register, memory and picture checks passed. Of profiled hook time, pixel generation/upload setup was 53.31%, colour lookup 20.10%, and direct pattern OUT instructions 0.60%. These are simulator estimates; they favour improving prepared-pattern reuse before a DMA-only rework. The public implementation documentation contains the full count-only report and reproducible command.
+
+Software validation: assembled DMA policy/fallback and negative-control tests, shared tools checks, doccheck, and Chuckie Egg canary pass; Ikari assembly still matches its pinned profile. Optional tools checks without their reference files were skipped. No hardware timing measurement was made in this session.
+
+Before a versioned game rework: measure CPU / ordinary DMA / DDMA whole-hook timings, including setup, mapping and stalls, on a named board and exact core. Test no-blitter on new hardware and default preference on pre-DDMA hardware. Check sound, IRQ delivery, raster overruns, cache misses, atomic display and ORIGINAL pacing. The Rainbow prototype is 20 rows of 64 bytes, source stride 64, destination stride 80; it is not Layer 2 XY. Record worst-frame behaviour and perform full game replay before changing pinned artifacts.
+
+The owner's >8 MB/s report remains a hardware observation with unspecified setup/path details, not a guaranteed rate for sprite I/O or every rectangle. The original guide remains unchanged and separately licensed.
