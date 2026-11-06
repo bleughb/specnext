@@ -8,6 +8,7 @@ holds only what may not be published:
 - docs/reference/zxnDDMA_guide.txt - user-supplied core 3.03.00 zxnDDMA guide
   (CC BY-NC-SA, see its header); keep its example code and licence separate from GPL toolkit code.
   The design checklist and existing-game review are in nexclash/docs/DDMA.md.
+  Backend policies, reference inputs and pending hardware checks: [DMA validation](docs/dma_backend_validation.md).
 - docs/dean/ - Dean's prompts and Project instructions.
 
 Self-test (maintainers): clone both side by side, then in nexclash/ (it finds ../specnext/reference,
