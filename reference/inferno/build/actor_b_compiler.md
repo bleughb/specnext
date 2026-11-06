@@ -44,12 +44,14 @@ Quotas bound each call; they do not eliminate total construction cost or prove r
 
 ## New blitter functions factored into the transfer path
 
-The shared DMA/library dependencies come from nexclash PR #93, head 449682f. The only assembly
+The shared DMA/library dependencies come from nexclash PR #93, head 449682f, now incorporated
+through remote Inferno commit 6aa2992 (main 3efa10f). The only assembly
 library change adds symbolic names to existing packet dimension words, without changing their
 bytes. The Inferno adapter in writable page 77 reuses `hlib_dma_init`, `hlib_dma_backend`, the
 rectangle/row command packets and `hlib_dma_sprite`; it does not replace the shared device model
 with a permissive per-engine DMA imitation. The shared selfchecks are included in `selftest --tools`.
-The observational profiler test is data-free and does not require another game's engine.
+The upstream shared/observational selfchecks are retained after resolving the concurrent main
+refresh; their synthetic tests do not require another game's recording or change its output.
 The shared immutable-image pattern cache is a selfcheck dependency only; Inferno does not use it
 to validate live graphics. Its immutable-key contract cannot replace exact live-content checks.
 Page 77 owns its packet state exclusively; do not mix the fixed Rainbow rectangle entry with

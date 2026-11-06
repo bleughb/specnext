@@ -1,6 +1,7 @@
-/workspace/nexclash/selftest.py:594: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+/workspace/nexclash/selftest.py:1005: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
   list(Image.open(rp).getdata()) == list(Image.open(rp2).getdata()) and
-OK   tools: records plan() on synthetic stamps
+OK   tools: records plan() on synthetic stamps, recipe digest and ROM identity mutations
+OK   tools: check status at the stamp / PRF1 boundary (checker exception, partial, no coverage, unmodelled ROM, missing run -> INCOMPLETE; fault, boot -> FAIL; pin, last frame -> complete)
 OK   tools: no-push-access gate (refuses other games, allows --canary / own new game)
 OK   tools: coloursheet: 2 figures (body + legs joined, mirrored copy the same one), 1:1
 OK   tools: coloursheet: same role again -> two figures; a repeating role (wheels) -> one
@@ -33,7 +34,14 @@ OK   tools: coloursheet: changes: one pixel painted two ways in two figures -> c
 OK   tools: coloursheet: changes: painted the same in both copies -> one change
 OK   tools: coloursheet: redrawn with the merged map, read back -> no changes
 OK   tools: recolour .nex offsets / splice / refusals on a synthetic .nex
+OK   tools: paint - regions closed off by drawn lines, neck split, no straight cut, head guess, labels carried to a mirrored frame, sheet read-back, row-band control flagged
 OK   tools: z80n - every Z80N instruction against worked results (core 3.02.05 / guide r3)
+OK   tools: play checks: jnext runner (32-bit cycle unwrap, repeatable input, keys)
+OK   tools: soak: still-picture and tight-loop detectors (synthetic)
+OK   tools: pace: penalty by update windows, quiet / busy thirds, lockstep (synthetic)
+OK   tools: flicker: out of step, vanished figure, one-frame attribute change (synthetic)
+OK   tools: looksheet: straight cut, drawn line, vanishing colour, white rim (synthetic)
+OK   tools: nxc - nexclash/nxc.py and tools/zx0 match their pins; PRF1, target, patch_by rules
 OK   tools: hooklib R kept: 160 random hooks against the original, R and every register
 OK   tools: hooklib every-site matrix: 7 hooks x 4 incoming clocks, exit = incoming, results equal
 OK   tools: hooklib pace limiter, wait at 28 MHz: 8 windows (4 clocks, 28 MHz factor 8 / 6.4) within 2 lines (worst 1.16); 6 runs of 6 plot + blit cycles with debt and carry within 0.5% (worst 0.27%)
@@ -49,7 +57,7 @@ OK   tools: hooklib negative control: limiter never waits -> "hook faster than t
 OK   tools: hooklib negative control: missing cache invalidation -> "stale pattern!" (102)
 OK   tools: hooklib negative control: one pattern buffer -> "upload into a shown pattern!" (16384)
 OK   tools: hooklib negative control: attributes split by uploads -> "attribute writes split by uploads!" (21)
-OK   tools: shared DMA policies / fallback / negative controls
+OK   tools: DMA policies, assembled hooks, functional model, negative controls and profiler
 OK   tools: rzx extract: Chuckie Egg RZX snapshot 0 = SZX, 11786 bytes, md5 a6c4560d
 OK   tools: inspect: 48K, IM 2, no loader warning
 OK   tools: inspect: retained BASIC at IM 1 entry returning to RAM is not a running loader
@@ -67,6 +75,34 @@ OK   tools: scan --writers: writers outside the top 10 joined into routine spans
 OK   tools: preview: 2 shots, plotter 39500 in 4 caller groups (40385: 184 calls, 8832 bytes)
 OK   tools: preview: frame-only C/Python capture identical (autosave RZX, ULA and buffer)
 OK   tools: cost plotter 39500 (1500 frames): 1402 calls, median 19535 T
+OK   tools: nxc: `patch` Chuckie Egg writes chuckie_egg.nxc and keeps only the plain chuckie_egg.nex (not in the .nxc)
+OK   tools: nxc: nxc.py lists it (target, version 1.0, patch_by, credit, PRF1 from the record)
+OK   tools: nxc: applied to the game it gives the `--nex` sprite build exactly (bfad6be1)
+OK   tools: nxc: nightshade default output = nightshade.nex, nightshade.nxc (the outputs the .nxc does not hold are kept)
+OK   tools: nxc: nightshade offers colour sets ['Enhanced']
+OK   tools: nxc: nightshade offers toggles none
+OK   tools: nxc: nightshade default read back = the record's sprites (1cf6b276)
+OK   tools: nxc: nightshade Enhanced read back = the record's enhanced (37f97001)
+OK   tools: nxc: starquake default output = starquake.nex, starquake.nxc, starquake_sprites.nex (the outputs the .nxc does not hold are kept)
+OK   tools: nxc: starquake offers colour sets none
+OK   tools: nxc: starquake offers toggles none
+OK   tools: nxc: starquake default read back = the record's loading (2e2f107e)
+SKIP tools: nxc multi-output atic_atac rework v13: missing atic_atac/Atic_Atac_1983_Ultimate_Play_The_Game_a.z80
+OK   tools: nxc: PRF1 read from the .nxc, (a) INCOMPLETE, no Verify line, record matching: historical record proof + INCOMPLETE
+OK   tools: nxc: PRF1 read from the .nxc, (b) INCOMPLETE, no Verify line, no record: not verified + INCOMPLETE
+OK   tools: nxc: PRF1 read from the .nxc, (c) complete rebuild, no Verify line: the record's proof unchanged
+OK   tools: nxc: PRF1 read from the .nxc, (d) INCOMPLETE with a Verify line: packaged, INCOMPLETE kept
+SKIP tools: play checks in JNext (no jnext or no $NEXCLASH_JNEXT_CARD)
 OK   tools: survey (600 frames): engine chuckie, plain boot OK, 43899 x1059 calls on top, 40000 x814 from 6 callers at 665 T
 OK   tools: survey: unknown engine directs stage 1 rather than recommending auto
+OK   tools: rom paths: nextboot.selfcheck - raster line ends a 250-frame hold (frozen line: never), NR 0x1E/0x1F, a .nex that does not boot is reported
+OK   tools: rom paths: the 128K ROM 1 keypad code reading its own byte 0x386E: listed, not compared
+OK   tools: rom paths: negative - game code (PC 0x8000) reading keypad byte 0x386E as data, the Next's differing: MISMATCH
+OK   tools: rom paths: input runs out in frame 30 of 30 (last frame): frames 1-29 checked, no raise
+OK   tools: rom paths: input runs out in frame 12 of 30 (partial): frames 1-11 checked, no raise
+SKIP tools: rom paths on Knight Tyme (reference files not found)
+SKIP tools: rom paths on Spellbound (reference files not found)
+SKIP tools: rom paths on Three Weeks (reference files not found)
+OK   tools: alt image 0: chuckie_egg (Sinclair's ROM + hooks) with altrom0 0x3500-0x3600 boots with image 0 = the 128K ROM 0 + its bytes
+OK   tools: alt image 0: knight_tyme (its own complete image 1) with altrom0 0x3500-0x3600 boots with image 0 = the 128K ROM 0 + its bytes
 TOOLS PASSED

@@ -1,6 +1,5 @@
-WARN path does not exist (13)
+WARN path does not exist (12)
      docs/BRIEFING.md:63  docs/extra-hw/io-port-system/registers.txt
-     docs/DDMA.md:86  docs/REFACTOR.md
      docs/TECHNIQUES.md:644  docs/design.md
      docs/TECHNIQUES.md:668  tools/sitescan.py
      docs/TECHNIQUES.md:754  tools/sitescan.py
@@ -16,4 +15,4 @@ WARN python -m: no such module (3)
      games/incredible_shrinking_fireman-add-GPT6_ASTRA.md:79  incredible_shrinking_fireman_add_
      games/incredible_shrinking_fireman-add-GPT6_ASTRA.md:80  incredible_shrinking_fireman_add_
      games/incredible_shrinking_fireman-add-GPT6_ASTRA.md:81  incredible_shrinking_fireman_add_
-doccheck: PASS (68 docs)
+doccheck: PASS (89 docs)

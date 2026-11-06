@@ -29,7 +29,12 @@ Scratch logs include historical runs and failed intermediate attempts; they do n
 ## Resume instructions
 
 Latest implementation/evidence: [actor_b_compiler.md](actor_b_compiler.md), on these same branches.
-Implementation checkpoint: nexclash `92b7fa0` (quota-serviced B fill and gated prepared transfers).
+Published implementation checkpoint: nexclash `4fd320c` (quota-serviced B fill and gated prepared transfers).
+It includes remote `6aa2992` / main `3efa10f` and matches the verified local tree at `042c460`
+(implementation `92b7fa0`, integration `6043a98`). Publication used the connected GitHub API because
+command-line Git authentication became unavailable. The branch was advanced with a checked
+expected head, preserving concurrent work. Existing local checkouts may have equivalent trees
+under those local commit IDs: preserve work, then fetch/integrate rather than reset or re-clone.
 The older commit IDs above identify the originating colour-only checkpoint. Whole-image B filling
 is now an assembled, resumable private worker; prepared rectangle and protected 256-byte pair
 uploads reuse the new shared blitter functions from nexclash PR #93. No new NEX is installed.
