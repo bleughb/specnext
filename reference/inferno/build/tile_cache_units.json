@@ -1,0 +1,16 @@
+{
+  "counts": {
+    "colour/flash miss": 384,
+    "colour/flash hit": 384,
+    "max miss equivalent T": 1238.375,
+    "max hit equivalent T": 484.5,
+    "uniform bitmap timing edge": 2,
+    "cache/VRAM edge": 5,
+    "cache input/front guard": 9,
+    "source mutation": 1,
+    "stale-key control detected": 1,
+    "colliding ID": 1
+  },
+  "examples": [],
+  "scope": "assembled 64-slot content-checked background cache and inactive L2 blit; no scheduler or sprites"
+}

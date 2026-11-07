@@ -1,0 +1,14 @@
+{
+  "counts": {
+    "colour/flash": 384,
+    "max uncached tile equivalent T": 708.25,
+    "uniform bitmap timing edge": 2,
+    "paging edge": 12,
+    "invalid/front guard": 8,
+    "live source mutation": 1,
+    "front-write control detected": 1,
+    "visibility control detected": 1
+  },
+  "examples": [],
+  "scope": "assembled uncached L2 tile primitive; no frame scheduler, sprites, palette setup or display commit"
+}

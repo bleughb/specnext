@@ -1,8 +1,64 @@
-# Inferno stage-2 loader foundation (2026-11-05)
+# Inferno stage-2 build evidence (2026-11-05)
+
+Latest checkpoint: [loading_owned.md](loading_owned.md): checked 8EF9 initialization pause,
+assembled owned high-RAM store/dispatch and direct exact validation. Six quicks pass;
+warm totals 10.167–16.317 ms still FAIL. Runtime scan/driver/UI and full frame integration remain open.
+
+Latest loading experiment: [loading_preparation.md](loading_preparation.md). User approves loading-time
+preparation. L6 prepares 118 live images in 6.32 s modeled CPU subtotal / 110875 bytes; all 2272
+sampled draws reuse prepared content. Optimized six-level results are in loading_preparation.md; runtime timing still FAILS.
+Host scan/dispatch/packing only; safe loading hook/UI/runtime cache are not installed.
 
 Stage 2 is INCOMPLETE. No sprite engine or sprite NEX exists. The diagnostic NEX is not a
 hardware candidate: full tail lifetime, continuous gameplay and timing remain unproved.
 The approved visual design in ../design/ is unchanged.
+
+Latest transfer component: [actor_high_dma.md](actor_high_dma.md) uses physical-address DDMA
+for owned high staging pages 216–223, with mapped DMA/CPU fallback. No runtime integration.
+
+Latest source checkpoint: [actor_jobs.md](actor_jobs.md) adds assembled immutable live-source snapshots,
+exact byte/phase/paint validation and a pinned-source colour consumer. Six quick correctness runs
+pass (128 captures / 13,066 validations). Snapshot-inclusive cold timing still FAILS: 899.45 ms L1,
+84.29 ms L6 against 10 ms total, excluding lookup/allocation/uploads/queue/wrappers. Tiny prepared
+spans use CPU after DMA/DDMA evaluation. No runtime cache/scheduler or sprite NEX is installed.
+
+Previous checkpoint: [actor_b_compiler.md](actor_b_compiler.md) adds quota-serviced assembled
+whole-image B filling, early live-content census and prepared rectangle / protected pair transfers
+using the new shared blitter functions. Six quick correctness runs pass; runtime cache/scheduler,
+actor pattern layout and complete-frame integration remain open. All cold timing gates still FAIL:
+882.15 ms level 1 / 77.56 ms level 6, target 10 ms total, before runtime cache/uploads/queue.
+DMA CPU setup timings exclude unknown transfer stalls. No sprite NEX is ready.
+
+Earlier checkpoint: [actor_packing.md](actor_packing.md) adds the checked expanded-memory
+actor colour decoder and six-level cold-cache census. All six 2,000-frame correctness checks
+pass, but cold capture/scenery/packing costs **11.88 ms in level 6** and **46.48 ms in level 1**,
+before silhouette fill, cache lookup or uploads. Conservative offscreen culling does not reduce
+these worst cases. The **10 ms total target is not met**; no sprite NEX exists.
+
+[frame_pipeline.md](frame_pipeline.md) retains the post-copy/setup/Copper/shop-return evidence.
+Capture + scenery alone costs up to 8.715 ms, plus about 0.55 ms for the observed 58-sprite queue.
+
+## Current architecture experiment
+
+See [timing_architecture.md](timing_architecture.md) for the evaluated Z80/Z80N, DMA,
+tilemap and expanded-memory choices. The new assembled 1-bit textmap worker reduces level-6
+worst scenery overhead from **130.069 ms to 6.547 ms per game update**. Capture plus scenery
+costs **8.708 ms**, leaving **1.292 ms** of the 10 ms total target for sprites/wrappers/commit.
+These are modeled assembly timings, not physical-Next measurements; the TOTAL gate is unproved.
+
+All six original quick replays pass: 12,000 frames, 1,855 scenery images / 68,382,720 pixels,
+16,903 capture comparisons. Units cover both buffers, all attribute/FLASH pairs, source overflow,
+live mutation and negative controls. Shop census exposes the need for a separate modal hook.
+The worker is experimental and enables no display registers; **no sprite NEX is ready**.
+
+```bash
+python -m nexclash.inferno --textmap-units ../specnext/reference/inferno --json work/textmap_units.json
+python -m nexclash.inferno --textmap-check ../specnext/reference/inferno/Inferno6.rzx --quick 2000 --json work/textmap6_quick.json
+# At an integration milestone:
+python -m nexclash.inferno --textmap-all ../specnext/reference/inferno --quick 2000 --out work/textmap_quick --json work/textmap_summary.json
+python tools/probes/rzx_census.py ../specnext/reference/inferno/Inferno4.rzx --pc 0x8F7C,0x8F92,0x9790 --stop 52500 --sample-frames 52229 --memory 0x4000:0xC000 --json > work/textmap_shop_census.json
+python tools/probes/rzx_census.py ../specnext/reference/inferno/Inferno4.rzx --pc 0xFFFF,0xFFF4,0x998B,0x0038 --stop 52231 --sample-frames 52229 --memory 0x4000:0xC000 --json > work/textmap_shop_state.json
+```
 
 From nexclash on codex/inferno (SkoolKit 10.1, bundled pinned sjasmplus):
 
@@ -93,7 +149,57 @@ python -m nexclash.inferno --capture-build ../specnext/reference/inferno --out w
   and both original and foreign ROM3. It starts the existing level-1 snapshot with capture hooks;
   it is NOT the approved original-BASIC continuous frontend. No sprite/Layer 2 renderer is enabled.
 
-Next work is the actual budgeted sprite/Layer 2 renderer, content-validated cache, modal transitions,
-colour workflow and original-BASIC startup installation through all levels/ending. The engine
-remains unregistered and its record excluded/unstamped. Do not hardware-test these diagnostics as
-if they were a sprite release.
+## Assembled scenery baseline
+
+Validation optimization follow-up (2026-11-05): current `scene_renderer_checks.json` and
+`scenery6_quick.json` use aligned validation flags, private-stack flag clearing under DI and
+unrolled source comparisons. Six bounded scenes and eight flag-page boundary IDs pass, including
+the stale-source and retained-validation negative controls. Level-6 quick 2,000 retains all
+347 images / 12,791,808 pixels / 2,966 capture events / 347 map / 346 ULA comparisons.
+Its unchanged maximum falls from 37,782.875 to **32,738.5** equivalent T; bounded unchanged
+maximum is **32,219**. Level-6 cold/dirty maximum is still **455,240.75**. These numbers supersede
+the scene timings below. The TOTAL gate still fails, including capture and future sprite/commit
+costs. No frame integration, other-level replay milestone or shop-path change occurred.
+
+`tile_renderer_units.json`, `tile_cache_units.json`, `tile_batch_units.json` and
+`scene_renderer_checks.json` exercise actual assembled Z80/Z80N writes through modeled shadow
+write-only Layer 2 paging. The complete scenery worker uses the clean map retained by the capture
+kernel and live game graphics. This is an offline execution harness, not an installed frame hook.
+
+- All 384 attribute/FLASH combinations, uniform bitmap extremes, edge positions/sections, invalid
+  inputs and front protection pass. The direct 64-slot cache checks complete source content, ID
+  and relevant FLASH phase, including collisions, source mutation and a stale-key negative control.
+- Complete 576-cell batches pass; malformed jobs late in the list and invalid cache slots reject
+  before any pixel write. Broken shadow/visibility controls are detected.
+- Six bounded stage-1 scenes pass cold/unchanged/same-ID mutation comparisons (663,552 viewport
+  pixels). Independent front/back content keys, whole-scene attribute/FLASH changes and a single
+  colliding map ID are checked. Broken source comparison and retained validation flags are detected
+  using surviving private scratch and the good worker's real source/cache pages.
+- `scenery1.png` through `scenery6.png` show the clean 256x144 scenery produced by the assembled
+  worker, using a Spectrum colour lookup. They omit actors and HUD; they are not sprite previews.
+- `scenery6_quick.json`: representative 2,000-frame RZX iteration, 347 scenery images / 12,791,808
+  viewport pixels, 2,966 capture events, 347 map and 346 ULA comparisons; all invariants/IRQ and
+  negative controls pass. Host alternates inactive target banks; no runtime commit is tested.
+  Other levels retain bounded scene checks; all-six quick replays resume at integration milestones.
+- Timing model includes one extra cycle per modeled read at 28MHz, divided by eight. Primitive
+  maxima in these cases: tile 708.25, cache miss 1,238.375 / hit 484.5; prepared batch 307.12 per
+  tile (preparation excluded). Cold scene maximum 459,051.75. Distinct-source validation reduces
+  level-6 unchanged maximum from 58,200.625 to 37,782.875. **The total 35,000/tick gate fails**,
+  before capture, sprites or commit. No hardware-speed or complete-renderer timing claim.
+
+Run from nexclash; use level 6 during iteration, other levels at milestones (user preference):
+
+```bash
+python -m nexclash.inferno --tile-renderer-units --json work/tile_renderer_units.json
+python -m nexclash.inferno --tile-cache-units --json work/tile_cache_units.json
+python -m nexclash.inferno --tile-batch-units --json work/tile_batch_units.json
+python -m nexclash.inferno --scene-renderer-checks ../specnext/reference/inferno --out work/scenery --json work/scene_renderer_checks.json
+python -m nexclash.inferno --scenery-check ../specnext/reference/inferno/Inferno6.rzx --quick 2000 --json work/scenery6_quick.json
+# Integration milestone, not the per-edit loop:
+python -m nexclash.inferno --scenery-all ../specnext/reference/inferno --out work/scenery_quick --quick 2000 --json work/scenery_summary.json
+```
+
+Next: budgeted validation/dirty scheduling, frame hook and atomic commit, sprite compilation/upload,
+modal transitions, colour workflow and original-BASIC startup through all levels/ending. The engine
+remains unregistered and its record excluded/unstamped. Existing NEX diagnostics are unchanged;
+none contains the new scenery code or is a sprite release.

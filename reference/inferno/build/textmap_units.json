@@ -1,0 +1,78 @@
+{
+  "counts": {
+    "bounded scenes both buffers": 12,
+    "viewport pixels compared": 442368,
+    "max scene equivalent T": 22301.375,
+    "attribute/FLASH cases": 512,
+    "max full-half equivalent T": 33542.5,
+    "input/front guard": 3,
+    "257-source rejection with preserved front": 1,
+    "same-ID live mutation with retained scratch": 1,
+    "stale-source control detected": 1,
+    "front-write control detected": 1,
+    "FLASH control detected": 1
+  },
+  "cases": [
+    {
+      "level": 1,
+      "error": 0,
+      "sources": 46,
+      "changed": 576,
+      "instructions": 11475,
+      "equivalent_T": 15244.25,
+      "pixel_writes": 0,
+      "bytes_written": 1520
+    },
+    {
+      "level": 2,
+      "error": 0,
+      "sources": 111,
+      "changed": 576,
+      "instructions": 15310,
+      "equivalent_T": 20907.375,
+      "pixel_writes": 0,
+      "bytes_written": 2040
+    },
+    {
+      "level": 3,
+      "error": 0,
+      "sources": 72,
+      "changed": 576,
+      "instructions": 13009,
+      "equivalent_T": 17509.5,
+      "pixel_writes": 0,
+      "bytes_written": 1728
+    },
+    {
+      "level": 4,
+      "error": 0,
+      "sources": 91,
+      "changed": 576,
+      "instructions": 14130,
+      "equivalent_T": 19164.875,
+      "pixel_writes": 0,
+      "bytes_written": 1880
+    },
+    {
+      "level": 5,
+      "error": 0,
+      "sources": 51,
+      "changed": 576,
+      "instructions": 11770,
+      "equivalent_T": 15679.875,
+      "pixel_writes": 0,
+      "bytes_written": 1560
+    },
+    {
+      "level": 6,
+      "error": 0,
+      "sources": 127,
+      "changed": 576,
+      "instructions": 16254,
+      "equivalent_T": 22301.375,
+      "pixel_writes": 0,
+      "bytes_written": 2168
+    }
+  ],
+  "scope": "assembled textmap construction only; no display setup, frame commit, sprite renderer or raster proof"
+}
