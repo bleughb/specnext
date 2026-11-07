@@ -71,6 +71,11 @@ Design (not yet built):
 Then: shrink the actor hooks (252 T each now; 8F7C 1,082 T), the earlier items (live-table scan,
 runtime exact dispatch, complete frame state, protected uploads). Keep sprites disabled.
 
+## Hardware findings
+- 2026-11-08: the first m3 NEX crashed (green bars): hooks sat under the stub's register block
+  (alt ROM `rom_end`..+19). Fixed (§7.1, bleughb/nexclash#142; gate 0 failures, controls 40/40). Any new alt-ROM block must start >= rom_end + 20; the build's
+  "hook bytes after boot" check must stay empty.
+
 ## Hardware (user)
 `Inferno_copier_window_diagnostic.nex` (m2, window only) and `Inferno_copier_window_m3_diagnostic.nex`
 (hooks + window + cw_cal + DMA) against plain `Inferno.nex`: checklist in games/inferno.md.

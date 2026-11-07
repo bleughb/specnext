@@ -1,7 +1,8 @@
 {
   "boot_checks": {
     "Sinclair": [],
-    "foreign ROM3": []
+    "foreign ROM3": [],
+    "hook bytes after boot": []
   },
   "tail": [
     39552,
@@ -13,7 +14,7 @@
     "959B",
     "96A1"
   ],
-  "nex_md5": "9baec6412f2c3b7974b0db74a7ab9b75",
+  "nex_md5": "68340edf338f8e41c0f80cc432ba2af0",
   "cwhead_md5": "1ca3807bde8daaee27d2e3eeea96ac1d",
   "scope": "level-1 snapshot; capture hooks (X, R, DMA map copy) + copier window, bank loader as the capture diagnostic; boot state checked in software, the window itself only in the simulator; not a release"
 }
