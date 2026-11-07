@@ -1,0 +1,110 @@
+{
+ "1": {
+  "updates": 13869,
+  "IRQs inside 8F92..9907": 15055,
+  "updates with an IRQ in the window": 13869,
+  "IRQs lost in the entry DI span": 12,
+  "updates with a late level change (cell 0/1)": 5385,
+  "slack below tolerance": 2,
+  "code at 9907 not PUSH DE/PUSH HL": 0,
+  "998E set in the head": 0,
+  "SP at 9907 outside A1F0..A6FE": 0,
+  "n_outs != 416": 0,
+  "free ms (min/p1/median)": [
+   14.613,
+   15.313,
+   20.911
+  ],
+  "frames": 61722
+ },
+ "2": {
+  "updates": 11921,
+  "IRQs inside 8F92..9907": 12333,
+  "updates with an IRQ in the window": 11921,
+  "IRQs lost in the entry DI span": 5,
+  "updates with a late level change (cell 0/1)": 3103,
+  "slack below tolerance": 1,
+  "code at 9907 not PUSH DE/PUSH HL": 0,
+  "998E set in the head": 0,
+  "SP at 9907 outside A1F0..A6FE": 0,
+  "n_outs != 416": 0,
+  "free ms (min/p1/median)": [
+   15.675,
+   16.453,
+   22.006
+  ],
+  "frames": 51575
+ },
+ "3": {
+  "updates": 13749,
+  "IRQs inside 8F92..9907": 14592,
+  "updates with an IRQ in the window": 13749,
+  "IRQs lost in the entry DI span": 13,
+  "updates with a late level change (cell 0/1)": 3443,
+  "slack below tolerance": 3,
+  "code at 9907 not PUSH DE/PUSH HL": 0,
+  "998E set in the head": 0,
+  "SP at 9907 outside A1F0..A6FE": 0,
+  "n_outs != 416": 0,
+  "free ms (min/p1/median)": [
+   15.189,
+   15.883,
+   21.38
+  ],
+  "frames": 58281
+ },
+ "4": {
+  "updates": 18635,
+  "IRQs inside 8F92..9907": 19830,
+  "updates with an IRQ in the window": 18635,
+  "IRQs lost in the entry DI span": 21,
+  "updates with a late level change (cell 0/1)": 5787,
+  "slack below tolerance": 3,
+  "code at 9907 not PUSH DE/PUSH HL": 0,
+  "998E set in the head": 0,
+  "SP at 9907 outside A1F0..A6FE": 0,
+  "n_outs != 416": 0,
+  "free ms (min/p1/median)": [
+   15.61,
+   16.23,
+   21.808
+  ],
+  "frames": 78345
+ },
+ "5": {
+  "updates": 13831,
+  "IRQs inside 8F92..9907": 15985,
+  "updates with an IRQ in the window": 13831,
+  "IRQs lost in the entry DI span": 24,
+  "updates with a late level change (cell 0/1)": 2699,
+  "slack below tolerance": 5,
+  "code at 9907 not PUSH DE/PUSH HL": 0,
+  "998E set in the head": 0,
+  "SP at 9907 outside A1F0..A6FE": 0,
+  "n_outs != 416": 0,
+  "free ms (min/p1/median)": [
+   15.035,
+   15.66,
+   21.429
+  ],
+  "frames": 61315
+ },
+ "6": {
+  "updates": 16182,
+  "IRQs inside 8F92..9907": 23282,
+  "updates with an IRQ in the window": 16182,
+  "IRQs lost in the entry DI span": 1,
+  "updates with a late level change (cell 0/1)": 6396,
+  "slack below tolerance": 13,
+  "code at 9907 not PUSH DE/PUSH HL": 0,
+  "998E set in the head": 0,
+  "SP at 9907 outside A1F0..A6FE": 0,
+  "n_outs != 416": 0,
+  "free ms (min/p1/median)": [
+   16.677,
+   17.464,
+   22.993
+  ],
+  "frames": 74501
+ }
+}

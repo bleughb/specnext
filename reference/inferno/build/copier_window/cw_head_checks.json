@@ -1,0 +1,45 @@
+{
+  "counts": {
+    "states": 1854,
+    "OUT changes": 119363
+  },
+  "failures": [],
+  "per_level": {
+    "1": {
+      "max_head_ms_patched": 7.344,
+      "max_head_ms_original": 27.907,
+      "max_G": 180
+    },
+    "2": {
+      "max_head_ms_patched": 7.389,
+      "max_head_ms_original": 28.599,
+      "max_G": 204
+    },
+    "3": {
+      "max_head_ms_patched": 7.397,
+      "max_head_ms_original": 28.167,
+      "max_G": 189
+    },
+    "4": {
+      "max_head_ms_patched": 7.519,
+      "max_head_ms_original": 28.975,
+      "max_G": 217
+    },
+    "5": {
+      "max_head_ms_patched": 7.226,
+      "max_head_ms_original": 26.897,
+      "max_G": 145
+    },
+    "6": {
+      "max_head_ms_patched": 7.584,
+      "max_head_ms_original": 29.696,
+      "max_G": 242
+    }
+  },
+  "negative_controls": {
+    "change detection removed (JR Z -> JR) detected": 38,
+    "tile count INC C removed detected": 38,
+    "R constant off by one detected": 38
+  },
+  "scope": "translated copier head 8F92->9907 in the simulator, interrupts not delivered; no pad, no OUT replay, not installed, no hardware"
+}

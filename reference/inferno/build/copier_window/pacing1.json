@@ -1,0 +1,5940 @@
+{
+ "pacing": {
+  "n": 13869,
+  "foreground_T": {
+   "min": 99363,
+   "p1": 101301,
+   "p10": 104395,
+   "median": 115924,
+   "max": 534866
+  },
+  "slack_T": {
+   "min": 11,
+   "p1": 1385,
+   "p10": 9332,
+   "median": 27787,
+   "max": 69777
+  },
+  "copier_T": {
+   "min": 88313,
+   "p1": 89828,
+   "p10": 90864,
+   "median": 93187,
+   "max": 102453
+  },
+  "updates_slipping_a_frame_at_0.5ms": 0.0124,
+  "updates_slipping_a_frame_at_1ms": 0.0293,
+  "updates_slipping_a_frame_at_2ms": 0.0703,
+  "updates_slipping_a_frame_at_5ms": 0.2331,
+  "updates_slipping_a_frame_at_10ms": 0.6638,
+  "updates_slipping_a_frame_at_15ms": 0.9452,
+  "updates_slipping_a_frame_at_20ms": 1.0
+ },
+ "idle_T_per_update": {
+  "min": 0,
+  "p1": 0,
+  "p10": 0,
+  "median": 18480,
+  "max": 61668
+ },
+ "busy_T_per_update": {
+  "min": 221045,
+  "p1": 231687,
+  "p10": 240887,
+  "median": 259144,
+  "max": 111737416
+ },
+ "updates_with_zero_idle": 1508,
+ "flag_998E_writers": {
+  "0x8F32=0": 4,
+  "0x9914=4": 13869,
+  "0x9995=0": 13869
+ },
+ "level": "1",
+ "frames": 61722,
+ "updates": 13868,
+ "T_per_update": {
+  "min": 257492,
+  "median": 275839,
+  "p90": 277795,
+  "max": 111757360
+ },
+ "halt_share": 0.03839448650696976,
+ "interrupts_per_update": {
+  "2": 316,
+  "3": 12520,
+  "4": 1028,
+  "9": 1,
+  "395": 1,
+  "1671": 1,
+  "1938": 1
+ },
+ "top_pcs_by_T": [
+  [
+   "0x9989",
+   275945844,
+   0.0665
+  ],
+  [
+   "0x97C5",
+   87873984,
+   0.0212
+  ],
+  [
+   "0x7493",
+   84549676,
+   0.0204
+  ],
+  [
+   "0x97D4",
+   79885440,
+   0.0192
+  ],
+  [
+   "0x97E7",
+   79885440,
+   0.0192
+  ],
+  [
+   "0x97F1",
+   79885440,
+   0.0192
+  ],
+  [
+   "0x7CA4",
+   74558032,
+   0.018
+  ],
+  [
+   "0x97BA",
+   63908352,
+   0.0154
+  ],
+  [
+   "0x97CA",
+   63908352,
+   0.0154
+  ],
+  [
+   "0x97B6",
+   55919808,
+   0.0135
+  ],
+  [
+   "0x97B7",
+   55919808,
+   0.0135
+  ],
+  [
+   "0x97BD",
+   55919808,
+   0.0135
+  ],
+  [
+   "0x97C2",
+   55919808,
+   0.0135
+  ],
+  [
+   "0x97C4",
+   55919808,
+   0.0135
+  ],
+  [
+   "0x97C8",
+   55919808,
+   0.0135
+  ],
+  [
+   "0x97CD",
+   55919808,
+   0.0135
+  ],
+  [
+   "0x97CE",
+   55919808,
+   0.0135
+  ],
+  [
+   "0x97D2",
+   55919808,
+   0.0135
+  ],
+  [
+   "0x97EF",
+   55919808,
+   0.0135
+  ],
+  [
+   "0x9812",
+   49754920,
+   0.012
+  ],
+  [
+   "0x97BE",
+   47931264,
+   0.0115
+  ],
+  [
+   "0x97CF",
+   47931264,
+   0.0115
+  ],
+  [
+   "0x97E1",
+   47267174,
+   0.0114
+  ],
+  [
+   "0x97B9",
+   31954176,
+   0.0077
+  ],
+  [
+   "0x97BC",
+   31954176,
+   0.0077
+  ]
+ ],
+ "writes_DC00_FFFF_pages": {
+  "0xF400": 1326,
+  "0xF500": 1261,
+  "0xF600": 1303,
+  "0xFF00": 2140100
+ },
+ "writers": {
+  "0x9465": {
+   "count": 228328,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 687,
+   "last_frame": 60869
+  },
+  "0x9466": {
+   "count": 228318,
+   "lo": "0xFFEC",
+   "hi": "0xFFEF",
+   "first_frame": 687,
+   "last_frame": 60869
+  },
+  "0x9326": {
+   "count": 162520,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 683,
+   "last_frame": 60870
+  },
+  "0x9560": {
+   "count": 162516,
+   "lo": "0xFFEA",
+   "hi": "0xFFED",
+   "first_frame": 683,
+   "last_frame": 60870
+  },
+  "0x9325": {
+   "count": 162506,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 683,
+   "last_frame": 60870
+  },
+  "0x9701": {
+   "count": 136184,
+   "lo": "0xFFEA",
+   "hi": "0xFFF1",
+   "first_frame": 840,
+   "last_frame": 60437
+  },
+  "0x96AA": {
+   "count": 129460,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 683,
+   "last_frame": 60870
+  },
+  "0x9746": {
+   "count": 111068,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 683,
+   "last_frame": 60870
+  },
+  "0x933F": {
+   "count": 55474,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 687,
+   "last_frame": 60869
+  },
+  "0x933C": {
+   "count": 55472,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 687,
+   "last_frame": 60869
+  },
+  "0x970A": {
+   "count": 49854,
+   "lo": "0xFFEA",
+   "hi": "0xFFEF",
+   "first_frame": 840,
+   "last_frame": 60437
+  },
+  "0x960C": {
+   "count": 39974,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 683,
+   "last_frame": 60694
+  },
+  "0x960B": {
+   "count": 39960,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 683,
+   "last_frame": 60694
+  },
+  "0x95A4": {
+   "count": 33088,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 683,
+   "last_frame": 60693
+  },
+  "0x953B": {
+   "count": 27768,
+   "lo": "0xFFF0",
+   "hi": "0xFFF3",
+   "first_frame": 683,
+   "last_frame": 60870
+  },
+  "0x9766": {
+   "count": 27758,
+   "lo": "0xFFF0",
+   "hi": "0xFFF3",
+   "first_frame": 683,
+   "last_frame": 60869
+  },
+  "0x9535": {
+   "count": 27756,
+   "lo": "0xFFF0",
+   "hi": "0xFFF3",
+   "first_frame": 683,
+   "last_frame": 60869
+  },
+  "0x973D": {
+   "count": 27752,
+   "lo": "0xFFF0",
+   "hi": "0xFFF3",
+   "first_frame": 683,
+   "last_frame": 60869
+  },
+  "0x9306": {
+   "count": 27752,
+   "lo": "0xFFF0",
+   "hi": "0xFFF3",
+   "first_frame": 683,
+   "last_frame": 60870
+  },
+  "0x90A3": {
+   "count": 27746,
+   "lo": "0xFFF0",
+   "hi": "0xFFF3",
+   "first_frame": 683,
+   "last_frame": 60870
+  },
+  "0xAEB3": {
+   "count": 27744,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 683,
+   "last_frame": 60870
+  },
+  "0x93BF": {
+   "count": 27742,
+   "lo": "0xFFF0",
+   "hi": "0xFFF3",
+   "first_frame": 688,
+   "last_frame": 60869
+  },
+  "0x93C6": {
+   "count": 27740,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 688,
+   "last_frame": 60869
+  },
+  "0xAD37": {
+   "count": 27738,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 683,
+   "last_frame": 60870
+  },
+  "0xAEC3": {
+   "count": 27738,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 683,
+   "last_frame": 60870
+  },
+  "0x9790": {
+   "count": 27738,
+   "lo": "0xFFF2",
+   "hi": "0xFFF3",
+   "first_frame": 683,
+   "last_frame": 60870
+  },
+  "0x1F54": {
+   "count": 27738,
+   "lo": "0xFFF2",
+   "hi": "0xFFF3",
+   "first_frame": 687,
+   "last_frame": 60873
+  },
+  "0x9385": {
+   "count": 27736,
+   "lo": "0xFFF2",
+   "hi": "0xFFF3",
+   "first_frame": 687,
+   "last_frame": 60869
+  },
+  "0x938E": {
+   "count": 27736,
+   "lo": "0xFFF2",
+   "hi": "0xFFF3",
+   "first_frame": 687,
+   "last_frame": 60869
+  },
+  "0x93A6": {
+   "count": 27736,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 687,
+   "last_frame": 60869
+  },
+  "0x93D1": {
+   "count": 27736,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 687,
+   "last_frame": 60869
+  },
+  "0x998B": {
+   "count": 26798,
+   "lo": "0xFFE4",
+   "hi": "0xFFF1",
+   "first_frame": 688,
+   "last_frame": 60870
+  },
+  "0x902C": {
+   "count": 10662,
+   "lo": "0xFFF2",
+   "hi": "0xFFF3",
+   "first_frame": 687,
+   "last_frame": 60837
+  },
+  "0xB48F": {
+   "count": 4946,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 683,
+   "last_frame": 60870
+  },
+  "0xB063": {
+   "count": 1944,
+   "lo": "0xFFE4",
+   "hi": "0xFFEB",
+   "first_frame": 2177,
+   "last_frame": 57106
+  },
+  "0x956E": {
+   "count": 1260,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1705,
+   "last_frame": 60738
+  },
+  "0x956B": {
+   "count": 888,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1565,
+   "last_frame": 60550
+  },
+  "0x9522": {
+   "count": 796,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 799,
+   "last_frame": 59459
+  },
+  "0xB98F": {
+   "count": 684,
+   "lo": "0xF46C",
+   "hi": "0xF64C",
+   "first_frame": 29932,
+   "last_frame": 38814
+  },
+  "0xB4C0": {
+   "count": 637,
+   "lo": "0xF43F",
+   "hi": "0xF43F",
+   "first_frame": 29501,
+   "last_frame": 43943
+  },
+  "0x9757": {
+   "count": 572,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 1577,
+   "last_frame": 60626
+  },
+  "0x9750": {
+   "count": 504,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 2621,
+   "last_frame": 60622
+  },
+  "0x9569": {
+   "count": 500,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1881,
+   "last_frame": 60638
+  },
+  "0x9761": {
+   "count": 474,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 1645,
+   "last_frame": 58991
+  },
+  "0x9527": {
+   "count": 464,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 998,
+   "last_frame": 57126
+  },
+  "0x975F": {
+   "count": 456,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 2485,
+   "last_frame": 60710
+  },
+  "0x9524": {
+   "count": 452,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 1495,
+   "last_frame": 58179
+  },
+  "0x9523": {
+   "count": 444,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 789,
+   "last_frame": 59486
+  },
+  "0x9525": {
+   "count": 418,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 930,
+   "last_frame": 59463
+  },
+  "0xB385": {
+   "count": 410,
+   "lo": "0xF49A",
+   "hi": "0xF6A7",
+   "first_frame": 31652,
+   "last_frame": 40106
+  },
+  "0xB142": {
+   "count": 396,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 5338,
+   "last_frame": 57106
+  },
+  "0xB143": {
+   "count": 396,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 5338,
+   "last_frame": 57106
+  },
+  "0xB144": {
+   "count": 396,
+   "lo": "0xFFE6",
+   "hi": "0xFFE7",
+   "first_frame": 5338,
+   "last_frame": 57106
+  },
+  "0x9574": {
+   "count": 370,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1701,
+   "last_frame": 58687
+  },
+  "0x92F8": {
+   "count": 358,
+   "lo": "0xFFF0",
+   "hi": "0xFFF3",
+   "first_frame": 15134,
+   "last_frame": 60873
+  },
+  "0x974D": {
+   "count": 334,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 1641,
+   "last_frame": 60558
+  },
+  "0xB908": {
+   "count": 327,
+   "lo": "0xF521",
+   "hi": "0xF620",
+   "first_frame": 33871,
+   "last_frame": 37870
+  },
+  "0xAFB9": {
+   "count": 312,
+   "lo": "0xFFE8",
+   "hi": "0xFFEF",
+   "first_frame": 2065,
+   "last_frame": 53394
+  },
+  "0x92BB": {
+   "count": 300,
+   "lo": "0xF40F",
+   "hi": "0xF6F3",
+   "first_frame": 29500,
+   "last_frame": 29500
+  },
+  "0x9526": {
+   "count": 296,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 1295,
+   "last_frame": 59490
+  },
+  "0x96F2": {
+   "count": 296,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1885,
+   "last_frame": 59095
+  },
+  "0x957A": {
+   "count": 286,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1941,
+   "last_frame": 60706
+  },
+  "0x9528": {
+   "count": 274,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 1277,
+   "last_frame": 57106
+  },
+  "0x92A7": {
+   "count": 264,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 15526,
+   "last_frame": 45981
+  },
+  "0x92B2": {
+   "count": 258,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 15526,
+   "last_frame": 45981
+  },
+  "0x96E8": {
+   "count": 254,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2417,
+   "last_frame": 60130
+  },
+  "0x9754": {
+   "count": 240,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 1909,
+   "last_frame": 60714
+  },
+  "0x96E9": {
+   "count": 238,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1893,
+   "last_frame": 60702
+  },
+  "0xB860": {
+   "count": 233,
+   "lo": "0xF52F",
+   "hi": "0xF52F",
+   "first_frame": 34031,
+   "last_frame": 34983
+  },
+  "0x96EF": {
+   "count": 208,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1869,
+   "last_frame": 60134
+  },
+  "0x950E": {
+   "count": 206,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 1168,
+   "last_frame": 57011
+  },
+  "0x9571": {
+   "count": 206,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 4052,
+   "last_frame": 57711
+  },
+  "0x957F": {
+   "count": 202,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1865,
+   "last_frame": 58971
+  },
+  "0x9487": {
+   "count": 198,
+   "lo": "0xFFEA",
+   "hi": "0xFFED",
+   "first_frame": 865,
+   "last_frame": 56510
+  },
+  "0xB6B7": {
+   "count": 198,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 21894,
+   "last_frame": 51387
+  },
+  "0x9587": {
+   "count": 194,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1629,
+   "last_frame": 59782
+  },
+  "0x957D": {
+   "count": 192,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1877,
+   "last_frame": 59147
+  },
+  "0x9752": {
+   "count": 178,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 2461,
+   "last_frame": 57331
+  },
+  "0x9501": {
+   "count": 176,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 794,
+   "last_frame": 59266
+  },
+  "0x96EA": {
+   "count": 176,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1813,
+   "last_frame": 59978
+  },
+  "0x9759": {
+   "count": 176,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 2445,
+   "last_frame": 60734
+  },
+  "0x96D4": {
+   "count": 170,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1929,
+   "last_frame": 60698
+  },
+  "0x9482": {
+   "count": 162,
+   "lo": "0xFFEA",
+   "hi": "0xFFED",
+   "first_frame": 3070,
+   "last_frame": 58211
+  },
+  "0x93E3": {
+   "count": 160,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 22586,
+   "last_frame": 59374
+  },
+  "0xAFBA": {
+   "count": 156,
+   "lo": "0xFFE6",
+   "hi": "0xFFEB",
+   "first_frame": 2065,
+   "last_frame": 53394
+  },
+  "0x96EB": {
+   "count": 154,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2413,
+   "last_frame": 60026
+  },
+  "0x96F3": {
+   "count": 152,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1569,
+   "last_frame": 60058
+  },
+  "0x9568": {
+   "count": 142,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1889,
+   "last_frame": 53850
+  },
+  "0x96ED": {
+   "count": 140,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1873,
+   "last_frame": 59506
+  },
+  "0x94FC": {
+   "count": 138,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 1102,
+   "last_frame": 56838
+  },
+  "0x9455": {
+   "count": 136,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 3277,
+   "last_frame": 55590
+  },
+  "0x96C2": {
+   "count": 132,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1561,
+   "last_frame": 59810
+  },
+  "0x96C3": {
+   "count": 132,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2589,
+   "last_frame": 60098
+  },
+  "0x972C": {
+   "count": 131,
+   "lo": "0xF414",
+   "hi": "0xF6F3",
+   "first_frame": 29692,
+   "last_frame": 43719
+  },
+  "0x9484": {
+   "count": 120,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 3574,
+   "last_frame": 56506
+  },
+  "0x96EC": {
+   "count": 118,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1729,
+   "last_frame": 60138
+  },
+  "0x9565": {
+   "count": 116,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2313,
+   "last_frame": 58567
+  },
+  "0x975B": {
+   "count": 116,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 3034,
+   "last_frame": 60610
+  },
+  "0xB879": {
+   "count": 116,
+   "lo": "0xF530",
+   "hi": "0xF530",
+   "first_frame": 34035,
+   "last_frame": 34979
+  },
+  "0x9450": {
+   "count": 112,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1062,
+   "last_frame": 59175
+  },
+  "0x9427": {
+   "count": 112,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1148,
+   "last_frame": 52762
+  },
+  "0x9513": {
+   "count": 112,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 1342,
+   "last_frame": 56921
+  },
+  "0x93E8": {
+   "count": 110,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 2869,
+   "last_frame": 59423
+  },
+  "0x949A": {
+   "count": 106,
+   "lo": "0xFFEA",
+   "hi": "0xFFED",
+   "first_frame": 835,
+   "last_frame": 15131
+  },
+  "0x9504": {
+   "count": 106,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 1126,
+   "last_frame": 59256
+  },
+  "0x9507": {
+   "count": 106,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 15742,
+   "last_frame": 59290
+  },
+  "0x96F4": {
+   "count": 102,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2229,
+   "last_frame": 54330
+  },
+  "0x96D6": {
+   "count": 100,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2609,
+   "last_frame": 59554
+  },
+  "0x9483": {
+   "count": 98,
+   "lo": "0xFFEA",
+   "hi": "0xFFED",
+   "first_frame": 3088,
+   "last_frame": 58203
+  },
+  "0x9576": {
+   "count": 96,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2297,
+   "last_frame": 59027
+  },
+  "0xB3B6": {
+   "count": 94,
+   "lo": "0xF498",
+   "hi": "0xF6A5",
+   "first_frame": 31684,
+   "last_frame": 40106
+  },
+  "0xB633": {
+   "count": 91,
+   "lo": "0xF4A9",
+   "hi": "0xF6D4",
+   "first_frame": 32387,
+   "last_frame": 40930
+  },
+  "0xB639": {
+   "count": 91,
+   "lo": "0xF4A5",
+   "hi": "0xF6D0",
+   "first_frame": 32387,
+   "last_frame": 40930
+  },
+  "0xADDE": {
+   "count": 90,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 7119,
+   "last_frame": 40434
+  },
+  "0x9503": {
+   "count": 88,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 3228,
+   "last_frame": 59494
+  },
+  "0x93E5": {
+   "count": 88,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 3624,
+   "last_frame": 58807
+  },
+  "0x9490": {
+   "count": 88,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 6043,
+   "last_frame": 42013
+  },
+  "0x93E0": {
+   "count": 86,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1319,
+   "last_frame": 56794
+  },
+  "0x958A": {
+   "count": 86,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2437,
+   "last_frame": 59071
+  },
+  "0x9738": {
+   "count": 85,
+   "lo": "0xF4AA",
+   "hi": "0xFFEF",
+   "first_frame": 1921,
+   "last_frame": 51335
+  },
+  "0x9517": {
+   "count": 84,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 1311,
+   "last_frame": 59167
+  },
+  "0x93EE": {
+   "count": 84,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 2769,
+   "last_frame": 58811
+  },
+  "0x93FA": {
+   "count": 84,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 5076,
+   "last_frame": 59299
+  },
+  "0x958C": {
+   "count": 82,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2553,
+   "last_frame": 58375
+  },
+  "0x9584": {
+   "count": 82,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2906,
+   "last_frame": 58835
+  },
+  "0x9575": {
+   "count": 80,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1945,
+   "last_frame": 59510
+  },
+  "0x95C5": {
+   "count": 80,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1969,
+   "last_frame": 60470
+  },
+  "0x9488": {
+   "count": 80,
+   "lo": "0xFFEA",
+   "hi": "0xFFED",
+   "first_frame": 2845,
+   "last_frame": 58235
+  },
+  "0x94FD": {
+   "count": 80,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 3587,
+   "last_frame": 55402
+  },
+  "0x96C7": {
+   "count": 78,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2253,
+   "last_frame": 59550
+  },
+  "0xB3AA": {
+   "count": 77,
+   "lo": "0xF498",
+   "hi": "0xF6A5",
+   "first_frame": 31694,
+   "last_frame": 40070
+  },
+  "0x941D": {
+   "count": 76,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 845,
+   "last_frame": 59211
+  },
+  "0x950B": {
+   "count": 76,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 1541,
+   "last_frame": 57060
+  },
+  "0x96C4": {
+   "count": 74,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2213,
+   "last_frame": 59826
+  },
+  "0x9518": {
+   "count": 70,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 1110,
+   "last_frame": 57130
+  },
+  "0x950A": {
+   "count": 70,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 1385,
+   "last_frame": 57043
+  },
+  "0x96CA": {
+   "count": 70,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 6199,
+   "last_frame": 59966
+  },
+  "0x942D": {
+   "count": 68,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 880,
+   "last_frame": 56430
+  },
+  "0x9452": {
+   "count": 68,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1188,
+   "last_frame": 59227
+  },
+  "0xAF67": {
+   "count": 68,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 2101,
+   "last_frame": 57106
+  },
+  "0xAF72": {
+   "count": 68,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 2101,
+   "last_frame": 57106
+  },
+  "0x96A4": {
+   "count": 68,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2193,
+   "last_frame": 59830
+  },
+  "0x96CD": {
+   "count": 68,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2221,
+   "last_frame": 56374
+  },
+  "0x96F6": {
+   "count": 68,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2613,
+   "last_frame": 59982
+  },
+  "0x96CF": {
+   "count": 68,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 3486,
+   "last_frame": 59083
+  },
+  "0x9509": {
+   "count": 66,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 688,
+   "last_frame": 59447
+  },
+  "0x96DA": {
+   "count": 64,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1781,
+   "last_frame": 57603
+  },
+  "0x9485": {
+   "count": 64,
+   "lo": "0xFFEA",
+   "hi": "0xFFED",
+   "first_frame": 2893,
+   "last_frame": 56438
+  },
+  "0x95BF": {
+   "count": 64,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 3952,
+   "last_frame": 60438
+  },
+  "0x9786": {
+   "count": 64,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 4620,
+   "last_frame": 54803
+  },
+  "0x941C": {
+   "count": 62,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 850,
+   "last_frame": 59389
+  },
+  "0x96D9": {
+   "count": 62,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2565,
+   "last_frame": 59818
+  },
+  "0x9577": {
+   "count": 62,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2873,
+   "last_frame": 55358
+  },
+  "0x9521": {
+   "count": 60,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 1536,
+   "last_frame": 56967
+  },
+  "0x9453": {
+   "count": 58,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 3363,
+   "last_frame": 59207
+  },
+  "0x96E7": {
+   "count": 56,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1861,
+   "last_frame": 55074
+  },
+  "0x9426": {
+   "count": 56,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 3470,
+   "last_frame": 59187
+  },
+  "0x952A": {
+   "count": 56,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 5455,
+   "last_frame": 54978
+  },
+  "0x969F": {
+   "count": 54,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2857,
+   "last_frame": 59770
+  },
+  "0x948C": {
+   "count": 54,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 3224,
+   "last_frame": 58239
+  },
+  "0x9421": {
+   "count": 54,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 3308,
+   "last_frame": 55830
+  },
+  "0x93F1": {
+   "count": 54,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 6175,
+   "last_frame": 59342
+  },
+  "0x91B0": {
+   "count": 54,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 10551,
+   "last_frame": 58463
+  },
+  "0x951D": {
+   "count": 54,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 22660,
+   "last_frame": 57102
+  },
+  "0x9633": {
+   "count": 54,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 32683,
+   "last_frame": 60422
+  },
+  "0x94FE": {
+   "count": 52,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 1042,
+   "last_frame": 52259
+  },
+  "0x9510": {
+   "count": 52,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 1134,
+   "last_frame": 53082
+  },
+  "0x9781": {
+   "count": 52,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2457,
+   "last_frame": 53790
+  },
+  "0x951A": {
+   "count": 52,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 5160,
+   "last_frame": 57047
+  },
+  "0x942F": {
+   "count": 50,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 1253,
+   "last_frame": 58227
+  },
+  "0x9425": {
+   "count": 50,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 3298,
+   "last_frame": 59199
+  },
+  "0x9463": {
+   "count": 50,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 3339,
+   "last_frame": 59442
+  },
+  "0x941F": {
+   "count": 50,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 4824,
+   "last_frame": 59365
+  },
+  "0x9451": {
+   "count": 48,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1058,
+   "last_frame": 54815
+  },
+  "0x93F3": {
+   "count": 48,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 1078,
+   "last_frame": 58819
+  },
+  "0x977C": {
+   "count": 48,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2453,
+   "last_frame": 58579
+  },
+  "0x96E0": {
+   "count": 48,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2629,
+   "last_frame": 58855
+  },
+  "0x9486": {
+   "count": 48,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 3498,
+   "last_frame": 49997
+  },
+  "0x9454": {
+   "count": 48,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 9791,
+   "last_frame": 58187
+  },
+  "0x96C8": {
+   "count": 46,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1713,
+   "last_frame": 54342
+  },
+  "0x96AD": {
+   "count": 46,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 1833,
+   "last_frame": 55922
+  },
+  "0x96AB": {
+   "count": 46,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 2789,
+   "last_frame": 54102
+  },
+  "0x91C1": {
+   "count": 46,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 4284,
+   "last_frame": 58895
+  },
+  "0x952B": {
+   "count": 46,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 5140,
+   "last_frame": 54553
+  },
+  "0x96C9": {
+   "count": 46,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 6871,
+   "last_frame": 50661
+  },
+  "0x9353": {
+   "count": 44,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 693,
+   "last_frame": 50767
+  },
+  "0x96DD": {
+   "count": 44,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1709,
+   "last_frame": 57303
+  },
+  "0x95DD": {
+   "count": 44,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1961,
+   "last_frame": 21690
+  },
+  "0x96DE": {
+   "count": 44,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2209,
+   "last_frame": 59970
+  },
+  "0x96F7": {
+   "count": 44,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2605,
+   "last_frame": 55154
+  },
+  "0x953F": {
+   "count": 44,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 6283,
+   "last_frame": 59031
+  },
+  "0x9581": {
+   "count": 44,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 7191,
+   "last_frame": 58735
+  },
+  "0x96B0": {
+   "count": 42,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 1745,
+   "last_frame": 55882
+  },
+  "0x95F5": {
+   "count": 42,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1857,
+   "last_frame": 60394
+  },
+  "0x95F1": {
+   "count": 42,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1981,
+   "last_frame": 58943
+  },
+  "0x951E": {
+   "count": 42,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 5250,
+   "last_frame": 52350
+  },
+  "0x96CB": {
+   "count": 42,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 7243,
+   "last_frame": 59786
+  },
+  "0x9582": {
+   "count": 42,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 9107,
+   "last_frame": 58739
+  },
+  "0x9502": {
+   "count": 42,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 14747,
+   "last_frame": 55442
+  },
+  "0x976A": {
+   "count": 42,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 19018,
+   "last_frame": 57355
+  },
+  "0xB675": {
+   "count": 41,
+   "lo": "0xF413",
+   "hi": "0xF6F2",
+   "first_frame": 29883,
+   "last_frame": 43719
+  },
+  "0xB655": {
+   "count": 41,
+   "lo": "0xF413",
+   "hi": "0xF6F2",
+   "first_frame": 29888,
+   "last_frame": 43723
+  },
+  "0xB65E": {
+   "count": 41,
+   "lo": "0xF413",
+   "hi": "0xF6F2",
+   "first_frame": 29892,
+   "last_frame": 43727
+  },
+  "0xB667": {
+   "count": 41,
+   "lo": "0xF413",
+   "hi": "0xF6F2",
+   "first_frame": 29896,
+   "last_frame": 43731
+  },
+  "0xB67A": {
+   "count": 41,
+   "lo": "0xF412",
+   "hi": "0xF6F1",
+   "first_frame": 29900,
+   "last_frame": 43735
+  },
+  "0x9505": {
+   "count": 40,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 2501,
+   "last_frame": 59477
+  },
+  "0x96A5": {
+   "count": 40,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2713,
+   "last_frame": 53410
+  },
+  "0x9777": {
+   "count": 40,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 3164,
+   "last_frame": 60838
+  },
+  "0x9456": {
+   "count": 40,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 3348,
+   "last_frame": 59243
+  },
+  "0x9546": {
+   "count": 40,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 6083,
+   "last_frame": 58359
+  },
+  "0x9545": {
+   "count": 40,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 10823,
+   "last_frame": 59514
+  },
+  "0x9721": {
+   "count": 39,
+   "lo": "0xF531",
+   "hi": "0xF67B",
+   "first_frame": 34779,
+   "last_frame": 39226
+  },
+  "0x9770": {
+   "count": 38,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2833,
+   "last_frame": 59059
+  },
+  "0x9549": {
+   "count": 38,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 3554,
+   "last_frame": 55810
+  },
+  "0x942A": {
+   "count": 38,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 3604,
+   "last_frame": 59411
+  },
+  "0x95BC": {
+   "count": 38,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 7419,
+   "last_frame": 60166
+  },
+  "0x969D": {
+   "count": 38,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 7483,
+   "last_frame": 57146
+  },
+  "0x9773": {
+   "count": 36,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2237,
+   "last_frame": 57427
+  },
+  "0x955C": {
+   "count": 36,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2889,
+   "last_frame": 55802
+  },
+  "0x946F": {
+   "count": 34,
+   "lo": "0xFFEA",
+   "hi": "0xFFED",
+   "first_frame": 745,
+   "last_frame": 58243
+  },
+  "0x9467": {
+   "count": 34,
+   "lo": "0xFFEA",
+   "hi": "0xFFED",
+   "first_frame": 754,
+   "last_frame": 58231
+  },
+  "0x9514": {
+   "count": 34,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 1393,
+   "last_frame": 48021
+  },
+  "0x96BF": {
+   "count": 34,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 3196,
+   "last_frame": 56266
+  },
+  "0x96E3": {
+   "count": 34,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 4124,
+   "last_frame": 59822
+  },
+  "0x9402": {
+   "count": 34,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 4996,
+   "last_frame": 47689
+  },
+  "0x951F": {
+   "count": 34,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 5168,
+   "last_frame": 49773
+  },
+  "0x9445": {
+   "count": 34,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 6096,
+   "last_frame": 55582
+  },
+  "0x9422": {
+   "count": 34,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 6215,
+   "last_frame": 55770
+  },
+  "0x9588": {
+   "count": 34,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 7895,
+   "last_frame": 53310
+  },
+  "0x951C": {
+   "count": 34,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 9779,
+   "last_frame": 59275
+  },
+  "0x95F2": {
+   "count": 34,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 12995,
+   "last_frame": 60206
+  },
+  "0xB900": {
+   "count": 33,
+   "lo": "0xF520",
+   "hi": "0xF61F",
+   "first_frame": 33883,
+   "last_frame": 37706
+  },
+  "0xB903": {
+   "count": 33,
+   "lo": "0xF51D",
+   "hi": "0xF61C",
+   "first_frame": 33883,
+   "last_frame": 37706
+  },
+  "0xB91E": {
+   "count": 33,
+   "lo": "0xF520",
+   "hi": "0xF61F",
+   "first_frame": 33991,
+   "last_frame": 37858
+  },
+  "0xB921": {
+   "count": 33,
+   "lo": "0xF51D",
+   "hi": "0xF61C",
+   "first_frame": 33991,
+   "last_frame": 37858
+  },
+  "0x96E1": {
+   "count": 32,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1717,
+   "last_frame": 59107
+  },
+  "0x9765": {
+   "count": 32,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 1901,
+   "last_frame": 53626
+  },
+  "0x95BD": {
+   "count": 32,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1953,
+   "last_frame": 53458
+  },
+  "0x958E": {
+   "count": 32,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1957,
+   "last_frame": 57543
+  },
+  "0x95E1": {
+   "count": 32,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1989,
+   "last_frame": 32807
+  },
+  "0x95FA": {
+   "count": 32,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1993,
+   "last_frame": 60446
+  },
+  "0x9591": {
+   "count": 32,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2813,
+   "last_frame": 55190
+  },
+  "0x9435": {
+   "count": 32,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 3378,
+   "last_frame": 56482
+  },
+  "0x96A8": {
+   "count": 32,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 7955,
+   "last_frame": 59834
+  },
+  "0x9628": {
+   "count": 32,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 10451,
+   "last_frame": 60490
+  },
+  "0x9531": {
+   "count": 32,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 15682,
+   "last_frame": 47049
+  },
+  "0x935E": {
+   "count": 32,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 30466,
+   "last_frame": 30609
+  },
+  "0x946C": {
+   "count": 30,
+   "lo": "0xFFEA",
+   "hi": "0xFFED",
+   "first_frame": 830,
+   "last_frame": 58207
+  },
+  "0x93EA": {
+   "count": 30,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 860,
+   "last_frame": 59437
+  },
+  "0x96B8": {
+   "count": 30,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 1905,
+   "last_frame": 54791
+  },
+  "0x96D0": {
+   "count": 30,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2914,
+   "last_frame": 52942
+  },
+  "0x948D": {
+   "count": 30,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 3264,
+   "last_frame": 51631
+  },
+  "0x948E": {
+   "count": 30,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 3506,
+   "last_frame": 56230
+  },
+  "0x9477": {
+   "count": 30,
+   "lo": "0xFFEA",
+   "hi": "0xFFED",
+   "first_frame": 3640,
+   "last_frame": 55606
+  },
+  "0x954B": {
+   "count": 30,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 3672,
+   "last_frame": 54871
+  },
+  "0x96CE": {
+   "count": 30,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 4644,
+   "last_frame": 57707
+  },
+  "0x9553": {
+   "count": 30,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 4736,
+   "last_frame": 58347
+  },
+  "0x9774": {
+   "count": 30,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 4752,
+   "last_frame": 59047
+  },
+  "0x954E": {
+   "count": 30,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 4900,
+   "last_frame": 60634
+  },
+  "0x952E": {
+   "count": 30,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 5375,
+   "last_frame": 36292
+  },
+  "0x9481": {
+   "count": 30,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 18170,
+   "last_frame": 48272
+  },
+  "0x9428": {
+   "count": 30,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 20624,
+   "last_frame": 59415
+  },
+  "0x9431": {
+   "count": 28,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1681,
+   "last_frame": 55226
+  },
+  "0x95C1": {
+   "count": 28,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2137,
+   "last_frame": 60406
+  },
+  "0x96C1": {
+   "count": 28,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 2817,
+   "last_frame": 51623
+  },
+  "0x94EA": {
+   "count": 28,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 3330,
+   "last_frame": 59171
+  },
+  "0x951B": {
+   "count": 28,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 3335,
+   "last_frame": 54575
+  },
+  "0x947A": {
+   "count": 28,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 4724,
+   "last_frame": 55482
+  },
+  "0x9788": {
+   "count": 28,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 4828,
+   "last_frame": 58775
+  },
+  "0x9779": {
+   "count": 28,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 5719,
+   "last_frame": 38814
+  },
+  "0x8F7C": {
+   "count": 28,
+   "lo": "0xFFF2",
+   "hi": "0xFFF3",
+   "first_frame": 6219,
+   "last_frame": 52702
+  },
+  "0x96B7": {
+   "count": 28,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 6307,
+   "last_frame": 43535
+  },
+  "0x91BB": {
+   "count": 28,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 7095,
+   "last_frame": 42639
+  },
+  "0x96A1": {
+   "count": 28,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 9663,
+   "last_frame": 55842
+  },
+  "0x91B6": {
+   "count": 28,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 10735,
+   "last_frame": 57943
+  },
+  "0x95F7": {
+   "count": 28,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 16291,
+   "last_frame": 59958
+  },
+  "0x943D": {
+   "count": 28,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 17930,
+   "last_frame": 51896
+  },
+  "0x94F1": {
+   "count": 26,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 1106,
+   "last_frame": 49018
+  },
+  "0x96DB": {
+   "count": 26,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1925,
+   "last_frame": 57635
+  },
+  "0x96E4": {
+   "count": 26,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2421,
+   "last_frame": 55302
+  },
+  "0x96BD": {
+   "count": 26,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 2781,
+   "last_frame": 50325
+  },
+  "0x9433": {
+   "count": 26,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 3373,
+   "last_frame": 59379
+  },
+  "0x95CD": {
+   "count": 26,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 3900,
+   "last_frame": 60494
+  },
+  "0x973C": {
+   "count": 26,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 4080,
+   "last_frame": 54683
+  },
+  "0x962D": {
+   "count": 26,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 4780,
+   "last_frame": 60650
+  },
+  "0x96B3": {
+   "count": 26,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 5763,
+   "last_frame": 57507
+  },
+  "0x9638": {
+   "count": 26,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 6831,
+   "last_frame": 60078
+  },
+  "0x96BC": {
+   "count": 26,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 11423,
+   "last_frame": 54771
+  },
+  "0x9508": {
+   "count": 26,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 15747,
+   "last_frame": 54994
+  },
+  "0x95C2": {
+   "count": 26,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 16491,
+   "last_frame": 43415
+  },
+  "0x9441": {
+   "count": 26,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 23046,
+   "last_frame": 54583
+  },
+  "0xB4B6": {
+   "count": 25,
+   "lo": "0xF43F",
+   "hi": "0xF43F",
+   "first_frame": 43947,
+   "last_frame": 44043
+  },
+  "0x948A": {
+   "count": 24,
+   "lo": "0xFFEA",
+   "hi": "0xFFED",
+   "first_frame": 840,
+   "last_frame": 46123
+  },
+  "0x9458": {
+   "count": 24,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1066,
+   "last_frame": 43207
+  },
+  "0x9515": {
+   "count": 24,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1693,
+   "last_frame": 52678
+  },
+  "0x8F7F": {
+   "count": 24,
+   "lo": "0xFFF2",
+   "hi": "0xFFF3",
+   "first_frame": 3062,
+   "last_frame": 56286
+  },
+  "0x93CE": {
+   "count": 24,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 3368,
+   "last_frame": 49055
+  },
+  "0x978C": {
+   "count": 24,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 4624,
+   "last_frame": 50193
+  },
+  "0x958F": {
+   "count": 24,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 6027,
+   "last_frame": 55338
+  },
+  "0x96A7": {
+   "count": 24,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 7479,
+   "last_frame": 50657
+  },
+  "0x948B": {
+   "count": 24,
+   "lo": "0xFFEC",
+   "hi": "0xFFEF",
+   "first_frame": 9967,
+   "last_frame": 58795
+  },
+  "0xAD82": {
+   "count": 24,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 15526,
+   "last_frame": 45981
+  },
+  "0xAD83": {
+   "count": 24,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 15526,
+   "last_frame": 45981
+  },
+  "0xAF7B": {
+   "count": 24,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 15526,
+   "last_frame": 45981
+  },
+  "0x95F0": {
+   "count": 24,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 16479,
+   "last_frame": 60226
+  },
+  "0x93F5": {
+   "count": 24,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 24132,
+   "last_frame": 50001
+  },
+  "0x94F4": {
+   "count": 24,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 24375,
+   "last_frame": 56955
+  },
+  "0x9439": {
+   "count": 24,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 24570,
+   "last_frame": 49993
+  },
+  "0x90BD": {
+   "count": 24,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 40230,
+   "last_frame": 57463
+  },
+  "0x9432": {
+   "count": 22,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 1153,
+   "last_frame": 50717
+  },
+  "0x95FC": {
+   "count": 22,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2073,
+   "last_frame": 59990
+  },
+  "0x964A": {
+   "count": 22,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2181,
+   "last_frame": 58931
+  },
+  "0x96E2": {
+   "count": 22,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2225,
+   "last_frame": 54158
+  },
+  "0x96B9": {
+   "count": 22,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 2793,
+   "last_frame": 55318
+  },
+  "0x95F4": {
+   "count": 22,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2938,
+   "last_frame": 27181
+  },
+  "0x944F": {
+   "count": 22,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 3303,
+   "last_frame": 50077
+  },
+  "0x934D": {
+   "count": 22,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 5355,
+   "last_frame": 30639
+  },
+  "0x96A9": {
+   "count": 22,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 6407,
+   "last_frame": 58847
+  },
+  "0x9629": {
+   "count": 22,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 7059,
+   "last_frame": 60646
+  },
+  "0x9783": {
+   "count": 22,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 8967,
+   "last_frame": 43463
+  },
+  "0x978D": {
+   "count": 22,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 23464,
+   "last_frame": 51411
+  },
+  "0x962B": {
+   "count": 22,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 60118,
+   "last_frame": 60690
+  },
+  "0x95FB": {
+   "count": 20,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2185,
+   "last_frame": 46757
+  },
+  "0x96BB": {
+   "count": 20,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 2257,
+   "last_frame": 60062
+  },
+  "0x946A": {
+   "count": 20,
+   "lo": "0xFFEA",
+   "hi": "0xFFED",
+   "first_frame": 3668,
+   "last_frame": 50803
+  },
+  "0x95C7": {
+   "count": 20,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 3892,
+   "last_frame": 60430
+  },
+  "0x91B1": {
+   "count": 20,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 4544,
+   "last_frame": 58051
+  },
+  "0x9401": {
+   "count": 20,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 4988,
+   "last_frame": 45987
+  },
+  "0x9542": {
+   "count": 20,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 6299,
+   "last_frame": 56274
+  },
+  "0x96E5": {
+   "count": 20,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 7923,
+   "last_frame": 60050
+  },
+  "0x972F": {
+   "count": 20,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 10471,
+   "last_frame": 60086
+  },
+  "0x9468": {
+   "count": 20,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 33143,
+   "last_frame": 48670
+  },
+  "0xB928": {
+   "count": 20,
+   "lo": "0xF521",
+   "hi": "0xF620",
+   "first_frame": 33975,
+   "last_frame": 37810
+  },
+  "0xBADC": {
+   "count": 20,
+   "lo": "0xF6EE",
+   "hi": "0xF6EE",
+   "first_frame": 40894,
+   "last_frame": 40971
+  },
+  "0xBADF": {
+   "count": 20,
+   "lo": "0xF6EF",
+   "hi": "0xF6EF",
+   "first_frame": 40894,
+   "last_frame": 40971
+  },
+  "0xBAE2": {
+   "count": 20,
+   "lo": "0xF6F0",
+   "hi": "0xF6F0",
+   "first_frame": 40894,
+   "last_frame": 40971
+  },
+  "0xB64C": {
+   "count": 19,
+   "lo": "0xF4B6",
+   "hi": "0xF6C3",
+   "first_frame": 32571,
+   "last_frame": 40762
+  },
+  "0x93BA": {
+   "count": 18,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 804,
+   "last_frame": 36432
+  },
+  "0x940E": {
+   "count": 18,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 855,
+   "last_frame": 37130
+  },
+  "0x94F3": {
+   "count": 18,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 1358,
+   "last_frame": 37734
+  },
+  "0x9539": {
+   "count": 18,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1769,
+   "last_frame": 55726
+  },
+  "0x9555": {
+   "count": 18,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2577,
+   "last_frame": 58371
+  },
+  "0x91C3": {
+   "count": 18,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 4564,
+   "last_frame": 58443
+  },
+  "0x976D": {
+   "count": 18,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 4728,
+   "last_frame": 51559
+  },
+  "0x91BC": {
+   "count": 18,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 6795,
+   "last_frame": 57791
+  },
+  "0x978B": {
+   "count": 18,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 6995,
+   "last_frame": 60570
+  },
+  "0x95D1": {
+   "count": 18,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 8543,
+   "last_frame": 60234
+  },
+  "0x90D0": {
+   "count": 18,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 10603,
+   "last_frame": 41077
+  },
+  "0x9558": {
+   "count": 18,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 12227,
+   "last_frame": 58343
+  },
+  "0x94FA": {
+   "count": 18,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 20390,
+   "last_frame": 52478
+  },
+  "0x93F4": {
+   "count": 16,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 885,
+   "last_frame": 34317
+  },
+  "0x949E": {
+   "count": 16,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1183,
+   "last_frame": 40999
+  },
+  "0x9748": {
+   "count": 16,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 2721,
+   "last_frame": 57415
+  },
+  "0x9731": {
+   "count": 16,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 3140,
+   "last_frame": 50389
+  },
+  "0x946B": {
+   "count": 16,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 3240,
+   "last_frame": 56234
+  },
+  "0x93F7": {
+   "count": 16,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 3325,
+   "last_frame": 52366
+  },
+  "0x93E9": {
+   "count": 16,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 3538,
+   "last_frame": 35958
+  },
+  "0x948F": {
+   "count": 16,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 3562,
+   "last_frame": 54579
+  },
+  "0x9471": {
+   "count": 16,
+   "lo": "0xFFEA",
+   "hi": "0xFFED",
+   "first_frame": 4928,
+   "last_frame": 47309
+  },
+  "0x94F6": {
+   "count": 16,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 5104,
+   "last_frame": 57110
+  },
+  "0x947D": {
+   "count": 16,
+   "lo": "0xFFEA",
+   "hi": "0xFFED",
+   "first_frame": 5615,
+   "last_frame": 56446
+  },
+  "0x9703": {
+   "count": 16,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 8355,
+   "last_frame": 60054
+  },
+  "0x95F3": {
+   "count": 16,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 16583,
+   "last_frame": 60694
+  },
+  "0x9438": {
+   "count": 16,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 17975,
+   "last_frame": 51945
+  },
+  "0x9532": {
+   "count": 16,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 24225,
+   "last_frame": 50772
+  },
+  "0xBA80": {
+   "count": 16,
+   "lo": "0xF6DF",
+   "hi": "0xF6DF",
+   "first_frame": 40898,
+   "last_frame": 40975
+  },
+  "0xBA83": {
+   "count": 16,
+   "lo": "0xF6E0",
+   "hi": "0xF6E0",
+   "first_frame": 40898,
+   "last_frame": 40975
+  },
+  "0xBA5E": {
+   "count": 15,
+   "lo": "0xF6E1",
+   "hi": "0xF6E1",
+   "first_frame": 40898,
+   "last_frame": 40975
+  },
+  "0x94EC": {
+   "count": 14,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 1333,
+   "last_frame": 59303
+  },
+  "0x963B": {
+   "count": 14,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2982,
+   "last_frame": 60390
+  },
+  "0x9473": {
+   "count": 14,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 3084,
+   "last_frame": 49525
+  },
+  "0x96B5": {
+   "count": 14,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 3092,
+   "last_frame": 57547
+  },
+  "0x91BD": {
+   "count": 14,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 4532,
+   "last_frame": 26285
+  },
+  "0x91B3": {
+   "count": 14,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 4540,
+   "last_frame": 58023
+  },
+  "0x9449": {
+   "count": 14,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 5108,
+   "last_frame": 58815
+  },
+  "0x9741": {
+   "count": 14,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 6239,
+   "last_frame": 57218
+  },
+  "0x96A6": {
+   "count": 14,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 7447,
+   "last_frame": 54891
+  },
+  "0x970C": {
+   "count": 14,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 7451,
+   "last_frame": 50293
+  },
+  "0x91AA": {
+   "count": 14,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 8403,
+   "last_frame": 57787
+  },
+  "0x96AE": {
+   "count": 14,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 8979,
+   "last_frame": 49377
+  },
+  "0x965B": {
+   "count": 14,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 9207,
+   "last_frame": 58955
+  },
+  "0x9632": {
+   "count": 14,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 10447,
+   "last_frame": 60186
+  },
+  "0x95E8": {
+   "count": 14,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 14427,
+   "last_frame": 60318
+  },
+  "0x95C6": {
+   "count": 14,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 16483,
+   "last_frame": 53950
+  },
+  "0x9411": {
+   "count": 14,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 18410,
+   "last_frame": 55766
+  },
+  "0x9469": {
+   "count": 14,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 19646,
+   "last_frame": 55602
+  },
+  "0x977E": {
+   "count": 14,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 22382,
+   "last_frame": 53810
+  },
+  "0x955D": {
+   "count": 14,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 25961,
+   "last_frame": 57094
+  },
+  "0x92C2": {
+   "count": 14,
+   "lo": "0xF486",
+   "hi": "0xF666",
+   "first_frame": 29500,
+   "last_frame": 29500
+  },
+  "0x9369": {
+   "count": 14,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 29753,
+   "last_frame": 59427
+  },
+  "0x93EB": {
+   "count": 14,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 30820,
+   "last_frame": 51920
+  },
+  "0x944B": {
+   "count": 14,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 39286,
+   "last_frame": 59235
+  },
+  "0x962C": {
+   "count": 14,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 43771,
+   "last_frame": 60486
+  },
+  "0x9624": {
+   "count": 14,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 59854,
+   "last_frame": 60114
+  },
+  "0xBA70": {
+   "count": 13,
+   "lo": "0xF6E6",
+   "hi": "0xF6E6",
+   "first_frame": 40898,
+   "last_frame": 40954
+  },
+  "0x9446": {
+   "count": 12,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1178,
+   "last_frame": 59215
+  },
+  "0x95AA": {
+   "count": 12,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 1637,
+   "last_frame": 38030
+  },
+  "0x95D8": {
+   "count": 12,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2065,
+   "last_frame": 59794
+  },
+  "0xAE18": {
+   "count": 12,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 2341,
+   "last_frame": 58423
+  },
+  "0x95D3": {
+   "count": 12,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 4776,
+   "last_frame": 60398
+  },
+  "0x9370": {
+   "count": 12,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 5112,
+   "last_frame": 36532
+  },
+  "0x93CF": {
+   "count": 12,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 5124,
+   "last_frame": 36452
+  },
+  "0x95B9": {
+   "count": 12,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 5695,
+   "last_frame": 38878
+  },
+  "0x96B1": {
+   "count": 12,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 5987,
+   "last_frame": 46617
+  },
+  "0x95B1": {
+   "count": 12,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 6727,
+   "last_frame": 46577
+  },
+  "0x9322": {
+   "count": 12,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 7299,
+   "last_frame": 35440
+  },
+  "0x91B2": {
+   "count": 12,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 8243,
+   "last_frame": 58631
+  },
+  "0x95A5": {
+   "count": 12,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 8391,
+   "last_frame": 54497
+  },
+  "0x95CA": {
+   "count": 12,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 8559,
+   "last_frame": 43799
+  },
+  "0xAE0B": {
+   "count": 12,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 13287,
+   "last_frame": 58483
+  },
+  "0x932E": {
+   "count": 12,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 13299,
+   "last_frame": 58899
+  },
+  "0x95DA": {
+   "count": 12,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 14431,
+   "last_frame": 60182
+  },
+  "0x9639": {
+   "count": 12,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 16575,
+   "last_frame": 58935
+  },
+  "0x91B8": {
+   "count": 12,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 17163,
+   "last_frame": 58599
+  },
+  "0x95B6": {
+   "count": 12,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 17383,
+   "last_frame": 37882
+  },
+  "0x974A": {
+   "count": 12,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 22286,
+   "last_frame": 58151
+  },
+  "0x9448": {
+   "count": 12,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 26101,
+   "last_frame": 59183
+  },
+  "0x936F": {
+   "count": 12,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 30346,
+   "last_frame": 36492
+  },
+  "0x9661": {
+   "count": 12,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 32663,
+   "last_frame": 42707
+  },
+  "0xBAEE": {
+   "count": 12,
+   "lo": "0xF6EE",
+   "hi": "0xF6EE",
+   "first_frame": 40975,
+   "last_frame": 41019
+  },
+  "0xB5F1": {
+   "count": 12,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 41029,
+   "last_frame": 41029
+  },
+  "0xB5F2": {
+   "count": 12,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 41029,
+   "last_frame": 41029
+  },
+  "0x95E6": {
+   "count": 12,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 43403,
+   "last_frame": 60402
+  },
+  "0x971A": {
+   "count": 10,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 2233,
+   "last_frame": 59842
+  },
+  "0x9653": {
+   "count": 10,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2289,
+   "last_frame": 43399
+  },
+  "0x9666": {
+   "count": 10,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2305,
+   "last_frame": 21126
+  },
+  "0x9357": {
+   "count": 10,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 3358,
+   "last_frame": 59271
+  },
+  "0x9497": {
+   "count": 10,
+   "lo": "0xFFEA",
+   "hi": "0xFFED",
+   "first_frame": 3393,
+   "last_frame": 55914
+  },
+  "0x947F": {
+   "count": 10,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 3558,
+   "last_frame": 55522
+  },
+  "0x9416": {
+   "count": 10,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 6391,
+   "last_frame": 47605
+  },
+  "0x91C4": {
+   "count": 10,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 6791,
+   "last_frame": 58603
+  },
+  "0x9637": {
+   "count": 10,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 7575,
+   "last_frame": 16927
+  },
+  "0x96FD": {
+   "count": 10,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 8051,
+   "last_frame": 53690
+  },
+  "0x90BC": {
+   "count": 10,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 10579,
+   "last_frame": 50441
+  },
+  "0x96D1": {
+   "count": 10,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 12699,
+   "last_frame": 56162
+  },
+  "0xAF04": {
+   "count": 10,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 12871,
+   "last_frame": 13891
+  },
+  "0xAE1A": {
+   "count": 10,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 12927,
+   "last_frame": 58607
+  },
+  "0x8F82": {
+   "count": 10,
+   "lo": "0xFFF2",
+   "hi": "0xFFF3",
+   "first_frame": 14415,
+   "last_frame": 55630
+  },
+  "0x9698": {
+   "count": 10,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 16431,
+   "last_frame": 39522
+  },
+  "0x9647": {
+   "count": 10,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 16559,
+   "last_frame": 16959
+  },
+  "0x95D2": {
+   "count": 10,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 16647,
+   "last_frame": 16923
+  },
+  "0x95A3": {
+   "count": 10,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 16955,
+   "last_frame": 60314
+  },
+  "0x94F2": {
+   "count": 10,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 17571,
+   "last_frame": 31960
+  },
+  "0x9355": {
+   "count": 10,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 17755,
+   "last_frame": 35454
+  },
+  "0x947B": {
+   "count": 10,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 20974,
+   "last_frame": 47029
+  },
+  "0x966C": {
+   "count": 10,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 21254,
+   "last_frame": 53934
+  },
+  "0x955E": {
+   "count": 10,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 21986,
+   "last_frame": 53514
+  },
+  "0x94F7": {
+   "count": 10,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 22697,
+   "last_frame": 36938
+  },
+  "0x95EF": {
+   "count": 10,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 27153,
+   "last_frame": 46817
+  },
+  "0x94AF": {
+   "count": 10,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 29648,
+   "last_frame": 34991
+  },
+  "0x94F8": {
+   "count": 10,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 35993,
+   "last_frame": 55498
+  },
+  "0xB613": {
+   "count": 10,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 41024,
+   "last_frame": 41029
+  },
+  "0xB738": {
+   "count": 10,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 57130,
+   "last_frame": 57146
+  },
+  "0x9699": {
+   "count": 8,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 1633,
+   "last_frame": 51531
+  },
+  "0x9407": {
+   "count": 8,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 3080,
+   "last_frame": 35898
+  },
+  "0xADCD": {
+   "count": 8,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 4548,
+   "last_frame": 42655
+  },
+  "0xAE1E": {
+   "count": 8,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 4556,
+   "last_frame": 58007
+  },
+  "0xAF0E": {
+   "count": 8,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 4560,
+   "last_frame": 23812
+  },
+  "0x947E": {
+   "count": 8,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 4812,
+   "last_frame": 38222
+  },
+  "0x9676": {
+   "count": 8,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 4876,
+   "last_frame": 39022
+  },
+  "0x93FF": {
+   "count": 8,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 5226,
+   "last_frame": 35572
+  },
+  "0x9652": {
+   "count": 8,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 5831,
+   "last_frame": 43803
+  },
+  "0x9550": {
+   "count": 8,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 6063,
+   "last_frame": 32431
+  },
+  "0x959E": {
+   "count": 8,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 6499,
+   "last_frame": 39910
+  },
+  "0x95FE": {
+   "count": 8,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 6835,
+   "last_frame": 60458
+  },
+  "0x8F85": {
+   "count": 8,
+   "lo": "0xFFF2",
+   "hi": "0xFFF3",
+   "first_frame": 6959,
+   "last_frame": 22342
+  },
+  "0x9615": {
+   "count": 8,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 7063,
+   "last_frame": 16779
+  },
+  "0x8F8B": {
+   "count": 8,
+   "lo": "0xFFF2",
+   "hi": "0xFFF3",
+   "first_frame": 7291,
+   "last_frame": 58311
+  },
+  "0x9636": {
+   "count": 8,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 7563,
+   "last_frame": 60474
+  },
+  "0x9669": {
+   "count": 8,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 7767,
+   "last_frame": 51523
+  },
+  "0xAF4D": {
+   "count": 8,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 8519,
+   "last_frame": 58043
+  },
+  "0x9597": {
+   "count": 8,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 8603,
+   "last_frame": 46781
+  },
+  "0x95CF": {
+   "count": 8,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 8923,
+   "last_frame": 26949
+  },
+  "0x9634": {
+   "count": 8,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 9083,
+   "last_frame": 60306
+  },
+  "0x9716": {
+   "count": 8,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 10291,
+   "last_frame": 60022
+  },
+  "0x9736": {
+   "count": 8,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 10295,
+   "last_frame": 57675
+  },
+  "0x931F": {
+   "count": 8,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 10643,
+   "last_frame": 57627
+  },
+  "0x9337": {
+   "count": 8,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 10651,
+   "last_frame": 41565
+  },
+  "0x9744": {
+   "count": 8,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 12111,
+   "last_frame": 53822
+  },
+  "0xADFB": {
+   "count": 8,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 12751,
+   "last_frame": 57879
+  },
+  "0xAEBA": {
+   "count": 8,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 12951,
+   "last_frame": 57799
+  },
+  "0xAEC4": {
+   "count": 8,
+   "lo": "0xFFE6",
+   "hi": "0xFFE7",
+   "first_frame": 12967,
+   "last_frame": 58047
+  },
+  "0xAED5": {
+   "count": 8,
+   "lo": "0xFFE6",
+   "hi": "0xFFE7",
+   "first_frame": 13255,
+   "last_frame": 17055
+  },
+  "0xAFAB": {
+   "count": 8,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 13639,
+   "last_frame": 57939
+  },
+  "0x9331": {
+   "count": 8,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 14603,
+   "last_frame": 25622
+  },
+  "0x963C": {
+   "count": 8,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 16371,
+   "last_frame": 37822
+  },
+  "0x95A1": {
+   "count": 8,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 16639,
+   "last_frame": 54623
+  },
+  "0x95C8": {
+   "count": 8,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 16719,
+   "last_frame": 16879
+  },
+  "0x9333": {
+   "count": 8,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 17071,
+   "last_frame": 25602
+  },
+  "0x944D": {
+   "count": 8,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 18282,
+   "last_frame": 47981
+  },
+  "0x952F": {
+   "count": 8,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 20670,
+   "last_frame": 46409
+  },
+  "0x9443": {
+   "count": 8,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 20897,
+   "last_frame": 54968
+  },
+  "0x9650": {
+   "count": 8,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 21286,
+   "last_frame": 27185
+  },
+  "0x96B4": {
+   "count": 8,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 22602,
+   "last_frame": 53658
+  },
+  "0x943F": {
+   "count": 8,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 22896,
+   "last_frame": 41925
+  },
+  "0x90CB": {
+   "count": 8,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 25646,
+   "last_frame": 58055
+  },
+  "0x9437": {
+   "count": 8,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 29664,
+   "last_frame": 46127
+  },
+  "0x935B": {
+   "count": 8,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 29684,
+   "last_frame": 35978
+  },
+  "0x93C3": {
+   "count": 8,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 30442,
+   "last_frame": 59350
+  },
+  "0x90AB": {
+   "count": 8,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 41105,
+   "last_frame": 58659
+  },
+  "0x9375": {
+   "count": 6,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 763,
+   "last_frame": 36033
+  },
+  "0x9413": {
+   "count": 6,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 895,
+   "last_frame": 36377
+  },
+  "0x965C": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2265,
+   "last_frame": 16663
+  },
+  "0x9655": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2970,
+   "last_frame": 13043
+  },
+  "0xAEEA": {
+   "count": 6,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 4528,
+   "last_frame": 13211
+  },
+  "0x90C9": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 4580,
+   "last_frame": 40358
+  },
+  "0x90D1": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 4584,
+   "last_frame": 41065
+  },
+  "0x959B": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 4852,
+   "last_frame": 40022
+  },
+  "0xAFAA": {
+   "count": 6,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 6815,
+   "last_frame": 25301
+  },
+  "0x9313": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 6819,
+   "last_frame": 25261
+  },
+  "0x9316": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 7071,
+   "last_frame": 12851
+  },
+  "0xAEAB": {
+   "count": 6,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 7115,
+   "last_frame": 23816
+  },
+  "0x95E3": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 7135,
+   "last_frame": 60066
+  },
+  "0x9763": {
+   "count": 6,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 7219,
+   "last_frame": 39706
+  },
+  "0xADDB": {
+   "count": 6,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 7295,
+   "last_frame": 58883
+  },
+  "0xAEF9": {
+   "count": 6,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 7303,
+   "last_frame": 13343
+  },
+  "0x9338": {
+   "count": 6,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 7391,
+   "last_frame": 14559
+  },
+  "0x90B4": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 8259,
+   "last_frame": 41133
+  },
+  "0x95BB": {
+   "count": 6,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 8375,
+   "last_frame": 39034
+  },
+  "0xAEB0": {
+   "count": 6,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 8511,
+   "last_frame": 58019
+  },
+  "0x90BE": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 8531,
+   "last_frame": 17139
+  },
+  "0x95AF": {
+   "count": 6,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 10219,
+   "last_frame": 38958
+  },
+  "0xAEAD": {
+   "count": 6,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 10539,
+   "last_frame": 13695
+  },
+  "0x9332": {
+   "count": 6,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 10647,
+   "last_frame": 57767
+  },
+  "0x90BF": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 10739,
+   "last_frame": 50457
+  },
+  "0xAEB4": {
+   "count": 6,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 12727,
+   "last_frame": 57803
+  },
+  "0xAE9D": {
+   "count": 6,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 12783,
+   "last_frame": 14555
+  },
+  "0x90DD": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 12835,
+   "last_frame": 17183
+  },
+  "0x91B4": {
+   "count": 6,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 12903,
+   "last_frame": 57783
+  },
+  "0x9130": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 12962,
+   "last_frame": 50785
+  },
+  "0xAEBF": {
+   "count": 6,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 13243,
+   "last_frame": 58635
+  },
+  "0xAE15": {
+   "count": 6,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 13251,
+   "last_frame": 58431
+  },
+  "0x90F6": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 13267,
+   "last_frame": 57987
+  },
+  "0x91BA": {
+   "count": 6,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 13291,
+   "last_frame": 58031
+  },
+  "0xAEC9": {
+   "count": 6,
+   "lo": "0xFFE6",
+   "hi": "0xFFE7",
+   "first_frame": 13295,
+   "last_frame": 57487
+  },
+  "0xAE06": {
+   "count": 6,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 13467,
+   "last_frame": 17059
+  },
+  "0xAE13": {
+   "count": 6,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 13635,
+   "last_frame": 23732
+  },
+  "0xAEC1": {
+   "count": 6,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 13715,
+   "last_frame": 57887
+  },
+  "0x9319": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 13859,
+   "last_frame": 41437
+  },
+  "0x9599": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 14091,
+   "last_frame": 37846
+  },
+  "0x962A": {
+   "count": 6,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 14223,
+   "last_frame": 60174
+  },
+  "0x8F16": {
+   "count": 6,
+   "lo": "0xFFF5",
+   "hi": "0xFFF6",
+   "first_frame": 15526,
+   "last_frame": 45981
+  },
+  "0x91DD": {
+   "count": 6,
+   "lo": "0xFFF2",
+   "hi": "0xFFF3",
+   "first_frame": 15526,
+   "last_frame": 45981
+  },
+  "0xAD3A": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 15526,
+   "last_frame": 45981
+  },
+  "0xAD3F": {
+   "count": 6,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 15526,
+   "last_frame": 45981
+  },
+  "0xAD79": {
+   "count": 6,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 15526,
+   "last_frame": 45981
+  },
+  "0x92A5": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 15526,
+   "last_frame": 45981
+  },
+  "0x964C": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 16219,
+   "last_frame": 16587
+  },
+  "0x9664": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 16467,
+   "last_frame": 51527
+  },
+  "0x95D9": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 16503,
+   "last_frame": 21546
+  },
+  "0x960D": {
+   "count": 6,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 16595,
+   "last_frame": 16831
+  },
+  "0x9643": {
+   "count": 6,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 16731,
+   "last_frame": 53930
+  },
+  "0x9609": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 16875,
+   "last_frame": 60478
+  },
+  "0xAEF1": {
+   "count": 6,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 17087,
+   "last_frame": 58627
+  },
+  "0xAEE4": {
+   "count": 6,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 17199,
+   "last_frame": 41569
+  },
+  "0x9404": {
+   "count": 6,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 17935,
+   "last_frame": 35807
+  },
+  "0x9308": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 19586,
+   "last_frame": 58287
+  },
+  "0x9418": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 19744,
+   "last_frame": 33199
+  },
+  "0x94A7": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 19782,
+   "last_frame": 54543
+  },
+  "0x968D": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 21154,
+   "last_frame": 39066
+  },
+  "0x95B7": {
+   "count": 6,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 21366,
+   "last_frame": 38942
+  },
+  "0x9611": {
+   "count": 6,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 22274,
+   "last_frame": 49477
+  },
+  "0x94A0": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 24080,
+   "last_frame": 50722
+  },
+  "0x9474": {
+   "count": 6,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 24418,
+   "last_frame": 42863
+  },
+  "0x943A": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 24722,
+   "last_frame": 36850
+  },
+  "0x94A6": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 25073,
+   "last_frame": 59203
+  },
+  "0x95AD": {
+   "count": 6,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 25841,
+   "last_frame": 46705
+  },
+  "0x94A2": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 29566,
+   "last_frame": 42931
+  },
+  "0x934A": {
+   "count": 6,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 29668,
+   "last_frame": 59251
+  },
+  "0x93FD": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 30438,
+   "last_frame": 49669
+  },
+  "0x962F": {
+   "count": 6,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 32687,
+   "last_frame": 60654
+  },
+  "0x9662": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 32755,
+   "last_frame": 32815
+  },
+  "0x9417": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 33593,
+   "last_frame": 33601
+  },
+  "0x94FB": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 34280,
+   "last_frame": 52434
+  },
+  "0x9442": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 34705,
+   "last_frame": 54835
+  },
+  "0x94A4": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 34889,
+   "last_frame": 59239
+  },
+  "0x9737": {
+   "count": 6,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 39702,
+   "last_frame": 53194
+  },
+  "0x90A8": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 41057,
+   "last_frame": 41129
+  },
+  "0x90F3": {
+   "count": 6,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 41149,
+   "last_frame": 41181
+  },
+  "0x9359": {
+   "count": 6,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 59295,
+   "last_frame": 59355
+  },
+  "0xB392": {
+   "count": 5,
+   "lo": "0xF49D",
+   "hi": "0xF6AA",
+   "first_frame": 31652,
+   "last_frame": 39566
+  },
+  "0xB395": {
+   "count": 5,
+   "lo": "0xF499",
+   "hi": "0xF6A6",
+   "first_frame": 31652,
+   "last_frame": 39566
+  },
+  "0xB64A": {
+   "count": 5,
+   "lo": "0xF4D4",
+   "hi": "0xF6D2",
+   "first_frame": 32851,
+   "last_frame": 40890
+  },
+  "0xB9F1": {
+   "count": 5,
+   "lo": "0xF6E4",
+   "hi": "0xF6E4",
+   "first_frame": 41029,
+   "last_frame": 41045
+  },
+  "0xB9F5": {
+   "count": 5,
+   "lo": "0xF6E2",
+   "hi": "0xF6E2",
+   "first_frame": 41029,
+   "last_frame": 41045
+  },
+  "0xBA04": {
+   "count": 5,
+   "lo": "0xF6E4",
+   "hi": "0xF6E4",
+   "first_frame": 41029,
+   "last_frame": 41045
+  },
+  "0xBA08": {
+   "count": 5,
+   "lo": "0xF6E2",
+   "hi": "0xF6E2",
+   "first_frame": 41029,
+   "last_frame": 41045
+  },
+  "0x95EB": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2281,
+   "last_frame": 16415
+  },
+  "0x96FA": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2409,
+   "last_frame": 9351
+  },
+  "0x9705": {
+   "count": 4,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 3144,
+   "last_frame": 39694
+  },
+  "0x95AB": {
+   "count": 4,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 3156,
+   "last_frame": 21714
+  },
+  "0x964E": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 3904,
+   "last_frame": 16843
+  },
+  "0x9610": {
+   "count": 4,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 3964,
+   "last_frame": 16295
+  },
+  "0xAE2E": {
+   "count": 4,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 4568,
+   "last_frame": 8231
+  },
+  "0x941A": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 4820,
+   "last_frame": 47637
+  },
+  "0x9684": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 5699,
+   "last_frame": 53938
+  },
+  "0x9475": {
+   "count": 4,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 6031,
+   "last_frame": 42947
+  },
+  "0x8F8F": {
+   "count": 4,
+   "lo": "0xFFF2",
+   "hi": "0xFFF3",
+   "first_frame": 6787,
+   "last_frame": 13247
+  },
+  "0x9323": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 6799,
+   "last_frame": 30620
+  },
+  "0xB822": {
+   "count": 4,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 7307,
+   "last_frame": 19558
+  },
+  "0x9561": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 8075,
+   "last_frame": 46505
+  },
+  "0xAE25": {
+   "count": 4,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 8227,
+   "last_frame": 57795
+  },
+  "0x9680": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 9231,
+   "last_frame": 16767
+  },
+  "0xADD8": {
+   "count": 4,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 10547,
+   "last_frame": 58475
+  },
+  "0xAE3F": {
+   "count": 4,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 10639,
+   "last_frame": 12855
+  },
+  "0xAE10": {
+   "count": 4,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 10727,
+   "last_frame": 58459
+  },
+  "0x9334": {
+   "count": 4,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 12823,
+   "last_frame": 14303
+  },
+  "0xAEFB": {
+   "count": 4,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 12843,
+   "last_frame": 50429
+  },
+  "0x9339": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 12859,
+   "last_frame": 30615
+  },
+  "0xAE49": {
+   "count": 4,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 12867,
+   "last_frame": 26429
+  },
+  "0xAEA7": {
+   "count": 4,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 12931,
+   "last_frame": 42651
+  },
+  "0x95DF": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 13039,
+   "last_frame": 43407
+  },
+  "0x9651": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 13107,
+   "last_frame": 46813
+  },
+  "0xB808": {
+   "count": 4,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 13183,
+   "last_frame": 13191
+  },
+  "0xAED8": {
+   "count": 4,
+   "lo": "0xFFE6",
+   "hi": "0xFFE7",
+   "first_frame": 13187,
+   "last_frame": 17203
+  },
+  "0xAFB7": {
+   "count": 4,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 13195,
+   "last_frame": 13199
+  },
+  "0x919F": {
+   "count": 4,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 13259,
+   "last_frame": 57583
+  },
+  "0xAE5A": {
+   "count": 4,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 13355,
+   "last_frame": 58615
+  },
+  "0xAE47": {
+   "count": 4,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 13435,
+   "last_frame": 17167
+  },
+  "0x9329": {
+   "count": 4,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 13659,
+   "last_frame": 13663
+  },
+  "0xAECA": {
+   "count": 4,
+   "lo": "0xFFE6",
+   "hi": "0xFFE7",
+   "first_frame": 13667,
+   "last_frame": 57475
+  },
+  "0xAECC": {
+   "count": 4,
+   "lo": "0xFFE6",
+   "hi": "0xFFE7",
+   "first_frame": 13871,
+   "last_frame": 23724
+  },
+  "0x965E": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 14339,
+   "last_frame": 16287
+  },
+  "0x95E5": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 16659,
+   "last_frame": 60030
+  },
+  "0x95D5": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 16787,
+   "last_frame": 26053
+  },
+  "0x960E": {
+   "count": 4,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 16811,
+   "last_frame": 43787
+  },
+  "0x95ED": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 16827,
+   "last_frame": 46753
+  },
+  "0xAE2B": {
+   "count": 4,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 17083,
+   "last_frame": 17339
+  },
+  "0x90DF": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 17095,
+   "last_frame": 57575
+  },
+  "0x90C5": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 17107,
+   "last_frame": 17123
+  },
+  "0x932B": {
+   "count": 4,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 17207,
+   "last_frame": 58439
+  },
+  "0xAEF3": {
+   "count": 4,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 17347,
+   "last_frame": 41457
+  },
+  "0x95AE": {
+   "count": 4,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 18082,
+   "last_frame": 21566
+  },
+  "0x9711": {
+   "count": 4,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 19422,
+   "last_frame": 19510
+  },
+  "0x970D": {
+   "count": 4,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 19426,
+   "last_frame": 21674
+  },
+  "0x9415": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 20130,
+   "last_frame": 20986
+  },
+  "0x9559": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 21054,
+   "last_frame": 60630
+  },
+  "0x95B5": {
+   "count": 4,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 21206,
+   "last_frame": 46765
+  },
+  "0x9687": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 21314,
+   "last_frame": 38870
+  },
+  "0x95A7": {
+   "count": 4,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 21590,
+   "last_frame": 25670
+  },
+  "0x95B3": {
+   "count": 4,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 21678,
+   "last_frame": 37474
+  },
+  "0x9674": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 21702,
+   "last_frame": 51539
+  },
+  "0x93D8": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 22716,
+   "last_frame": 29612
+  },
+  "0x94AB": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 23078,
+   "last_frame": 50777
+  },
+  "0xAEDD": {
+   "count": 4,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 23728,
+   "last_frame": 57619
+  },
+  "0x9320": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 23736,
+   "last_frame": 23744
+  },
+  "0x90A5": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 23760,
+   "last_frame": 41505
+  },
+  "0x9478": {
+   "count": 4,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 24072,
+   "last_frame": 26113
+  },
+  "0x94F5": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 24216,
+   "last_frame": 51727
+  },
+  "0xAE68": {
+   "count": 4,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 25634,
+   "last_frame": 57483
+  },
+  "0x90A6": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 26633,
+   "last_frame": 41069
+  },
+  "0x90C3": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 27129,
+   "last_frame": 57959
+  },
+  "0x9595": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 27197,
+   "last_frame": 46785
+  },
+  "0x9346": {
+   "count": 4,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 29676,
+   "last_frame": 29727
+  },
+  "0x940A": {
+   "count": 4,
+   "lo": "0xFFEE",
+   "hi": "0xFFF1",
+   "first_frame": 30330,
+   "last_frame": 33991
+  },
+  "0x9412": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 33211,
+   "last_frame": 47641
+  },
+  "0x944C": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 34629,
+   "last_frame": 36237
+  },
+  "0x944A": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 34662,
+   "last_frame": 52494
+  },
+  "0x93D5": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 35953,
+   "last_frame": 36028
+  },
+  "0x95A8": {
+   "count": 4,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 38034,
+   "last_frame": 50217
+  },
+  "0x968F": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 39042,
+   "last_frame": 40042
+  },
+  "0x94A9": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 43203,
+   "last_frame": 47089
+  },
+  "0x9657": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 46769,
+   "last_frame": 58947
+  },
+  "0x90AF": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 57639,
+   "last_frame": 57671
+  },
+  "0x93BE": {
+   "count": 4,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 59329,
+   "last_frame": 59360
+  },
+  "0x961A": {
+   "count": 4,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 60266,
+   "last_frame": 60310
+  },
+  "0x8F1B": {
+   "count": 3,
+   "lo": "0xFFF4",
+   "hi": "0xFFF4",
+   "first_frame": 15526,
+   "last_frame": 45981
+  },
+  "0x8F20": {
+   "count": 3,
+   "lo": "0xFFFF",
+   "hi": "0xFFFF",
+   "first_frame": 15526,
+   "last_frame": 45981
+  },
+  "0xBA7C": {
+   "count": 3,
+   "lo": "0xF6E6",
+   "hi": "0xF6E6",
+   "first_frame": 40962,
+   "last_frame": 40975
+  },
+  "0x949B": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 759,
+   "last_frame": 759
+  },
+  "0x90C1": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2381,
+   "last_frame": 2381
+  },
+  "0x930F": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 2385,
+   "last_frame": 2385
+  },
+  "0x9354": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 5120,
+   "last_frame": 5120
+  },
+  "0x945C": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 6135,
+   "last_frame": 6135
+  },
+  "0xAF07": {
+   "count": 2,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 6803,
+   "last_frame": 6803
+  },
+  "0x9622": {
+   "count": 2,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 7043,
+   "last_frame": 7043
+  },
+  "0x95EC": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 7051,
+   "last_frame": 7051
+  },
+  "0xAEBD": {
+   "count": 2,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 7075,
+   "last_frame": 7075
+  },
+  "0x930E": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 7399,
+   "last_frame": 7399
+  },
+  "0xAE9F": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 8239,
+   "last_frame": 8239
+  },
+  "0x9706": {
+   "count": 2,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 8383,
+   "last_frame": 8383
+  },
+  "0x961E": {
+   "count": 2,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 8551,
+   "last_frame": 8551
+  },
+  "0x959F": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 8931,
+   "last_frame": 8931
+  },
+  "0x966A": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 9227,
+   "last_frame": 9227
+  },
+  "0x96FB": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 9355,
+   "last_frame": 9355
+  },
+  "0x961D": {
+   "count": 2,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 10223,
+   "last_frame": 10223
+  },
+  "0x9710": {
+   "count": 2,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 10299,
+   "last_frame": 10299
+  },
+  "0x9623": {
+   "count": 2,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 10483,
+   "last_frame": 10483
+  },
+  "0x9627": {
+   "count": 2,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 10491,
+   "last_frame": 10491
+  },
+  "0xAEA4": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 12731,
+   "last_frame": 12731
+  },
+  "0xAE5D": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 12759,
+   "last_frame": 12759
+  },
+  "0xAEA2": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 12767,
+   "last_frame": 12767
+  },
+  "0xAE1C": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 12827,
+   "last_frame": 12827
+  },
+  "0xAFA4": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 12847,
+   "last_frame": 12847
+  },
+  "0xAE4B": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 12883,
+   "last_frame": 12883
+  },
+  "0xAEF5": {
+   "count": 2,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 12891,
+   "last_frame": 12891
+  },
+  "0x9199": {
+   "count": 2,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 12899,
+   "last_frame": 12899
+  },
+  "0xADD1": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 12915,
+   "last_frame": 12915
+  },
+  "0xAF36": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 12959,
+   "last_frame": 12959
+  },
+  "0xAE01": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 12963,
+   "last_frame": 12963
+  },
+  "0x9602": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 13035,
+   "last_frame": 13035
+  },
+  "0x9327": {
+   "count": 2,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 13215,
+   "last_frame": 13215
+  },
+  "0xADD9": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 13231,
+   "last_frame": 13231
+  },
+  "0x91A9": {
+   "count": 2,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 13263,
+   "last_frame": 13263
+  },
+  "0xAE39": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 13319,
+   "last_frame": 13319
+  },
+  "0x9312": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 13375,
+   "last_frame": 13375
+  },
+  "0xAE04": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 13379,
+   "last_frame": 13379
+  },
+  "0xAEEC": {
+   "count": 2,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 13403,
+   "last_frame": 13403
+  },
+  "0x9725": {
+   "count": 2,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 13619,
+   "last_frame": 13619
+  },
+  "0xAFB1": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 13795,
+   "last_frame": 13795
+  },
+  "0xAF9E": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 13839,
+   "last_frame": 13839
+  },
+  "0xAEE1": {
+   "count": 2,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 14035,
+   "last_frame": 14035
+  },
+  "0x8F79": {
+   "count": 2,
+   "lo": "0xFFF2",
+   "hi": "0xFFF3",
+   "first_frame": 14187,
+   "last_frame": 14187
+  },
+  "0x96FE": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 14467,
+   "last_frame": 14467
+  },
+  "0xB49C": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 14599,
+   "last_frame": 14599
+  },
+  "0x95E9": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 16379,
+   "last_frame": 16379
+  },
+  "0x969A": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 16519,
+   "last_frame": 16519
+  },
+  "0x95FF": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 16535,
+   "last_frame": 16535
+  },
+  "0x963F": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 16715,
+   "last_frame": 16715
+  },
+  "0x9612": {
+   "count": 2,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 16775,
+   "last_frame": 16775
+  },
+  "0x9679": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 16895,
+   "last_frame": 16895
+  },
+  "0xAE20": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 17015,
+   "last_frame": 17015
+  },
+  "0xB81D": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 17035,
+   "last_frame": 17035
+  },
+  "0x919C": {
+   "count": 2,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 17063,
+   "last_frame": 17063
+  },
+  "0xAF0C": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 17211,
+   "last_frame": 17211
+  },
+  "0xAEFC": {
+   "count": 2,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 17331,
+   "last_frame": 17331
+  },
+  "0x93B6": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 17950,
+   "last_frame": 17950
+  },
+  "0x9733": {
+   "count": 2,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 19382,
+   "last_frame": 19382
+  },
+  "0x970F": {
+   "count": 2,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 19458,
+   "last_frame": 19458
+  },
+  "0xB809": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 19566,
+   "last_frame": 19566
+  },
+  "0x9364": {
+   "count": 2,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 20629,
+   "last_frame": 20629
+  },
+  "0x9377": {
+   "count": 2,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 20755,
+   "last_frame": 20755
+  },
+  "0x95EA": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 21182,
+   "last_frame": 21182
+  },
+  "0x9671": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 21210,
+   "last_frame": 21210
+  },
+  "0x9685": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 21230,
+   "last_frame": 21230
+  },
+  "0x967D": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 21442,
+   "last_frame": 21442
+  },
+  "0x95E2": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 21498,
+   "last_frame": 21498
+  },
+  "0x9682": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 21518,
+   "last_frame": 21518
+  },
+  "0x963A": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 21758,
+   "last_frame": 21758
+  },
+  "0xAFB8": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 23748,
+   "last_frame": 23748
+  },
+  "0x9794": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 23804,
+   "last_frame": 23804
+  },
+  "0xAFA0": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 25297,
+   "last_frame": 25297
+  },
+  "0xAFAF": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 25361,
+   "last_frame": 25361
+  },
+  "0xAEEE": {
+   "count": 2,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 25630,
+   "last_frame": 25630
+  },
+  "0xAE3B": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 26261,
+   "last_frame": 26261
+  },
+  "0xADE7": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 26265,
+   "last_frame": 26265
+  },
+  "0xAE43": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 26289,
+   "last_frame": 26289
+  },
+  "0xAE0E": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 26505,
+   "last_frame": 26505
+  },
+  "0xAE5B": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 26629,
+   "last_frame": 26629
+  },
+  "0xAE3C": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 26805,
+   "last_frame": 26805
+  },
+  "0xADFF": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 26809,
+   "last_frame": 26809
+  },
+  "0xB47E": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 27121,
+   "last_frame": 27121
+  },
+  "0x9341": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 29570,
+   "last_frame": 29570
+  },
+  "0x93DB": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 29608,
+   "last_frame": 29608
+  },
+  "0x9363": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 29660,
+   "last_frame": 29660
+  },
+  "0x9414": {
+   "count": 2,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 30306,
+   "last_frame": 30306
+  },
+  "0x93DE": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 30434,
+   "last_frame": 30434
+  },
+  "0xB67E": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 30625,
+   "last_frame": 30625
+  },
+  "0x941B": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 34788,
+   "last_frame": 34788
+  },
+  "0x9366": {
+   "count": 2,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 35429,
+   "last_frame": 35429
+  },
+  "0x93C7": {
+   "count": 2,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 35948,
+   "last_frame": 35948
+  },
+  "0x9683": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 38874,
+   "last_frame": 38874
+  },
+  "0x9693": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 38946,
+   "last_frame": 38946
+  },
+  "0x95B2": {
+   "count": 2,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 38966,
+   "last_frame": 38966
+  },
+  "0x9670": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 38982,
+   "last_frame": 38982
+  },
+  "0x9689": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 39014,
+   "last_frame": 39014
+  },
+  "0x95A2": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 39038,
+   "last_frame": 39038
+  },
+  "0x971B": {
+   "count": 2,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 39866,
+   "last_frame": 39866
+  },
+  "0x9717": {
+   "count": 2,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 40130,
+   "last_frame": 40130
+  },
+  "0xB5C6": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 41024,
+   "last_frame": 41024
+  },
+  "0xB5CC": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 41025,
+   "last_frame": 41025
+  },
+  "0xB5D2": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 41026,
+   "last_frame": 41026
+  },
+  "0xB5D8": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 41027,
+   "last_frame": 41027
+  },
+  "0xB5D9": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 41028,
+   "last_frame": 41028
+  },
+  "0xB5DF": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 41029,
+   "last_frame": 41029
+  },
+  "0xB5FE": {
+   "count": 2,
+   "lo": "0xF6E4",
+   "hi": "0xF6F3",
+   "first_frame": 41029,
+   "last_frame": 41029
+  },
+  "0xB601": {
+   "count": 2,
+   "lo": "0xF6E2",
+   "hi": "0xF6F1",
+   "first_frame": 41029,
+   "last_frame": 41029
+  },
+  "0x90B1": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 41085,
+   "last_frame": 41085
+  },
+  "0x8F8C": {
+   "count": 2,
+   "lo": "0xFFF2",
+   "hi": "0xFFF3",
+   "first_frame": 41101,
+   "last_frame": 41101
+  },
+  "0xADCA": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 41469,
+   "last_frame": 41469
+  },
+  "0x94EE": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 41977,
+   "last_frame": 41977
+  },
+  "0x947C": {
+   "count": 2,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 42787,
+   "last_frame": 42787
+  },
+  "0x9459": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 43211,
+   "last_frame": 43211
+  },
+  "0x9594": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 46789,
+   "last_frame": 46789
+  },
+  "0x93CA": {
+   "count": 2,
+   "lo": "0xFFEE",
+   "hi": "0xFFEF",
+   "first_frame": 47105,
+   "last_frame": 47105
+  },
+  "0x937C": {
+   "count": 2,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 49075,
+   "last_frame": 49075
+  },
+  "0x936A": {
+   "count": 2,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 49085,
+   "last_frame": 49085
+  },
+  "0x940C": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 49125,
+   "last_frame": 49125
+  },
+  "0x9197": {
+   "count": 2,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 50417,
+   "last_frame": 50417
+  },
+  "0xAE26": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 50517,
+   "last_frame": 50517
+  },
+  "0x93FB": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 51974,
+   "last_frame": 51974
+  },
+  "0x971E": {
+   "count": 2,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 52870,
+   "last_frame": 52870
+  },
+  "0x9494": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 55462,
+   "last_frame": 55462
+  },
+  "0xAFAE": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 57491,
+   "last_frame": 57491
+  },
+  "0xAE41": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 57495,
+   "last_frame": 57495
+  },
+  "0xB388": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 57611,
+   "last_frame": 57611
+  },
+  "0xAEDA": {
+   "count": 2,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 57615,
+   "last_frame": 57615
+  },
+  "0xAE58": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 57719,
+   "last_frame": 57719
+  },
+  "0xAFA6": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 57771,
+   "last_frame": 57771
+  },
+  "0xB824": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 57775,
+   "last_frame": 57775
+  },
+  "0xAE99": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 57779,
+   "last_frame": 57779
+  },
+  "0x90D6": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 57995,
+   "last_frame": 57995
+  },
+  "0x9321": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 57999,
+   "last_frame": 57999
+  },
+  "0xAE96": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 58039,
+   "last_frame": 58039
+  },
+  "0x9324": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 58299,
+   "last_frame": 58299
+  },
+  "0x931C": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 58303,
+   "last_frame": 58303
+  },
+  "0xAF4F": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 58451,
+   "last_frame": 58451
+  },
+  "0x90D9": {
+   "count": 2,
+   "lo": "0xFFF0",
+   "hi": "0xFFF1",
+   "first_frame": 58471,
+   "last_frame": 58471
+  },
+  "0x91AD": {
+   "count": 2,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 58479,
+   "last_frame": 58479
+  },
+  "0xAE35": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 58535,
+   "last_frame": 58535
+  },
+  "0x8F88": {
+   "count": 2,
+   "lo": "0xFFF2",
+   "hi": "0xFFF3",
+   "first_frame": 58863,
+   "last_frame": 58863
+  },
+  "0xAEB5": {
+   "count": 2,
+   "lo": "0xFFE8",
+   "hi": "0xFFE9",
+   "first_frame": 58871,
+   "last_frame": 58871
+  },
+  "0xAE23": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 58875,
+   "last_frame": 58875
+  },
+  "0xAEA3": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 58879,
+   "last_frame": 58879
+  },
+  "0x9498": {
+   "count": 2,
+   "lo": "0xFFEA",
+   "hi": "0xFFEB",
+   "first_frame": 59407,
+   "last_frame": 59407
+  },
+  "0x960F": {
+   "count": 2,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 60126,
+   "last_frame": 60126
+  },
+  "0x9617": {
+   "count": 2,
+   "lo": "0xFFEC",
+   "hi": "0xFFED",
+   "first_frame": 60434,
+   "last_frame": 60434
+  },
+  "0xBA14": {
+   "count": 1,
+   "lo": "0xF6E2",
+   "hi": "0xF6E2",
+   "first_frame": 40894,
+   "last_frame": 40894
+  },
+  "0xBA17": {
+   "count": 1,
+   "lo": "0xF6E6",
+   "hi": "0xF6E6",
+   "first_frame": 40894,
+   "last_frame": 40894
+  }
+ }
+}

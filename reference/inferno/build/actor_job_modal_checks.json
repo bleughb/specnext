@@ -1,0 +1,13 @@
+{
+  "counts": {
+    "display-bit preservation cases": 256,
+    "missing-hide control detected": 4,
+    "modal site refusal": 1
+  },
+  "entry_frames": [
+    51805
+  ],
+  "max_equivalent_T": 121.0,
+  "max_added_ms": 0.03457142857142857,
+  "scope": "assembled hide at sampled original gameplay return; all other modal paths and integration remain open"
+}
