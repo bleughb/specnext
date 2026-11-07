@@ -1,0 +1,766 @@
+{
+  "counts": {
+    "states": 1854,
+    "OUT changes": 119363,
+    "late OUTs at x=0": 2064,
+    "states with late level changes at x=0": 650,
+    "max late T at x=0": 138,
+    "max entry DI span T": 156,
+    "max exit DI span T": 23,
+    "max other DI span T": 12,
+    "accumulate-X states": 1854,
+    "accumulate-X states with late OUTs": 1854,
+    "accumulate-X late OUTs": 16806,
+    "accumulate-X states with late level changes": 877,
+    "IRQ injections": 920,
+    "IRQ taken in window": 800,
+    "IRQ in the entry DI span (compensated)": 120,
+    "IRQ in the entry DI span max at T": 720,
+    "IRQ double injections": 40,
+    "CTC unit clk=0 ctc=True": 40,
+    "max first-window late T": 3318,
+    "CTC unit clk=0 ctc=False": 40,
+    "max fallback 9907 late T": 402,
+    "CTC unit clk=2 ctc=True": 40,
+    "OUTs delayed by an IRQ handler": 19,
+    "max IRQ-delayed OUT T": 58
+  },
+  "failures": [],
+  "negative_controls": {
+    "change detection removed (JP Z -> JP) detected": 40,
+    "tile count INC C removed detected": 40,
+    "R constant off by one detected": 40,
+    "IRQ T not added detected": 40,
+    "IRQ M1 not added detected": 40,
+    "pad 3 ticks late detected": 40,
+    "OUT deadlines 3 ticks early detected": 40
+  },
+  "out_offset_T": {
+    "min": -32,
+    "max": 138
+  },
+  "d9907_T": {
+    "min": -41,
+    "max": 35
+  },
+  "accumulate_X_late_T": {},
+  "scope": "copier window 8F92->9907 in the simulator (uncontended T, 28MHz read waits, CTC and IRQ models); no contention, no hardware",
+  "per_level": {
+    "1": {
+      "max_window_ms": 27.907,
+      "max_busy_ms": 11.06,
+      "min_wait_ms": 15.087
+    },
+    "2": {
+      "max_window_ms": 28.599,
+      "max_busy_ms": 11.103,
+      "min_wait_ms": 15.601
+    },
+    "3": {
+      "max_window_ms": 28.167,
+      "max_busy_ms": 11.107,
+      "min_wait_ms": 16.162
+    },
+    "4": {
+      "max_window_ms": 28.975,
+      "max_busy_ms": 11.228,
+      "min_wait_ms": 16.094
+    },
+    "5": {
+      "max_window_ms": 26.897,
+      "max_busy_ms": 10.942,
+      "min_wait_ms": 15.545
+    },
+    "6": {
+      "max_window_ms": 29.696,
+      "max_busy_ms": 11.295,
+      "min_wait_ms": 17.434
+    }
+  },
+  "update": {
+    "counts": {
+      "states": 1855,
+      "OUT changes": 119779,
+      "late OUTs (burst prefix after X)": 15671,
+      "IRQ injections": 1485,
+      "IRQ in a DI span (lost, compensated)": 550,
+      "IRQ at a game instruction (original anchored there)": 873,
+      "IRQ in a post-check gap (model; lost uncompensated)": 82,
+      "fast speed-switch runs (cw_cal correction)": 40
+    },
+    "failures": [],
+    "negative_controls": {
+      "speed-switch correction not applied in hooks detected": 40,
+      "hook X constant 3 ticks high detected": 40,
+      "hook R constant off by one detected": 40,
+      "lost IRQ: R not added detected": 39,
+      "lost IRQ: X not adjusted detected": 40,
+      "hook $C8 clear removed detected": 40,
+      "window entry lost IRQ not counted detected": 40,
+      "lost IRQ: R not added MISSED": 1
+    },
+    "x_error_T": {
+      "min": -12.0,
+      "max": 16.8
+    },
+    "x_T": {
+      "min": 1444.0,
+      "max": 8905.2
+    },
+    "d9907_T": {
+      "min": -51.9,
+      "max": 42.2
+    },
+    "kt_fast_switches_T": -38,
+    "post_check_gap_d9907_T": {
+      "min": -814.4,
+      "max": 480.9
+    },
+    "window_busy_ms_max": 11.298,
+    "window_wait_ms_min": 13.733,
+    "scope": "update model 8F7C -> 9907 in the simulator: capture hooks + copier window, CTC, frame IRQ and NextReg $C8/$22 models (a $C8 clear during a pulse does not take); uncontended T with 28MHz read waits, speed transitions charged at 3.5MHz; no hardware"
+  },
+  "per_level_results": [
+    {
+      "counts": {
+        "states": 308,
+        "OUT changes": 40381,
+        "late OUTs at x=0": 317,
+        "states with late level changes at x=0": 144,
+        "max late T at x=0": 138,
+        "max entry DI span T": 156,
+        "max exit DI span T": 23,
+        "max other DI span T": 12,
+        "accumulate-X states": 308,
+        "accumulate-X states with late OUTs": 308,
+        "accumulate-X late OUTs": 5758,
+        "accumulate-X states with late level changes": 219,
+        "IRQ injections": 161,
+        "IRQ taken in window": 140,
+        "IRQ in the entry DI span (compensated)": 21,
+        "IRQ in the entry DI span max at T": 120,
+        "IRQ double injections": 7,
+        "CTC unit clk=0 ctc=True": 7,
+        "max first-window late T": 3301,
+        "CTC unit clk=0 ctc=False": 7,
+        "max fallback 9907 late T": 402,
+        "CTC unit clk=2 ctc=True": 7,
+        "OUTs delayed by an IRQ handler": 5,
+        "max IRQ-delayed OUT T": 0
+      },
+      "failures": [],
+      "per_level": {
+        "1": {
+          "max_window_ms": 27.907,
+          "max_busy_ms": 11.06,
+          "min_wait_ms": 15.087
+        }
+      },
+      "out_offset_T": {
+        "min": -32,
+        "p1": -28,
+        "median": -8,
+        "p99": 13,
+        "max": 138
+      },
+      "d9907_T": {
+        "min": -41,
+        "max": 20
+      },
+      "accumulate_X_late_T": {
+        "max": 6952,
+        "median": 5690
+      },
+      "negative_controls": {
+        "change detection removed (JP Z -> JP) detected": 7,
+        "tile count INC C removed detected": 7,
+        "R constant off by one detected": 7,
+        "IRQ T not added detected": 7,
+        "IRQ M1 not added detected": 7,
+        "pad 3 ticks late detected": 7,
+        "OUT deadlines 3 ticks early detected": 7
+      },
+      "scope": "copier window 8F92->9907 in the simulator (uncontended T, 28MHz read waits, CTC and IRQ models); no contention, no hardware",
+      "update": {
+        "counts": {
+          "states": 309,
+          "OUT changes": 40797,
+          "late OUTs (burst prefix after X)": 5293,
+          "IRQ injections": 266,
+          "IRQ in a DI span (lost, compensated)": 99,
+          "IRQ at a game instruction (original anchored there)": 160,
+          "IRQ in a post-check gap (model; lost uncompensated)": 15,
+          "fast speed-switch runs (cw_cal correction)": 7
+        },
+        "failures": [],
+        "x_error_T": {
+          "min": -11.2,
+          "p1": -7.2,
+          "median": 0.6,
+          "p99": 9.9,
+          "max": 11.1
+        },
+        "x_T": {
+          "min": 2367.9,
+          "median": 4715.6,
+          "max": 6791.6
+        },
+        "d9907_T": {
+          "min": -41.5,
+          "max": 22.2
+        },
+        "kt_fast_switches_T": -38,
+        "post_check_gap_d9907_T": {
+          "min": -130.0,
+          "max": -91.6
+        },
+        "window_busy_ms_max": 11.061,
+        "window_wait_ms_min": 13.733,
+        "negative_controls": {
+          "speed-switch correction not applied in hooks detected": 7,
+          "hook X constant 3 ticks high detected": 7,
+          "hook R constant off by one detected": 7,
+          "lost IRQ: R not added detected": 7,
+          "lost IRQ: X not adjusted detected": 7,
+          "hook $C8 clear removed detected": 7,
+          "window entry lost IRQ not counted detected": 7
+        },
+        "scope": "update model 8F7C -> 9907 in the simulator: capture hooks + copier window, CTC, frame IRQ and NextReg $C8/$22 models (a $C8 clear during a pulse does not take); uncontended T with 28MHz read waits, speed transitions charged at 3.5MHz; no hardware"
+      }
+    },
+    {
+      "counts": {
+        "states": 390,
+        "OUT changes": 3776,
+        "late OUTs at x=0": 398,
+        "states with late level changes at x=0": 60,
+        "max late T at x=0": 138,
+        "max entry DI span T": 156,
+        "max exit DI span T": 23,
+        "max other DI span T": 12,
+        "accumulate-X states": 390,
+        "accumulate-X states with late OUTs": 390,
+        "accumulate-X late OUTs": 712,
+        "accumulate-X states with late level changes": 71,
+        "IRQ injections": 184,
+        "IRQ taken in window": 160,
+        "IRQ in the entry DI span (compensated)": 24,
+        "IRQ in the entry DI span max at T": 120,
+        "IRQ double injections": 8,
+        "CTC unit clk=0 ctc=True": 8,
+        "max first-window late T": 3282,
+        "CTC unit clk=0 ctc=False": 8,
+        "max fallback 9907 late T": 402,
+        "CTC unit clk=2 ctc=True": 8,
+        "OUTs delayed by an IRQ handler": 3,
+        "max IRQ-delayed OUT T": 58
+      },
+      "failures": [],
+      "per_level": {
+        "2": {
+          "max_window_ms": 28.599,
+          "max_busy_ms": 11.103,
+          "min_wait_ms": 15.601
+        }
+      },
+      "out_offset_T": {
+        "min": -32,
+        "p1": -28,
+        "median": -6,
+        "p99": 132,
+        "max": 138
+      },
+      "d9907_T": {
+        "min": -41,
+        "max": 2
+      },
+      "accumulate_X_late_T": {
+        "max": 6841,
+        "median": 3883
+      },
+      "negative_controls": {
+        "change detection removed (JP Z -> JP) detected": 8,
+        "tile count INC C removed detected": 8,
+        "R constant off by one detected": 8,
+        "IRQ T not added detected": 8,
+        "IRQ M1 not added detected": 8,
+        "pad 3 ticks late detected": 8,
+        "OUT deadlines 3 ticks early detected": 8
+      },
+      "scope": "copier window 8F92->9907 in the simulator (uncontended T, 28MHz read waits, CTC and IRQ models); no contention, no hardware",
+      "update": {
+        "counts": {
+          "states": 390,
+          "OUT changes": 3776,
+          "late OUTs (burst prefix after X)": 641,
+          "IRQ injections": 283,
+          "IRQ in a DI span (lost, compensated)": 103,
+          "IRQ at a game instruction (original anchored there)": 161,
+          "IRQ in a post-check gap (model; lost uncompensated)": 15,
+          "fast speed-switch runs (cw_cal correction)": 8
+        },
+        "failures": [],
+        "x_error_T": {
+          "min": -9.4,
+          "p1": -6.2,
+          "median": 0.6,
+          "p99": 10.4,
+          "max": 13.4
+        },
+        "x_T": {
+          "min": 1444.0,
+          "median": 2543.2,
+          "max": 7376.6
+        },
+        "d9907_T": {
+          "min": -51.9,
+          "max": 10.0
+        },
+        "kt_fast_switches_T": -38,
+        "post_check_gap_d9907_T": {
+          "min": -814.4,
+          "max": 480.9
+        },
+        "window_busy_ms_max": 11.102,
+        "window_wait_ms_min": 14.961,
+        "negative_controls": {
+          "speed-switch correction not applied in hooks detected": 8,
+          "hook X constant 3 ticks high detected": 8,
+          "hook R constant off by one detected": 8,
+          "lost IRQ: R not added detected": 8,
+          "lost IRQ: X not adjusted detected": 8,
+          "hook $C8 clear removed detected": 8,
+          "window entry lost IRQ not counted detected": 8
+        },
+        "scope": "update model 8F7C -> 9907 in the simulator: capture hooks + copier window, CTC, frame IRQ and NextReg $C8/$22 models (a $C8 clear during a pulse does not take); uncontended T with 28MHz read waits, speed transitions charged at 3.5MHz; no hardware"
+      }
+    },
+    {
+      "counts": {
+        "states": 381,
+        "OUT changes": 25015,
+        "late OUTs at x=0": 465,
+        "states with late level changes at x=0": 140,
+        "max late T at x=0": 138,
+        "max entry DI span T": 156,
+        "max exit DI span T": 23,
+        "max other DI span T": 12,
+        "accumulate-X states": 381,
+        "accumulate-X states with late OUTs": 381,
+        "accumulate-X late OUTs": 3670,
+        "accumulate-X states with late level changes": 179,
+        "IRQ injections": 184,
+        "IRQ taken in window": 160,
+        "OUTs delayed by an IRQ handler": 5,
+        "max IRQ-delayed OUT T": 58,
+        "IRQ in the entry DI span (compensated)": 24,
+        "IRQ in the entry DI span max at T": 120,
+        "IRQ double injections": 8,
+        "CTC unit clk=0 ctc=True": 8,
+        "max first-window late T": 3316,
+        "CTC unit clk=0 ctc=False": 8,
+        "max fallback 9907 late T": 402,
+        "CTC unit clk=2 ctc=True": 8
+      },
+      "failures": [],
+      "per_level": {
+        "3": {
+          "max_window_ms": 28.167,
+          "max_busy_ms": 11.107,
+          "min_wait_ms": 16.162
+        }
+      },
+      "out_offset_T": {
+        "min": -32,
+        "p1": -28,
+        "median": -8,
+        "p99": 113,
+        "max": 138
+      },
+      "d9907_T": {
+        "min": -39,
+        "max": 35
+      },
+      "accumulate_X_late_T": {
+        "max": 6491,
+        "median": 4629
+      },
+      "negative_controls": {
+        "change detection removed (JP Z -> JP) detected": 8,
+        "tile count INC C removed detected": 8,
+        "R constant off by one detected": 8,
+        "IRQ T not added detected": 8,
+        "IRQ M1 not added detected": 8,
+        "pad 3 ticks late detected": 8,
+        "OUT deadlines 3 ticks early detected": 8
+      },
+      "scope": "copier window 8F92->9907 in the simulator (uncontended T, 28MHz read waits, CTC and IRQ models); no contention, no hardware",
+      "update": {
+        "counts": {
+          "states": 381,
+          "OUT changes": 25015,
+          "late OUTs (burst prefix after X)": 3407,
+          "IRQ injections": 297,
+          "IRQ in a DI span (lost, compensated)": 110,
+          "IRQ at a game instruction (original anchored there)": 175,
+          "IRQ in a post-check gap (model; lost uncompensated)": 15,
+          "fast speed-switch runs (cw_cal correction)": 8
+        },
+        "failures": [],
+        "x_error_T": {
+          "min": -9.8,
+          "p1": -6.0,
+          "median": 1.6,
+          "p99": 10.8,
+          "max": 12.1
+        },
+        "x_T": {
+          "min": 1457.5,
+          "median": 3752.1,
+          "max": 7070.6
+        },
+        "d9907_T": {
+          "min": -43.9,
+          "max": 40.6
+        },
+        "kt_fast_switches_T": -38,
+        "post_check_gap_d9907_T": {
+          "min": -115.6,
+          "max": -23.5
+        },
+        "window_busy_ms_max": 11.114,
+        "window_wait_ms_min": 14.615,
+        "negative_controls": {
+          "speed-switch correction not applied in hooks detected": 8,
+          "hook X constant 3 ticks high detected": 8,
+          "hook R constant off by one detected": 8,
+          "lost IRQ: R not added detected": 7,
+          "lost IRQ: X not adjusted detected": 8,
+          "hook $C8 clear removed detected": 8,
+          "window entry lost IRQ not counted detected": 8,
+          "lost IRQ: R not added MISSED": 1
+        },
+        "scope": "update model 8F7C -> 9907 in the simulator: capture hooks + copier window, CTC, frame IRQ and NextReg $C8/$22 models (a $C8 clear during a pulse does not take); uncontended T with 28MHz read waits, speed transitions charged at 3.5MHz; no hardware"
+      }
+    },
+    {
+      "counts": {
+        "states": 367,
+        "OUT changes": 35732,
+        "late OUTs at x=0": 466,
+        "states with late level changes at x=0": 159,
+        "max late T at x=0": 138,
+        "max entry DI span T": 156,
+        "max exit DI span T": 23,
+        "max other DI span T": 12,
+        "accumulate-X states": 367,
+        "accumulate-X states with late OUTs": 367,
+        "accumulate-X late OUTs": 5010,
+        "accumulate-X states with late level changes": 220,
+        "IRQ injections": 184,
+        "IRQ taken in window": 160,
+        "OUTs delayed by an IRQ handler": 2,
+        "max IRQ-delayed OUT T": 0,
+        "IRQ in the entry DI span (compensated)": 24,
+        "IRQ in the entry DI span max at T": 120,
+        "IRQ double injections": 8,
+        "CTC unit clk=0 ctc=True": 8,
+        "max first-window late T": 3285,
+        "CTC unit clk=0 ctc=False": 8,
+        "max fallback 9907 late T": 402,
+        "CTC unit clk=2 ctc=True": 8
+      },
+      "failures": [],
+      "per_level": {
+        "4": {
+          "max_window_ms": 28.975,
+          "max_busy_ms": 11.228,
+          "min_wait_ms": 16.094
+        }
+      },
+      "out_offset_T": {
+        "min": -32,
+        "p1": -28,
+        "median": -8,
+        "p99": 107,
+        "max": 138
+      },
+      "d9907_T": {
+        "min": -40,
+        "max": 35
+      },
+      "accumulate_X_late_T": {
+        "max": 7743,
+        "median": 5321
+      },
+      "negative_controls": {
+        "change detection removed (JP Z -> JP) detected": 8,
+        "tile count INC C removed detected": 8,
+        "R constant off by one detected": 8,
+        "IRQ T not added detected": 8,
+        "IRQ M1 not added detected": 8,
+        "pad 3 ticks late detected": 8,
+        "OUT deadlines 3 ticks early detected": 8
+      },
+      "scope": "copier window 8F92->9907 in the simulator (uncontended T, 28MHz read waits, CTC and IRQ models); no contention, no hardware",
+      "update": {
+        "counts": {
+          "states": 367,
+          "OUT changes": 35732,
+          "late OUTs (burst prefix after X)": 4759,
+          "IRQ injections": 304,
+          "IRQ in a DI span (lost, compensated)": 113,
+          "IRQ at a game instruction (original anchored there)": 182,
+          "IRQ in a post-check gap (model; lost uncompensated)": 19,
+          "fast speed-switch runs (cw_cal correction)": 8
+        },
+        "failures": [],
+        "x_error_T": {
+          "min": -12.0,
+          "p1": -10.1,
+          "median": 2.1,
+          "p99": 16.1,
+          "max": 16.8
+        },
+        "x_T": {
+          "min": 3041.9,
+          "median": 4860.5,
+          "max": 8845.9
+        },
+        "d9907_T": {
+          "min": -47.6,
+          "max": 42.2
+        },
+        "kt_fast_switches_T": -38,
+        "post_check_gap_d9907_T": {
+          "min": -651.5,
+          "max": 401.1
+        },
+        "window_busy_ms_max": 11.23,
+        "window_wait_ms_min": 14.773,
+        "negative_controls": {
+          "speed-switch correction not applied in hooks detected": 8,
+          "hook X constant 3 ticks high detected": 8,
+          "hook R constant off by one detected": 8,
+          "lost IRQ: R not added detected": 8,
+          "lost IRQ: X not adjusted detected": 8,
+          "hook $C8 clear removed detected": 8,
+          "window entry lost IRQ not counted detected": 8
+        },
+        "scope": "update model 8F7C -> 9907 in the simulator: capture hooks + copier window, CTC, frame IRQ and NextReg $C8/$22 models (a $C8 clear during a pulse does not take); uncontended T with 28MHz read waits, speed transitions charged at 3.5MHz; no hardware"
+      }
+    },
+    {
+      "counts": {
+        "states": 61,
+        "OUT changes": 2985,
+        "late OUTs at x=0": 70,
+        "states with late level changes at x=0": 10,
+        "max late T at x=0": 138,
+        "max entry DI span T": 156,
+        "max exit DI span T": 23,
+        "max other DI span T": 12,
+        "accumulate-X states": 61,
+        "accumulate-X states with late OUTs": 61,
+        "accumulate-X late OUTs": 443,
+        "accumulate-X states with late level changes": 19,
+        "IRQ injections": 46,
+        "IRQ taken in window": 40,
+        "IRQ in the entry DI span (compensated)": 6,
+        "IRQ in the entry DI span max at T": 120,
+        "IRQ double injections": 2,
+        "CTC unit clk=0 ctc=True": 2,
+        "max first-window late T": 3318,
+        "CTC unit clk=0 ctc=False": 2,
+        "max fallback 9907 late T": 402,
+        "CTC unit clk=2 ctc=True": 2
+      },
+      "failures": [],
+      "per_level": {
+        "5": {
+          "max_window_ms": 26.897,
+          "max_busy_ms": 10.942,
+          "min_wait_ms": 15.545
+        }
+      },
+      "out_offset_T": {
+        "min": -31,
+        "p1": -28,
+        "median": -8,
+        "p99": 120,
+        "max": 138
+      },
+      "d9907_T": {
+        "min": -38,
+        "max": 33
+      },
+      "accumulate_X_late_T": {
+        "max": 6184,
+        "median": 4724
+      },
+      "negative_controls": {
+        "change detection removed (JP Z -> JP) detected": 2,
+        "tile count INC C removed detected": 2,
+        "R constant off by one detected": 2,
+        "IRQ T not added detected": 2,
+        "IRQ M1 not added detected": 2,
+        "pad 3 ticks late detected": 2,
+        "OUT deadlines 3 ticks early detected": 2
+      },
+      "scope": "copier window 8F92->9907 in the simulator (uncontended T, 28MHz read waits, CTC and IRQ models); no contention, no hardware",
+      "update": {
+        "counts": {
+          "states": 61,
+          "OUT changes": 2985,
+          "late OUTs (burst prefix after X)": 440,
+          "IRQ injections": 76,
+          "IRQ in a DI span (lost, compensated)": 28,
+          "IRQ at a game instruction (original anchored there)": 43,
+          "IRQ in a post-check gap (model; lost uncompensated)": 6,
+          "fast speed-switch runs (cw_cal correction)": 2
+        },
+        "failures": [],
+        "x_error_T": {
+          "min": -3.1,
+          "p1": -3.1,
+          "median": 2.9,
+          "p99": 12.9,
+          "max": 12.9
+        },
+        "x_T": {
+          "min": 3000.5,
+          "median": 4012.6,
+          "max": 6426.1
+        },
+        "d9907_T": {
+          "min": -40.6,
+          "max": 26.1
+        },
+        "kt_fast_switches_T": -38,
+        "post_check_gap_d9907_T": {
+          "min": -73.0,
+          "max": 363.5
+        },
+        "window_busy_ms_max": 10.94,
+        "window_wait_ms_min": 13.961,
+        "negative_controls": {
+          "speed-switch correction not applied in hooks detected": 2,
+          "hook X constant 3 ticks high detected": 2,
+          "hook R constant off by one detected": 2,
+          "lost IRQ: R not added detected": 2,
+          "lost IRQ: X not adjusted detected": 2,
+          "hook $C8 clear removed detected": 2,
+          "window entry lost IRQ not counted detected": 2
+        },
+        "scope": "update model 8F7C -> 9907 in the simulator: capture hooks + copier window, CTC, frame IRQ and NextReg $C8/$22 models (a $C8 clear during a pulse does not take); uncontended T with 28MHz read waits, speed transitions charged at 3.5MHz; no hardware"
+      }
+    },
+    {
+      "counts": {
+        "states": 347,
+        "OUT changes": 11474,
+        "late OUTs at x=0": 348,
+        "states with late level changes at x=0": 137,
+        "max late T at x=0": 138,
+        "max entry DI span T": 156,
+        "max exit DI span T": 23,
+        "max other DI span T": 12,
+        "accumulate-X states": 347,
+        "accumulate-X states with late OUTs": 347,
+        "accumulate-X late OUTs": 1213,
+        "accumulate-X states with late level changes": 169,
+        "IRQ injections": 161,
+        "IRQ taken in window": 140,
+        "OUTs delayed by an IRQ handler": 4,
+        "max IRQ-delayed OUT T": 58,
+        "IRQ in the entry DI span (compensated)": 21,
+        "IRQ in the entry DI span max at T": 120,
+        "IRQ double injections": 7,
+        "CTC unit clk=0 ctc=True": 7,
+        "max first-window late T": 3292,
+        "CTC unit clk=0 ctc=False": 7,
+        "max fallback 9907 late T": 402,
+        "CTC unit clk=2 ctc=True": 7
+      },
+      "failures": [],
+      "per_level": {
+        "6": {
+          "max_window_ms": 29.696,
+          "max_busy_ms": 11.295,
+          "min_wait_ms": 17.434
+        }
+      },
+      "out_offset_T": {
+        "min": -32,
+        "p1": -28,
+        "median": -8,
+        "p99": 126,
+        "max": 138
+      },
+      "d9907_T": {
+        "min": -40,
+        "max": 3
+      },
+      "accumulate_X_late_T": {
+        "max": 7569,
+        "median": 4439
+      },
+      "negative_controls": {
+        "change detection removed (JP Z -> JP) detected": 7,
+        "tile count INC C removed detected": 7,
+        "R constant off by one detected": 7,
+        "IRQ T not added detected": 7,
+        "IRQ M1 not added detected": 7,
+        "pad 3 ticks late detected": 7,
+        "OUT deadlines 3 ticks early detected": 7
+      },
+      "scope": "copier window 8F92->9907 in the simulator (uncontended T, 28MHz read waits, CTC and IRQ models); no contention, no hardware",
+      "update": {
+        "counts": {
+          "states": 347,
+          "OUT changes": 11474,
+          "late OUTs (burst prefix after X)": 1131,
+          "IRQ injections": 259,
+          "IRQ in a DI span (lost, compensated)": 97,
+          "IRQ at a game instruction (original anchored there)": 152,
+          "IRQ in a post-check gap (model; lost uncompensated)": 12,
+          "fast speed-switch runs (cw_cal correction)": 7
+        },
+        "failures": [],
+        "x_error_T": {
+          "min": -10.4,
+          "p1": -7.6,
+          "median": 2.0,
+          "p99": 11.6,
+          "max": 12.4
+        },
+        "x_T": {
+          "min": 1809.8,
+          "median": 3402.4,
+          "max": 8905.2
+        },
+        "d9907_T": {
+          "min": -46.0,
+          "max": 11.2
+        },
+        "kt_fast_switches_T": -38,
+        "post_check_gap_d9907_T": {
+          "min": -130.1,
+          "max": 277.2
+        },
+        "window_busy_ms_max": 11.298,
+        "window_wait_ms_min": 15.914,
+        "negative_controls": {
+          "speed-switch correction not applied in hooks detected": 7,
+          "hook X constant 3 ticks high detected": 7,
+          "hook R constant off by one detected": 7,
+          "lost IRQ: R not added detected": 7,
+          "lost IRQ: X not adjusted detected": 7,
+          "hook $C8 clear removed detected": 7,
+          "window entry lost IRQ not counted detected": 7
+        },
+        "scope": "update model 8F7C -> 9907 in the simulator: capture hooks + copier window, CTC, frame IRQ and NextReg $C8/$22 models (a $C8 clear during a pulse does not take); uncontended T with 28MHz read waits, speed transitions charged at 3.5MHz; no hardware"
+      }
+    }
+  ]
+}

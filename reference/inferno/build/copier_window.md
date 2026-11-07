@@ -157,3 +157,43 @@ Contention: on a 48K contention model (SkoolKit CMIOSimulator) the original head
 Open: no JNext on the milestone-2 machine (no pace run); hardware sound/speed comparison by the
 user; capture hooks do not yet measure X or restore R; the entry DI span loses 0.09 % of IRQs;
 hook work in the window (milestone 3).
+
+## 7. Milestone 3a: timed capture hooks (nexclash PR bleughb/nexclash#136)
+
+Simulator only: uncontended T with 28 MHz read waits, speed switches charged at 3.5 MHz (plus a
+"fast switch" bound charged at 28 MHz). Gate: `copier_window/cw_m3_checks.json` (`--jobs 6`).
+
+- **X measured by the hooks.** 8F7C/959B/96A1 each: `DI; NEXTREG 7,3; NEXTREG $C8,1`, R read at a
+  fixed M1 offset, sync to the next CTC edge (`cw_edge`: 12 unrolled checks ~3.5 T apart, page 80),
+  body, run to the next edge at exit, constant path to the target. X = 32 x ticks + 3.5 T x entry
+  check index + K + CW_KT; 8F7C sets CW_X, actor hooks add. K/KR calibrated over all 64 half-T CTC
+  phases (a 5-phase calibration was 7 T off per hook; a 6 T looped sync summed over ~20 hooks put
+  9907 outside +-56 T). Per hook error about +-2 T; per update X error -12..+17 T.
+- **R restored**: entry R + per-hook M1 constant (bit 7 kept).
+- **Lost IRQs.** Hooks run DI (page 68 in slot 0 owns the IM2 offset). $C8 bit 0 is cleared right
+  after the speed switch (<= 24 T after DI) and read last before the exit (`cap_chk`, one-register
+  `IN A,($3B)`; $C8 preselected by `cw_tout`). Set: wait for /INT to drop, then R + 10, X - 94 (+ the
+  wait). The window entry does the same (`cap_done` clears, `cw_synced` reads): milestone 2's 0.09 %
+  lost IRQs are compensated. A game ISR taken on a site's JP precedes the entry edge: no correction.
+  Hardware assumption: a $C8 clear during an active pulse does not take (Rainbow evidence).
+- **Model gap.** A pulse starting between a hook's last $C8 read and the IRQ sample after EI +
+  NEXTREG 7,0 (the model charges the switch 24 T: ~6 T of window) is lost uncompensated; with 28 MHz
+  switches there is no gap. Estimate ~0.07 % of updates (8.5 hooks/update), model only.
+- **cw_cal.** At the first window (with the CTC test): 64 NEXTREG 7,0 / 7,3 pairs timed on the CTC ->
+  CW_KT = T per pair - 46 (model 0; fast bound -38). Hooks add KT; the window adds KT/2 to its base
+  and takes KT/2 off the pad. Fast-bound updates pass with KT; without it 9907 is ~230 T early.
+  One-off cost: the first update after boot ~3.3 k T late.
+- **DMA map copy.** 9B00..9F7F -> CAP_MAP by zxnDMA (port 6B, continuous, all cores; model 0.65 T/byte
+  from the TECHNIQUES 2K figure): 8F7C hook 3.1 k -> 1.09 k T; actor hooks 252 T. X per update
+  1,444-8,905 T (L1 ~4.5 k, was ~5.6 k).
+- **Update model 8F7C -> 9907** (`copier_window_update_checks`): the capture hooks + window from each
+  8F7C state; IRQs injected around every hook and the window entry. Game-code IRQs (and hook-lost,
+  compensated ones) are matched to the original at the same game instruction - the hooks shift the
+  game by X, and level code reads R between 8F7C and 8F92 (wall-time matching made L2 diverge).
+- **Results.** Window-only 1,854 states: 0 failures, 9907 -41..+35 T, controls 7/7 x 40. Update 1,855
+  states: 0 failures, 9907 -52..+42 T, 1,485 injections (550 lost and compensated, 873 anchored, 82
+  in the post-check gap), 40 fast-switch runs, controls 7 x 40 (lost-IRQ R 39/40), wait >= 13.7 ms.
+  L6 loading-prep quick PASS. m3 diagnostic NEX (hooks + window): boot checks PASS, MD5
+  9baec6412f2c3b7974b0db74a7ab9b75 (`copier_window/cw_m3_build.json`). No JNext here; no hardware.
+- **Data for 3b.** The head writes only 9878, A3F2-A6FD, A9A2-AB41, FFF2-FFF3 (L1 probe): the textmap
+  compile's inputs (page-68 map, DC00+ tiles, FC00+ attributes) are stable inside the window.
