@@ -1,0 +1,86 @@
+{
+  "counts": {
+    "states": 1854,
+    "OUT changes": 119363,
+    "late OUTs at x=0": 2004,
+    "states with late level changes at x=0": 650,
+    "max late T at x=0": 114,
+    "max entry DI span T": 139,
+    "max exit DI span T": 23,
+    "max other DI span T": 12,
+    "accumulate-X states": 1854,
+    "accumulate-X states with late OUTs": 1854,
+    "accumulate-X late OUTs": 16776,
+    "accumulate-X states with late level changes": 877,
+    "IRQ injections": 874,
+    "IRQ taken in window": 792,
+    "IRQ lost (DI span)": 82,
+    "IRQ lost max at T": 120,
+    "IRQ double injections": 38,
+    "CTC unit clk=0 ctc=True": 38,
+    "max first-window late T": 293,
+    "CTC unit clk=0 ctc=False": 38,
+    "max fallback 9907 late T": 389,
+    "CTC unit clk=2 ctc=True": 38,
+    "OUTs delayed by an IRQ handler": 36,
+    "max IRQ-delayed OUT T": 82
+  },
+  "failures": [],
+  "per_level": {
+    "1": {
+      "max_window_ms": 27.907,
+      "max_busy_ms": 11.05,
+      "min_wait_ms": 15.096
+    },
+    "2": {
+      "max_window_ms": 28.599,
+      "max_busy_ms": 11.09,
+      "min_wait_ms": 15.611
+    },
+    "3": {
+      "max_window_ms": 28.167,
+      "max_busy_ms": 11.101,
+      "min_wait_ms": 16.18
+    },
+    "4": {
+      "max_window_ms": 28.975,
+      "max_busy_ms": 11.219,
+      "min_wait_ms": 16.101
+    },
+    "5": {
+      "max_window_ms": 26.897,
+      "max_busy_ms": 10.932,
+      "min_wait_ms": 15.56
+    },
+    "6": {
+      "max_window_ms": 29.696,
+      "max_busy_ms": 11.289,
+      "min_wait_ms": 17.461
+    }
+  },
+  "out_offset_T": {
+    "min": -24,
+    "p1": -20,
+    "median": 0,
+    "p99": 95,
+    "max": 114
+  },
+  "d9907_T": {
+    "min": -24,
+    "max": 42
+  },
+  "accumulate_X_late_T": {
+    "max": 7712,
+    "median": 4818
+  },
+  "negative_controls": {
+    "change detection removed (JP Z -> JP) detected": 38,
+    "tile count INC C removed detected": 38,
+    "R constant off by one detected": 38,
+    "IRQ T not added detected": 38,
+    "IRQ M1 not added detected": 38,
+    "pad 3 ticks late detected": 38,
+    "OUT deadlines 3 ticks early detected": 38
+  },
+  "scope": "copier window 8F92->9907 in the simulator (uncontended T, 28MHz read waits, CTC and IRQ models); no contention, no hardware"
+}
