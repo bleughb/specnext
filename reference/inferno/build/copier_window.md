@@ -3,7 +3,8 @@
 Branch `claude/inferno-copier-window` in both repositories, from nexclash `codex/inferno` 4bfa72c.
 All figures are simulated original-game T-states (uncontended, 3.5 MHz) from the six full
 original level recordings (449,659 frames incl. the level-4 shop), not hardware measurements.
-Stage 2 remains incomplete; the translated head is not installed and no sprite NEX exists.
+Stage 2 remains incomplete. Milestone 2 (§6) installs the window at 8F92 only in a diagnostic NEX
+(no hook work, no sprites); its pace and sound are proved in the simulator, not yet on hardware.
 
 ## 1. How the original is paced
 
@@ -91,13 +92,54 @@ work stack, or FFF0 if it arrives before `LD SP,A6FE`). A scan of A000–A6FF fi
 pushed data as readers. Bytes below the final SP are never popped. With the head DI these
 bytes differ; the installed verifier must enforce "never read" per update.
 
-## 5. Not proved / open
+## 5. Open after milestone 1 (superseded by §6)
 
-- No OUT replay, no pad, no window scheduling: the head alone would speed the game up, so it
-  must not be installed by itself.
-- ULA contention (OUT to FE, 48K timing) is not modelled. Pad and replay accuracy need JNext
-  `nexclash.pace` and hardware. A raster-line pad (224 T) would misplace about 1 % of updates
-  (L6 p1 slack 277 T); prefer CTC.
-- Interrupt-injection test over the head, and the integrated verifier with IRQs delivered.
-- The capture hooks' own R and cost (8F7C/959B/96A1) still precede the window; their time must be
-  repaid by the pad.
+Milestone 1 left OUT replay, pad, IRQ handling and contention open; §6 records what milestone 2
+closed and what remains.
+
+## 6. Milestone 2: OUT replay and pad (nexclash `claude/inferno-copier-window-m2`)
+
+Design (evaluated against the handover, changed where measurements required it):
+- **Lockstep, not head-then-replay.** The first OUT is due 244 T after 9790 entry; the translated
+  head takes ~4.7-11 ms. Each value change is OUT from the head's change branch at its original T
+  (`cw_wait`, CTC deadline); OUT values (A700) and times (tiles >= 16) do not depend on the head's
+  own writes. A change the head reaches late is OUT at once. Cell 415 is deferred until after the
+  row end and epilogue: from its OUT the original has only 169 T to 9907.
+- **Clock: CTC channel 3**, timer, prescaler 256 (32 T a tick in every video timing, since CTC and
+  CPU both run from clk28), no interrupt, polled. Time base = first edge after entry, timed by the
+  sync loop (6 T/iteration). The 8-bit count is extended at row ends and while waiting. Without a
+  counting CTC (tested once at first use) the window falls back to the original copier. A raster
+  clock (216-228 T a line, mode dependent) cannot time 187 T OUT spacing.
+- **X: accumulate.** A bounded shift needs X <= head T - last OUT T = 169 T; the capture hooks
+  measure X = 3,198-7,642 T (median 3.8-5.6 k by level, `capture_x.json`). With X the window still
+  enters 9907 on time; the burst's first ~X are late. The milestone-2 build installs only 8F92
+  (X = 0); the window reads `CW_X` so the X behaviour is modelled.
+- **IRQs.** Every original head contains >= 1 frame IRQ (the no-op ISR: 94 T, 10 M1 incl. the IM2
+  acknowledge); R is read by level code (L6 BA22/BB89/BB8E) and the filler, so a DI window would
+  change R. The window runs EI; page 80 byte 0 is the offset of the IM2 JR at FFFF, so an IRQ enters
+  `cw_irq`, which adds 94 T to the deadlines and 10 to R and delays its EI past the /INT pulse.
+  998E = 0 throughout (checked). The exit EIs before the speed switch, so an IRQ pending since the
+  pad is taken by the game ISR just before 9907, as the original takes it inside its head.
+- **Never-read rule.** Window CALLs and IRQ pushes leave bytes only in the 4 below the copier's
+  final SP, which 9907's PUSH DE / PUSH HL overwrite first; the verifier runs those two pushes and
+  requires all RAM equal (with an IRQ before the copier's own SP, as in the original, the bytes lie
+  below the caller's SP).
+
+CHECKS_PLACEHOLDER
+
+Full recordings (`probe_cw_timeline.py`, `cw_timeline.json`; 385,739 frames, 88,187 updates):
+101,077 frame IRQs fall in 8F92..9907, at least one in every update (the compensation is always
+exercised); 76 (0.09 %) fall in the entry DI span (cap_done + sync, <= 139 T) and are lost (R off
+by 10, 9907 94 T early); 26,813 updates (30 %) have a level change at cell 0/1, which is OUT up to
+108 T late; 27 updates have slack below 32 T; 9907 begins D5 E5 and SP lies in A1F0..A6FE in all;
+998E is never set in a head. Free (waiting) time per update, window model: min 14.6-16.7 ms,
+p1 15.3-17.5 ms, median 20.9-23.0 ms by level - the budget for milestone 3.
+
+Contention: on a 48K contention model (SkoolKit CMIOSimulator) the original head is 265-509 T
+(0.3-0.5 %) longer than the uncontended model the pad uses, so on a contended machine 9907 comes
+~0.1 ms early (never a slip) and the burst ~0.4 % fast. The RZX frames hold ~56-60 k uncontended T
+(not 69,888): most contention is outside the head (the tail's screen write-out).
+
+Open: no JNext on the milestone-2 machine (no pace run); hardware sound/speed comparison by the
+user; capture hooks do not yet measure X or restore R; the entry DI span loses 0.09 % of IRQs;
+hook work in the window (milestone 3).

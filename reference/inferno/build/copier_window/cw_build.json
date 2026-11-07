@@ -1,0 +1,16 @@
+{
+  "boot_checks": {
+    "Sinclair": [],
+    "foreign ROM3": []
+  },
+  "tail": [
+    39552,
+    39605
+  ],
+  "sites": [
+    "8F92"
+  ],
+  "nex_md5": "4f7fef40b4a50b7f1ba7c82d064e851b",
+  "cwhead_md5": "d0585723c8a119ad56b40fdaa45cbe35",
+  "scope": "level-1 snapshot; copier window only (8F92), bank loader as the capture diagnostic; boot state checked in software, the window itself only in the simulator; not a release"
+}

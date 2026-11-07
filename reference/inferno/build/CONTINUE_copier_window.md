@@ -1,103 +1,67 @@
-# Continue Inferno stage 2: copier window (handover, 2026-11-07)
+# Continue Inferno stage 2: copier window (handover, updated 2026-11-07 after milestone 2)
 
-Branches: `claude/inferno-copier-window` in **bleughb/nexclash** (code) and **bleughb/specnext**
-(evidence). Both start from `codex/inferno` (nexclash 4bfa72c, specnext 488a9bd) and contain all
-of it. This is now the ONLY Inferno line: `codex/inferno` (GPT-6 Astra, PR bleughb/nexclash#96)
-is superseded and not continued (user, 2026-11-07). Its open items are carried in this branch.
+Code: **bleughb/nexclash** branch `claude/inferno-copier-window-m2` (from main 7a23697, which holds
+milestone 1). Evidence: **bleughb/specnext** branch `claude/inferno-copier-window`. `codex/inferno`
+(PR bleughb/nexclash#96) is superseded and not continued (user, 2026-11-07).
 
 ## Read first (in this order, nothing else end to end)
-1. `nexclash/CLAUDE.md` (rules, token discipline) and the "Next session" block of `games/inferno.md`.
-2. `specnext/reference/inferno/build/copier_window.md`: measurements, decision, milestone 1 evidence.
-3. `games/inferno.md` "Copier window" and "Approved design" sections.
-4. Code: `nexclash/inferno.py` `cw_out_t`, `CopierWindowPatch`, `CopierWindowMemory`, `run_cw_head`,
-   `copier_window_checks`; `asm/inferno_hooks.asm` from `cap_done_tail` and the block after
-   "Copier window, milestone 1" (`cw_go`, `cw_exit`, `cw_head`).
+1. `nexclash/CLAUDE.md` and the "Next session" block of `games/inferno.md`.
+2. `specnext/reference/inferno/build/copier_window.md`: §1-4 (pacing, milestone 1), §6 (milestone 2).
+3. Code: `nexclash/inferno.py` from "Copier window" (`run_cw_window`, `copier_window_checks`,
+   `CopierWindowSnapshotPatch`); `asm/inferno_hooks.asm` from "Copier window" (`cw_wait`, `cw_irq`,
+   `cw_head`, `cw_done`).
 
 ## Setup
-Clone both repos side by side (`nexclash/`, `specnext/`) and check out the branch in each. specnext
-is large; a sparse checkout of `reference/inferno` is enough. `pip install -r requirements.txt`.
-Assemble only with `python tools/asm2profile.py inferno` (bundled sjasmplus); new exported symbols
-need `--add-sym NAME`. Smoke test:
-`python -m nexclash.inferno --copier-window-checks ../specnext/reference/inferno --quick 2000`
-(about 70 s; expect 1,854 states, no failures, controls detected).
+Clone both repos side by side; specnext as a sparse checkout of `reference/inferno`.
+`pip install -r requirements.txt`. Assemble only with `python tools/asm2profile.py inferno`.
+Checks (about 15 min): `python -m nexclash.inferno --copier-window-checks ../specnext/reference/inferno
+--quick 2000 --cw-x ../specnext/reference/inferno/build/copier_window/capture_x.json --json OUT.json`.
+Subset while iterating: cache `_cw_states` once (pickle) and run every Nth state.
 
-## Why this branch exists (one paragraph)
-Inferno is paced by its own limiter 9907, which the copier calls after row 6. After 9907 the game
-plays beeper sound until the next interrupt resumes the copier. Slack after 9907 is often below
-1 ms, so any hook time added before 9907 slips frames (+10 ms slips 56–81 % of updates) and
-shortens sound. The copier head (9790..97FB, 25–31 ms) also *plays the beeper*: one
-`OUT (254),A` per cell from the A700 buffer. Plan: run a translated head fast, replay its OUTs at
-their original T, pad to the original 9907 time, and do hook work in the freed ~19 ms.
+## Done: milestone 2 (window installed at 8F92, no hook work in it)
+Each change of the copier's OUT value is OUT at its original T and 9907 is entered at the original
+time, polled on CTC channel 3; frame IRQs inside the window enter `cw_irq` (page 80 byte 0 is the
+IM2 JR offset) and add the original no-op ISR's 94 T / 10 M1. Diagnostic NEX
+`build/Inferno_copier_window_diagnostic.nex` (window only, X = 0) passes the boot checks. Numbers: §6.
 
-## Done (milestone 1)
-The translated head (page 80, 293 bytes) is exact against the original on 1,854 states of six
-levels: all registers incl. R, all RAM, and every OUT change (value plus original uncontended T,
-`cw_out_t`). Three negative controls are detected. Cost ≤ 7.6 ms. It is **not installed**: on its
-own it would make the game run faster than the original.
+## Decisions made in milestone 2 (do not reopen without new measurements)
+- "Run the head, then replay" cannot work: the first OUT is due 244 T after 9790, the head takes
+  ~5 ms. Replay is lockstep in the head's change branch; OUT values (A700) and times (tile map) do
+  not depend on the head's own writes.
+- X (earlier hooks): **accumulate**. A bounded shift needs X <= 169 T; capture hooks measure
+  3,198-7,642 T. With X the first ~X of the burst is late (OUT at once), the rest and 9907 exact.
+- Clock: CTC ch 3, prescaler 256 (32 T in every video timing), polled; time base = first edge
+  after entry, timed by the sync loop. Raster ($1E/$1F, 216-228 T a line by mode) cannot time
+  187 T OUT spacing; the fallback without a counting CTC is the original copier (CW_CLK = 2).
+- Cell 415's OUT is deferred until after the row end and epilogue (the original's 169 T from it to
+  9907 are too short for them); one deferred cell is all the 187 T spacing allows.
 
-## Next: milestone 2 — sound replay and pad, no hook work yet (recommended order)
-Goal: an installable 8F92 path that is pace- and sound-equivalent to the original by
-construction. It is the hardware test vehicle before any work moves into the window.
-
-1. **Clock.** Pick the wall clock for replay and pad. The repo's guidance for hook timing is the
-   copper or a `$1E/$1F` raster poll (TECHNIQUES §1, near "Line interrupt"). A raster line is 224 T;
-   CTC (TECHNIQUES §2, near "Sample sound by CTC timer interrupt") gives finer counts. Recommended:
-   **poll, no interrupts**. Busy-wait on the clock, OUT each logged change at its time, then wait
-   for the 9907 target. Do NOT enable line or CTC interrupts under the game in pulse mode: they
-   raise the same /INT and run the game's ISR (TECHNIQUES "Line interrupt", and the CTC gotcha
-   "CTC interrupts arrived although $C5 was 0"). Gate CTC use by core version with a raster
-   fallback, as DDMA is gated.
-2. **Time base.** Replay offsets are relative to the *original* 9790 entry. The hook enters later
-   than the original by X = the time the earlier hooks this update added (8F7C/959B/96A1 capture,
-   cap_done). Either accumulate X (each hook adds its own measured elapsed time), or accept a
-   bounded shift: play the burst X late, keep its internal timing, and still pad to the original
-   9907 time. That is only possible while X ≤ (head T − last OUT T). Decide from measurements and
-   record which.
-3. **Model first, in the simulator.** Extend `CopierWindowMemory` with a clock model (28 MHz T
-   with read waits, the existing `elapsed` accounting) and a port-FE write log. Check per state:
-   OUT values equal the original stream's changes; each OUT time − original OUT time is a
-   constant offset (within the clock's resolution); the 9907 entry time equals the original's.
-   Then six-level quicks plus the full recordings (88,187 updates) using the timeline model.
-4. **Interrupts.** The window runs DI, so a frame IRQ during it is lost in pulse mode. That is
-   harmless only while 998E = 0 (the ISR is then a no-op). Prove 998E = 0 for the whole window,
-   which is true by construction: it is set only at 9914. Add the injection test (LEARNINGS:
-   deliver an IRQ at ~20 points across the hook's own length) and the per-update rule that bytes
-   differing because of IRQ pushes lie below the copier's final SP and are never read
-   (copier_window.md §4).
-5. **Install path.** Only when 1–4 pass: a patch/profile option that installs the window at 8F92
-   in a diagnostic NEX (like `Inferno_capture_diagnostic.nex`), boot checks, then JNext
-   `python -m nexclash.pace` against the original for pace and sound (docs/CHECKS.md). Hardware:
-   ask the user (Dean) to compare beeper sound and speed against the plain `Inferno.nex`.
-
-## Then milestone 3 — hook work in the window
-- Move the post-copy work (scenery compile, exact validation, dispatch, uploads, queue) from 8F95
-  into the window, between OUT deadlines. Options: (a) cooperative work units short enough to keep
-  OUT jitter within a measured bound (OUT spacing is ≥ 187 T ≈ 53 µs at 3.5 MHz); (b) hardware IM2
-  mode during the window with CTC-timed OUTs (BRIEFING C2 #34, TECHNIQUES "Held interrupts").
-  Note that hardware IM2 forces the DDMA path to its CPU fallback (DDMA_IMPLEMENTATION.md). Choose
-  by measurement.
-- Deadline rule: unfinished work publishes nothing; the previous complete frame stays.
-- Measure whole updates against the new gate: zero frame slips and the original 9907 time, sound
-  unchanged. This replaces the 10 ms total target.
-- Optional speed-up: the head is unoptimised (~42 instructions/cell); a faster head enlarges the window.
+## Next: milestone 3 - X measured on hardware, then hook work in the window
+1. Capture hooks (8F7C/959B/96A1): read the CTC at entry/exit, accumulate X (T) in page 80
+   (`CW_X`), and restore R (they do not today: R is read by L6 game code BA22/BB89/BB8E). cap_done
+   currently copies nothing; its DI span (plus the sync) loses 0.09 % of frame IRQs.
+2. Move post-copy work (8F95: scenery compile, validation, dispatch, uploads, queue) into the
+   window: `cw_wait` is the place (work units while the deadline is ahead). Free time per update,
+   full recordings: min 14.6 ms, p1 15.3-17.5 ms.
+3. Shrink X itself (the 8F7C map copy is ~3.2 k T of it): a late burst prefix is audible only as
+   ~X of compressed edges, but smaller X means fewer.
+4. JNext `nexclash.pace` (not available on the machine that did milestone 2) and the user's hardware
+   test of the diagnostic NEX (checklist in games/inferno.md) before relying on the window.
 
 ## Pitfalls already paid for
-- The IM2 vector lands on FFFF (`JR` to FFF4, 12 T). Exclude FFFF with the ISR when timing
-  foreground code.
-- The tile ≥ 16 path is 12 M1, not 10. The R constant `CW_M1K` (0x3A) is end-to-end
-  8F92→9907 and must be recalibrated after any change to cap_done or cw_head (zero it, run, read
-  the constant offset, set it, rerun everything).
-- Tile graphics are mutable mid-level (F400–FA36; L3 ED00–F0AF). A 2,000-frame quick did not show
-  it; full recordings did. Keep exact byte validation.
-- `--loading-prep-check` takes the `.rzx`, not the `.z80`.
-- doccheck on a Windows checkout counts CRLF bytes. Every file it flags is within budget with LF.
-  Write `games/inferno.md` with LF and keep it ≤ 25,000 bytes (it is 24.5 k).
-- Never install the head without the pad: it removes ~20 ms per update and the game speeds up.
+- The IM2 JR at FFFF reads its offset from 0000: whatever is mapped in slot 0 decides where an IRQ
+  goes. Page 80 byte 0 = offset to cw_irq; page 68 (capture) must stay DI.
+- At 28 MHz an ISR that EIs at once re-enters on the same /INT pulse (32 T): cw_irq delays its EI.
+- CW_M1K (R) counts M1 from 8F92 to the R read and after `LD R,A`; any change there needs a
+  recalibration (zero it, read the constant offset, set, rerun). KRB/KPAD likewise centre the OUT
+  and 9907 offsets (`work/probes`-style subset run: mean of `dts` and `d9907`).
+- Calls and IRQ pushes in the window leave bytes below the copier's SP; 9907's PUSH DE / PUSH HL
+  overwrite exactly those 4 first. The verifier checks it by running the two pushes.
+- Tile graphics are mutable mid-level (F400-FA36; L3 ED00-F0AF): keep exact byte validation.
+- doccheck on a Windows checkout counts CRLF bytes; `games/inferno.md` must be <= 25,000 with LF.
+- Never install the head without the pad.
 
 ## Constraints (unchanged)
-Preserve original RAM/registers/R, actor draw order, approved B appearance, caller speed and
-ORIGINAL pacing. Protect current and pending resources. Cold misses, overflow and incomplete work
-keep the previous complete frame. Keep gated DMA/DDMA, no-blitter and CPU fallbacks. Never treat
-sampled content as a complete catalogue. Sprites stay disabled until the complete pipeline passes.
-Commit to the `claude/inferno-copier-window` branches. Push or open a PR only when the user asks.
-Report costs in ms, separating simulator models, executed assembly and hardware evidence.
+Original RAM/registers/R, actor draw order, approved B appearance, caller speed and ORIGINAL pacing
+and sound. Sprites stay disabled until the complete pipeline passes. Push or open a PR only when
+the user asks. Report costs in ms, separating simulator models, executed assembly and hardware.
