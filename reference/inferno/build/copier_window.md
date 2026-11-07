@@ -197,3 +197,25 @@ Simulator only: uncontended T with 28 MHz read waits, speed switches charged at 
   9baec6412f2c3b7974b0db74a7ab9b75 (`copier_window/cw_m3_build.json`). No JNext here; no hardware.
 - **Data for 3b.** The head writes only 9878, A3F2-A6FD, A9A2-AB41, FFF2-FFF3 (L1 probe): the textmap
   compile's inputs (page-68 map, DC00+ tiles, FC00+ attributes) are stable inside the window.
+
+### 7.1 First hardware result and fix (2026-11-08, nexclash `claude/inferno-m3-hw-bisect`)
+- `Inferno_copier_window_m3_diagnostic.nex` MD5 9baec641... crashed on the user's Next every time
+  (many vertical green bars). The m2 window-only diagnostic runs (level 1 reached; "Neznamy povel"
+  is the game's own Czech command console: type START / S + Enter).
+- Cause: z80tonex's tail keeps its 20-byte register block (BC' DE' HL' AF' IX IY BC DE HL AF) in the
+  alt ROM at the slot1 address = `rom_end` 3945, written by the stub at boot. Milestone 3a's `caplo`
+  started at 3948: `cap_in`/`cap_out`, called by every capture hook, were overwritten. Simulated boot
+  of that NEX: 3945-3958 = `2000 2055 8953 4400 c0a0 3a5c fdbe 0000 c8a0 bbff`. The model never runs
+  the stub; the boot check did not compare hook bytes afterwards.
+- Fix: `caplo` from 3960 (cap_chk, cap_lost, cap_done), cap_in/cap_out moved into the capture block;
+  asm `ASSERT cap_chk >= rom_end + 20`; CapturePatch and both snapshot patches refuse hook bytes in
+  the register block (control: the 3a profile is refused); `--copier-window-build` boots the NEX in
+  the simulator and requires every hook byte intact (new boot check "hook bytes after boot"). DMA
+  program now sends 0xC3 (reset) after 0x83 like hlib_dma. Hook timing unchanged (same instructions).
+- Model fixes found by the rerun (an L6 sample failure, 9907 -56 T): cap_lost starts while the pulse
+  is still active, so the original is now anchored there too (it was left at wall time); its /INT
+  wait loop costs 4 T, not 6 (CW_KSPIN; CAP_KLOST follows it); a "post-check gap" pulse is one no
+  $C8 read saw (a read that saw it and did not compensate fails).
+- New files: `Inferno_copier_window_m3_diagnostic.nex` (fixed, MD5 68340edf338f8e41c0f80cc432ba2af0)
+  and `Inferno_copier_window_current_diagnostic.nex` (current window code, no hooks, MD5
+  692a8d92f123bf2c8c4d7a623a3b251a). Gate: `copier_window/cw_m3_checks.json` (rerun).
