@@ -81,11 +81,11 @@
     "counts": {
       "states": 1855,
       "OUT changes": 119779,
-      "late OUTs (burst prefix after X)": 15671,
+      "late OUTs (burst prefix after X)": 15673,
       "IRQ injections": 1485,
-      "IRQ in a DI span (lost, compensated)": 550,
-      "IRQ at a game instruction (original anchored there)": 873,
-      "IRQ in a post-check gap (model; lost uncompensated)": 82,
+      "IRQ in a DI span (lost, compensated)": 549,
+      "IRQ at a game instruction (original anchored there)": 1013,
+      "IRQ in a post-check gap (model; lost uncompensated)": 98,
       "fast speed-switch runs (cw_cal correction)": 40
     },
     "failures": [],
@@ -93,31 +93,30 @@
       "speed-switch correction not applied in hooks detected": 40,
       "hook X constant 3 ticks high detected": 40,
       "hook R constant off by one detected": 40,
-      "lost IRQ: R not added detected": 39,
+      "lost IRQ: R not added detected": 40,
       "lost IRQ: X not adjusted detected": 40,
       "hook $C8 clear removed detected": 40,
-      "window entry lost IRQ not counted detected": 40,
-      "lost IRQ: R not added MISSED": 1
+      "window entry lost IRQ not counted detected": 40
     },
     "x_error_T": {
-      "min": -12.0,
-      "max": 16.8
+      "min": -14.4,
+      "max": 20.1
     },
     "x_T": {
-      "min": 1444.0,
-      "max": 8905.2
+      "min": 1443.6,
+      "max": 8871.1
     },
     "d9907_T": {
-      "min": -51.9,
-      "max": 42.2
+      "min": -47.0,
+      "max": 40.6
     },
     "kt_fast_switches_T": -38,
     "post_check_gap_d9907_T": {
-      "min": -814.4,
-      "max": 480.9
+      "min": -814.8,
+      "max": 485.0
     },
     "window_busy_ms_max": 11.298,
-    "window_wait_ms_min": 13.733,
+    "window_wait_ms_min": 13.736,
     "scope": "update model 8F7C -> 9907 in the simulator: capture hooks + copier window, CTC, frame IRQ and NextReg $C8/$22 models (a $C8 clear during a pulse does not take); uncontended T with 28MHz read waits, speed transitions charged at 3.5MHz; no hardware"
   },
   "per_level_results": [
@@ -185,37 +184,37 @@
         "counts": {
           "states": 309,
           "OUT changes": 40797,
-          "late OUTs (burst prefix after X)": 5293,
+          "late OUTs (burst prefix after X)": 5297,
           "IRQ injections": 266,
           "IRQ in a DI span (lost, compensated)": 99,
-          "IRQ at a game instruction (original anchored there)": 160,
-          "IRQ in a post-check gap (model; lost uncompensated)": 15,
+          "IRQ at a game instruction (original anchored there)": 183,
+          "IRQ in a post-check gap (model; lost uncompensated)": 20,
           "fast speed-switch runs (cw_cal correction)": 7
         },
         "failures": [],
         "x_error_T": {
-          "min": -11.2,
-          "p1": -7.2,
-          "median": 0.6,
-          "p99": 9.9,
-          "max": 11.1
+          "min": -13.0,
+          "p1": -10.4,
+          "median": 0.8,
+          "p99": 10.5,
+          "max": 12.1
         },
         "x_T": {
-          "min": 2367.9,
-          "median": 4715.6,
-          "max": 6791.6
+          "min": 2364.1,
+          "median": 4718.6,
+          "max": 6791.2
         },
         "d9907_T": {
-          "min": -41.5,
-          "max": 22.2
+          "min": -41.2,
+          "max": 28.5
         },
         "kt_fast_switches_T": -38,
         "post_check_gap_d9907_T": {
-          "min": -130.0,
-          "max": -91.6
+          "min": -130.4,
+          "max": -87.9
         },
-        "window_busy_ms_max": 11.061,
-        "window_wait_ms_min": 13.733,
+        "window_busy_ms_max": 11.059,
+        "window_wait_ms_min": 13.736,
         "negative_controls": {
           "speed-switch correction not applied in hooks detected": 7,
           "hook X constant 3 ticks high detected": 7,
@@ -292,34 +291,34 @@
         "counts": {
           "states": 390,
           "OUT changes": 3776,
-          "late OUTs (burst prefix after X)": 641,
+          "late OUTs (burst prefix after X)": 640,
           "IRQ injections": 283,
           "IRQ in a DI span (lost, compensated)": 103,
-          "IRQ at a game instruction (original anchored there)": 161,
-          "IRQ in a post-check gap (model; lost uncompensated)": 15,
+          "IRQ at a game instruction (original anchored there)": 186,
+          "IRQ in a post-check gap (model; lost uncompensated)": 19,
           "fast speed-switch runs (cw_cal correction)": 8
         },
         "failures": [],
         "x_error_T": {
-          "min": -9.4,
-          "p1": -6.2,
-          "median": 0.6,
-          "p99": 10.4,
-          "max": 13.4
+          "min": -6.8,
+          "p1": -5.0,
+          "median": 0.5,
+          "p99": 11.2,
+          "max": 13.5
         },
         "x_T": {
-          "min": 1444.0,
-          "median": 2543.2,
-          "max": 7376.6
+          "min": 1443.6,
+          "median": 2542.9,
+          "max": 7342.5
         },
         "d9907_T": {
-          "min": -51.9,
-          "max": 10.0
+          "min": -45.4,
+          "max": 9.6
         },
         "kt_fast_switches_T": -38,
         "post_check_gap_d9907_T": {
-          "min": -814.4,
-          "max": 480.9
+          "min": -814.8,
+          "max": 485.0
         },
         "window_busy_ms_max": 11.102,
         "window_wait_ms_min": 14.961,
@@ -399,46 +398,45 @@
         "counts": {
           "states": 381,
           "OUT changes": 25015,
-          "late OUTs (burst prefix after X)": 3407,
+          "late OUTs (burst prefix after X)": 3409,
           "IRQ injections": 297,
           "IRQ in a DI span (lost, compensated)": 110,
-          "IRQ at a game instruction (original anchored there)": 175,
-          "IRQ in a post-check gap (model; lost uncompensated)": 15,
+          "IRQ at a game instruction (original anchored there)": 203,
+          "IRQ in a post-check gap (model; lost uncompensated)": 18,
           "fast speed-switch runs (cw_cal correction)": 8
         },
         "failures": [],
         "x_error_T": {
-          "min": -9.8,
-          "p1": -6.0,
-          "median": 1.6,
-          "p99": 10.8,
-          "max": 12.1
+          "min": -10.9,
+          "p1": -6.9,
+          "median": 1.4,
+          "p99": 11.6,
+          "max": 15.5
         },
         "x_T": {
-          "min": 1457.5,
-          "median": 3752.1,
-          "max": 7070.6
+          "min": 1447.0,
+          "median": 3755.5,
+          "max": 7006.1
         },
         "d9907_T": {
-          "min": -43.9,
-          "max": 40.6
+          "min": -46.4,
+          "max": 35.8
         },
         "kt_fast_switches_T": -38,
         "post_check_gap_d9907_T": {
-          "min": -115.6,
-          "max": -23.5
+          "min": -120.2,
+          "max": -68.4
         },
-        "window_busy_ms_max": 11.114,
+        "window_busy_ms_max": 11.108,
         "window_wait_ms_min": 14.615,
         "negative_controls": {
           "speed-switch correction not applied in hooks detected": 8,
           "hook X constant 3 ticks high detected": 8,
           "hook R constant off by one detected": 8,
-          "lost IRQ: R not added detected": 7,
+          "lost IRQ: R not added detected": 8,
           "lost IRQ: X not adjusted detected": 8,
           "hook $C8 clear removed detected": 8,
-          "window entry lost IRQ not counted detected": 8,
-          "lost IRQ: R not added MISSED": 1
+          "window entry lost IRQ not counted detected": 8
         },
         "scope": "update model 8F7C -> 9907 in the simulator: capture hooks + copier window, CTC, frame IRQ and NextReg $C8/$22 models (a $C8 clear during a pulse does not take); uncontended T with 28MHz read waits, speed transitions charged at 3.5MHz; no hardware"
       }
@@ -507,34 +505,34 @@
         "counts": {
           "states": 367,
           "OUT changes": 35732,
-          "late OUTs (burst prefix after X)": 4759,
+          "late OUTs (burst prefix after X)": 4756,
           "IRQ injections": 304,
           "IRQ in a DI span (lost, compensated)": 113,
-          "IRQ at a game instruction (original anchored there)": 182,
-          "IRQ in a post-check gap (model; lost uncompensated)": 19,
+          "IRQ at a game instruction (original anchored there)": 216,
+          "IRQ in a post-check gap (model; lost uncompensated)": 17,
           "fast speed-switch runs (cw_cal correction)": 8
         },
         "failures": [],
         "x_error_T": {
-          "min": -12.0,
-          "p1": -10.1,
-          "median": 2.1,
-          "p99": 16.1,
-          "max": 16.8
+          "min": -11.8,
+          "p1": -8.6,
+          "median": 2.4,
+          "p99": 14.0,
+          "max": 20.1
         },
         "x_T": {
-          "min": 3041.9,
-          "median": 4860.5,
-          "max": 8845.9
+          "min": 3041.5,
+          "median": 4826.4,
+          "max": 8852.9
         },
         "d9907_T": {
-          "min": -47.6,
-          "max": 42.2
+          "min": -47.0,
+          "max": 40.6
         },
         "kt_fast_switches_T": -38,
         "post_check_gap_d9907_T": {
-          "min": -651.5,
-          "max": 401.1
+          "min": -651.9,
+          "max": 400.8
         },
         "window_busy_ms_max": 11.23,
         "window_wait_ms_min": 14.773,
@@ -612,34 +610,34 @@
         "counts": {
           "states": 61,
           "OUT changes": 2985,
-          "late OUTs (burst prefix after X)": 440,
+          "late OUTs (burst prefix after X)": 441,
           "IRQ injections": 76,
           "IRQ in a DI span (lost, compensated)": 28,
-          "IRQ at a game instruction (original anchored there)": 43,
-          "IRQ in a post-check gap (model; lost uncompensated)": 6,
+          "IRQ at a game instruction (original anchored there)": 54,
+          "IRQ in a post-check gap (model; lost uncompensated)": 3,
           "fast speed-switch runs (cw_cal correction)": 2
         },
         "failures": [],
         "x_error_T": {
-          "min": -3.1,
-          "p1": -3.1,
-          "median": 2.9,
-          "p99": 12.9,
-          "max": 12.9
+          "min": -7.8,
+          "p1": -7.8,
+          "median": 2.8,
+          "p99": 15.8,
+          "max": 15.8
         },
         "x_T": {
-          "min": 3000.5,
-          "median": 4012.6,
-          "max": 6426.1
+          "min": 2966.4,
+          "median": 4022.4,
+          "max": 6489.9
         },
         "d9907_T": {
-          "min": -40.6,
-          "max": 26.1
+          "min": -38.5,
+          "max": 25.4
         },
         "kt_fast_switches_T": -38,
         "post_check_gap_d9907_T": {
-          "min": -73.0,
-          "max": 363.5
+          "min": -74.9,
+          "max": 360.2
         },
         "window_busy_ms_max": 10.94,
         "window_wait_ms_min": 13.961,
@@ -719,34 +717,34 @@
         "counts": {
           "states": 347,
           "OUT changes": 11474,
-          "late OUTs (burst prefix after X)": 1131,
+          "late OUTs (burst prefix after X)": 1130,
           "IRQ injections": 259,
-          "IRQ in a DI span (lost, compensated)": 97,
-          "IRQ at a game instruction (original anchored there)": 152,
-          "IRQ in a post-check gap (model; lost uncompensated)": 12,
+          "IRQ in a DI span (lost, compensated)": 96,
+          "IRQ at a game instruction (original anchored there)": 171,
+          "IRQ in a post-check gap (model; lost uncompensated)": 21,
           "fast speed-switch runs (cw_cal correction)": 7
         },
         "failures": [],
         "x_error_T": {
-          "min": -10.4,
-          "p1": -7.6,
-          "median": 2.0,
-          "p99": 11.6,
-          "max": 12.4
+          "min": -14.4,
+          "p1": -6.6,
+          "median": 1.5,
+          "p99": 10.0,
+          "max": 12.1
         },
         "x_T": {
-          "min": 1809.8,
-          "median": 3402.4,
-          "max": 8905.2
+          "min": 1812.8,
+          "median": 3405.4,
+          "max": 8871.1
         },
         "d9907_T": {
-          "min": -46.0,
-          "max": 11.2
+          "min": -43.6,
+          "max": 15.5
         },
         "kt_fast_switches_T": -38,
         "post_check_gap_d9907_T": {
-          "min": -130.1,
-          "max": 277.2
+          "min": -129.4,
+          "max": 309.1
         },
         "window_busy_ms_max": 11.298,
         "window_wait_ms_min": 15.914,
