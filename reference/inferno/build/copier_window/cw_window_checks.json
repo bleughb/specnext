@@ -2,7 +2,7 @@
   "counts": {
     "states": 1854,
     "OUT changes": 119363,
-    "late OUTs at x=0": 2004,
+    "late OUTs at x=0": 1952,
     "states with late level changes at x=0": 650,
     "max late T at x=0": 114,
     "max entry DI span T": 139,
@@ -10,7 +10,7 @@
     "max other DI span T": 12,
     "accumulate-X states": 1854,
     "accumulate-X states with late OUTs": 1854,
-    "accumulate-X late OUTs": 16776,
+    "accumulate-X late OUTs": 16741,
     "accumulate-X states with late level changes": 877,
     "IRQ injections": 874,
     "IRQ taken in window": 792,
@@ -22,8 +22,8 @@
     "CTC unit clk=0 ctc=False": 38,
     "max fallback 9907 late T": 389,
     "CTC unit clk=2 ctc=True": 38,
-    "OUTs delayed by an IRQ handler": 36,
-    "max IRQ-delayed OUT T": 82
+    "OUTs delayed by an IRQ handler": 53,
+    "max IRQ-delayed OUT T": 95
   },
   "failures": [],
   "per_level": {
