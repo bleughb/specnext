@@ -125,7 +125,21 @@ Design (evaluated against the handover, changed where measurements required it):
   requires all RAM equal (with an IRQ before the copier's own SP, as in the original, the bytes lie
   below the caller's SP).
 
-CHECKS_PLACEHOLDER
+Checks (`python -m nexclash.inferno --copier-window-checks ../specnext/reference/inferno --quick 2000
+--cw-x .../copier_window/capture_x.json`, `copier_window/cw_window_checks.json`; simulator, uncontended
+T with 28 MHz read waits, CTC phase varied per state): 1,854 states of six levels PASS. Registers
+incl. R and all RAM exact (the 4 bytes below SP after 9907's two pushes); 119,363 OUT changes, each
+within -24..+56 T of the original except cells 0/1 (entry overhead, <= 114 T late; a level change
+in 650 states); 9907 entered -24..+42 T from the original. A sweep of all 32 CTC phases on 49 states
+(1,568 runs): worst OUT after cell 1 +48.4 T, |9907| <= 41.1 T. Accumulate-X (each state entered X
+late, X from `capture_x.json`): 9907 still on time in all 1,854; the burst's first ~X late (877
+states change level there). IRQ injection, 23 points x 38 states + 38 double: PASS; 82 points in
+the entry DI span (<= 120 T after 8F92) are lost; an OUT due within one tick of an IRQ may move by
+one ISR (53 OUTs, <= 95 T). Negative controls 7/7 x 38 (change detection, tile count, R constant,
+IRQ T, IRQ M1, pad +3 ticks, deadlines -3 ticks). CTC units: untested -> tested on first use (that
+window up to 293 T late), absent or stopped -> original copier (9907 <= 389 T late, R not kept).
+Window busy <= 11.3 ms, waiting >= 15.1 ms per update. Diagnostic NEX (`cw_build.json`): boot checks
+PASS with the Sinclair and a foreign ROM3; MD5 4f7fef40b4a50b7f1ba7c82d064e851b.
 
 Full recordings (`probe_cw_timeline.py`, `cw_timeline.json`; 385,739 frames, 88,187 updates):
 101,077 frame IRQs fall in 8F92..9907, at least one in every update (the compensation is always
