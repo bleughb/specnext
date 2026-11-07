@@ -1,8 +1,9 @@
 # Continue Inferno stage 2: copier window (handover, 2026-11-07)
 
 Branches: `claude/inferno-copier-window` in **bleughb/nexclash** (code) and **bleughb/specnext**
-(evidence). Both start from `codex/inferno` (nexclash 4bfa72c, specnext 488a9bd); the work on
-`codex/inferno` (GPT-6 Astra, PR bleughb/nexclash#96) is untouched.
+(evidence). Both start from `codex/inferno` (nexclash 4bfa72c, specnext 488a9bd) and contain all
+of it. This is now the ONLY Inferno line: `codex/inferno` (GPT-6 Astra, PR bleughb/nexclash#96)
+is superseded and not continued (user, 2026-11-07). Its open items are carried in this branch.
 
 ## Read first (in this order, nothing else end to end)
 1. `nexclash/CLAUDE.md` (rules, token discipline) and the "Next session" block of `games/inferno.md`.
