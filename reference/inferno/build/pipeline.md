@@ -130,7 +130,7 @@ Checks: `--select-checks` (assembled against an independent oracle: 400 scripted
 
 A run of 32 dropped updates would hold a stale frame for about 0.8 s if a display existed; this is the figure to judge before showing anything. Cold frames are the worst case: uploading the initial set at 8EF9 does not remove them, but preallocating it may; not measured. Loading-prep quick on L6 exits 0 with status FAIL, the same as main.
 
-NEX `Inferno_driver_diagnostic.nex`, MD5 in `pipeline/select_build.json`: boot checks PASS incl. hook bytes after boot. No display change. Not run on hardware.
+NEX `Inferno_driver_diagnostic.nex`, MD5 in `pipeline/select_build.json`: boot checks PASS incl. hook bytes after boot. No display change. Hardware (user, 2026-11-09): game seems to work, pause similar to the previous driver build (about 4 s by rough count; model 5.4 s); not formally measured. Selection, store contents and drop runs are not visible in this build.
 
 ## Remaining (in order)
 1. Reduce the drop run: preallocate the first level's patterns at 8EF9, then measure; if runs stay long, split the work more finely or use the ~45 T gaps (handover "Next"). Decide with the user whether 32 is acceptable.
