@@ -1,4 +1,4 @@
-# Continue Inferno stage 2: copier window (handover, updated 2026-11-08 after milestone 3b)
+# Continue Inferno stage 2: copier window (handover, updated 2026-11-08 after milestone 3c)
 
 Code: **bleughb/nexclash** main (milestone 3b merged from `claude/inferno-copier-window-m3b`).
 Evidence: **bleughb/specnext** main (`build/copier_window.md` §7-8, `copier_window/cw_m3*_*.json`).
@@ -58,11 +58,10 @@ Record in the hand-over which step last passed and on which commit.
 - Speed-switch costs are measured on the machine (cw_cal), never assumed.
 
 ## Next
-1. m3b on hardware: gameplay ok (user, 2026-11-08); still ask for pace/sound vs plain and heavy shooting.
-2. Busy-beeper updates (10 % of states): every cell gap < 12 ticks, so no slice; the whole work
-   (4.5-7 ms) stays at 8F95 and eats that update's slack (§1: slips/shorter filler). Options: units
-   small enough for ~45 T per gap (poll + fast cell ~22 T; a source cell is up to ~120 T), or carry
-   unfinished work to the next window (a frame late; fine while no display shows it). Measure first.
+- 3c (§9) merged: unfinished 8F95 work is dropped (8F95 160 T); last gate 0 failures (record milestone3c).
+1. User hardware result of `Inferno_copier_window_m3c_diagnostic.nex`: pace/sound vs plain, heavy shooting.
+2. Drop run lengths on full recordings (gate covers the first 2,000 frames: max 6 in a row on L6);
+   if long runs matter once a display exists, use the ~45 T gaps of busy windows (small work units).
 3. Shrink the actor hooks (252 T each; 8F7C 1,082 T); then the earlier items (live-table scan, runtime
    exact dispatch, complete frame state, protected uploads). Keep sprites disabled.
 3b constants: CW_FINE 12, CW_WKM 9 (margin >= 108 T over 64 phases), WK_KR -24 (R at 8F95; checked

@@ -257,3 +257,16 @@ Simulator only (uncontended T, 28 MHz read waits). Gate: `copier_window/cw_m3b_c
   half): boot checks PASS incl. hook bytes after boot, MD5 2ca871c6d19550055811fb35ec299bd4.
 - **Open.** Busy-beeper updates still do the whole work at 8F95 (slip/shorter filler there: §1 table,
   "+5 ms"); finer slices need units < ~45 T or carrying the work to the next window. No hardware run.
+
+## 9. Milestone 3c: unfinished work is dropped, not finished at 8F95 (nexclash `claude/inferno-copier-window-m3c`)
+
+- Finishing at 8F95 (3b) put up to 7 ms after the limiter in the 10 % busy-beeper updates (no slice),
+  eating their slack (§1). Carrying the work into the next window is not cheap: the next 8F7C
+  overwrites the captured map it reads. 3c drops it: `wk_frame` restores R only; F_SCENE_READY and
+  Q_READY stay 0 (a display would keep its last complete frame); the next window restarts the work on
+  the new capture. The model checks a dropped frame writes nothing at 8F95 but readiness 0.
+- Gate (`cw_m3c_checks.json`, `--jobs 6`): 0 failures; 8F95 156-160 T in every update; 1,626 frames done
+  in the window, 229 dropped (12 %: 187 no slice, 42 unfinished); at most 6 consecutive drops (L6,
+  first 2,000 frames; 3 on other levels); 9907 -51..+45 T; 11 update controls detected. L6 loading-prep
+  quick PASS. NEX `Inferno_copier_window_m3c_diagnostic.nex` MD5 ac3be35a00830b05028fa766d568e307, boot
+  checks PASS incl. hook bytes after boot. Open: drop runs on full recordings; hardware run.
