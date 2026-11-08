@@ -1,0 +1,13 @@
+{
+  "level": 6,
+  "frame": 452,
+  "counts": {
+    "distinct streams stored": 118,
+    "rejected indices": 120,
+    "indices with no tiles": 13,
+    "duplicate indices sharing a payload": 5
+  },
+  "driver_ms": 6895.912714285714,
+  "instructions": 17623182,
+  "scope": "executed assembly in the simulator; 28 MHz model, read allowance; no hardware"
+}
