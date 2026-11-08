@@ -1,3 +1,6 @@
+> **Historical (codex/inferno, superseded 2026-11-07).** The one current handover is
+> [CONTINUE_copier_window.md](CONTINUE_copier_window.md).
+
 # Continue Inferno stage 2 from GitHub
 
 Latest runtime evidence: [runtime_profile.md](runtime_profile.md): per-update component totals
