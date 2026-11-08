@@ -80,3 +80,4 @@ A milestone, not the Stage 2 exit; fits with items 3-4. It changes what the user
 
 ## Driver NEX (first step of the integrated diagnostic)
 `Inferno_driver_diagnostic.nex` (`--copier-window-build --cw-driver`), MD5 2d38a1bdacafc5c3724c6cd6ba013cce: m3d plus the 8EF9 gate, the driver and its worker and table pages, so the store is real and dispatch can match. Boot checks PASS incl. hook bytes after boot. Header asks for the expanded machine (banks 48-55 and 64-67). No display change. The model predicts a 4.9 s pause for level 1; pace, sound and pause length on hardware are not yet measured.
+Hardware (user, 2026-11-08, newest core, 50 Hz): the game runs ok; pause before level 1 about 4 s by rough count (model 4.9 s); speed and beeper ok, nothing obviously wrong, not formally measured. Store correctness and dispatch matching are not visible in this build.
