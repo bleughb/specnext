@@ -36,3 +36,34 @@ Costs are executed assembly in the simulator (28 MHz model with the read allowan
 including scan, duplicate search and clears; no hardware. The stored counts equal the host census
 (`loading_owned.md`, 101/109/88/122/84/118). Evidence: `pipeline/driver<L>.json`. Not installed in any
 NEX: the pause is only worth a hardware run once the runtime side (items 2-4) exists.
+
+## 2. Window dispatch (nexclash `claude/inferno-pipeline-dispatch`)
+
+`wk_dispatch` (page 69, 1800-19FF) runs after the scene compile in the 8F95 coroutine and is the first
+reader of CAP_LOG. For each record: entry 0800 + 16*image in page 79 (valid, FLASH phase 0, generation
+0), then a byte-exact comparison of live C100 pointer, header, runs, tile IDs, bitmaps and attributes
+against the stored stream in the owned page, and the stored length. Duplicate indices need no lookup:
+the driver gave them the shared entry. Any miss leaves `DX_READY` 0; unfinished work is dropped as in
+3c (the 8F95 drop path also clears `DX_READY`: 8F95 now 156-162 T, was 156-160). Polls every record, row
+and tile, HL carried on the work stack, slot 1 remapped on resume. No display reads the flag yet.
+Only phase 0 is prepared; a FLASH-phase store is part of item 3.
+
+Unit checks (`--dispatch-checks`, crafted store and log): exact hits with duplicate, a yield every Nth
+poll, scene not ready, log overflow, no entry, live bitmap/attribute/geometry changed, generation,
+stored length. Controls detected: bitmap compare removed, slot-1 remap on resume removed, length not
+compared. Gate (`--jobs 6`, with the driver's real store per level): 0 failures over 1,855 states,
+every dispatched frame agrees with the oracle; 10745 records matched, no sampled miss;
+9907 -48..45 T. Slice margin over 64 CTC phases >= 108 T (`probe_cw_margin64.py`, now with the
+store, 768 runs). L6 loading-prep quick PASS. **Cost**, in the simulator (no hardware): done in the
+window 1,579 of 1,855 (85.1 %, was 87.7 %); dropped 276 (187 no slice, 89 unfinished), longest run 14
+updates on the first 2,000 frames (6 before). Runs of that length would hold a stale frame for up to
+about 0.35 s once a display exists; the user should judge that at item 3/4.
+
+NEX `Inferno_copier_window_m3d_diagnostic.nex`, MD5 cd4243eba314e357ffb8e199a6b0d42d, boot checks PASS
+incl. hook bytes after boot. The driver is not installed in it and page 79 is zero, so every dispatch
+misses on its first record: it only shows the new page-69 code leaves pace and sound alone.
+
+## Remaining
+3. Pattern allocation and frame attribute state from the owned canvases, built in the window after
+   dispatch, current and pending protected; a FLASH-phase store. Needs the drop rate above reviewed.
+4. Uploads under the existing protection and DMA/CPU fallbacks. Then install the driver and hardware.
