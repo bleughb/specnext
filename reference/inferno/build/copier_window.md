@@ -253,6 +253,7 @@ Simulator only (uncontended T, 28 MHz read waits). Gate: `copier_window/cw_m3b_c
   >= 108 T from any slice end to the next OUT/9907, no errors (`cw_m3b_margin64.json`,
   `probe_cw_margin64.py`). L6 loading-prep quick PASS.
 - **NEX** `Inferno_copier_window_m3b_diagnostic.nex` (hooks + window + work; page 69 in bank 34's upper
+  Hardware (user, 2026-11-08): gameplay ok.
   half): boot checks PASS incl. hook bytes after boot, MD5 2ca871c6d19550055811fb35ec299bd4.
 - **Open.** Busy-beeper updates still do the whole work at 8F95 (slip/shorter filler there: §1 table,
   "+5 ms"); finer slices need units < ~45 T or carrying the work to the next window. No hardware run.
