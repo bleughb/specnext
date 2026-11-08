@@ -67,3 +67,11 @@ misses on its first record: it only shows the new page-69 code leaves pace and s
 3. Pattern allocation and frame attribute state from the owned canvases, built in the window after
    dispatch, current and pending protected; a FLASH-phase store. Needs the drop rate above reviewed.
 4. Uploads under the existing protection and DMA/CPU fallbacks. Then install the driver and hardware.
+
+## Early integrated diagnostic (user-agreed plan, spec in bleughb/nexclash#171, PLAYBOOK 3d and stage 2)
+A milestone, not the Stage 2 exit; fits with items 3-4. It changes what the user sees: confirm with them before building it.
+- A real NEX through the real converter, stub, hooks and memory layout, showing one sprite from live game data, every step connected.
+- One sprite shown, but selection and validation run for every actor and uploads are exercised at the worst observed load (samples so far: 58 visible chunks, 56 distinct patterns; samples do not cover full recordings, say so).
+- Report pace and freshness separately: publication rate, longest miss run, maximum displayed-state age, under demanding motion. Measure the diagnostic's own drops: 12 % was scenery only, 14.9 % adds dispatch.
+- Each experiment records constraint, evidence, success criterion, change, result. The two-experiment reassessment rule applies. Do not use assumed spare time as a budget.
+- Once #171 merges, use `runchecks.measured` and `caseselect` in new Inferno verifiers.
