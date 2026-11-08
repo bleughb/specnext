@@ -14,6 +14,7 @@ Level 5's run left gameplay at update 61 of 92 and is not evidence past that poi
 | Question | Answer | Evidence |
 |---|---|---|
 | Copier/filler writes consumed by gameplay | None. Only the copier's stack unwinding at 9993-99A2 reads them. | `probe_taint.py`, L1/3/4/6 |
+| Gameplay logic inside the copier (correction) | **Yes, on a path these replays did not exercise.** 9804: `CALL Z,9881` when AC47 = 0 changes AD33, AC57, AD34, 9A80, A902 and a countdown ending `JP Z,8FF7`. A replacement must keep this call. | disassembly |
 | Register results consumed | Alternate BC/DE/HL differ after a skip with no effect on game RAM. | `probe_skip.py` |
 | Outputs only for the display | ULA 4000-5AFF. Pages 98, 99, A2-A7, A9-AB, AD are the copier's own working state; A1 also differs on L6. | taint, skip |
 | Inputs of the copier | Tile map 9B00-9FFF, graphics DC00+, attributes FC00+. | `probe_deps.py` |
@@ -24,6 +25,13 @@ Level 5's run left gameplay at update 61 of 92 and is not evidence past that poi
 
 Consequences: exact R, the capture hooks' timing compensation and the copier's RAM effects were requirements of the old
 architecture. R becomes an ordinary random source; a replay comparison must feed recorded values.
+
+## Update time (`hybrid/probe_budget.py`, original game, T-states, medians; 2,500 frames, L1-6)
+An update is exactly 4 frames, 279.5k T, sometimes 5. Head 92-102k, 9907 to the resuming IRQ 45-81k, tail 41-67k (it also replays OUTs at 97C5), game and producers 65-79k.
+Idle after the filler ends (`JR $` at 9989) is not used yet: `copier_window.md` §1 gives a median near 27k T but p1 near 1.4k T.
+
+## First visible diagnostic (nexclash `claude/inferno-sprites-visible`, draft)
+Sound and pacing path unchanged. Live CAP_LOG data -> dispatch -> selection -> upload -> sprite attributes over the original ULA scenery. Simulator: gate 0 failures over 1,855 states, 1,489 published frames with exact patterns and attributes; dropped 366 (19.7 %), longest run 35, slice margin 66 T. Hardware not run.
 
 ## Prototype plan (level 1 first)
 Hypothesis: with the copier replaced, one update publishes a complete display within the original cadence.
