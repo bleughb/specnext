@@ -1,0 +1,28 @@
+0x8f7c n 19 mean T 1076
+   rom:cap_scene            872.4
+   p80:cw_tin                75.5
+   p80:cw_tout               61.0
+   speed switch              43.0
+   game                      10.0
+   rom:cap_in                 9.2
+   rom:cap_chk                4.6
+0x96a1 n 68 mean T 423
+   rom:cap_row              152.2
+   p80:cw_tin                73.5
+   p80:cw_tout               64.8
+   speed switch              43.0
+   rom:cap_actor             41.9
+   rom:cap_wrapped           24.2
+   game                      10.0
+   rom:cap_in                 9.2
+   rom:cap_chk                4.6
+0x959b n 21 mean T 421
+   rom:cap_row              149.3
+   p80:cw_tin                73.3
+   p80:cw_tout               64.8
+   speed switch              43.0
+   rom:cap_actor             41.9
+   rom:cap_normal            25.2
+   game                      10.0
+   rom:cap_in                 9.2
+   rom:cap_chk                4.6
