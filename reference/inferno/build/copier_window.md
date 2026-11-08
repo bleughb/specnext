@@ -220,3 +220,39 @@ Simulator only: uncontended T with 28 MHz read waits, speed switches charged at 
   and `Inferno_copier_window_current_diagnostic.nex` (current window code, no hooks, MD5
   692a8d92f123bf2c8c4d7a623a3b251a). Gate: `copier_window/cw_m3_checks.json` (rerun).
 - Hardware (user, 2026-11-08): both run; speed (enemies, scrolling, stopwatch) and beeper sound match plain Inferno.nex.
+
+## 8. Milestone 3b: the 8F95 work in the window's waits (nexclash `claude/inferno-copier-window-m3b`)
+
+Simulator only (uncontended T, 28 MHz read waits). Gate: `copier_window/cw_m3b_checks.json` (`--jobs 6`).
+
+- **Coroutine.** prepare_frame + render_textmap (same results; copy `wk_prepare`/`wk_textmap`) run in
+  page 69 on their own stack (1C40). cw_wait's coarse loop now runs down to `CW_FINE` = 12 ticks
+  (was 128; the fine spin is unchanged); with work pending and >= 12 ticks to the deadline it calls
+  `cw_work`: DI, saves window SP/IX/IY/BC in page 80, slice end = CTC count `CW_WKM` = 9 ticks before
+  the deadline (at most 120 ticks) in IYl, clears $C8, ROM `wk_in` maps page 69. Polls (clear loop,
+  every map cell: `LD A,1B / IN A,(3B) / SUB IYl / DEC A / JP M`) yield before the slice end; the yield
+  saves SP (the map pointer), BC, DE, IX, PC, restores slots 1/2, reads $C8 last, ROM `wk_out` maps
+  page 80 back. A pulse in the slice: wait for /INT to drop, then as cw_irq (IRQT + 94, RIRQ + 10,
+  NIRQ + 1, IRQRAW = count at the slice start). The first slice of each window restarts the work.
+- **8F95.** In work builds 8F95 is `JP wk_hook` (ROM: DI, 28 MHz, $C8 cleared, page 69): `wk_frame`
+  saves the game registers (1C80), reads R, finishes a suspended work or runs it all (polls jumped
+  over by a self-modified JR: no CTC reads), restores everything, R = entry R + WK_KR (+10 when $C8
+  shows a lost pulse), LD A,(AC49), EI, 3.5 MHz, JP 8F98. The legacy frame_hook is not used.
+- **Model** (`run_cw_window(frame=True)` + `run_cw_frame`): 8F7C -> 9907 as in §7, then the original
+  runs 9907 -> 8F95 with one limiter IRQ; from that state the work patch's 8F95 runs to 8F98:
+  registers incl. R and RAM equal to the original; page 14, page 69 results and page 68 equal
+  `run_frame` (FramePatch, all work at 8F95) from the same state and the capture at window entry.
+- **Results (gate, 0 failures).** Window-only 1,854 states: 9907 -41..+34 T, cells 0/1 up to 142 T
+  late (138 in m3a: the entry reads CW_WKEN). Update 1,855 states: 9907 -51..+45 T, X error
+  -14..+20 T; work finished in the window 1,626 (88 %), resumed at 8F95 42, no slice 187 (10 %:
+  busy beeper, every gap < 12 ticks); 17,833 slices; 8F95 added 168 T when done in the window, up
+  to 24.7 k T (7 ms) when not (all work at 8F95 before: 15.6-23.6 k T). 1,815 IRQ injections incl.
+  inside slices, 40 inside the 8F95 hook (lost, compensated). Controls: the 7 of §7 + work ignoring
+  the slice end, slice pulse not counted, yield losing SP (37/37 states with >= 2 slices), 8F95 lost
+  pulse not counted (40/40). CW_WKM over 64 half-T CTC phases (12 states, 768 runs, 15,261 slices):
+  >= 108 T from any slice end to the next OUT/9907, no errors (`cw_m3b_margin64.json`,
+  `probe_cw_margin64.py`). L6 loading-prep quick PASS.
+- **NEX** `Inferno_copier_window_m3b_diagnostic.nex` (hooks + window + work; page 69 in bank 34's upper
+  half): boot checks PASS incl. hook bytes after boot, MD5 2ca871c6d19550055811fb35ec299bd4.
+- **Open.** Busy-beeper updates still do the whole work at 8F95 (slip/shorter filler there: §1 table,
+  "+5 ms"); finer slices need units < ~45 T or carrying the work to the next window. No hardware run.
