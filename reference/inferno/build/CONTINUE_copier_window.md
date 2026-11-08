@@ -58,7 +58,7 @@ Record in the hand-over which step last passed and on which commit.
 - Speed-switch costs are measured on the machine (cw_cal), never assumed.
 
 ## Next
-1. User hardware result of `Inferno_copier_window_m3b_diagnostic.nex` (checklist in games/inferno.md).
+1. m3b on hardware: gameplay ok (user, 2026-11-08); still ask for pace/sound vs plain and heavy shooting.
 2. Busy-beeper updates (10 % of states): every cell gap < 12 ticks, so no slice; the whole work
    (4.5-7 ms) stays at 8F95 and eats that update's slack (§1: slips/shorter filler). Options: units
    small enough for ~45 T per gap (poll + fast cell ~22 T; a source cell is up to ~120 T), or carry
