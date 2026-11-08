@@ -1,0 +1,44 @@
+{
+ "counts": {
+  "states": 1855,
+  "work slices": 23636,
+  "work done in the window": 1579,
+  "dropped: work started, not finished": 89,
+  "dropped: no slice": 187,
+  "frames ready": 1579,
+  "max consecutive dropped frames": 14,
+  "OUT changes": 119779,
+  "late OUTs (burst prefix after X)": 15687,
+  "IRQ injections": 1815,
+  "IRQ in a DI span (lost, compensated)": 837,
+  "IRQ at a game instruction (original anchored there)": 1013,
+  "IRQ in a post-check gap (model; lost uncompensated)": 98,
+  "IRQ in the 8F95 hook (lost, compensated)": 40,
+  "fast speed-switch runs (cw_cal correction)": 40,
+  "dispatch ready": 1579,
+  "dispatch records matched": 10745
+ },
+ "failures": [],
+ "negative_controls": {
+  "speed-switch correction not applied in hooks detected": 40,
+  "hook X constant 3 ticks high detected": 40,
+  "hook R constant off by one detected": 40,
+  "lost IRQ: R not added detected": 40,
+  "lost IRQ: X not adjusted detected": 40,
+  "hook $C8 clear removed detected": 40,
+  "window entry lost IRQ not counted detected": 40,
+  "work ignores the slice end (polls never yield) detected": 37,
+  "slice lost pulse not counted detected": 37,
+  "yield loses SP detected": 37,
+  "8F95 lost pulse not counted detected": 40
+ },
+ "d9907_T": {
+  "min": -47.9,
+  "max": 44.8
+ },
+ "frame_8f95_added_T": {
+  "min": 156.2,
+  "max": 162.1
+ },
+ "scope": "update model 8F7C -> 9907 -> 8F98 in the simulator: capture hooks + copier window + the 8F95 work in its waits (milestone 3b), finished at 8F95; CTC, frame IRQ and NextReg $C8/$22 models (a $C8 clear during a pulse does not take); uncontended T with 28MHz read waits, speed transitions charged at 3.5MHz; 9907 -> 8F95 by the original with one limiter IRQ; no hardware"
+}
