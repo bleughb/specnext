@@ -77,3 +77,6 @@ A milestone, not the Stage 2 exit; fits with items 3-4. It changes what the user
 - Report pace and freshness separately: publication rate, longest miss run, maximum displayed-state age, under demanding motion. Measure the diagnostic's own drops: 12 % was scenery only, 14.9 % adds dispatch.
 - Each experiment records constraint, evidence, success criterion, change, result. The two-experiment reassessment rule applies. Do not use assumed spare time as a budget.
 - Once #171 merges, use `runchecks.measured` and `caseselect` in new Inferno verifiers.
+
+## Driver NEX (first step of the integrated diagnostic)
+`Inferno_driver_diagnostic.nex` (`--copier-window-build --cw-driver`), MD5 2d38a1bdacafc5c3724c6cd6ba013cce: m3d plus the 8EF9 gate, the driver and its worker and table pages, so the store is real and dispatch can match. Boot checks PASS incl. hook bytes after boot. Header asks for the expanded machine (banks 48-55 and 64-67). No display change. The model predicts a 4.9 s pause for level 1; pace, sound and pause length on hardware are not yet measured.
