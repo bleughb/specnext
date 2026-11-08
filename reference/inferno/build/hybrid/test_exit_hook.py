@@ -13,7 +13,9 @@ class M:
     def __getitem__(s, a):
         if isinstance(a, slice): return [s[i] for i in range(*a.indices(65536))]
         if a < 0x2000: return s.page68[a] if s.slot0 == 68 else 0xFF
-        if 0x3BE0 <= a < 0x3BE0 + len(s.rom2): return s.rom2[a - 0x3BE0]
+        if 0x3BE0 <= a < 0x3BE0 + len(s.rom2):
+            if s.nr.get(0x51, 255) != 255: raise AssertionError('hook unmapped its own code')
+            return s.rom2[a - 0x3BE0]
         return s.ram[a]
     def __setitem__(s, a, v):
         if a < 0x2000 and s.slot0 == 68: s.page68[a] = v
@@ -21,6 +23,7 @@ class M:
         else: raise AssertionError('wrote %04X' % a)
     def nextreg(s, r, v):
         if r == 0x50: s.slot0 = v
+        elif r in (0x51, 0x52): s.nr[r] = v
         elif r == 7: s.speed = v
         else: s.nr[r] = v
     def read_port(s, regs, port): return s.nr.get(s.sel, 0) if port == 0x253B else 255
@@ -38,7 +41,7 @@ def run(code, nr, sp=0x86D5):
         sim.opcodes[m[q[24]]](); n += 1
         assert n < 2000, 'no exit'
     bad = [i for i in range(24) if i not in (10, 11, 12, 15, 25, 24) and q[i] != before[i]]
-    ok = not bad and q[12] == sp and q[10] == 0x5C and q[11] == 0x3A and m.slot0 == 255 and m.speed == 0 and not m.nr[0x6B] & 0x80 and not m.nr[0x15] & 1 and m.nr[0x62] == 0 and m.page68[0x3F6] == 0
+    ok = not bad and q[12] == sp and q[10] == 0x5C and q[11] == 0x3A and m.slot0 == 255 and m.speed == 0 and not m.nr[0x6B] & 0x80 and not m.nr[0x15] & 1 and m.nr.get(0x52) == 10 and m.nr[0x62] == 0 and m.page68[0x3F6] == 0
     return ok, bad, q[12], m.nr
 ok, *rest = run(code, {0x6B: 0x8B, 0x15: 1, 0x62: 0x40})
 print('hook', ok, rest[:2])
