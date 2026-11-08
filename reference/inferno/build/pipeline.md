@@ -62,6 +62,8 @@ about 0.35 s once a display exists; the user should judge that at item 3/4.
 NEX `Inferno_copier_window_m3d_diagnostic.nex`, MD5 cd4243eba314e357ffb8e199a6b0d42d, boot checks PASS
 incl. hook bytes after boot. The driver is not installed in it and page 79 is zero, so every dispatch
 misses on its first record: it only shows the new page-69 code leaves pace and sound alone.
+Hardware (user, 2026-11-08): m3d runs ok. No detailed comparison reported; the driver, the store and a
+dispatch that matches are still unproved on hardware.
 
 ## Remaining
 3. Pattern allocation and frame attribute state from the owned canvases, built in the window after
