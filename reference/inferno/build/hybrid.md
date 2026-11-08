@@ -48,3 +48,5 @@ original update cadence within 2 %, sound recognisable beside plain `Inferno.nex
 Not known yet: cost of the replaced path on hardware; what A459 does; whether the HUD stays on the ULA with the layer priority chosen; level-transition and restart behaviour with the replacement.
 
 Hardware (user, 2026-11-09), sprite NEX MD5 5c01017210b9cc4575147106f1e33964: game runs and plays; ghosting of the ship when moving and in attract mode, like bad vsync; accepted as work in progress.
+
+Hardware (user, 2026-11-09), scenery NEX MD5 fcf9c25ba6dc1f7e2355125c12450134: looks right. No detailed measurements. Modal screens, lag and tearing not reported on.
