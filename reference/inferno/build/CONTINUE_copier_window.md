@@ -1,20 +1,21 @@
-# Continue Inferno stage 2: copier window (handover, updated 2026-11-07 after milestone 3a)
+# Continue Inferno stage 2: copier window (handover, updated 2026-11-08 after milestone 3b)
 
-Code: **bleughb/nexclash** main (milestone 3a merged from `claude/inferno-copier-window-m3`).
-Evidence: **bleughb/specnext** main (`build/copier_window.md` §7, `copier_window/cw_m3_*.json`).
+Code: **bleughb/nexclash** main (milestone 3b merged from `claude/inferno-copier-window-m3b`).
+Evidence: **bleughb/specnext** main (`build/copier_window.md` §7-8, `copier_window/cw_m3*_*.json`).
 
 ## Read first (in this order, nothing else end to end)
 1. `nexclash/CLAUDE.md` and the "Next session" block of `games/inferno.md`.
 2. `specnext/reference/inferno/build/copier_window.md`: §1-4 (pacing, milestone 1), §6 (milestone 2),
-   §7 (milestone 3a: timed capture hooks, lost-IRQ compensation, cw_cal, DMA map copy).
+   §7 (milestone 3a: timed capture hooks, lost-IRQ compensation, cw_cal, DMA map copy), §8 (3b).
 3. Code: `nexclash/inferno.py` from "Copier window" (`run_cw_window`, `copier_window_update_checks`,
-   `copier_window_update_controls`, `CaptureMemory`); `asm/inferno_hooks.asm`: capture kernel
-   (`cap_in`/`cap_out`/`cap_chk`/`cap_lost`) and "Copier window" (`cw_tin`/`cw_tout`/`cw_cal`, `cw_wait`).
+   `copier_window_update_controls`, `run_cw_frame`, `CopierWorkMemory`); `asm/inferno_hooks.asm`: capture kernel
+   (`cap_in`/`cap_out`/`cap_chk`/`cap_lost`), "Copier window" (`cw_tin`/`cw_tout`/`cw_cal`, `cw_wait`,
+   `cw_work`/`cw_wkback`) and the 3b coroutine (`wk_enter` .. `wk_end`, page 69 0C00).
 
 ## Setup
 Clone both repos side by side; specnext as a sparse checkout of `reference/inferno`.
 `pip install -r requirements.txt`. Assemble only with `python tools/asm2profile.py inferno`.
-Diagnostic NEX: `--copier-window-build ../specnext/reference/inferno --cw-hooks --out DIR`.
+Diagnostic NEX: `--copier-window-build ../specnext/reference/inferno --cw-work --out DIR` (3b; `--cw-hooks`: m3).
 
 ## Check workflow (MANDATORY for every agent session; the owner paid for 20+ sessions to get here)
 Base command (CMD): `python -m nexclash.inferno --copier-window-checks ../specnext/reference/inferno
@@ -40,6 +41,9 @@ Record in the hand-over which step last passed and on which commit.
   IRQs under DI are compensated from NextReg $C8 (hooks and the window's entry span); cw_cal measures
   the speed switches once; 8F7C map copy by zxnDMA. Update model 8F7C -> 9907 with IRQ injection and
   controls. Last gate (step 3, full, `--jobs 6`): 0 failures on the commit merged with #136.
+- Milestone 3b (§8): the 8F95 work as a page-69 coroutine in cw_wait slices, finished at 8F95 (R
+  restored there). Model 8F7C -> 9907 -> 8F98: page 14/69/68 = run_frame. Last gate (step 3, full,
+  `--jobs 6`): 0 failures, on the sources merged with the 3b PR (MD5s in the record, milestone3b).
 
 ## Decisions (do not reopen without new measurements)
 - Milestone 2's list stands (lockstep OUT replay, accumulate X, CTC ch 3 / prescaler 256, cell 415
@@ -53,23 +57,16 @@ Record in the hand-over which step last passed and on which commit.
   by cw_tout). Hardware assumption: a clear during an active pulse does not take (Rainbow evidence).
 - Speed-switch costs are measured on the machine (cw_cal), never assumed.
 
-## Next: milestone 3b - post-copy work in cw_wait
-Data: the head writes only 9878, A3F2-A6FD, A9A2-AB41 and FFF2-FFF3 (probe on L1); the textmap compile
-reads the page-68 map, tile bytes DC00+ and attributes FC00+, so it can run inside the window.
-Design (not yet built):
-1. Work = a coroutine on its own stack in page 69: cw_wait resumes it when the wait ahead is
-   >= 3 ticks; a ROM (slot 1) trampoline maps page 69 at slot 0 (the window code is in slot 0).
-2. Poll points in the work loops (render_textmap `.tm_cell`, ~6 T each: `IN A,($3B)` against a slice
-   deadline count) yield before the next OUT deadline less the switch-back cost (~25 T each way).
-   The textmap loop uses SP as its map pointer: yield saves SP itself, no CALL.
-3. Slices run DI (slot 0 is not page 80): clear $C8 at resume, read at yield; a lost pulse counts as
-   cw_irq does (IRQT + 94, RIRQ + 10, NIRQ + 1, IRQRAW = count at resume), then cw_wait recalculates.
-4. Not finished by 9907: the 8F95 frame hook finishes it (today's path), so function never depends on
-   window time; a busy-beeper update has ~45 T usable per cell gap (~5 ms in all), a quiet one ~15 ms.
-5. Model: an update run 8F7C -> 8F98 whose page 14/69 results equal run_frame at 8F95; controls: work
-   ignoring the deadline (OUT late), lost pulse not counted, yield losing SP.
-Then: shrink the actor hooks (252 T each now; 8F7C 1,082 T), the earlier items (live-table scan,
-runtime exact dispatch, complete frame state, protected uploads). Keep sprites disabled.
+## Next
+1. User hardware result of `Inferno_copier_window_m3b_diagnostic.nex` (checklist in games/inferno.md).
+2. Busy-beeper updates (10 % of states): every cell gap < 12 ticks, so no slice; the whole work
+   (4.5-7 ms) stays at 8F95 and eats that update's slack (§1: slips/shorter filler). Options: units
+   small enough for ~45 T per gap (poll + fast cell ~22 T; a source cell is up to ~120 T), or carry
+   unfinished work to the next window (a frame late; fine while no display shows it). Measure first.
+3. Shrink the actor hooks (252 T each; 8F7C 1,082 T); then the earlier items (live-table scan, runtime
+   exact dispatch, complete frame state, protected uploads). Keep sprites disabled.
+3b constants: CW_FINE 12, CW_WKM 9 (margin >= 108 T over 64 phases), WK_KR -24 (R at 8F95; checked
+on every state). Recheck with `probe_cw_margin64.py` after any change to the work loops or yield path.
 
 ## Hardware findings
 - 2026-11-08: the first m3 NEX crashed (green bars): hooks sat under the stub's register block
@@ -82,6 +79,10 @@ runtime exact dispatch, complete frame state, protected uploads). Keep sprites d
 (hooks + window + cw_cal + DMA) against plain `Inferno.nex`: checklist in games/inferno.md.
 
 ## Pitfalls already paid for
+- 3b: a hand copy of render_textmap put `.pair` before ADD HL,HL (doubled HL on the source path);
+  only the page-14 comparison with run_frame caught it. Keep result equality for every copied routine.
+- The work may touch only SP/BC/DE/HL/IX/IYl and A/F: the window keeps AF' and the alternate set live
+  across cw_wait, and IY points at CW_PREV (saved by cw_work).
 - The IM2 JR at FFFF reads its offset from 0000: whatever is mapped in slot 0 decides where an IRQ
   goes. Page 80 byte 0 = offset to cw_irq; pages 68/69 must stay DI.
 - At 28 MHz an ISR that EIs at once re-enters on the same /INT pulse (32 T): hooks EI before
