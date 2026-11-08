@@ -15,17 +15,18 @@ out = {'runs': 0, 'errors': [], 'margin_min': None, 'slices': 0}
 gaps = []
 for lv in '123456':
     d = pickle.loads(open(CACHE + lv, 'rb').read())[0x8F7C]
+    store = I._cw_store('../specnext/reference/inferno', lv, CACHE[:-1])   # so the dispatch stage runs
     pick = []
     for k in range(0, len(d), 25):
         ram, regs, port = d[k]
         holder.clear()
-        res = I.run_cw_window(patch, ram, regs, phase=0, count0=(k * 37) & 255)
+        res = I.run_cw_window(patch, ram, regs, phase=0, count0=(k * 37) & 255, store=store)
         pick.append((res['slices'], k))
     for _, k in sorted(pick)[-2:]:
         ram, regs, port = d[k]
         for j in range(64):
             holder.clear()
-            res = I.run_cw_window(patch, ram, regs, phase=j / 2, count0=(k * 37 + j) & 255, frame=(j % 16 == 0))
+            res = I.run_cw_window(patch, ram, regs, phase=j / 2, count0=(k * 37 + j) & 255, frame=(j % 16 == 0), store=store)
             out['runs'] += 1
             errs = res['errors'] + (res['frame']['errors'] if res['frame'] else [])
             if errs:
