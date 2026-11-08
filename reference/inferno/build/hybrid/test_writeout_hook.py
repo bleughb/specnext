@@ -13,7 +13,7 @@ def original_t(rows):
     return 4 + sum(569 if a == 0 else 22 + 198 * a + 542 for a in rows) + 21 + 24
 
 
-def run(rows, ctc=True, go=0, code=None):
+def run(rows, ctc=True, go=0, code=None, count=None):
     patch = I.CopierWindowPatch(code, work=True) if code else I.CopierWindowPatch(work=True)
     ram = list(bytes(65536))
     sp = 0xA000
@@ -27,10 +27,42 @@ def run(rows, ctc=True, go=0, code=None):
     stub = bytes.fromhex(h['wohook'])
     rom[0x3B90:0x3B90 + len(stub)] = stub
     patch.rom = rom
-    mem = I.CopierWorkMemory(ram, bytearray(8192), patch, 1, 0, ctc, 0, 200)
+    class Mem(I.CopierWorkMemory):
+        def __getitem__(s, a):
+            if not isinstance(a, slice) and 0x4000 <= a < 0x6000 and s.mmu2 == 74:
+                return s.pages[74][a - 0x4000]
+            return super().__getitem__(a)
+
+        def __setitem__(s, a, v):
+            if not isinstance(a, slice) and 0x4000 <= a < 0x6000 and s.mmu2 == 74:
+                s.pages[74][a - 0x4000] = v
+                return
+            super().__setitem__(a, v)
+
+        def nextreg(s, reg, value):
+            if reg == 0x52 and value == 74:
+                s.mmu2 = 74
+            elif reg in (0x61, 0x62):
+                s.copper_nr = getattr(s, 'copper_nr', []) + [(reg, value)]
+            else:
+                if reg == 0x52:
+                    s.mmu2 = value
+                    return
+                super().nextreg(reg, value)
+
+        def write_port(s, regs, port, value, *a):
+            if port == 0x243B and value == 0x60:
+                s.nr_sel = 0x60
+            elif port == 0x253B and getattr(s, 'nr_sel', None) == 0x60:
+                s.copper = getattr(s, 'copper', 0) + 1
+            else:
+                super().write_port(regs, port, value, *a)
+    mem = Mem(ram, bytearray(8192), patch, 1, 0, ctc, 0, 200)
     mem.mmu0 = 255
     mem.pages[I.CW_PAGE][0x1810] = 1 if ctc else 2     # CW_CLK
     mem.pages[I.CW_PAGE][0x1849] = go
+    if count is not None:
+        mem.pages[69][0x1EB4], mem.pages[69][0x1EA1], mem.pages[69][0x1EA6] = 1, 1, count
     regs = [0] * 30
     regs[12], regs[24], regs[26], regs[27] = sp, 0x3B90, 1, 2
     sim = simpool.machine(_rw_simulator(), mem, regs, 'wo')
@@ -47,6 +79,7 @@ def run(rows, ctc=True, go=0, code=None):
         assert n < 3_000_000, 'no exit'
     assert list(mem.ram[0xA000:at + 2]) == list(before[0xA000:at + 2]), 'write-out stack changed'
     run.state = mem.pages[69][I.WK_STATE], mem.pages[I.CW_PAGE][0x1849]
+    run.queue = mem.pages[69][0x1EA2], mem.pages[69][0x1EA1], getattr(mem, 'copper', 0)
     return r[24], elapsed, r[12], mem.speed, mem.mmu0, n
 
 
@@ -71,3 +104,8 @@ at = head.index(bytes.fromhex('219301'))                  # ld hl,403
 pc, t, *_ = run([10] * 18, code=head[:at + 1] + bytes.fromhex('0100') + head[at + 3:])
 assert abs(t - want) > 5000, ('control not informative', t, want)
 print('control detected: fixed time wrong, %d T' % t)
+
+pc, t, *_ = run([10] * 18, count=20)
+assert run.queue == (1, 0, 2 + 12 * 20 + 10), run.queue    # one queue this update, busy set, ready cleared
+assert abs(t - want) < 400, (t, want)
+print('Copper queue run from the hook, %d bytes sent, %d T' % (run.queue[2], t))
