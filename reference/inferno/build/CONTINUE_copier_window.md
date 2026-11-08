@@ -64,7 +64,7 @@ Status: (1) driver and (2) window dispatch PASS in the model (build/pipeline.md 
 `--loading-driver-level`, `--dispatch-checks`). Last gate (step 3, full, `--jobs 6`): 0 failures on the dispatch
 branch; 14.9 % dropped, runs to 14. Next: (3). The store pickles sit beside the state cache (`<prefix>.store<L>`).
 Open merges: nexclash #170 and specnext #79 were not merged (see the session report).
-Selection and protected store (item 3a-b, `build/pipeline.md` "3a-b" with the remaining plan): model PASS. Last gate (step 3, full, `--jobs 6`): 0 failures, branch `claude/inferno-pattern-select`; 18.5 % dropped, runs to 32, slice margin 66 T. Store pickles are now `<prefix>.store<L>.<driver md5>`.
+Selection and protected store (item 3a-b, `build/pipeline.md` "3a-b" with the remaining plan): model PASS. Last gate (step 3, full, `--jobs 6`): 0 failures, branch `claude/inferno-pattern-select`; after experiment 4 (`build/pipeline.md`): 17.3 % dropped, runs to 14, slice margin 108 T; branch `claude/inferno-drop-runs`. Store pickles are now `<prefix>.store<L>.<driver+cwsel md5>`.
 
 ## Decisions (do not reopen without new measurements)
 - Milestone 2's list stands (lockstep OUT replay, accumulate X, CTC ch 3 / prescaler 256, cell 415

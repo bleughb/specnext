@@ -138,3 +138,26 @@ NEX `Inferno_driver_diagnostic.nex`, MD5 in `pipeline/select_build.json`: boot c
 3. One sprite from live data (`SEL_LIST` first entry), all other layers disabled; hardware checklist.
 4. Freshness figures: publication rate (model now: 1,511 of 1,855, 81.5 %, no display), longest miss run, maximum displayed-state age.
 5. FLASH phase 1 store: not prepared.
+
+## Integrated diagnostic: experiment 4, drop runs (model, no hardware)
+- Constraint: longest drop run 32 updates after selection (14 before), about 0.8 s of stale display.
+- Evidence (`pipeline/probe_drop_runs.py`, every update, first 2,000 frames per level): the long runs are on level 1, where scene plus dispatch take 52-62k T of a window of about 62k T. Selection needed about 10k T for 50 chunks with no new patterns. Cold frames are not the cause, so the earlier plan to preallocate would not have helped.
+- Success criterion: longest run back to main's 14, slice margin back to 108 T, oracle equality kept.
+- Change: `wk_select` per-record origin, fast path for chunks fully on screen, list pointer, bit table instead of a shift loop. Behaviour unchanged, same oracle.
+- Result (gate `--jobs 6`, 0 failures over 1,855 states; `pipeline/select_gate.json`, `select_margin64.json`, `drop_runs.json`):
+
+| Simulator, executed assembly, no hardware | Main before selection | Selection first version | Now |
+|---|---:|---:|---:|
+| Updates dropped | 276 (14.9 %) | 344 (18.5 %) | **320 (17.3 %)** |
+| No slice / unfinished | 187 / 89 | 187 / 157 | 187 / 133 |
+| Longest drop run | 14 | 32 | **14** |
+| Slice margin, min T | 108 | 66 | **108** |
+| 9907 offset, T | -48..45 | -53..45 | -53..45 |
+| 8F95, T | 156-162 | 156-162 | 156-162 |
+| Selection, 50 chunks, no new patterns | - | 9.7k T (2.8 ms) | 7.9k T (2.3 ms) |
+
+Selection ready on 1,535 of 1,855 updates (82.7 %, publication model, no display). Experiments 3 and 4 both changed the selection after measuring, so the reassessment rule applied: the design stands; the remaining cost is the scene compile and dispatch on busy level-1 windows, which are not changed here. A 14-update run is still about 0.35 s of stale display if a display existed.
+
+NEX `Inferno_driver_diagnostic.nex` MD5 in `pipeline/select_build.json`: boot checks PASS incl. hook bytes after boot. No display change. Not run on hardware.
+
+Remaining: items 2-5 of the list above; item 1 is closed by this experiment (runs equal main's), unless a display makes 14 too long.

@@ -16,7 +16,7 @@
     "8F95",
     "8EF9"
   ],
-  "nex_md5": "5f3c408c2fc03317eab37bf76623a3c9",
+  "nex_md5": "8cb665e5ee0876535d01e937da401e0e",
   "cwhead_md5": "37be19db2feba6500022b6abba704533",
   "scope": "level-1 snapshot; capture hooks (X, R, DMA map copy) + copier window + the 8F95 work in its waits (8F95 finishes), bank loader as the capture diagnostic; boot state checked in software, the window itself only in the simulator; not a release"
 }
