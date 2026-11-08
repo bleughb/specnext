@@ -74,7 +74,7 @@ runtime exact dispatch, complete frame state, protected uploads). Keep sprites d
 ## Hardware findings
 - 2026-11-08: the first m3 NEX crashed (green bars): hooks sat under the stub's register block
   (alt ROM `rom_end`..+19). Fixed (§7.1, bleughb/nexclash#142; gate 0 failures, controls 40/40); the fixed m3
-  and the window-only NEX run on the user's Next (2026-11-08); speed/sound comparison pending. Any new alt-ROM block must start >= rom_end + 20; the build's
+  and the window-only NEX run on the user's Next with speed and beeper sound matching plain Inferno.nex (2026-11-08). Any new alt-ROM block must start >= rom_end + 20; the build's
   "hook bytes after boot" check must stay empty.
 
 ## Hardware (user)
