@@ -2,12 +2,12 @@
  "failures": [],
  "counts": {
   "states": 1855,
-  "work slices": 26367,
-  "work done in the window": 1511,
-  "dropped: work started, not finished": 157,
+  "work slices": 25938,
+  "work done in the window": 1535,
+  "dropped: work started, not finished": 133,
   "dropped: no slice": 187,
-  "frames ready": 1511,
-  "max consecutive dropped frames": 32,
+  "frames ready": 1535,
+  "max consecutive dropped frames": 14,
   "OUT changes": 119779,
   "late OUTs (burst prefix after X)": 15687,
   "IRQ injections": 1814,
@@ -16,22 +16,22 @@
   "IRQ in a post-check gap (model; lost uncompensated)": 98,
   "IRQ in the 8F95 hook (lost, compensated)": 40,
   "fast speed-switch runs (cw_cal correction)": 40,
-  "dispatch ready": 1511,
-  "dispatch records matched": 10121,
-  "selection ready": 1511,
-  "selection chunks": 28459,
-  "selection new patterns": 371,
-  "selection evictions": 90,
+  "dispatch ready": 1535,
+  "dispatch records matched": 10350,
+  "selection ready": 1535,
+  "selection chunks": 29586,
+  "selection new patterns": 429,
+  "selection evictions": 98,
   "max frame chunks": 58
  },
  "d9907_T": {
   "min": -52.9,
   "max": 44.8
  },
- "window_wait_ms_min": 0.303,
+ "window_wait_ms_min": 0.79,
  "work_in_window_T": {
   "min": 0.0,
-  "max": 70391.2
+  "max": 68759.9
  },
  "frame_8f95_added_T": {
   "min": 156.2,
