@@ -1,0 +1,21 @@
+{
+  "boot_checks": {
+    "Sinclair": [],
+    "foreign ROM3": [],
+    "hook bytes after boot": []
+  },
+  "tail": [
+    39552,
+    39605
+  ],
+  "sites": [
+    "8F7C",
+    "8F92",
+    "959B",
+    "96A1",
+    "8F95"
+  ],
+  "nex_md5": "2ca871c6d19550055811fb35ec299bd4",
+  "cwhead_md5": "37be19db2feba6500022b6abba704533",
+  "scope": "level-1 snapshot; capture hooks (X, R, DMA map copy) + copier window + the 8F95 work in its waits (8F95 finishes), bank loader as the capture diagnostic; boot state checked in software, the window itself only in the simulator; not a release"
+}
