@@ -101,3 +101,40 @@ Uploads are rare once the patterns are in place: the maximum is the first update
 
 Next: pattern selection for every actor in the window, the protected store, initial upload at 8EF9, then one sprite, then the freshness figures.
 Hardware (user, 2026-11-08, newest core, 50 Hz): the game runs ok; pause before level 1 about 4 s by rough count (model 4.9 s); speed and beeper ok, nothing obviously wrong, not formally measured. Store correctness and dispatch matching are not visible in this build.
+
+## Integrated diagnostic: experiment 2, pattern identity (model, no hardware)
+- Constraint: a 64-slot store; the key decides how many slots a frame needs and how much the 8EF9 pause must compute.
+- Evidence: experiment 1 keyed on pattern content, which the runtime does not have.
+- Success criterion: a runtime-computable key that does not add over-capacity updates; a tile-cell mask equal to `visible_patterns` on every draw.
+- Change: none to the game; `pipeline/probe_pattern_key.py`, first 5,000 frames per level.
+- Result (`pipeline/pattern_key.json`): mask mismatches 0 on all six levels. Updates over 64 protected, content key against (image, chunk) key: L1 8/13, L2 0/3, L3 0/0, L4 0/2, L5 0/0, L6 0/6. Content key chosen; distinct patterns per level 304-482.
+
+## 3a-b. Selection and protected store (nexclash `claude/inferno-pattern-select`)
+Pages: 82 code + state (slot 2, via `WK_M2`), 83 index, 84 load-time hash chains, 85-95 patterns (704 at most; all were free, the builds refuse an overlap). Page 69's 1800-19FF is untouched.
+- 8EF9 (`drv_index`, page 81): per new canvas, non-blank 16x16 chunks with a tile-cell mask and a content id; duplicates share the header; header valid is published before the entry; capacity = unpublished, later draws miss.
+- Window (`wk_select`, after dispatch, polled per record, row, chunk and list step): visible chunks go to the frame list (slot, column, row) and the store. Protected = current, pending and building masks. Eviction walks a recency list from the oldest. No free slot or more than 128 chunks = `SEL_READY` 0. Commit is one role byte, so a drop at any poll leaves current and pending intact. `SEL_READY` counts only together with `DX_READY` (the 8F95 drop path clears that; nothing was added at 8F95). FLASH phase 0 only.
+- Experiment 3 (constraint: window time; criterion: drop rate near the 14.9 % baseline): the first store scanned 64 slots per new pattern, about 2.5k T each, 71 of 188 sample updates dropped against 33 on main. Change: recency list. Result: 38 of 188 in the sample.
+
+Checks: `--select-checks` (assembled against an independent oracle: 400 scripted frames with yields, drops, eviction, over capacity, list overflow, invalid header; controls detected: protection ignored, eviction takes the newest, role rotation wrong, row limit, slot-1 remap removed). `--loading-driver-checks` and `--loading-driver-level` compare index, patterns and reset state with the oracle on all six levels. Gate (`--jobs 6`, store state carried across consecutive updates, partial drops included): 0 failures over 1,855 states, all 1,511 selections equal the oracle, 28,459 chunks, 58 at most in a frame, 371 new patterns, 90 evictions, no over-capacity frame in these 2,000 frames per level (the 8 level-1 updates of experiment 1 lie later or were not reached).
+
+| Cost (simulator, executed assembly, no hardware) | Main | This change |
+|---|---:|---:|
+| Updates dropped | 276 of 1,855 (14.9 %) | 344 (18.5 %) |
+| Of which no slice / unfinished | 187 / 89 | 187 / 157 |
+| Longest drop run, updates | 14 | **32** |
+| Slice margin over 64 phases, min T | 108 | **66** (no errors, 768 runs) |
+| 9907 offset, T | -48..45 | -53..45 |
+| 8F95, T | 156-162 | 156-162 |
+| Selection, cold frame of 17-49 chunks | - | 4.8k-17k T (1.4-4.9 ms) |
+| Pause L1 / L6, ms | 4880 / 6896 | 5426 / 7628 |
+
+A run of 32 dropped updates would hold a stale frame for about 0.8 s if a display existed; this is the figure to judge before showing anything. Cold frames are the worst case: uploading the initial set at 8EF9 does not remove them, but preallocating it may; not measured. Loading-prep quick on L6 exits 0 with status FAIL, the same as main.
+
+NEX `Inferno_driver_diagnostic.nex`, MD5 in `pipeline/select_build.json`: boot checks PASS incl. hook bytes after boot. No display change. Not run on hardware.
+
+## Remaining (in order)
+1. Reduce the drop run: preallocate the first level's patterns at 8EF9, then measure; if runs stay long, split the work more finely or use the ~45 T gaps (handover "Next"). Decide with the user whether 32 is acceptable.
+2. Initial upload at 8EF9 (patterns in `SLOT_FLAG` = 1), then uploads at the worst observed load (58 chunks, 56 patterns; samples, not full recordings) under the existing protection and DMA/CPU fallbacks.
+3. One sprite from live data (`SEL_LIST` first entry), all other layers disabled; hardware checklist.
+4. Freshness figures: publication rate (model now: 1,511 of 1,855, 81.5 %, no display), longest miss run, maximum displayed-state age.
+5. FLASH phase 1 store: not prepared.

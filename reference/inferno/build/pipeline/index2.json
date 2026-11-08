@@ -1,0 +1,1 @@
+{"level": 2, "frame": 438, "counts": {"distinct streams stored": 109, "indices with no tiles": 12, "rejected indices": 135, "indexed images": 109, "distinct patterns": 344}, "driver_ms": 4078.514357142857, "instructions": 10219266, "scope": "executed assembly in the simulator; 28 MHz model, read allowance; no hardware"}
