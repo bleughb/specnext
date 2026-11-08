@@ -1,0 +1,128 @@
+[
+ {
+  "level": "1",
+  "frames": 5000,
+  "updates": 1053,
+  "images": 101,
+  "nonblank_chunks": 531,
+  "distinct_content": 441,
+  "max_chunks_per_image": 45,
+  "max_visible_per_draw": 33,
+  "mask_mismatch": 0,
+  "content": {
+   "over": 8,
+   "p99": 4,
+   "max": 47
+  },
+  "image_chunk": {
+   "over": 13,
+   "p99": 4,
+   "max": 49
+  }
+ },
+ {
+  "level": "2",
+  "frames": 5000,
+  "updates": 1134,
+  "images": 109,
+  "nonblank_chunks": 445,
+  "distinct_content": 344,
+  "max_chunks_per_image": 41,
+  "max_visible_per_draw": 8,
+  "mask_mismatch": 0,
+  "content": {
+   "over": 0,
+   "p99": 3,
+   "max": 8
+  },
+  "image_chunk": {
+   "over": 3,
+   "p99": 6,
+   "max": 8
+  }
+ },
+ {
+  "level": "3",
+  "frames": 5000,
+  "updates": 1130,
+  "images": 88,
+  "nonblank_chunks": 419,
+  "distinct_content": 304,
+  "max_chunks_per_image": 64,
+  "max_visible_per_draw": 8,
+  "mask_mismatch": 0,
+  "content": {
+   "over": 0,
+   "p99": 1,
+   "max": 13
+  },
+  "image_chunk": {
+   "over": 0,
+   "p99": 2,
+   "max": 14
+  }
+ },
+ {
+  "level": "4",
+  "frames": 5000,
+  "updates": 1115,
+  "images": 122,
+  "nonblank_chunks": 643,
+  "distinct_content": 428,
+  "max_chunks_per_image": 64,
+  "max_visible_per_draw": 30,
+  "mask_mismatch": 0,
+  "content": {
+   "over": 0,
+   "p99": 6,
+   "max": 39
+  },
+  "image_chunk": {
+   "over": 2,
+   "p99": 8,
+   "max": 40
+  }
+ },
+ {
+  "level": "5",
+  "frames": 5000,
+  "updates": 719,
+  "images": 84,
+  "nonblank_chunks": 410,
+  "distinct_content": 363,
+  "max_chunks_per_image": 52,
+  "max_visible_per_draw": 8,
+  "mask_mismatch": 0,
+  "content": {
+   "over": 0,
+   "p99": 1,
+   "max": 9
+  },
+  "image_chunk": {
+   "over": 0,
+   "p99": 1,
+   "max": 10
+  }
+ },
+ {
+  "level": "6",
+  "frames": 5000,
+  "updates": 1061,
+  "images": 118,
+  "nonblank_chunks": 625,
+  "distinct_content": 482,
+  "max_chunks_per_image": 198,
+  "max_visible_per_draw": 15,
+  "mask_mismatch": 0,
+  "content": {
+   "over": 0,
+   "p99": 6,
+   "max": 12
+  },
+  "image_chunk": {
+   "over": 6,
+   "p99": 8,
+   "max": 14
+  }
+ }
+]
