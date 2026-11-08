@@ -219,4 +219,4 @@ Simulator only: uncontended T with 28 MHz read waits, speed switches charged at 
 - New files: `Inferno_copier_window_m3_diagnostic.nex` (fixed, MD5 68340edf338f8e41c0f80cc432ba2af0)
   and `Inferno_copier_window_current_diagnostic.nex` (current window code, no hooks, MD5
   692a8d92f123bf2c8c4d7a623a3b251a). Gate: `copier_window/cw_m3_checks.json` (rerun).
-- Hardware (user, 2026-11-08): both run (no crash). Speed/sound comparison with plain Inferno.nex pending.
+- Hardware (user, 2026-11-08): both run; speed (enemies, scrolling, stopwatch) and beeper sound match plain Inferno.nex.
