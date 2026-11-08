@@ -45,6 +45,24 @@ Record in the hand-over which step last passed and on which commit.
   restored there). Model 8F7C -> 9907 -> 8F98: page 14/69/68 = run_frame. Last gate (step 3, full,
   `--jobs 6`): 0 failures, on the sources merged with the 3b PR (MD5s in the record, milestone3b).
 
+## Sprite pipeline plan (session of 2026-11-08; item state: see "Next")
+Order: (1) live-table scan and driver at the 8EF9 gate; (2) runtime exact dispatch and duplicate
+indices; (3) complete pattern/frame state; (4) protected uploads. Each its own verified step.
+Sprites and new layers stay disabled until the whole pipeline passes.
+- Design rule (user, 2026-11-08): nothing reads the actor capture log (`CAP_LOG`) before the window
+  work. Every log reader runs in the window coroutine or later, so the row copy can still be deferred
+  into the window if hardware later requires it (row-copy deferral and hook shrinking are not this task).
+- (1) Assembled driver, page 81, called from the 8EF9 gate: enumerate all 256 C100 indices, snapshot
+  (78), exact-stream duplicate check against stored streams, colour (75), whole-image B (76), store
+  (79, publishes valid last). A duplicate index copies the canonical metadata. Host result is the oracle.
+- (2) Window-coroutine dispatch from the log: candidate lookup then exact live validation (78); any
+  miss or unfinished work = readiness 0. Lookup by drawn index needs no host table.
+- (3) Pattern allocation/frame attribute state from the owned canvases, built in the window, current
+  and pending protected. (4) Uploads under the existing protection and DMA fallbacks.
+
+Status: (1) driver PASS in the model (build/pipeline.md §1, no NEX; `--loading-driver-checks`,
+`--loading-driver-level`). Next: (2).
+
 ## Decisions (do not reopen without new measurements)
 - Milestone 2's list stands (lockstep OUT replay, accumulate X, CTC ch 3 / prescaler 256, cell 415
   after the epilogue, tolerance 56 T).
