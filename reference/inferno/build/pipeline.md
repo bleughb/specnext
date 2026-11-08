@@ -100,3 +100,4 @@ A milestone, not the Stage 2 exit; fits with items 3-4. It changes what the user
 Uploads are rare once the patterns are in place: the maximum is the first update, so the initial set belongs in the 8EF9 pause. Level 1 needs more than 64 protected patterns in 8 of 1,053 updates: those frames cannot be published and count as misses unless pattern use is reduced. Samples cover 5,000 frames per level, not full recordings. This is a census model: it does not measure publication, freshness or hardware cost.
 
 Next: pattern selection for every actor in the window, the protected store, initial upload at 8EF9, then one sprite, then the freshness figures.
+Hardware (user, 2026-11-08, newest core, 50 Hz): the game runs ok; pause before level 1 about 4 s by rough count (model 4.9 s); speed and beeper ok, nothing obviously wrong, not formally measured. Store correctness and dispatch matching are not visible in this build.
