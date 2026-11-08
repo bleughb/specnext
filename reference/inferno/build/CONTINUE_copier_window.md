@@ -60,8 +60,10 @@ Sprites and new layers stay disabled until the whole pipeline passes.
 - (3) Pattern allocation/frame attribute state from the owned canvases, built in the window, current
   and pending protected. (4) Uploads under the existing protection and DMA fallbacks.
 
-Status: (1) driver PASS in the model (build/pipeline.md §1, no NEX; `--loading-driver-checks`,
-`--loading-driver-level`). Next: (2).
+Status: (1) driver and (2) window dispatch PASS in the model (build/pipeline.md §1-2; `--loading-driver-checks`,
+`--loading-driver-level`, `--dispatch-checks`). Last gate (step 3, full, `--jobs 6`): 0 failures on the dispatch
+branch; 14.9 % dropped, runs to 14. Next: (3). The store pickles sit beside the state cache (`<prefix>.store<L>`).
+Open merges: nexclash #170 and specnext #79 were not merged (see the session report).
 
 ## Decisions (do not reopen without new measurements)
 - Milestone 2's list stands (lockstep OUT replay, accumulate X, CTC ch 3 / prescaler 256, cell 415
