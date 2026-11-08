@@ -80,4 +80,24 @@ A milestone, not the Stage 2 exit; fits with items 3-4. It changes what the user
 
 ## Driver NEX (first step of the integrated diagnostic)
 `Inferno_driver_diagnostic.nex` (`--copier-window-build --cw-driver`), MD5 2d38a1bdacafc5c3724c6cd6ba013cce: m3d plus the 8EF9 gate, the driver and its worker and table pages, so the store is real and dispatch can match. Boot checks PASS incl. hook bytes after boot. Header asks for the expanded machine (banks 48-55 and 64-67). No display change. The model predicts a 4.9 s pause for level 1; pace, sound and pause length on hardware are not yet measured.
+
+## Integrated diagnostic: experiment 1, pattern upload load (model, no hardware)
+- Constraint: uploads must fit the window; a CPU 256-byte pair costs 0.298 ms in the earlier model, so 56 per update would be 16.7 ms against a minimum wait of 4.4 ms.
+- Evidence: the worst load (58 chunks, 56 patterns) counted patterns in use, not patterns that change.
+- Success criterion: after the first update, uploads per update small enough to fit, and current + pending + new never above the 64 hardware slots.
+- Change: none to the game; `pipeline/probe_pattern_census.py`, first 5,000 frames per level, 64 slots, least recently used eviction, current and pending protected.
+- Result (`pipeline/pattern_census.json`):
+
+| Level | Updates | Max patterns in use | Uploads median | p99 | Max | First update | Updates over 64 protected |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| 1 | 1053 | 56 | 0 | 4 | 47 | 47 | 8 |
+| 2 | 1134 | 39 | 0 | 3 | 8 | 8 | 0 |
+| 3 | 1130 | 31 | 0 | 1 | 13 | 13 | 0 |
+| 4 | 1115 | 48 | 0 | 6 | 39 | 39 | 0 |
+| 5 | 719 | 26 | 0 | 1 | 9 | 9 | 0 |
+| 6 | 1061 | 40 | 0 | 6 | 12 | 7 | 0 |
+
+Uploads are rare once the patterns are in place: the maximum is the first update, so the initial set belongs in the 8EF9 pause. Level 1 needs more than 64 protected patterns in 8 of 1,053 updates: those frames cannot be published and count as misses unless pattern use is reduced. Samples cover 5,000 frames per level, not full recordings. This is a census model: it does not measure publication, freshness or hardware cost.
+
+Next: pattern selection for every actor in the window, the protected store, initial upload at 8EF9, then one sprite, then the freshness figures.
 Hardware (user, 2026-11-08, newest core, 50 Hz): the game runs ok; pause before level 1 about 4 s by rough count (model 4.9 s); speed and beeper ok, nothing obviously wrong, not formally measured. Store correctness and dispatch matching are not visible in this build.
