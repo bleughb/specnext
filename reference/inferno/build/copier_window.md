@@ -270,3 +270,13 @@ Simulator only (uncontended T, 28 MHz read waits). Gate: `copier_window/cw_m3b_c
   first 2,000 frames; 3 on other levels); 9907 -51..+45 T; 11 update controls detected. L6 loading-prep
   quick PASS. NEX `Inferno_copier_window_m3c_diagnostic.nex` MD5 ac3be35a00830b05028fa766d568e307, boot
   checks PASS incl. hook bytes after boot. Open: drop runs on full recordings; hardware run.
+- Hardware (user, 2026-11-08): m3c plays ok. No detailed heavy-shooting comparison reported.
+
+### 9.1 Hook cost profile (model; `copier_window/cw_hook_profile.txt`, 108 hooks, levels 1/4/6)
+Mean actor hook 421 T: row copy (`cap_row`) ~150, CTC timing (`cw_tin`/`cw_tout`, edge waits included)
+~138, entry/record code ~67, two speed switches 43 (charged at 3.5 MHz; cw_cal measures the real cost).
+8F7C 1,076 T: 872 in `cap_scene`, mostly the DMA map copy, which cannot move (actors overwrite the
+map after 8F7C). No hook changed. Trimming the timing arithmetic would save ~30 T a hook and needs
+a 64-phase recalibration. Deferring the row copy into the window would save ~150 T a hook (~1.2 k of a
+median ~4.5 k T X) but changes the log every capture check reads and needs source stability proved from
+hook to window on full recordings (only sampled so far).

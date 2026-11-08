@@ -59,11 +59,12 @@ Record in the hand-over which step last passed and on which commit.
 
 ## Next
 - 3c (§9) merged: unfinished 8F95 work is dropped (8F95 160 T); last gate 0 failures (record milestone3c).
-1. User hardware result of `Inferno_copier_window_m3c_diagnostic.nex`: pace/sound vs plain, heavy shooting.
+1. m3c on hardware: game plays ok (user, 2026-11-08).
 2. Drop run lengths on full recordings (gate covers the first 2,000 frames: max 6 in a row on L6);
    if long runs matter once a display exists, use the ~45 T gaps of busy windows (small work units).
-3. Shrink the actor hooks (252 T each; 8F7C 1,082 T); then the earlier items (live-table scan, runtime
-   exact dispatch, complete frame state, protected uploads). Keep sprites disabled.
+3. Hook shrink is NOT done: profile and trade-off in §9.1 (deferred row copy is the only large saving).
+   User decides between that and the earlier items (live-table scan, runtime exact dispatch, complete
+   frame state, protected uploads). Keep sprites disabled.
 3b constants: CW_FINE 12, CW_WKM 9 (margin >= 108 T over 64 phases), WK_KR -24 (R at 8F95; checked
 on every state). Recheck with `probe_cw_margin64.py` after any change to the work loops or yield path.
 
