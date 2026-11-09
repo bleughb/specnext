@@ -60,3 +60,5 @@ Hardware (user, 2026-11-09), exit-fix NEX MD5 4b28d334035439373d49cd5ef36d17b6, 
 Hardware (user, 2026-11-09), per-level NEXes with tape descriptors kept (L6 MD5 3eec75dbe6626b21ba451cf8c127c15e): level 6 works; pressing S after dying loads level 1; other levels appear to behave the same. Not all levels fully tested; shop and level-to-level progression not reported.
 
 Hardware (user, 2026-11-09): level 4 also works and loads level 1 after S. 128-pattern store: full gate 0 failures over 1,855 states, slice margin 109 T, 0 evictions in the gate; NEXes not yet run on hardware. Shop: leaves gameplay at frame 51,805 through 9019-901C (frame_pipeline.md); not run on hardware.
+
+FLASH census (probe_flash.py, simulator; images at 8EF9, every 8th update of the first 2,000 frames): L1 4 of 103 images have a FLASH tile, 1 of 295 sampled draws; L2-6 none; scenery none in any level. Phase 1 not needed for now; recheck the four L1 images if they look wrong.
