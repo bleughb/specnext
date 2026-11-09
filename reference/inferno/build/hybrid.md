@@ -72,3 +72,5 @@ Hardware (user, 2026-11-09), full-game NEX MD5 227c2422bcac56dca7840d38b425fc49:
 JNext 1.2.0 headless, end-of-level-1 snapshot under the sprite build: debrief and medals screen correct, command prompt, attract demo with correct tilemap and sprites. A scripted S press did not start the next level (the attract loop continued), so level-to-level progression remains untested.
 
 JNext 1.2.0 headless, end-of-level-1 snapshot under the sprite build: a short S then ENTER at the prompt loads the next section; the story screen follows, Enter advances it, and the next level plays with HUD, equipment list, tilemap and sprites. Keys must be short presses in the script (JNext holds auto-repeat). Equipment carry-over compared by eye only.
+
+JNext 1.2.0 headless, end-of-level snapshots with S, Enter and Enter presses: L2, L3 and L5 reach the next level in play with HUD and sprites; L6 reaches the ending text; the outro snapshot plays its text. L4 showed the attract demo at the sampled frame, so its transition is not confirmed. Shop not run.
