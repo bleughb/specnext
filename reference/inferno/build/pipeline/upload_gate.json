@@ -1,0 +1,46 @@
+{
+ "failures": [],
+ "counts": {
+  "states": 1855,
+  "work slices": 26113,
+  "work done in the window": 1516,
+  "dropped: work started, not finished": 152,
+  "dropped: no slice": 187,
+  "frames ready": 1516,
+  "max consecutive dropped frames": 32,
+  "OUT changes": 119779,
+  "late OUTs (burst prefix after X)": 15687,
+  "IRQ injections": 1814,
+  "IRQ in a DI span (lost, compensated)": 837,
+  "IRQ at a game instruction (original anchored there)": 1013,
+  "IRQ in a post-check gap (model; lost uncompensated)": 98,
+  "IRQ in the 8F95 hook (lost, compensated)": 40,
+  "fast speed-switch runs (cw_cal correction)": 40,
+  "dispatch ready": 1516,
+  "dispatch records matched": 10163,
+  "selection ready": 1516,
+  "frames with all patterns verified": 1516,
+  "patterns uploaded": 68,
+  "selection chunks": 28642,
+  "selection new patterns": 319,
+  "selection evictions": 84,
+  "max frame chunks": 58
+ },
+ "d9907_T": {
+  "min": -50.9,
+  "max": 44.8
+ },
+ "negative_controls": {
+  "speed-switch correction not applied in hooks detected": 40,
+  "hook X constant 3 ticks high detected": 40,
+  "hook R constant off by one detected": 40,
+  "lost IRQ: R not added detected": 40,
+  "lost IRQ: X not adjusted detected": 40,
+  "hook $C8 clear removed detected": 40,
+  "window entry lost IRQ not counted detected": 40,
+  "work ignores the slice end (polls never yield) detected": 37,
+  "slice lost pulse not counted detected": 37,
+  "yield loses SP detected": 37,
+  "8F95 lost pulse not counted detected": 40
+ }
+}
