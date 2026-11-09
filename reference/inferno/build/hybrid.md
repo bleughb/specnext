@@ -66,3 +66,5 @@ FLASH census (probe_flash.py, simulator; images at 8EF9, every 8th update of the
 Hardware (user, 2026-11-09), 128-pattern store NEXes: several levels work and load level 1 after S. FLASH phase 1 (four L1 images): full gate 0 failures, margin 109 T, not run on hardware. Menu text lists START, PILOT, SAVE, LOAD, RAPORT, REDEFINICE, INFORMACE, ZBRAN, POMOC, KONEC (first letter is enough); SAVE and LOAD untested.
 
 Full-game NEX (tape start) stalls at the loading screen on JNext and on the Next, silently. Loader-only NEX reaches the menu; full build with the USR redirect disabled also stalls, so the redirect is not the cause. Post-boot state differs only in alt ROM 3960-3CF8; the simulator plays the intro music with that ROM, so the cause is not found. Per-level NEXes are unaffected.
+
+Hardware (user, 2026-11-09), full-game NEX MD5 227c2422bcac56dca7840d38b425fc49: reached play with sprites; reported working. Cause of the earlier stall: the intro uses IM 2 with I = 3B, reading its vector from ROM 3BFF-3C00, which hook bytes had overwritten. Found with JNext headless (1.2.0).
