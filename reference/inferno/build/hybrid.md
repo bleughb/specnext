@@ -54,3 +54,5 @@ Hardware (user, 2026-11-09), scenery NEX MD5 fcf9c25ba6dc1f7e2355125c12450134: l
 Hardware (user, 2026-11-09), exit-hook NEX MD5 2b50e783ea116e2841ea3b5b358f9ec7: menu after the ship is destroyed is fixed. Restart from the menu, pause and the level-4 shop not reported.
 
 Hardware (user, 2026-11-09), write-out NEX MD5 4a839a3b0e084e7e612f6ba2b09e1b04: lag better, speed and sound unchanged by the user's report. Not measured.
+
+Hardware (user, 2026-11-09), exit-fix NEX MD5 4b28d334035439373d49cd5ef36d17b6, Copper publish included: works, game plays well, ship death and menu OK. Freshness not measured.
