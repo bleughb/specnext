@@ -64,3 +64,5 @@ Hardware (user, 2026-11-09): level 4 also works and loads level 1 after S. 128-p
 FLASH census (probe_flash.py, simulator; images at 8EF9, every 8th update of the first 2,000 frames): L1 4 of 103 images have a FLASH tile, 1 of 295 sampled draws; L2-6 none; scenery none in any level. Phase 1 not needed for now; recheck the four L1 images if they look wrong.
 
 Hardware (user, 2026-11-09), 128-pattern store NEXes: several levels work and load level 1 after S. FLASH phase 1 (four L1 images): full gate 0 failures, margin 109 T, not run on hardware. Menu text lists START, PILOT, SAVE, LOAD, RAPORT, REDEFINICE, INFORMACE, ZBRAN, POMOC, KONEC (first letter is enough); SAVE and LOAD untested.
+
+Full-game NEX (tape start) stalls at the loading screen on JNext and on the Next, silently. Loader-only NEX reaches the menu; full build with the USR redirect disabled also stalls, so the redirect is not the cause. Post-boot state differs only in alt ROM 3960-3CF8; the simulator plays the intro music with that ROM, so the cause is not found. Per-level NEXes are unaffected.
