@@ -56,3 +56,5 @@ Hardware (user, 2026-11-09), exit-hook NEX MD5 2b50e783ea116e2841ea3b5b358f9ec7:
 Hardware (user, 2026-11-09), write-out NEX MD5 4a839a3b0e084e7e612f6ba2b09e1b04: lag better, speed and sound unchanged by the user's report. Not measured.
 
 Hardware (user, 2026-11-09), exit-fix NEX MD5 4b28d334035439373d49cd5ef36d17b6, Copper publish included: works, game plays well, ship death and menu OK. Freshness not measured.
+
+Hardware (user, 2026-11-09), per-level NEXes with tape descriptors kept (L6 MD5 3eec75dbe6626b21ba451cf8c127c15e): level 6 works; pressing S after dying loads level 1; other levels appear to behave the same. Not all levels fully tested; shop and level-to-level progression not reported.
