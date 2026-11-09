@@ -1,0 +1,18 @@
+Source    : ../specnext/reference/r_type/Rtype.rzx, 90102 frames
+Counting  : from the start
+Lowest SP : 49654 (0xC1F6) (any SP value: games that use SP as a data pointer show it here)
+Range 0x0000-0x3FFF: 9697 of 16384 bytes untouched
+  untouched   0x1F00-0x3FFF (8448 bytes)
+  untouched   0x1835-0x1D15 (1249 bytes)
+  touched     0x0000-0x1834 (6197 bytes, r), first: read at PC 65004
+  touched     0x1D16-0x1EFF (490 bytes, r), first: read at PC 64158
+  writers   0 instructions
+  readers   2548 instructions: 64158 (0xFA9E) x7235498, 49252 (0xC064) x18056, 34903 (0x8857) x4111, 65004 (0xFDEC) x2836, 34921 (0x8869) x1664, 34946 (0x8882) x1637, 34927 (0x886F) x1598, 35021 (0x88CD) x1582, 35041 (0x88E1) x1557, 34945 (0x8881) x1551
+  readers+  2538 more instructions in 266 routine span(s): 30345-30345 (0x7689) x1, 30678-30678 (0x77D6) x1, 30693-30695 (0x77E5) x46, 34377-34451 (0x8649) x1190, 34625-34679 (0x8741) x134, 34689-34689 (0x8781) x1, 34704-34704 (0x8790) x1, 34713-34713 (0x8799) x1, 34726-34726 (0x87A6) x2, 34737-34737 (0x87B1) x1, 34747-34747 (0x87BB) x1, 34757-34763 (0x87C5) x3, 34774-34787 (0x87D6) x45, 34801-34801 (0x87F1) x1, 34833-34840 (0x8811) x8, 34862-35229 (0x882E) x36656, 35252-35252 (0x89B4) x4, 35262-35367 (0x89BE) x325, 35420-35420 (0x8A5C) x1, 35457-35466 (0x8A81) x3 ...
+Range 0x5B00-0x5CFF: 200 of 512 bytes untouched
+  untouched   0x5B00-0x5B63 (100 bytes)
+  untouched   0x5C4C-0x5CAF (100 bytes)
+  touched     0x5B64-0x5C4B (232 bytes, rw), first: read at PC 63773
+  touched     0x5CB0-0x5CFF (80 bytes, rw), first: read at PC 63773
+  writers   3 instructions: 63773 (0xF91D) x6458, 63776 (0xF920) x6458, 63779 (0xF923) x6458
+  readers   5 instructions: 63773 (0xF91D) x6458, 63776 (0xF920) x6458, 63779 (0xF923) x6458, 63782 (0xF926) x6458, 63926 (0xF9B6) x142

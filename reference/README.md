@@ -426,6 +426,14 @@ recolour commands, validation scope and the CSpect/Next checklist.
 ## Atic Atac - `atic_atac/` (games/atic_atac.md; Dean's build 59493b75 and Jon Attree's .nxc v1.3 rework, hardware untested): Atic_Atac_1983_Ultimate_Play_The_Game_a.z80 06b11e63 (the record's snapshot; the archive file "Atic Atac (1983)(Ultimate Play The Game)[a8][a8].z80"); walk1 7775e035, walk2 9915aed9, t c289ea58 .rzx (bot recordings, the rework's verify; Dean's AticAtac.rzx 3e3845a6 is not here: record "missing"); atic_atac_loading.scr ae29b447 (tape screen), atic_atac_enhanced_colours.json cce668d1 (Enhanced set read back from the published build; from the MVV package's .256, local only); atic_atac.nex e710fa87, atic_atac_sprites.nex 59493b75 (Dean's); atic_atac_v13_sprites b87774a2, _enhanced 47f0e72c, _sprites_qaop 19318e4f, _enhanced_qaop 1f58e936 (the rework, NEXCLASH_REWORK=atic_atac_v13 = nxc.py --bare)
 ## Rainbow Islands sky fix - `rainbow_z80n/` + `rainbow_islands/` (games/rainbow_z80n.md "Rework (opt-in)"; Jon Attree's .nxc v1.0, hardware untested): rainbow_islands/rainbow_z80n_loading.scr d91477c3 (tape screen, the stub in bank 32); rainbow_z80n/rainbow_z80n_sky_sprites.nex d7b2345c (= nxc.py --bare), _sky_sprites_diag.nex 305a6ed7 (NEXCLASH_REWORK=rainbow_z80n_sky); its verify uses Dean's two recordings and 13 of the leebee/ round cuts
 
+## R-Type (128K) - `r_type/` (games/r_type.md; feasibility in progress)
+
+Owner's Rtype.tap 2d1e17ef, Rtype.rzx fb4a142a (90,102 frames); Rtype.z80 5a2179b4
+extracted from its first snapshot. Plain Rtype.nex 657362a1: boot/R/RAM/ROM checks pass with
+and without NEXLOAD, tail proven over the full recording; hardware untested. No sprite build yet.
+`intake/` holds bounded survey, full caller/access evidence, original previews, plain builder,
+sampled copier-removal experiment and independent capacity review.
+
 ## Experimental Rainbow sky DMA v0.1
 
 Separate downloadable game builds, hashes, source PR and hardware handoff: [validation notes](../docs/rainbow_dma_v01_validation.md). Pinned files above are unchanged. The [complete bundle and separate NXC patch](rainbow_z80n/experimental_dma_v01/README.md) are now hosted here at the owner's request.

@@ -1,0 +1,25 @@
+WARN path does not exist (19)
+     docs/BRIEFING.md:63  docs/extra-hw/io-port-system/registers.txt
+     docs/TECHNIQUES.md:644  docs/design.md
+     docs/TECHNIQUES.md:668  tools/sitescan.py
+     docs/TECHNIQUES.md:754  tools/sitescan.py
+     games/army_moves.md:66  docs/profiles/army_moves_palette.json
+     games/atom_ant.md:45  tools/make_nfo.py
+     games/cauldron.md:142  docs/profiles/cauldron_colours.json
+     games/cyclone.md:194  docs/profiles/cyclone_colours.json
+     games/cyclone.md:233  tools/nxc.py
+     games/dynamite_dan.md:62  docs/profiles/dynamite_dan_colours.json
+     games/el_capitan_trueno.md:186  nexclash/trueno.py
+     games/everyones_a_wally_updated.md:164  docs/profiles/everyones_a_wally_updated_colours.json
+     games/lode_runner.md:26  docs/profiles/lode_runner_colours.json
+     games/lode_runner.md:128  docs/profiles/lode_runner_colours.json
+     games/match_day.md:126  docs/profiles/match_day_colours.json
+     games/nightshade_rounds7-11.md:7  tools/export.py
+     games/nightshade_rounds7-11.md:7  tools/import.py
+     games/quazatron.md:227  tools/nxc.py
+     games/target_renegade.md:97  docs/profiles/target_renegade_colours.json
+WARN python -m: no such module (3)
+     games/incredible_shrinking_fireman-add-GPT6_ASTRA.md:79  incredible_shrinking_fireman_add_
+     games/incredible_shrinking_fireman-add-GPT6_ASTRA.md:80  incredible_shrinking_fireman_add_
+     games/incredible_shrinking_fireman-add-GPT6_ASTRA.md:81  incredible_shrinking_fireman_add_
+doccheck: PASS (146 docs)
