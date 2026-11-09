@@ -161,3 +161,22 @@ Selection ready on 1,535 of 1,855 updates (82.7 %, publication model, no display
 NEX `Inferno_driver_diagnostic.nex` MD5 in `pipeline/select_build.json`: boot checks PASS incl. hook bytes after boot. No display change. Not run on hardware.
 
 Remaining: items 2-5 of the list above; item 1 is closed by this experiment (runs equal main's), unless a display makes 14 too long.
+
+Hardware (user, 2026-11-09), drop-run NEX MD5 8cb665e5ee0876535d01e937da401e0e: runs; not formally measured.
+
+## Integrated diagnostic: experiment 5, what 8EF9 knows (model, no hardware)
+- Constraint: the first update needs up to 47 uploads; the plan put them in the 8EF9 pause, but nothing may read CAP_LOG there.
+- Success criterion: the 8EF9 state identifies the first update's patterns within 64 slots.
+- Result (`pipeline/first_frame.json`, `probe_first_frame.py`): actor structs match all draws but one per level, but using them needs the table layout and x positions, and L1's first update spans 70 patterns over all chunks. Not met.
+- Change instead (deviation from the plan's wording, for review): uploads run in the window from a queue built by selection; finished patterns survive drops.
+
+## Item 4a. Window uploads (branch `claude/inferno-uploads`, not merged)
+CPU OTIR, bursts of 16 between polls; a pattern's flag clears after its last burst; commit follows the queue. Sprites stay disabled. Levels are first ready at update 4 (L1), 3 (L4), 1 (others). Checks: `--select-checks` with pattern RAM carried and 8 controls; gate 0 failures, all 1,516 ready frames have correct pattern bytes (`pipeline/upload_gate.json`).
+
+| Simulator, executed assembly, no hardware | Selection only | With uploads |
+|---|---:|---:|
+| Updates dropped | 320 (17.3 %) | 339 (18.3 %) |
+| Longest drop run | 14 | **32** |
+| Slice margin, min T | 108 | **66** (no errors) |
+
+Two tuning attempts did not shorten the run, so the reassessment rule stopped tuning. On busy L1 windows scene plus dispatch nearly fill the window; any added work loses marginal updates. Open for review. NEX MD5 51422e2509859ea9c06e0ee8f2f3dfe1, boot checks PASS, not run on hardware.
