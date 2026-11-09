@@ -1,0 +1,485 @@
+{
+"main": [
+[
+"Nahrávám...",
+"Loading..."
+],
+[
+"Nalezeno:",
+"Found:   "
+],
+[
+"Stiskni klávesu nebo pohni joystickem:",
+"Press a key or move the joystick:"
+],
+[
+"     Pro ",
+"     For "
+],
+[
+"pohyb vpravo:",
+"move right:"
+],
+[
+"pohyb vlevo:",
+"move left:"
+],
+[
+"pohyb dolů:",
+"move down:"
+],
+[
+"pohyb nahoru:",
+"move up:"
+],
+[
+"střelbu:",
+"fire:"
+],
+[
+"volbu zbraně:",
+"weapon pick:"
+],
+[
+"aktivaci zbraně:",
+"activate weapon:"
+],
+[
+"Stříbrná hvězda",
+"Silver Star"
+],
+[
+"Zlatá hvězda",
+"Gold Star"
+],
+[
+"Řád Slunce",
+"Sun Order"
+],
+[
+"Řád za osvobození Země",
+"Earth Liberation Order"
+],
+[
+"Řád Vítězství",
+"Victory Order"
+],
+[
+"Řád Osvobození",
+"Freedom Order"
+],
+[
+"Železný kříž",
+"Iron Cross"
+],
+[
+"Řád Věčné paměti",
+"Eternal Memory"
+],
+[
+"Obdržel jste vyznamenání:",
+"You have been decorated:"
+],
+[
+"Vyznamenání:",
+"Decorations:"
+],
+[
+"Byl jste povýšen do hodnosti: ",
+"Promoted to the rank of: "
+],
+[
+"Kadet",
+"Cadet"
+],
+[
+"Pilot 2. třídy",
+"Pilot 2nd cl."
+],
+[
+"Pilot 1. třídy",
+"Pilot 1st cl."
+],
+[
+"Pilot extra třídy",
+"Senior Pilot"
+],
+[
+"Kapitán",
+"Captain"
+],
+[
+"Poručík",
+"Lieut."
+],
+[
+"Plukovník",
+"Colonel"
+],
+[
+"Vstupní kód: ",
+"Entry code: "
+],
+[
+"bídná",
+"poor"
+],
+[
+"slabá",
+"weak"
+],
+[
+"průměrná",
+"average"
+],
+[
+"výborná",
+"great"
+],
+[
+"expertní",
+"expert"
+],
+[
+"Dosažena nebezpečnost ",
+"Danger rating: "
+],
+[
+"Nepřátelských objektů zničeno: ",
+"Enemy objects destroyed: "
+],
+[
+"Nepřátelských objektů v oblasti celkem: ",
+"Enemy objects in the area: "
+],
+[
+"Mise ukončena.",
+"Mission over."
+],
+[
+"Mise přerušena!",
+"Mission aborted"
+],
+[
+"Bitevník zničen - jste mrtev!!",
+"Fighter destroyed - you died!"
+],
+[
+"Clona:",
+"Shield"
+],
+[
+"Plazma:",
+"Plasma:"
+],
+[
+"Palivo:",
+"Fuel:"
+],
+[
+"Rychlost:",
+"Speed:"
+],
+[
+"Použitelné povely jsou: START, PILOT, SAVE, LOAD, RAPORT, REDEFINICE, INFORMACE, ZBRANĚ, POMOC a KONEC. Stačí zadat pouze první písmeno.",
+"Commands: Start, PILot, SAVe, LOAd, Report, Keys, Info, Weapons, Help, Quit. Capitals are the shortest form."
+],
+[
+"Chyba při čtení z disku!",
+"Disk read error!"
+],
+[
+"Chyba při čtení z kazety!",
+"Tape read error!"
+],
+[
+"Neznámý povel",
+"Unknown order"
+],
+[
+"Počet nalétaných misí: ",
+"Missions flown: "
+],
+[
+"Počet splněných misí: ",
+"Missions completed: "
+],
+[
+"Počet zničených objektů: ",
+"Objects destroyed: "
+],
+[
+"Kempston vpravo",
+"Kempston right"
+],
+[
+"Kempston vlevo",
+"Kempston left"
+],
+[
+"Kempston dolů",
+"Kempston down"
+],
+[
+"Kempston nahoru",
+"Kempston up"
+],
+[
+"4xKOBRA, dopředu odpalovaná raketa",
+"4xCOBRA, forward-firing rocket"
+],
+[
+"4xZMIJE, vzhůru odpalovaná raketa",
+"4xVIPER, upward-firing rocket"
+],
+[
+"4xKRTEK, dolů odpalovaná raketa",
+"4xMOLE, downward-firing rocket"
+],
+[
+"4xSKUNK, dozadu odpalovaná raketa",
+"4xSKUNK, rear-firing rocket"
+],
+[
+"Pumovnice č. 1",
+"Weapon bay 1"
+],
+[
+"8xPADAVKA, klouzající tříštivá bomba",
+"8xDROPPER, gliding fragment bomb"
+],
+[
+"1xSUPERBOMBA, plošný disruptor",
+"1xSUPERBOMB, area disruptor"
+],
+[
+"8xDIKOBRAZ, levitující nárazové miny",
+"8xPORCUPINE, hovering impact mines"
+],
+[
+"1xGLADIATOR, přídavná bitevní stanice",
+"1xGLADIATOR, auxiliary battle station"
+],
+[
+"Pumovnice č. 2",
+"Weapon bay 2"
+],
+[
+"2xAUREOLA, přídavný kontaktní štít",
+"2xHALO, auxiliary contact shield"
+],
+[
+"6xPRSKAVKA, bodový disruptor",
+"6xSPARKLER, point disruptor"
+],
+[
+"1xENERGO, přídavný energetický zdroj",
+"1xENERGO, auxiliary power source"
+],
+[
+"4xCHAMELEON, rušička navádění raket",
+"4xCHAMELEON, missile jammer"
+],
+[
+"Pumovnice č. 3",
+"Weapon bay 3"
+],
+[
+"2xREZONANCE, zesilovač energie výbojů",
+"2xRESONANCE, plasma energy amplifier"
+],
+[
+"2xTROJZUBEC, kvantový násobič výbojů",
+"2xTRIDENT, quantum plasma multiplier"
+],
+[
+"1xKLOKAN, hyperprostorový systém",
+"1xKANGAROO, hyperspace system"
+],
+[
+"1xPALIVO, přídavná palivová nádrž",
+"1xFUEL, auxiliary fuel tank"
+],
+[
+"Pumovnice č. 4",
+"Weapon bay 4"
+],
+[
+"Volba zbraní ukončena",
+"Weapon choice done"
+],
+[
+"Lineární pohon lodi",
+"Linear drive"
+],
+[
+"Kvantový pohon lodi",
+"Quantum drive"
+],
+[
+"Kempston? (vložte A/N)",
+"Kempston? (Y/N)"
+]
+],
+"levels": {
+"1.planet": "The theatre of operations is NEW YORK (a heritage reservation - late 20th century). The Orgaids disguise their weapons as ancient Earth machines, so beware of any unusual object. The clouds over the city are physically altered and are a great danger to aircraft.",
+"1.m1.brief": "The first mission is a routine patrol on the route RAINA - Statue of Liberty - RAINA. Eliminate all enemy activity if possible.",
+"1.m1.win": "Excellent. Your first mission was a success.",
+"1.m1.retry": "The patrol must be repeated - we need information on the whole sector.",
+"1.m2.brief": "Objective: locate and destroy an enemy cruiser disguised as a space shuttle. It carries guided missiles that acquire their targets on launch.",
+"1.m2.win": "Congratulations - your first cruiser.",
+"1.m2.retry": "The cruiser survived - repeat the mission.",
+"1.m3.brief": "A battle cruiser threatens the build-up for the offensive. Destroy it quickly.",
+"1.m3.win": "Cruiser destroyed - the offensive is on!",
+"1.m3.retry": "No offensive until this force is destroyed.",
+"1.m4.brief": "In operation ZVRAT (driving the Orgaids from Earth) you have a vital task: destroy the Orgaid headquarters hidden in the Statue of Liberty. But first repel the enemy attack on RAINA.",
+"1.m4.win": "Outstanding success - Earth is entirely free.",
+"1.m4.retry": "The Orgaids are holding out.",
+"2.planet": "After withdrawing from Earth, the Orgaids are trying to stop our advance on the Moon. They have brought many new weapons, especially dangerous surface-to-air guided missiles. Use the uneven terrain for cover.",
+"2.m1.brief": "A large unidentified machine has been spotted close to the base. Attack it and destroy it if possible.",
+"2.m1.win": "Excellent - that cruiser was nearing our front line.",
+"2.m1.retry": "It must be destroyed.",
+"2.m2.brief": "Today your target is a heavily fortified enemy base. Intelligence suggests that a high-ranking member of the Orgaid supreme command is stationed there. Try to eliminate him!",
+"2.m2.win": "An outstanding result. Eliminating this Orgaid strategist will save many of our soldiers.",
+"2.m2.retry": "Intelligence says the strategist is still at the base. Attack again.",
+"2.m3.brief": "Forces must be redeployed ahead of the next operation. Fly to another base. Reconnaissance reports unusually high enemy activity, so stay alert!",
+"2.m3.win": "Well done on reaching the target - the log shows it was not easy!",
+"2.m3.retry": "The flight must be made.",
+"2.m4.brief": "A sabotage unit captured several enemy battlecruisers, and one is heading here now. Clear the approach and protect it during transit. Warning: the captured vessel carries no identifying markings.",
+"2.m4.win": "We have discovered how to trigger the self-destruct systems of Orgaid ships remotely. The Moon is liberated!",
+"2.m4.retry": "We are readying another battleship.",
+"3.planet": "Fialka is the third planet of the Alpha Centauri system. Its name comes from the distinctive colour of its deserts. Discovered in 2313, it later became home to a small scientific colony. After a sudden Orgaid invasion, the entire population had to be evacuated. Fialka is now a key Orgaid defensive stronghold in Alpha Centauri.",
+"3.m1.brief": "A reconnaissance satellite has located an enemy base. Find and destroy it. Strong enemy activity has been detected throughout the area.",
+"3.m1.win": "Excellent, losing this base greatly weakens the enemy defence of the whole sector. The first strategic success on Fialka is 90% your doing.",
+"3.m1.retry": "The nearby enemy base severely restricts our plans. Destroying it remains a strategic objective of the highest priority.",
+"3.m2.brief": "Several of our supply convoys have recently been attacked. Our reconnaissance satellite has not detected an enemy base, but we know the direction the attacks came from. Find and destroy that base.",
+"3.m2.win": "An unexpected success! You found and destroyed a well-hidden enemy base. Terran forces now control more than half of Fialka.",
+"3.m2.retry": "No strategic offensive until the source of these dangerous attacks is destroyed. Keep searching.",
+"3.m3.brief": "Our coming offensive requires supplies at a forward base. Clear a route for SOUMAR and escort it safely. SOUMAR launches immediately after you, so hurry. Do not land until you are certain it has reached its destination.",
+"3.m3.win": "An excellent result! SOUMAR arrived without a scratch. The strategic offensive can begin.",
+"3.m3.retry": "SOUMAR was destroyed. The offensive is delayed until a new supply transport leaves.",
+"3.m4.brief": "The enemy is preparing a final counterattack to prevent the liberation of Fialka. Several ships loaded with weapons are on their way. Find and destroy one enemy freighter. Beware: it carries powerful annihilators and rockets.",
+"3.m4.win": "Fialka is free. The remnants of the enemy colonial army are leaving the Alpha Centauri system.",
+"3.m4.retry": "The enemy freighter survived. The danger remains; repeat the mission.",
+"4.planet": "Planet NGC32/4, as yet unnamed, is very similar to Earth. It lies within the former neutral zone and was never settled by Terrans. With no surface bases available, you will launch missions from the carrier CIMRMAN.",
+"4.m1.brief": "The first mission on NGC32/4 is to find and destroy the enemy regional headquarters - it is hidden in a hangar.",
+"4.m1.win": "Headquarters destroyed, outstanding work!",
+"4.m1.retry": "A new attack on the HQ is essential.",
+"4.m2.brief": "One large and three small enemy attack MANTAS are closing fast on CIMRMAN. Stop them before they reach it - lay a minefield in their path. After repelling them, destroy the enemy fuel stores.",
+"4.m2.win": "Excellent, both tasks done.",
+"4.m2.retry": "Until the fuel is destroyed too, the attack can come again.",
+"4.m3.brief": "Orbital scouts have found strategic stores whose loss could turn the tide in our favour. The tanks are very tough and only a direct bomb hit can destroy them.",
+"4.m3.win": "Excellent, NGC32/4 will soon be ours.",
+"4.m3.retry": "The stores are still target no. 1.",
+"4.m4.brief": "The last mission: destroy the remaining enemy defences so CIMRMAN can move on (CIMRMAN sets off as soon as you appear in view, so hurry).",
+"4.m4.win": "NGC32/4 is now fully under our control. The next battles will be fought in Orgaid territory.",
+"4.m4.retry": "The route was not cleared. We must try again.",
+"5.planet": "Zynaps is the first of the original Orgaid planets. All we know of it was sent by the starship Zynaps before it was destroyed (in 2412) - the planet was later named after it.",
+"5.m1.brief": "The expeditionary force on Zynaps is in danger: a giant cruiser is closing in. Stop it!",
+"5.m1.win": "Expeditionary force saved, great!",
+"5.m1.retry": "The cruiser has badly weakened our expeditionary force. We cannot advance while it survives.",
+"5.m2.brief": "Scouts have found a big cruiser near the base. Eliminate it as soon as you can.",
+"5.m2.win": "Cruiser destroyed, bravo!",
+"5.m2.retry": "Repeat the mission.",
+"5.m3.brief": "We have located enemy fuel reserves. Destroying them will cripple the defences in this sector.",
+"5.m3.win": "Excellent, those were the only stores in the sector. The way is open to strike at the heart of the planet.",
+"5.m3.retry": "Repeat the action.",
+"5.m4.brief": "Many enemy cruisers have arrived to reinforce the defence of the planetary centre. The strategic situation is turning against us. Only a direct, focused strike can reverse it. You MUST destroy ALL the cruisers.",
+"5.m4.win": "Planet Zynaps has fallen. The way to advance against the Orgaids is open.",
+"5.m4.retry": "You will have to attack again.",
+"6.planet": "Orga is the Orgaid homeworld, situated near the centre of the Galaxy's third spiral arm. It is the last planet controlled by the Orgaids. If we take it, we win the war.",
+"6.m1.brief": "We have located an important enemy ship, destroy it!",
+"6.m1.win": "Excellent, our latest news is that the ship carried two special units.",
+"6.m1.retry": "Destroying the ship is the only task.",
+"6.m2.brief": "Special battle robots are moving towards our positions, destroy them. Beware, a few fighters are guarding them.",
+"6.m2.win": "Well done, the danger is over.",
+"6.m2.retry": "We must attack the robots again.",
+"6.m3.brief": "We have found strategic fuel stores, destroy them!",
+"6.m3.win": "Unexpected success, bravo.",
+"6.m3.retry": "These stores must be destroyed!",
+"6.m4.brief": "The last centre of resistance on Orga is the heavily protected imperial palace. Try to destroy it. This mission is extremely risky. Good luck!",
+"6.m4.win": "Congratulations, the Orgaids are beaten! We have won the war.",
+"6.m4.retry": "Prepare to launch again."
+},
+"intro": "Welcome aboard the TTF RAINA, our fighter carrier. You have been assigned to a newly formed PEACEMAKER squadron. We are approaching Earth, half of which is occupied by the Orgaids. The war between the Federation of Terrestrial Planets and the Orgaids has been going on for years. Our forces are still retreating, abandoning one planet after another. When the war began, the Orgaids enjoyed an enormous technological advantage. They had been preparing for it for a long time. Since then we have developed new weapons whose technology surpasses that of the enemy. One of our greatest hopes is the new PEACEMAKER fighter. You can find more information about the aircraft in your pilot's manual.\n\nSince there are so many raw recruits among the pilots aboard the RAINA, it cannot hurt to go over the principles of effective and \"safe\" combat. Here are the pilot's ten rules. 1. Use the landscape. Hills and other natural obstacles can sometimes shield you from rockets and incoming fire. 2. Find the enemy's weak points. Their fighting machines are designed for attack, so some directions may be poorly protected or completely unprotected. 3. Choose suitable weapons for each mission. Tactical support will equip you for the assigned objective, but in flight you may discover that another loadout would work better. Return to base and rearm. 4. Keep your head. There is a solution to every situation; your task is to discover it. 5. He who retreats in time usually wins. With a linear engine you can sometimes outrun guided missiles. If your shield collapses, withdraw and allow it to recharge. 6. Let the enemy shoot one another. The Orgaids often throw enormous numbers of machines at you. In the heat of battle they may hit their own forces. A good pilot turns the enemy's strength against them. 7. The Orgaids are reckless. Their pilots have an artificially weakened instinct for self-preservation and frequently destroy themselves with dangerous manoeuvres. Sometimes all you need to do is wait. 8. Protect yourself and your ship. If the fighter suffers serious damage, return to base immediately. We do not need dead heroes! 9. Fire fewer, stronger shots. The plasma cannon deals the greatest damage when fully charged. Give it time to recharge between shots. 10. Plasma can penetrate obstacles. Its discharge briefly changes the structure of matter, sometimes allowing a volley to pass through solid barriers. That is everything. We have reached orbit and are preparing to descend. If you want to begin the game, press any key. Or you can keep reading: what follows is a more personal account and is not essential for playing. So you are still interested? Very well, let us begin. I worked on this game from the autumn of 1992 to the spring of 1993. It did not take me a mere three weeks, as some games apparently do, and I hope that shows. During that time I also worked on many other programs: PRESSOR VI, a disk version of SCREEN TOP, tools for KUD 3, DESKTOP printing on nine-pin EPSON LX-compatible printers, and the ZXM subscriber database. This game was inspired by many others. Claiming to have invented everything myself would be foolish. Among the inspirations were R-TYPE, ZYNAPS, ASTRO MARINE CORPS I and II, URIDIUM, WING COMMANDER on the PC, ELITE, ACADEMY, TAU CETI, DAN DARE I, II and III, ACTION FORCE I and II, QUAZATRON, F-117 STEALTH FIGHTER and many more. Some showed me what to do; others showed me what not to do. I simply wanted to make a game I would enjoy playing. I succeeded in that; I really do return to my own game now and then. I also hoped it could stand beside the titles I mentioned. Whether I succeeded is for you to decide. Reviews have ranged from the best to the worst. Pavel M. called it the hit of the year and said he kept coming back because it was great. Jan F. thought it was horrible, with ear-splitting sounds, awkward controls and dreadful graphics. Such is life! Personally, I consider it one of the best programs I have ever created.\n\nFor the curious, here is what I used: my head, a chair, a computer, a D40 disk drive, a television, PROMETHEUS, DESKTOP, PRESSOR VI, ART STUDIO, SCREEN TOP by George K., Lada Sch@n (LS), Miroslav Hlavicka (SCALEX), ORFEUS, SOUNDTRACKER, DEVASTACE, comments ranging from brilliant to utterly foolish, and plenty of patience, imagination, enthusiasm and hands-on work.\n\nGeorge K. and Lada Sch@n helped me with the game's graphics. George K. designed and drew the foundation of New York. Lada Sch@n drew the foundations of the Moon and NGC32/4. I drew Fialka and Orga and completed their final appearance. ZYNAPS uses graphics from the game of the same name as my tribute to its creators. Zynaps is my favourite shoot-'em-up. I personally completed every level several times, and I insist that this game can be finished. It requires practice, practice and more practice, as well as thought and clever ways to defeat the monsters. There is always more than one solution. If you disagree, play any of the games I listed and think again. Opinions of the difficulty have varied. Pavel M. said the difficulty felt just right once he got used to it. Tonda M. found R-TYPE harder. Jan F. said Inferno was impossible to play. The game even has a secret cheating mode; finding it is another matter! But do not look for it. You would only rob yourself of the experience. To prove I am not entirely heartless, here is a walkthrough of the very first mission. You can take notes. It is quite simple. 1. After takeoff, activate ENERGO. 2. Destroy the three houses at the bottom right. 3. Release GLADIATOR into open space so it does not crash. 4. Use GLADIATOR to destroy the first balloon. 5. Destroy the second balloon. 6. Destroy the first helicopter and third balloon. 7. Let GLADIATOR break apart against the clouds. 8. Activate TRIDENT and use it to destroy the fourth balloon. 9. Attack the second helicopter from above or below, staying clear of its fire. 10. Destroy the third helicopter in the same way, or fly around and attack from behind. 11. Destroy the fifth balloon. 12. Destroy the fourth and fifth helicopters. 13. At the Statue of Liberty you have reached the objective; you may destroy the statue if you wish. 14. Fly back to the RAINA. Finish any unfinished business along the way if you like, but watch your fuel. 15. The RAINA is here: land at its docking bay on the underside, marked by arrows.\n\nIn closing, greetings to all my fans, admirers, critics, detractors, friends, enemies, acquaintances and everyone else. With the words \"Fight those Orgaid villains!\" I bid you farewell. I wish you success in the game, plenty of patience, luck, ideas and enjoyment.",
+"levels_pc": {
+"1.planet": "The operational area is NEW YORK, a historic reserve from the late twentieth century. The Orgaids disguise their weapons as old Terran machines; watch for anything unusual. The clouds above the city have been physically altered and pose a serious danger to your aircraft.",
+"1.m1.brief": "Your first mission is a routine patrol along the RAINA - Statue of Liberty - RAINA route. Eliminate enemy activity wherever possible.",
+"1.m1.win": "Excellent. Your first mission was a success.",
+"1.m1.retry": "The patrol must be repeated. We need information about the entire route.",
+"1.m2.brief": "Objective: locate and destroy an enemy cruiser disguised as a space shuttle. It carries guided missiles that acquire their targets on launch.",
+"1.m2.win": "Congratulations. Your first enemy cruiser has been destroyed.",
+"1.m2.retry": "The cruiser was not destroyed. Repeat the mission.",
+"1.m3.brief": "A large battlecruiser threatens preparations for our offensive. Destroy it as quickly as possible.",
+"1.m3.win": "The cruiser has been destroyed. The offensive can begin!",
+"1.m3.retry": "We cannot launch the offensive until this threat is eliminated.",
+"1.m4.brief": "As part of Operation TURNING POINT, the campaign to drive the Orgaids from Earth, you have a vital assignment: destroy the Orgaid headquarters hidden inside the Statue of Liberty. First repel the enemy assault on RAINA.",
+"1.m4.win": "Outstanding victory. Earth has been completely liberated.",
+"1.m4.retry": "The Orgaids are still successfully resisting the offensive.",
+"2.planet": "After withdrawing from Earth, the Orgaids are trying to stop our advance on the Moon. They have brought many new weapons, especially dangerous surface-to-air guided missiles. Use the uneven terrain for cover.",
+"2.m1.brief": "A large unidentified machine has been spotted close to the base. Attack it and destroy it if possible.",
+"2.m1.win": "Excellent. The cruiser was approaching our forward positions.",
+"2.m1.retry": "The machine must be destroyed.",
+"2.m2.brief": "Today your target is a heavily fortified enemy base. Intelligence suggests that a high-ranking member of the Orgaid supreme command is stationed there. Try to eliminate him!",
+"2.m2.win": "An outstanding result. Eliminating this Orgaid strategist will save many of our soldiers.",
+"2.m2.retry": "Intelligence reports that the enemy strategist is still at the base. The attack must be repeated.",
+"2.m3.brief": "Forces must be redeployed ahead of the next operation. Fly to another base. Reconnaissance reports unusually high enemy activity, so stay alert!",
+"2.m3.win": "Congratulations on reaching your destination. According to the flight record, it was far from easy!",
+"2.m3.retry": "The transfer flight must be completed.",
+"2.m4.brief": "A sabotage unit captured several enemy battlecruisers, and one is heading here now. Clear the approach and protect it during transit. Warning: the captured vessel carries no identifying markings.",
+"2.m4.win": "We have discovered how to trigger the self-destruct systems of Orgaid ships remotely. The Moon is liberated!",
+"2.m4.retry": "Another battlecruiser is being prepared for the transfer.",
+"3.planet": "Fialka is the third planet of the Alpha Centauri system. Its name comes from the distinctive colour of its deserts. Discovered in 2313, it later became home to a small scientific colony. After a sudden Orgaid invasion, the entire population had to be evacuated. Fialka is now a key Orgaid defensive stronghold in Alpha Centauri.",
+"3.m1.brief": "A reconnaissance satellite has located an enemy base. Find and destroy it. Strong enemy activity has been detected throughout the area.",
+"3.m1.win": "Excellent. Destroying this base will greatly weaken enemy defences across the sector. Ninety percent of this first strategic success on Fialka is thanks to you.",
+"3.m1.retry": "The nearby enemy base severely restricts our plans. Destroying it remains a strategic objective of the highest priority.",
+"3.m2.brief": "Several of our supply convoys have recently been attacked. Our reconnaissance satellite has not detected an enemy base, but we know the direction the attacks came from. Find and destroy that base.",
+"3.m2.win": "An unexpected success! You found and destroyed a well-hidden enemy base. Terran forces now control more than half of Fialka.",
+"3.m2.retry": "We cannot begin the strategic offensive until the source of these attacks has been found and destroyed. The search must continue.",
+"3.m3.brief": "Our coming offensive requires supplies at a forward base. Clear a route for SOUMAR and escort it safely. SOUMAR launches immediately after you, so hurry. Do not land until you are certain it has reached its destination.",
+"3.m3.win": "An excellent result! SOUMAR arrived without a scratch. The strategic offensive can begin.",
+"3.m3.retry": "SOUMAR was destroyed. The offensive must be delayed until another supply transport is dispatched.",
+"3.m4.brief": "The enemy is preparing a final counterattack to prevent the liberation of Fialka. Several ships loaded with weapons are on their way. Find and destroy one enemy freighter. Beware: it carries powerful annihilators and rockets.",
+"3.m4.win": "Fialka is free. The remnants of the enemy colonial army are leaving the Alpha Centauri system.",
+"3.m4.retry": "The enemy freighter survived. The danger remains; repeat the mission.",
+"4.planet": "Planet NGC32/4, as yet unnamed, is very similar to Earth. It lies within the former neutral zone and was never settled by Terrans. With no surface bases available, you will launch missions from the carrier CIMRMAN.",
+"4.m1.brief": "Your first mission on NGC32/4 is to locate and destroy the enemy regional headquarters hidden inside one of the hangars.",
+"4.m1.win": "Headquarters destroyed. An excellent result. Congratulations!",
+"4.m1.retry": "Another attack on the headquarters is essential.",
+"4.m2.brief": "An enemy attacker and three MANTA assault craft are closing quickly on CIMRMAN. Stop them before they reach their target by laying a mine barrier across their path. After repelling the attack, destroy the enemy fuel reserves.",
+"4.m2.win": "Excellent! Both objectives completed.",
+"4.m2.retry": "As long as the fuel reserves survive, the attack can be repeated at any time.",
+"4.m3.brief": "Orbital reconnaissance has discovered strategic reserves. Destroying them may turn the war decisively in our favour. The tanks are extremely tough and can only be destroyed by a direct bomb hit.",
+"4.m3.win": "Excellent. NGC32/4 will soon be under our control.",
+"4.m3.retry": "The reserves remain our number-one target.",
+"4.m4.brief": "For the final operation, destroy the remaining enemy defences and clear a path for CIMRMAN to move to a new position. CIMRMAN sets out as soon as you come into view, so hurry!",
+"4.m4.win": "NGC32/4 is now fully under our control. The next battles will be fought in Orgaid territory.",
+"4.m4.retry": "The route was not cleared. We must try again.",
+"5.planet": "Zynaps is the first planet of the Orgaid home systems. The only intelligence about it came from the starship Zynaps before its destruction in the year 2412. The planet was later named after that ship.",
+"5.m1.brief": "The expeditionary force on Zynaps is threatened by a huge enemy cruiser. Stop it before it reaches our troops!",
+"5.m1.win": "The expeditionary force has been saved. Excellent!",
+"5.m1.retry": "The cruiser has badly weakened our expeditionary force. We cannot advance while it survives.",
+"5.m2.brief": "Reconnaissance has detected a large cruiser near the base. Eliminate it as quickly as possible.",
+"5.m2.win": "Cruiser destroyed. Congratulations!",
+"5.m2.retry": "The mission must be repeated.",
+"5.m3.brief": "We have located enemy fuel reserves. Destroying them will cripple the defences in this sector.",
+"5.m3.win": "Excellent! Those were the only reserves in the entire sector. Breaking through their defences now allows a direct assault on the planet's centre.",
+"5.m3.retry": "The operation must be repeated.",
+"5.m4.brief": "Many enemy cruisers have arrived to reinforce the defence of the planetary centre. The strategic situation is turning against us. Only a direct, focused strike can reverse it. You MUST destroy ALL the cruisers.",
+"5.m4.win": "Planet Zynaps has been captured. The way is now open for further advances against the Orgaids.",
+"5.m4.retry": "We have no choice but to repeat the attack.",
+"6.planet": "Orga is the Orgaid homeworld, situated near the centre of the Galaxy's third spiral arm. It is the last planet controlled by the Orgaids. If we take it, we win the war.",
+"6.m1.brief": "We have found the position of an important enemy vessel. Destroy it!",
+"6.m1.win": "Excellent. According to the latest reports, the ship was carrying two special-forces units.",
+"6.m1.retry": "Destroying the vessel remains your sole objective.",
+"6.m2.brief": "Special combat robots are moving towards our positions. Destroy them. Beware: they are protected by several fighters.",
+"6.m2.win": "Congratulations. The danger has been averted.",
+"6.m2.retry": "We must repeat the attack against the robots.",
+"6.m3.brief": "We have discovered strategic fuel reserves. Destroy them!",
+"6.m3.win": "An unexpected success. Congratulations!",
+"6.m3.retry": "Those reserves must be destroyed!",
+"6.m4.brief": "The last centre of resistance on Orga is the heavily protected imperial palace. Try to destroy it. This mission is extremely risky. Good luck!",
+"6.m4.win": "Congratulations! The Orgaids have been defeated. The war has ended in our victory!",
+"6.m4.retry": "Prepare to launch again."
+}
+}
