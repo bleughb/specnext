@@ -16,6 +16,8 @@ from skoolkit.simulator import Simulator
 
 results = []
 next_frame = 1300
+text_owners = set()
+TEXT_SIGNATURE = bytes.fromhex('05007e18181818181805004141417f41414105001f3161417f414105006171795d4f')
 
 
 def source(cx, line):
@@ -42,13 +44,23 @@ def run(memory, registers):
 def at_copy(pc, live):
     global next_frame
     frame = live.tracer.frame_index
+    if pc != 0x8842:
+        r, m = live.registers, live.memory
+        owner = m[0x7A9C]
+        if (r[6] * 256 + r[7] == 0xCAFF and r[4] == 21 and r[5] == 24 and
+                bytes(m[0xCAFF + i] for i in range(len(TEXT_SIGNATURE))) == TEXT_SIGNATURE):
+            text_owners.add(owner)
+        else:
+            text_owners.discard(owner)
+        return
     if frame < next_frame:
         return
     next_frame = frame + 2500
     original = [live.memory[a] for a in range(65536)]
     modified = original[:]
     fg = [(x, y) for y in range(20) for x in range(32)
-          if 0 < original[0x7E00 + 32 * y + x] < 0xDC]
+          if 0 < original[0x7E00 + 32 * y + x] < 0xDC
+          and original[0x7E00 + 32 * y + x] not in text_owners]
     for x, y in fg:
         for line in range(8):
             modified[source(x, 8 * y + line)] = 0
@@ -77,6 +89,6 @@ def at_copy(pc, live):
         raise RuntimeError('removal model differs: inspect saved state')
 
 
-frames, desync = trace(str(HERE.parent / 'Rtype.rzx'), [0x8842], at_copy)
+frames, desync = trace(str(HERE.parent / 'Rtype.rzx'), [0x8842, 0x8CFD, 0x8D65, 0x8DD3, 0x8E29], at_copy)
 (HERE / 'removal.json').write_text(json.dumps(dict(frames=frames, desync=desync, cases=results), indent=2) + '\n')
 print('frames', frames, 'desync', desync, 'cases', len(results))

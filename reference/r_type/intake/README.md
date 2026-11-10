@@ -14,10 +14,11 @@ sprites, see-through, no outlines; original colours, depth and pace; ULA scenery
   exact registers including R, non-ULA RAM and predicted ULA. No assembled/IRQ/timing claim.
 - `feasibility.py`, `sprite-budget.json`: first global-grid budget; includes credits text and is
   superseded for sprite classification by the independent review. It is not a hardware lower bound.
-- `review/`: independent measurements and classification; in progress. THANK-YOU text is ordinary
+- `review/`: independent measurements and classification. THANK-YOU text is ordinary
   enemy slot88 in this scene; classify its graphic identity, never exclude slot88 globally.
 - `r_type_tools.log`: shared analysis checks; survey regression/golden pass, pre-existing Inferno
   IFF audit failure. Canary and doccheck pass in their separate logs.
 
 Run experiments from nexclash using ../venv101/bin/python (SkoolKit10.1, Pillow13). Original and
-derived game data stay here, never in nexclash. Hardware has not been tested.
+derived game data stay here, never in nexclash. Owner reports the plain build working in JNext and
+real hardware (2026-11-10). No sprite build or sprite hardware result yet.
