@@ -1,5 +1,6 @@
 ; R-Type feasibility: original copier into a shadow slot2; staged commit.
-; Synthetic graphics, original audio at native speed; no sprite engine.
+; Synthetic by default; publication_dynamic.asm enables live preparation.
+; Original audio at native speed; feasibility probe, not a sprite engine.
 ; Uses the pinned assembler and shared DMA capability gate. RAM code/packets.
         DEVICE ZXSPECTRUMNEXT
 MODE    EQU 0x3800
@@ -57,8 +58,10 @@ tail_begin:
         di
         ; Forced sentinel at a proven ISR-written star-state byte. The negative
         ; control removes only tail_copy and must lose this runtime change.
+        IFNDEF RT_INTEGRATED
         ld hl,0xDB64
         inc (hl)
+        ENDIF
         nextreg 0x52,10
         ld hl,0xDB00
         ld de,0x5B00
@@ -254,8 +257,13 @@ rend:   ld hl,ROW
         cp 10
         jp c,rstart
 pend:   jp finish
-finish: ei
+finish:
+        IFDEF RT_INTEGRATED
+        jp hook_finish
+        ELSE
+        ei
         jr finish
+        ENDIF
 
 io_prog: db 0x83,0xC3,0x7D
 io_src: dw 0
@@ -288,14 +296,45 @@ prepare:
         ld de,0xC000
         ld bc,8192
         call move
+        IFNDEF RT_DYNAMIC
         call clear_figures
+        ENDIF
         nextreg 0x52,42
 shadow_ready:
         ei
+        IFDEF RT_DYNAMIC
+        call dynamic_patterns
+clear_call:
+        call clear_figures
+        ENDIF
+        IFDEF RT_INTEGRATED
+        call hook_load
+hook_copy_start:
+        push af
+        ld a,r
+        ld (hook_r_start),a
+        pop af
+        call original_copy
+copier_done:
+        push af
+        ld a,r
+        push hl
+        ld hl,hook_r_start
+        sub (hl)
+        sub 7               ; wrapper M1s beyond the original LD IX/body/RET
+        and 127
+        ld (hook_r_add+1),a
+        pop hl
+        pop af
+        call hook_save
+copier_saved:
+        ELSE
         call 0x8842
+        ENDIF
         nextreg 0x56,43
         ld hl,0xC000
         ld de,0x6000
+restore_pixels:
         ld bc,4096
         call move
         ld hl,0xD000
@@ -316,7 +355,11 @@ shadow_ready:
         jr nz,.restore
         nextreg 0x56,42
 prep_end:
+        IFDEF RT_INTEGRATED
+        jp hook_wait
+        ELSE
         ret
+        ENDIF
 move:
         push hl
         push de
@@ -350,6 +393,15 @@ clear_figures:
         jr z,.skip
         cp 0xDC
         jr nc,.skip
+        IFDEF RT_DYNAMIC
+        push hl
+        ld l,a
+        ld h,text_owners/256
+        ld a,(hl)
+        pop hl
+        or a
+        jr nz,.skip
+        ENDIF
         push bc
         push de
         xor a
@@ -386,6 +438,13 @@ irq_in:
         jp 0xBE2B
 ; BE52 replaces POP AF / EX AF,AF' / POP HL.
 irq_out:
+        IFDEF RT_DYNAMIC
+        IFNDEF RT_INTEGRATED
+        ; Forced post-backup mutation in a non-pixel hole. Broad restore must fail.
+        ld hl,0x71D0
+        inc (hl)
+        ENDIF
+        ENDIF
         call hlib_pace_resume
         ld a,(irq_speed)
         nextreg 7,a
@@ -396,6 +455,12 @@ irq_out:
 irq_speed: db 0
         INCLUDE "../../../../nexclash/asm/lib/hlib_dma.asm"
         INCLUDE "../../../../nexclash/asm/lib/hlib_pace.asm"
+        IFDEF RT_DYNAMIC
+        INCLUDE "publication_dynamic_body.asm"
+        ENDIF
+        IFDEF RT_INTEGRATED
+        INCLUDE "publication_integrated_body.asm"
+        ENDIF
 attrs:
         DUP 105,i
         db (32+(i%16)*16)&255,32+(i/16)*16,(32+(i%16)*16)/256,0xC0+(i/2),0x80+(i%2)*64

@@ -51,5 +51,68 @@ Run `../venv101/bin/python ../specnext/reference/r_type/intake/publication_shado
 nexclash. The script expects the local JNext executable and private card path above; creates only
 scratch NEX/JNS/logs under `/workspace/work`. All assemblies use the project's pinned sjasmplus.
 Core3.03 DDMA is gated but not exercised by this older JNext core; mode2 here uses ordinaryDMA.
-Dynamic pattern generation, complete register/R/stack equivalence and integrated pace remain
-unproven. These prototypes are not the R-Type sprite build.
+At that checkpoint dynamic preparation and integrated pace were unproven; the continuation
+below measures them in bounded cases. Complete IRQ/R/stack equivalence remains open.
+These prototypes are not the R-Type sprite build.
+
+## Dynamic preparation and early integration (continued 2026-11-10)
+
+These extend the existing publication protocol; they are not the R-Type engine.
+`publication_shadow.asm` retains its synthetic default. Conditional dynamic code
+moves clearing after the atomic clone, allowing IRQs during live preparation.
+
+- `publication_dynamic.asm` / `_body.asm` scan all 640 source cells into a fixed
+  screen grid; generate packed 4bpp patterns, native inks (black maps to palette8),
+  visible attributes and hidden unused slots. Capacity105 is checked before committing
+  a candidate; overflow halts explicitly. Two ordinary-DMA zero fills avoid CPU writes
+  to empty quadrants. There is no cross-frame pattern cache or host-prepared image.
+- `publication_dynamic.py`: independent per-bit oracle; actual23-sprite/native-long-IRQ
+  state3620 and observed105-sprite peak29405 both match every active pattern/attribute,
+  cleared figure ULA bytes, HUD, restored source pixels, post-IRQ source holes and tail.
+  Default preference and no-blitter publication both pass row deadlines. Preparation
+  47.687ms / 71.758ms includes native IRQs; publication5.100ms / default5.084ms.
+  Broken runtime LUT catches813/5392 bytes; omitted clear catches328/1887 ULA bytes;
+  omitted tail and broad source restoration each catch their forced lost sentinel.
+  Source-hole expected state includes IRQs during the wait, not just preparation.
+- `refresh_capture.py` reconstructs only the already-known peak copier state if absent.
+  This is targeted replay to29406, not another caller/capacity/access census.
+- `publication_integrated.asm` / `_body.asm` and `.py`: early diagnostic through the
+  shared converter/tail. Hooks the actual8842 copier, preserves its actual output
+  registers, restores MMU6/speed and returns on the caller's stack. Clone begins only
+  below NR210 or from249 onward; fixed170 entry waiting gave9.80% pace loss, whereas
+  guarded entry gives0.82% over100 updates (worst20-update window1.72%). Original/build
+  both15.83 updates/s,49.83 IRQ/s, longest IRQ gap40.5ms. No gameplay state lockstep claim.
+- `integrated_check.py`:100 copier returns in each mode, exact12 returned register
+  fields, SP/MMU6/IFF,34048 RAM bytes from tail transition to return, no accepted IRQ
+  in clone or publication critical intervals. Max hook64.42ms; max publication interval
+  101.31ms. Forced IY corruption is caught100 times. C000..DFFF and pre-tail IRQ effects
+  against the original are excluded explicitly. Minimum observed private SP3CE4
+  (the broken-control run reached3CDE); this is not instruction-by-instruction IRQ proof.
+- `register_bridge.py`:24 isolated original-vs-assembled bridge cases across both
+  captured states, six R seeds including bit7, and wrong-return-R controls. All caller
+  registers including R/SP/IFF/IM match without IRQs. Native IRQ R reads at BEDB/BF36
+  still need supplied-R consumer proof; return repair is not that proof.
+
+Compact results: `publication_dynamic-timing.json`, `publication_peak-timing.json`,
+`integrated-check.json`, `register-bridge.json`, `integrated-pace.json/.txt`,
+`integrated-summary.json`. Raw NEX/JNS/machine dumps and50MB exact-boundary logs stay
+in work. JNS saves are deferred to a frame boundary: exact ABI/RAM comparisons use
+execute-time registers and dump_mem, not JNS CPU state. The private SD image stays
+outside both repos and every emulator invocation uses the read-only flag.
+
+Reproduce from nexclash (with the local venv/JNext/card paths in the handoff):
+
+```
+../venv101/bin/python ../specnext/reference/r_type/intake/refresh_capture.py
+../venv101/bin/python ../specnext/reference/r_type/intake/publication_dynamic.py
+../venv101/bin/python ../specnext/reference/r_type/intake/publication_dynamic.py --state /workspace/work/r_type_peak_state.json --out /workspace/work/r_type_publication_peak
+../venv101/bin/python ../specnext/reference/r_type/intake/register_bridge.py
+../venv101/bin/python ../specnext/reference/r_type/intake/integrated_check.py
+```
+
+`publication_integrated.py` builds `/workspace/work/r_type_integrated/diagnostic.nex`
+and its frame2000 original fixture for the shared pace command. Use probe8649 and
+100 updates, as in `integrated-pace.txt`. It is NOT a user/hardware build: text-owner
+flags currently have no plot hooks, entry-IFF0 is explicitly unsupported, source paper
+handling is not integrated, full banked RAM/IRQ equivalence and colour/recolour are open.
+Core3.03 DDMA is still untested; this JNext core exercises ordinary DMA in both modes.

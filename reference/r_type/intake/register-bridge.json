@@ -1,0 +1,173 @@
+{
+  "scope": "Assembled register/R bridge around the real copier, interrupts excluded.\n\nSkips dynamic preparation/publication; not a whole-hook memory/IRQ proof. Tests\nall caller registers incl R (both high-bit values), original SP/IFF and two game\ncopier paths. Negative changes only the assembled return-R immediate.\n",
+  "cases": [
+    {
+      "frame": 3620,
+      "R": 0,
+      "broken": false,
+      "differences": []
+    },
+    {
+      "frame": 3620,
+      "R": 0,
+      "broken": true,
+      "differences": [
+        15
+      ]
+    },
+    {
+      "frame": 3620,
+      "R": 1,
+      "broken": false,
+      "differences": []
+    },
+    {
+      "frame": 3620,
+      "R": 1,
+      "broken": true,
+      "differences": [
+        15
+      ]
+    },
+    {
+      "frame": 3620,
+      "R": 63,
+      "broken": false,
+      "differences": []
+    },
+    {
+      "frame": 3620,
+      "R": 63,
+      "broken": true,
+      "differences": [
+        15
+      ]
+    },
+    {
+      "frame": 3620,
+      "R": 127,
+      "broken": false,
+      "differences": []
+    },
+    {
+      "frame": 3620,
+      "R": 127,
+      "broken": true,
+      "differences": [
+        15
+      ]
+    },
+    {
+      "frame": 3620,
+      "R": 128,
+      "broken": false,
+      "differences": []
+    },
+    {
+      "frame": 3620,
+      "R": 128,
+      "broken": true,
+      "differences": [
+        15
+      ]
+    },
+    {
+      "frame": 3620,
+      "R": 255,
+      "broken": false,
+      "differences": []
+    },
+    {
+      "frame": 3620,
+      "R": 255,
+      "broken": true,
+      "differences": [
+        15
+      ]
+    },
+    {
+      "frame": 29405,
+      "R": 0,
+      "broken": false,
+      "differences": []
+    },
+    {
+      "frame": 29405,
+      "R": 0,
+      "broken": true,
+      "differences": [
+        15
+      ]
+    },
+    {
+      "frame": 29405,
+      "R": 1,
+      "broken": false,
+      "differences": []
+    },
+    {
+      "frame": 29405,
+      "R": 1,
+      "broken": true,
+      "differences": [
+        15
+      ]
+    },
+    {
+      "frame": 29405,
+      "R": 63,
+      "broken": false,
+      "differences": []
+    },
+    {
+      "frame": 29405,
+      "R": 63,
+      "broken": true,
+      "differences": [
+        15
+      ]
+    },
+    {
+      "frame": 29405,
+      "R": 127,
+      "broken": false,
+      "differences": []
+    },
+    {
+      "frame": 29405,
+      "R": 127,
+      "broken": true,
+      "differences": [
+        15
+      ]
+    },
+    {
+      "frame": 29405,
+      "R": 128,
+      "broken": false,
+      "differences": []
+    },
+    {
+      "frame": 29405,
+      "R": 128,
+      "broken": true,
+      "differences": [
+        15
+      ]
+    },
+    {
+      "frame": 29405,
+      "R": 255,
+      "broken": false,
+      "differences": []
+    },
+    {
+      "frame": 29405,
+      "R": 255,
+      "broken": true,
+      "differences": [
+        15
+      ]
+    }
+  ]
+}
