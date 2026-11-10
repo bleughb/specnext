@@ -1,0 +1,95 @@
+[
+  {
+    "variant": "dma",
+    "returns": 100,
+    "register_mismatches": 0,
+    "checked_registers": [
+      "AF",
+      "BC",
+      "DE",
+      "HL",
+      "IX",
+      "IY",
+      "AF2",
+      "BC2",
+      "DE2",
+      "HL2",
+      "I",
+      "IM"
+    ],
+    "tail_to_return_ram_bytes": 34048,
+    "ram_mismatches": 0,
+    "max_hook_ms": 64.40146428571428,
+    "max_publication_interval_ms": 101.30853571428571,
+    "min_private_sp": 15588,
+    "critical_irq_count": 0,
+    "limits": [
+      "return R bridge tested separately without IRQ; in-IRQ R consumers unproven",
+      "C000..DFFF not compared here",
+      "IRQ effects before tail not checked against original",
+      "no text hooks or recolour; not an engine"
+    ]
+  },
+  {
+    "variant": "default",
+    "returns": 100,
+    "register_mismatches": 0,
+    "checked_registers": [
+      "AF",
+      "BC",
+      "DE",
+      "HL",
+      "IX",
+      "IY",
+      "AF2",
+      "BC2",
+      "DE2",
+      "HL2",
+      "I",
+      "IM"
+    ],
+    "tail_to_return_ram_bytes": 34048,
+    "ram_mismatches": 0,
+    "max_hook_ms": 64.39535714285714,
+    "max_publication_interval_ms": 101.28667857142857,
+    "min_private_sp": 15590,
+    "critical_irq_count": 0,
+    "limits": [
+      "return R bridge tested separately without IRQ; in-IRQ R consumers unproven",
+      "C000..DFFF not compared here",
+      "IRQ effects before tail not checked against original",
+      "no text hooks or recolour; not an engine"
+    ]
+  },
+  {
+    "variant": "bad-restore",
+    "returns": 100,
+    "register_mismatches": 100,
+    "checked_registers": [
+      "AF",
+      "BC",
+      "DE",
+      "HL",
+      "IX",
+      "IY",
+      "AF2",
+      "BC2",
+      "DE2",
+      "HL2",
+      "I",
+      "IM"
+    ],
+    "tail_to_return_ram_bytes": 34048,
+    "ram_mismatches": 0,
+    "max_hook_ms": 64.40089285714286,
+    "max_publication_interval_ms": 101.30853571428571,
+    "min_private_sp": 15582,
+    "critical_irq_count": 0,
+    "limits": [
+      "return R bridge tested separately without IRQ; in-IRQ R consumers unproven",
+      "C000..DFFF not compared here",
+      "IRQ effects before tail not checked against original",
+      "no text hooks or recolour; not an engine"
+    ]
+  }
+]
