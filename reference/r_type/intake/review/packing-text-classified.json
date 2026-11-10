@@ -1,0 +1,58 @@
+{
+  "frames": 90102,
+  "desync": null,
+  "refreshes": 18576,
+  "text_draws": 400,
+  "text_cells": 36119,
+  "layouts": {
+    "global": {
+      "max_sprites": 105,
+      "max_patterns": 103,
+      "max_union": 183,
+      "max_mono_patterns": 103,
+      "max_mono_union": 183,
+      "over_sprites": 0,
+      "over_patterns": 0,
+      "over_union": 123,
+      "over_mono_union": 120,
+      "sprites_frame": 29405,
+      "patterns_frame": 29405,
+      "union_frame": 29242,
+      "mono_patterns_frame": 29405,
+      "mono_union_frame": 29242
+    },
+    "owner_min": {
+      "max_sprites": 111,
+      "max_patterns": 104,
+      "max_union": 176,
+      "max_mono_patterns": 104,
+      "max_mono_union": 176,
+      "over_sprites": 0,
+      "over_patterns": 0,
+      "over_union": 34,
+      "over_mono_union": 32,
+      "sprites_frame": 30329,
+      "patterns_frame": 29374,
+      "union_frame": 29344,
+      "mono_patterns_frame": 29374,
+      "mono_union_frame": 29344
+    },
+    "owner_best": {
+      "max_sprites": 108,
+      "max_patterns": 101,
+      "max_union": 174,
+      "max_mono_patterns": 101,
+      "max_mono_union": 174,
+      "over_sprites": 0,
+      "over_patterns": 0,
+      "over_union": 35,
+      "over_mono_union": 33,
+      "sprites_frame": 29374,
+      "patterns_frame": 29374,
+      "union_frame": 29344,
+      "mono_patterns_frame": 29374,
+      "mono_union_frame": 29344
+    }
+  },
+  "scope": "Original refresh states, exact nibble patterns; credits text tagged by live graphic identity and retained on ULA; optional monochrome palette normalization"
+}

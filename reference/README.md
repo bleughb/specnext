@@ -430,7 +430,8 @@ recolour commands, validation scope and the CSpect/Next checklist.
 
 Owner's Rtype.tap 2d1e17ef, Rtype.rzx fb4a142a (90,102 frames); Rtype.z80 5a2179b4
 extracted from its first snapshot. Plain Rtype.nex 657362a1: boot/R/RAM/ROM checks pass with
-and without NEXLOAD, tail proven over the full recording; hardware untested. No sprite build yet.
+and without NEXLOAD, tail proven over the full recording; owner reports JNext and real hardware PASS
+(2026-11-10). No sprite build yet.
 `intake/` holds bounded survey, full caller/access evidence, original previews, plain builder,
 sampled copier-removal experiment and independent capacity review.
 
