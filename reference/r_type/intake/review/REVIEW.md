@@ -50,6 +50,13 @@ renegade_hooks.asm half-pattern upload through303B. A visible sibling half need 
 
 35 sampled copier-removal states with corrected text classification passed registers includingR,
 non-ULA RAM and predicted ULA (text retained). Full source/ROM/tail access scan completed. Full ISR-specific proof
-was interrupted and is incomplete. JNext1.2.0 runs in cloud, but the NextZXOS card is absent and
-its official host still returns policy403. User reports the supplied plain build works in JNext
+has since completed:90,102 frames/86,553 IRQs. The owner supplied a compressed private SD image;
+JNext1.2.0 now boots. Follow-up publication/IRQ/shadow prototypes are documented in ../README.md. User reports the supplied plain build works in JNext
 and real hardware (2026-11-10); no sprite build tested.
+
+Follow-up review: ordinary-DMA fallback satisfies the no-blitter requirement; CPU-only need not
+be offered. The observed CPU deadline failure rejects that route. A shadow-slot2 protocol must
+copy5B00..5FFF state back (ISR reads314/writes157 addresses there), retain shadow through all
+preparation IRQs, and exclude IRQs during publication. Clone/clear atomicity, its native-IRQ
+phase, final EI delay, R sampled inside IRQ and restored MMU6 remain explicit runtime obligations.
+Measured shadow prototype passes; dynamic generation and whole-hook pace remain gates.

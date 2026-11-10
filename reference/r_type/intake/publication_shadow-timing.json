@@ -1,0 +1,906 @@
+{
+  "original_irq_frame": 3620,
+  "original_irq_T": 70819,
+  "results": [
+    {
+      "tag": "PREP",
+      "M": 1,
+      "R": 0,
+      "C": 284059743,
+      "elapsed": -1116513,
+      "ms": -39.87546428571429,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "READY",
+      "M": 1,
+      "R": 0,
+      "C": 284164131,
+      "elapsed": -1012125,
+      "ms": -36.14732142857143,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "PREPEND",
+      "M": 1,
+      "R": 0,
+      "C": 284929335,
+      "elapsed": -246921,
+      "ms": -8.818607142857143,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "TAIL",
+      "M": 1,
+      "R": 0,
+      "C": 285157899,
+      "elapsed": -18357,
+      "ms": -0.6556071428571428,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "BEGIN",
+      "M": 1,
+      "R": 0,
+      "C": 285176256,
+      "elapsed": 0,
+      "ms": 0.0,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "ROW",
+      "M": 1,
+      "R": 0,
+      "C": 285195030,
+      "elapsed": 18774,
+      "ms": 0.6705,
+      "deadline": 275424,
+      "ready": true
+    },
+    {
+      "tag": "ROW",
+      "M": 1,
+      "R": 1,
+      "C": 285211526,
+      "elapsed": 35270,
+      "ms": 1.259642857142857,
+      "deadline": 304608,
+      "ready": true
+    },
+    {
+      "tag": "ROW",
+      "M": 1,
+      "R": 2,
+      "C": 285228022,
+      "elapsed": 51766,
+      "ms": 1.8487857142857143,
+      "deadline": 333792,
+      "ready": true
+    },
+    {
+      "tag": "ROW",
+      "M": 1,
+      "R": 3,
+      "C": 285244518,
+      "elapsed": 68262,
+      "ms": 2.4379285714285714,
+      "deadline": 362976,
+      "ready": true
+    },
+    {
+      "tag": "ROW",
+      "M": 1,
+      "R": 4,
+      "C": 285261014,
+      "elapsed": 84758,
+      "ms": 3.0270714285714284,
+      "deadline": 392160,
+      "ready": true
+    },
+    {
+      "tag": "ROW",
+      "M": 1,
+      "R": 5,
+      "C": 285277510,
+      "elapsed": 101254,
+      "ms": 3.616214285714286,
+      "deadline": 421344,
+      "ready": true
+    },
+    {
+      "tag": "ROW",
+      "M": 1,
+      "R": 6,
+      "C": 285291314,
+      "elapsed": 115058,
+      "ms": 4.109214285714286,
+      "deadline": 450528,
+      "ready": true
+    },
+    {
+      "tag": "ROW",
+      "M": 1,
+      "R": 7,
+      "C": 285300539,
+      "elapsed": 124283,
+      "ms": 4.4386785714285715,
+      "deadline": 479712,
+      "ready": true
+    },
+    {
+      "tag": "ROW",
+      "M": 1,
+      "R": 8,
+      "C": 285309764,
+      "elapsed": 133508,
+      "ms": 4.768142857142857,
+      "deadline": 508896,
+      "ready": true
+    },
+    {
+      "tag": "ROW",
+      "M": 1,
+      "R": 9,
+      "C": 285318989,
+      "elapsed": 142733,
+      "ms": 5.097607142857143,
+      "deadline": 538080,
+      "ready": true
+    },
+    {
+      "tag": "END",
+      "M": 1,
+      "R": 10,
+      "C": 285319046,
+      "elapsed": 142790,
+      "ms": 5.099642857142857,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQIN",
+      "M": 1,
+      "R": 0,
+      "C": 284201692,
+      "elapsed": -974564,
+      "ms": -34.80585714285714,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQOUT",
+      "M": 1,
+      "R": 0,
+      "C": 284769177,
+      "elapsed": -407079,
+      "ms": -14.538535714285715,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQIN",
+      "M": 1,
+      "R": 10,
+      "C": 285336223,
+      "elapsed": 159967,
+      "ms": 5.713107142857143,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQOUT",
+      "M": 1,
+      "R": 10,
+      "C": 285344644,
+      "elapsed": 168388,
+      "ms": 6.013857142857143,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQIN",
+      "M": 1,
+      "R": 10,
+      "C": 285903499,
+      "elapsed": 727243,
+      "ms": 25.972964285714287,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQOUT",
+      "M": 1,
+      "R": 10,
+      "C": 285911888,
+      "elapsed": 735632,
+      "ms": 26.27257142857143,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQIN",
+      "M": 1,
+      "R": 10,
+      "C": 286470762,
+      "elapsed": 1294506,
+      "ms": 46.23235714285714,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQOUT",
+      "M": 1,
+      "R": 10,
+      "C": 287055007,
+      "elapsed": 1878751,
+      "ms": 67.09825,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQIN",
+      "M": 1,
+      "R": 10,
+      "C": 287605274,
+      "elapsed": 2429018,
+      "ms": 86.75064285714285,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQOUT",
+      "M": 1,
+      "R": 10,
+      "C": 287613695,
+      "elapsed": 2437439,
+      "ms": 87.05139285714286,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQIN",
+      "M": 1,
+      "R": 10,
+      "C": 288172550,
+      "elapsed": 2996294,
+      "ms": 107.0105,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQOUT",
+      "M": 1,
+      "R": 10,
+      "C": 288180939,
+      "elapsed": 3004683,
+      "ms": 107.31010714285715,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQIN",
+      "M": 1,
+      "R": 10,
+      "C": 288739813,
+      "elapsed": 3563557,
+      "ms": 127.26989285714286,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQOUT",
+      "M": 1,
+      "R": 10,
+      "C": 289335122,
+      "elapsed": 4158866,
+      "ms": 148.53092857142857,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "PREP",
+      "M": 2,
+      "R": 0,
+      "C": 284059743,
+      "elapsed": -1116509,
+      "ms": -39.875321428571425,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "READY",
+      "M": 2,
+      "R": 0,
+      "C": 284164131,
+      "elapsed": -1012121,
+      "ms": -36.14717857142857,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "PREPEND",
+      "M": 2,
+      "R": 0,
+      "C": 284929335,
+      "elapsed": -246917,
+      "ms": -8.818464285714287,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "TAIL",
+      "M": 2,
+      "R": 0,
+      "C": 285157899,
+      "elapsed": -18353,
+      "ms": -0.6554642857142857,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "BEGIN",
+      "M": 2,
+      "R": 0,
+      "C": 285176252,
+      "elapsed": 0,
+      "ms": 0.0,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "ROW",
+      "M": 2,
+      "R": 0,
+      "C": 285194978,
+      "elapsed": 18726,
+      "ms": 0.6687857142857143,
+      "deadline": 275424,
+      "ready": true
+    },
+    {
+      "tag": "ROW",
+      "M": 2,
+      "R": 1,
+      "C": 285211430,
+      "elapsed": 35178,
+      "ms": 1.256357142857143,
+      "deadline": 304608,
+      "ready": true
+    },
+    {
+      "tag": "ROW",
+      "M": 2,
+      "R": 2,
+      "C": 285227882,
+      "elapsed": 51630,
+      "ms": 1.8439285714285714,
+      "deadline": 333792,
+      "ready": true
+    },
+    {
+      "tag": "ROW",
+      "M": 2,
+      "R": 3,
+      "C": 285244334,
+      "elapsed": 68082,
+      "ms": 2.4315,
+      "deadline": 362976,
+      "ready": true
+    },
+    {
+      "tag": "ROW",
+      "M": 2,
+      "R": 4,
+      "C": 285260786,
+      "elapsed": 84534,
+      "ms": 3.0190714285714284,
+      "deadline": 392160,
+      "ready": true
+    },
+    {
+      "tag": "ROW",
+      "M": 2,
+      "R": 5,
+      "C": 285277238,
+      "elapsed": 100986,
+      "ms": 3.606642857142857,
+      "deadline": 421344,
+      "ready": true
+    },
+    {
+      "tag": "ROW",
+      "M": 2,
+      "R": 6,
+      "C": 285290998,
+      "elapsed": 114746,
+      "ms": 4.098071428571428,
+      "deadline": 450528,
+      "ready": true
+    },
+    {
+      "tag": "ROW",
+      "M": 2,
+      "R": 7,
+      "C": 285300183,
+      "elapsed": 123931,
+      "ms": 4.426107142857143,
+      "deadline": 479712,
+      "ready": true
+    },
+    {
+      "tag": "ROW",
+      "M": 2,
+      "R": 8,
+      "C": 285309368,
+      "elapsed": 133116,
+      "ms": 4.754142857142857,
+      "deadline": 508896,
+      "ready": true
+    },
+    {
+      "tag": "ROW",
+      "M": 2,
+      "R": 9,
+      "C": 285318553,
+      "elapsed": 142301,
+      "ms": 5.082178571428571,
+      "deadline": 538080,
+      "ready": true
+    },
+    {
+      "tag": "END",
+      "M": 2,
+      "R": 10,
+      "C": 285318610,
+      "elapsed": 142358,
+      "ms": 5.084214285714285,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQIN",
+      "M": 2,
+      "R": 0,
+      "C": 284201692,
+      "elapsed": -974560,
+      "ms": -34.80571428571429,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQOUT",
+      "M": 2,
+      "R": 0,
+      "C": 284769177,
+      "elapsed": -407075,
+      "ms": -14.538392857142858,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQIN",
+      "M": 2,
+      "R": 10,
+      "C": 285336224,
+      "elapsed": 159972,
+      "ms": 5.713285714285714,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQOUT",
+      "M": 2,
+      "R": 10,
+      "C": 285344645,
+      "elapsed": 168393,
+      "ms": 6.014035714285714,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQIN",
+      "M": 2,
+      "R": 10,
+      "C": 285903481,
+      "elapsed": 727229,
+      "ms": 25.972464285714285,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQOUT",
+      "M": 2,
+      "R": 10,
+      "C": 285911870,
+      "elapsed": 735618,
+      "ms": 26.27207142857143,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQIN",
+      "M": 2,
+      "R": 10,
+      "C": 286470763,
+      "elapsed": 1294511,
+      "ms": 46.23253571428572,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQOUT",
+      "M": 2,
+      "R": 10,
+      "C": 287055000,
+      "elapsed": 1878748,
+      "ms": 67.09814285714286,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQIN",
+      "M": 2,
+      "R": 10,
+      "C": 287605286,
+      "elapsed": 2429034,
+      "ms": 86.75121428571428,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQOUT",
+      "M": 2,
+      "R": 10,
+      "C": 287613707,
+      "elapsed": 2437455,
+      "ms": 87.05196428571429,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQIN",
+      "M": 2,
+      "R": 10,
+      "C": 288172543,
+      "elapsed": 2996291,
+      "ms": 107.01039285714286,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQOUT",
+      "M": 2,
+      "R": 10,
+      "C": 288180932,
+      "elapsed": 3004680,
+      "ms": 107.31,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQIN",
+      "M": 2,
+      "R": 10,
+      "C": 288739806,
+      "elapsed": 3563554,
+      "ms": 127.26978571428572,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQOUT",
+      "M": 2,
+      "R": 10,
+      "C": 289335123,
+      "elapsed": 4158871,
+      "ms": 148.53110714285714,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "PREP",
+      "M": 3,
+      "R": 0,
+      "C": 284059743,
+      "elapsed": -1116513,
+      "ms": -39.87546428571429,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "READY",
+      "M": 3,
+      "R": 0,
+      "C": 284164131,
+      "elapsed": -1012125,
+      "ms": -36.14732142857143,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "PREPEND",
+      "M": 3,
+      "R": 0,
+      "C": 284929335,
+      "elapsed": -246921,
+      "ms": -8.818607142857143,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "TAIL",
+      "M": 3,
+      "R": 0,
+      "C": 285157899,
+      "elapsed": -18357,
+      "ms": -0.6556071428571428,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "BEGIN",
+      "M": 3,
+      "R": 0,
+      "C": 285176256,
+      "elapsed": 0,
+      "ms": 0.0,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "ROW",
+      "M": 3,
+      "R": 0,
+      "C": 285194982,
+      "elapsed": 18726,
+      "ms": 0.6687857142857143,
+      "deadline": 275424,
+      "ready": true
+    },
+    {
+      "tag": "ROW",
+      "M": 3,
+      "R": 1,
+      "C": 285211434,
+      "elapsed": 35178,
+      "ms": 1.256357142857143,
+      "deadline": 304608,
+      "ready": true
+    },
+    {
+      "tag": "ROW",
+      "M": 3,
+      "R": 2,
+      "C": 285227886,
+      "elapsed": 51630,
+      "ms": 1.8439285714285714,
+      "deadline": 333792,
+      "ready": true
+    },
+    {
+      "tag": "ROW",
+      "M": 3,
+      "R": 3,
+      "C": 285244338,
+      "elapsed": 68082,
+      "ms": 2.4315,
+      "deadline": 362976,
+      "ready": true
+    },
+    {
+      "tag": "ROW",
+      "M": 3,
+      "R": 4,
+      "C": 285260790,
+      "elapsed": 84534,
+      "ms": 3.0190714285714284,
+      "deadline": 392160,
+      "ready": true
+    },
+    {
+      "tag": "ROW",
+      "M": 3,
+      "R": 5,
+      "C": 285277242,
+      "elapsed": 100986,
+      "ms": 3.606642857142857,
+      "deadline": 421344,
+      "ready": true
+    },
+    {
+      "tag": "ROW",
+      "M": 3,
+      "R": 6,
+      "C": 285291002,
+      "elapsed": 114746,
+      "ms": 4.098071428571428,
+      "deadline": 450528,
+      "ready": true
+    },
+    {
+      "tag": "ROW",
+      "M": 3,
+      "R": 7,
+      "C": 285300187,
+      "elapsed": 123931,
+      "ms": 4.426107142857143,
+      "deadline": 479712,
+      "ready": true
+    },
+    {
+      "tag": "ROW",
+      "M": 3,
+      "R": 8,
+      "C": 285309372,
+      "elapsed": 133116,
+      "ms": 4.754142857142857,
+      "deadline": 508896,
+      "ready": true
+    },
+    {
+      "tag": "ROW",
+      "M": 3,
+      "R": 9,
+      "C": 285318557,
+      "elapsed": 142301,
+      "ms": 5.082178571428571,
+      "deadline": 538080,
+      "ready": true
+    },
+    {
+      "tag": "END",
+      "M": 3,
+      "R": 10,
+      "C": 285318614,
+      "elapsed": 142358,
+      "ms": 5.084214285714285,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQIN",
+      "M": 3,
+      "R": 0,
+      "C": 284201692,
+      "elapsed": -974564,
+      "ms": -34.80585714285714,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQOUT",
+      "M": 3,
+      "R": 0,
+      "C": 284769177,
+      "elapsed": -407079,
+      "ms": -14.538535714285715,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQIN",
+      "M": 3,
+      "R": 10,
+      "C": 285336228,
+      "elapsed": 159972,
+      "ms": 5.713285714285714,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQOUT",
+      "M": 3,
+      "R": 10,
+      "C": 285344649,
+      "elapsed": 168393,
+      "ms": 6.014035714285714,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQIN",
+      "M": 3,
+      "R": 10,
+      "C": 285903485,
+      "elapsed": 727229,
+      "ms": 25.972464285714285,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQOUT",
+      "M": 3,
+      "R": 10,
+      "C": 285911874,
+      "elapsed": 735618,
+      "ms": 26.27207142857143,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQIN",
+      "M": 3,
+      "R": 10,
+      "C": 286470748,
+      "elapsed": 1294492,
+      "ms": 46.231857142857145,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQOUT",
+      "M": 3,
+      "R": 10,
+      "C": 287055001,
+      "elapsed": 1878745,
+      "ms": 67.09803571428571,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQIN",
+      "M": 3,
+      "R": 10,
+      "C": 287605287,
+      "elapsed": 2429031,
+      "ms": 86.75110714285714,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQOUT",
+      "M": 3,
+      "R": 10,
+      "C": 287613708,
+      "elapsed": 2437452,
+      "ms": 87.05185714285714,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQIN",
+      "M": 3,
+      "R": 10,
+      "C": 288172544,
+      "elapsed": 2996288,
+      "ms": 107.01028571428571,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQOUT",
+      "M": 3,
+      "R": 10,
+      "C": 288180933,
+      "elapsed": 3004677,
+      "ms": 107.30989285714286,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQIN",
+      "M": 3,
+      "R": 10,
+      "C": 288739807,
+      "elapsed": 3563551,
+      "ms": 127.26967857142857,
+      "deadline": null,
+      "ready": null
+    },
+    {
+      "tag": "IRQOUT",
+      "M": 3,
+      "R": 10,
+      "C": 289335124,
+      "elapsed": 4158868,
+      "ms": 148.531,
+      "deadline": null,
+      "ready": null
+    }
+  ]
+}
