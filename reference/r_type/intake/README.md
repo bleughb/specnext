@@ -3,6 +3,11 @@
 Source: nexclash branch add-r-type; visual design approved 2026-11-10: all figures/effects as
 sprites, see-through, no outlines; original colours, depth and pace; ULA scenery, HUD and text.
 
+Current evaluation: [live budget / SMC review](continuation/live-budget-review.md).
+Private card and official JNext1.2.0 restored; fresh explicit fixture/profile fails10.925%.
+The existing-route ledger and targeted SMC watch are measured; no renderer was added.
+Read the whole-pipeline consumer/native-credit directions there before more coding.
+
 - `plain.py` builds ../Rtype.nex from ../Rtype.z80 and checks the plain boot. `plain-boot.json`
   records its MD5, exact-R check and the negative control for printer restoration.
 - `full-access.log`: all 90,102 frames, ROM/tail access proof. Tail 5B00..5B4E lies in untouched
@@ -199,3 +204,10 @@ entire original100-update CPU sample. The current copier already runs at28MHz:
 its pixel-scroll section is nominally0.609ms/update of current CPU, not4.871ms new
 savings. Hardware backgrounds remain conditional on a complete cost/consumer ledger;
 the review lists missing live phase costs. No more guard/backend tuning before that gate.
+
+`live_budget.py` now supplies matching live costs (new recipe, not old scratch-file
+reproduction), uninstrumented clock/state controls and targeted native-SMC/hook/art
+write-watch controls. `continuation/live-budget.json` records every exclusive phase,
+counter differences, SMC values and source/input hashes. Source-only0.609ms scrolling
+was nominal; the actual new sample measures0.984ms. Existing-route costs are now known;
+new-route retained effects, background generation and native-time credit remain open.
