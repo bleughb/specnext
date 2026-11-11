@@ -1,0 +1,14 @@
+[
+  {
+    "negative": false,
+    "pixel_mismatches": 0,
+    "painted_pixels": 7369,
+    "glyph_mismatches": 0
+  },
+  {
+    "negative": true,
+    "pixel_mismatches": 1,
+    "painted_pixels": 7369,
+    "glyph_mismatches": 0
+  }
+]

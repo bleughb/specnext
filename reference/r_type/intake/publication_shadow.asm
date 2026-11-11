@@ -3,6 +3,41 @@
 ; Original audio at native speed; feasibility probe, not a sprite engine.
 ; Uses the pinned assembler and shared DMA capability gate. RAM code/packets.
         DEVICE ZXSPECTRUMNEXT
+        IFDEF RT_PAINT
+        DEFINE RT_SLOT2_TEMP
+        ENDIF
+        IFDEF RT_LIVEPAINT
+        DEFINE RT_SLOT2_TEMP
+        ENDIF
+        IFDEF RT_INTEGRATED
+        INCLUDE "../../../../nexclash/asm/lib/hlib_iff.asm"
+        ENDIF
+        IFDEF RT_MAX111
+MAXFIG EQU 111
+        ELSE
+MAXFIG EQU 105
+        ENDIF
+        MACRO RT_DEBT_TICK
+        IFDEF RT_IRQ_CHECKPOINT
+        call rt_debt_tick
+        ELSE
+        call hlib_debt_tick
+        ENDIF
+        ENDM
+        MACRO RT_NEST_OPEN
+        IFDEF RT_IRQ_CHECKPOINT
+        call rt_nest_open
+        ELSE
+        call hlib_nest_open
+        ENDIF
+        ENDM
+        MACRO RT_NEST_CLOSE
+        IFDEF RT_IRQ_CHECKPOINT
+        call rt_nest_close
+        ELSE
+        call hlib_nest_close
+        ENDIF
+        ENDM
 MODE    EQU 0x3800
 ROW     EQU MODE+1
 SLOT    EQU MODE+2
@@ -63,6 +98,7 @@ tail_begin:
         inc (hl)
         ENDIF
         nextreg 0x52,10
+        IFNDEF RT_BULKULA
         ld hl,0xDB00
         ld de,0x5B00
         ld bc,1280
@@ -70,12 +106,30 @@ tail_copy:
         call move
         ld bc,64
         ld (mem_len),bc
+        ENDIF
 .wait:  call hlib_now
         ld de,160
         or a
         sbc hl,de
         jr c,.wait
-pstart: ld bc,0x303B
+pstart:
+        IFDEF RT_PREPAINT
+        nextreg 0x15,1
+        ENDIF
+        IFDEF RT_BULKULA
+        nextreg 0x56,42
+        ld hl,0xC000
+        ld de,0x4000
+        ld bc,8192
+bulk_ula_copy:
+        call move
+        ld bc,64
+        ld (mem_len),bc
+        ENDIF
+        IFDEF RT_TILEMAP
+        call tile_publish
+        ELSE
+        ld bc,0x303B
         xor a
         out (c),a
         call hlib_dma_backend
@@ -83,7 +137,7 @@ pstart: ld bc,0x303B
         jr z,.acpu
         ld hl,attrs
         ld (io_src),hl
-        ld hl,525
+        ld hl,MAXFIG*5
         ld (io_len),hl
         ld hl,0x57
         ld (io_dst),hl
@@ -94,20 +148,30 @@ pstart: ld bc,0x303B
         ld (io_dst),hl
         jr .adone
 .acpu:  ld hl,attrs
-        ld d,105
+        ld d,MAXFIG
         ld c,0x57
 .a:     ld b,5
         otir
         dec d
         jr nz,.a
-.adone: xor a
+.adone:
+        ENDIF
+        IFDEF RT_BULKULA
+        IFNDEF RT_TILEMAP
+        call bulk_sprites
+        ENDIF
+        jp pend
+        ENDIF
+        xor a
         ld (ROW),a
         ld (SLOT),a
-rstart: ld a,(SLOT)
-        cp 105
+rstart:
+        IFNDEF RT_TILEMAP
+        ld a,(SLOT)
+        cp MAXFIG
         jr nc,.zero
         ld b,a
-        ld a,105
+        ld a,MAXFIG
         sub b
         cp 16
         jr c,.n
@@ -166,7 +230,9 @@ rstart: ld a,(SLOT)
         ld hl,SLOT
         add a,(hl)
         ld (hl),a
-.zero:  nextreg 0x56,42
+.zero:
+        ENDIF
+        nextreg 0x56,42
         ld a,(ROW)
         ld l,a
         and 3
@@ -286,11 +352,13 @@ copy64:
         ret
 ; Prototype only: no pattern generation, no text classification.
 prepare:
+        IFNDEF RT_POSTCLEAR
         nextreg 0x56,43
         ld hl,0x6000
         ld de,0xC000
         ld bc,8192
         call move
+        ENDIF
         nextreg 0x56,42
         ld hl,0x4000
         ld de,0xC000
@@ -308,6 +376,14 @@ clear_call:
         call clear_figures
         ENDIF
         IFDEF RT_INTEGRATED
+        IFDEF RT_PACE
+        xor a
+        RT_NEST_CLOSE
+        ENDIF
+        IFDEF RT_IRQ_CHECKPOINT
+        ld a,2
+        ld (rt_timer_kind),a
+        ENDIF
         call hook_load
 hook_copy_start:
         push af
@@ -328,9 +404,17 @@ copier_done:
         pop af
         call hook_save
 copier_saved:
+        ld a,(hook_iff)
+        or a
+        jp z,hook_off_finish
+        IFDEF RT_PACE
+        RT_NEST_OPEN
+        ENDIF
+        call clean_paper
         ELSE
         call 0x8842
         ENDIF
+        IFNDEF RT_POSTCLEAR
         nextreg 0x56,43
         ld hl,0xC000
         ld de,0x6000
@@ -353,6 +437,7 @@ restore_pixels:
         pop af
         dec a
         jr nz,.restore
+        ENDIF
         nextreg 0x56,42
 prep_end:
         IFDEF RT_INTEGRATED
@@ -380,6 +465,9 @@ move:
         otir
         ret
 clear_figures:
+        IFDEF RT_INTEGRATED
+        call mask_init
+        ENDIF
         ld iy,source_rows
         ld hl,0x7E00
         ld c,20
@@ -401,6 +489,12 @@ clear_figures:
         pop hl
         or a
         jr nz,.skip
+        ENDIF
+        IFDEF RT_INTEGRATED
+        call mask_cell
+        IFDEF RT_POSTCLEAR
+        jr .skip
+        ENDIF
         ENDIF
         push bc
         push de
@@ -428,16 +522,55 @@ irq_in:
         push iy
         push hl
         ld bc,0x243B
+        IFDEF RT_INTEGRATED
+        in a,(c)
+        ld (irq_select),a
+        ENDIF
         ld a,7
         out (c),a
         inc b
         in a,(c)
         ld (irq_speed),a
+        IFDEF RT_MMU0_TEMP
+        dec b
+        ld a,0x50
+        out (c),a
+        inc b
+        in a,(c)
+        ld (irq_mmu0),a
+        nextreg 0x50,0xFF
+        ENDIF
+        IFDEF RT_SLOT2_TEMP
+        dec b
+        ld a,0x52
+        out (c),a
+        inc b
+        in a,(c)
+        ld (irq_mmu2),a
+        ld a,(irq_slot2_active)
+        or a
+        jr z,.paint_keep
+        nextreg 0x52,42
+.paint_keep:
+        ENDIF
+        IFDEF RT_INTEGRATED
+        nextreg 7,3
+        IFDEF RT_IRQ_CHECKPOINT
+        call rt_irq_hold
+        ELSE
+        call hlib_pace_hold
+        ENDIF
+        nextreg 7,0
+        ELSE
         nextreg 7,0
         call hlib_pace_hold
+        ENDIF
         jp 0xBE2B
 ; BE52 replaces POP AF / EX AF,AF' / POP HL.
 irq_out:
+        IFDEF RT_INTEGRATED
+        nextreg 7,3
+        ENDIF
         IFDEF RT_DYNAMIC
         IFNDEF RT_INTEGRATED
         ; Forced post-backup mutation in a non-pixel hole. Broad restore must fail.
@@ -446,23 +579,83 @@ irq_out:
         ENDIF
         ENDIF
         call hlib_pace_resume
+        IFDEF RT_IRQ_CHECKPOINT
+        call rt_irq_anchor
+        ENDIF
+        IFDEF RT_SLOT2_TEMP
+        ld a,(irq_mmu2)
+        nextreg 0x52,a
+        ENDIF
+        IFDEF RT_MMU0_TEMP
+        ld a,(irq_mmu0)
+        nextreg 0x50,a
+        ENDIF
         ld a,(irq_speed)
         nextreg 7,a
+        IFDEF RT_INTEGRATED
+        ld bc,0x243B
+        ld a,(irq_select)
+        out (c),a
+        ENDIF
         pop af
         ex af,af'
         pop hl
         jp 0xBE55
+        IFDEF RT_MMU0_TEMP
+irq_mmu0: db 0xFF
+        ENDIF
+        IFDEF RT_INTEGRATED
+irq_select: db 0
+        ENDIF
 irq_speed: db 0
+        IFDEF RT_SLOT2_TEMP
+irq_mmu2: db 42
+irq_slot2_active: db 0
+        ENDIF
         INCLUDE "../../../../nexclash/asm/lib/hlib_dma.asm"
         INCLUDE "../../../../nexclash/asm/lib/hlib_pace.asm"
         IFDEF RT_DYNAMIC
+        IFDEF RT_TILEMAP
+        INCLUDE "tilemap_body.asm"
+        ELSE
         INCLUDE "publication_dynamic_body.asm"
+        ENDIF
         ENDIF
         IFDEF RT_INTEGRATED
         INCLUDE "publication_integrated_body.asm"
         ENDIF
+        IFDEF RT_BULKULA
+        IFNDEF RT_TILEMAP
+bulk_sprites:
+        ld bc,0x303B
+        xor a
+        out (c),a
+        nextreg 0x56,40
+        ld hl,0xC000
+        ld (io_src),hl
+        ld hl,8192
+        ld (io_len),hl
+        ld hl,0x5B
+        ld (io_dst),hl
+        ld hl,io_prog
+        ld bc,(io_end-io_prog)*256+0x6B
+        otir
+        nextreg 0x56,41
+        ld hl,0xC000
+        ld (io_src),hl
+        ld hl,MAXFIG*128-8192
+        ld (io_len),hl
+        ld hl,io_prog
+        ld bc,(io_end-io_prog)*256+0x6B
+        otir
+        ret
+        ENDIF
+        ENDIF
+        IFDEF RT_IRQ_CHECKPOINT
+        INCLUDE "irq_checkpoint.asm"
+        ENDIF
 attrs:
-        DUP 105,i
+        DUP MAXFIG,i
         db (32+(i%16)*16)&255,32+(i/16)*16,(32+(i%16)*16)/256,0xC0+(i/2),0x80+(i%2)*64
         EDUP
         SAVEBIN "rtshadow_code.bin",entry,$-entry

@@ -2,6 +2,12 @@
 ; Pattern capacity checked before any candidate write. Unused attributes hidden.
 ; text_owners is supplied by the observed per-plot identity classifier, not owner88.
 dynamic_patterns:
+        IFDEF RT_FULL_LUT
+        ; Classic game keeps slot0 mapped to ROM (FF); only this generator pages it.
+        ; Avoid an interruptible select/read pair while native IRQ wrappers select NextRegs.
+        ld a,0xFF
+        ld (dyn_mmu0),a
+        ENDIF
         ; Two linear zero fills replace writes for hundreds of empty cells.
         ; Ordinary DMA fixed source; restores the shared memory packet mode.
         ld a,0x24
@@ -30,13 +36,18 @@ dynamic_patterns:
         ld bc,524
         ld (hl),a
         ldir
+.scan: nop
 .y:     xor a
         ld (dyn_x),a
 .x:     ld a,(dyn_count)
-        cp 105
+        cp MAXFIG
         jr c,.capacity
         ; A full bank can still have empty blocks. Use a spare candidate page.
         nextreg 0x56,44
+        IFDEF RT_LIVEPAINT
+        ld a,44
+        ld (dyn_page),a
+        ENDIF
         ld iy,0xC000
         jr .candidate
 .capacity:
@@ -55,11 +66,22 @@ dynamic_patterns:
         push hl
         pop iy
         ld a,b
+        IFDEF RT_LIVEPAINT
+        ld (dyn_page),a
+        ENDIF
         nextreg 0x56,a
 .candidate:
         ld (dyn_dest),iy
         xor a
         ld (dyn_nonzero),a
+        IFDEF RT_CACHE
+        call cache_key
+        ld a,(cache_nonzero)
+        or a
+        jp z,.next
+        call cache_lookup
+        jp c,.commit
+        ENDIF
         ld a,(dyn_y)
         ld b,a
         ld a,(dyn_x)
@@ -93,11 +115,15 @@ dynamic_patterns:
         inc a
         ld c,a
         call dynamic_cell
+        IFDEF RT_CACHE
+        call cache_store
+        ENDIF
+.commit:
         ld a,(dyn_nonzero)
         or a
         jr z,.next
         ld a,(dyn_count)
-        cp 105
+        cp MAXFIG
         jp nc,dyn_overflow
         ld l,a
         ld h,0
@@ -142,7 +168,11 @@ dynamic_patterns:
         ld (hl),a
         ld hl,dyn_count
         inc (hl)
-.next:  ld hl,dyn_x
+.next:
+        IFDEF RT_PACE
+        RT_DEBT_TICK
+        ENDIF
+        ld hl,dyn_x
         inc (hl)
         inc (hl)
         ld a,(hl)
@@ -155,6 +185,10 @@ dynamic_patterns:
         cp 20
         jp c,.y
         nextreg 0x56,42
+        IFDEF RT_FULL_LUT
+        ld a,(dyn_mmu0)
+        nextreg 0x50,a
+        ENDIF
         ret
 
 dyn_overflow:
@@ -166,6 +200,9 @@ dyn_overflow:
 
 ; BC = cell (y,x). IY = quadrant. Read only the nonlinear bitmap.
 dynamic_cell:
+        IFDEF RT_PREPAINT
+        jp spritepaint_cell
+        ELSE
         ld a,b
         and 7
         rrca
@@ -191,6 +228,10 @@ dynamic_cell:
         pop hl
         or a
         jp nz,.blank
+        IFDEF RT_LIVEPAINT
+        call live_lookup
+        ret c
+        ENDIF
         ld a,h
         sub 6
         ld h,a
@@ -202,6 +243,64 @@ dynamic_cell:
         ld a,c
         or 0x40
         ld c,a
+.ink:
+        IFDEF RT_FULL_LUT
+        ld a,c
+        and 7
+        add a,a
+        add a,a
+        ld (dyn_colour),a
+        ld a,c
+        and 0x40
+        ld a,46
+        jr z,.lutpage
+        inc a
+.lutpage:
+        nextreg 0x50,a
+        ld a,h
+        sub 0x78
+        DUP 3
+        add a,a
+        EDUP
+        add a,0x60
+        ld h,a
+        ; Source HL / accumulator C in main set; output DE in alternate set.
+        ; Unroll eight rows so bitmap expansion has no index-register or memory counter cost.
+        push iy
+        exx
+        pop de
+        exx
+        ld c,0
+        DUP 8
+        ld a,(hl)
+        ld b,a
+        or c
+        ld c,a
+        ld a,b
+        inc h
+        exx
+        ld l,a
+        ld h,0
+        add hl,hl
+        add hl,hl
+        ld a,(dyn_colour)
+        or h
+        ld h,a
+        DUP 4
+        ldi
+        EDUP
+        ld a,e
+        add a,4
+        ld e,a
+        jr nc,$+3
+        inc d
+        exx
+        EDUP
+        ld a,(dyn_nonzero)
+        or c
+        ld (dyn_nonzero),a
+        ret
+        ELSE
 .ink:   ld a,c
         and 7
         DUP 5
@@ -266,8 +365,12 @@ dynamic_cell:
         dec (hl)
         jr nz,.bits
         ret
+        ENDIF
 .blank: ret
 
+        ENDIF
+dyn_colour: db 0
+dyn_mmu0: db 0xFF
 dyn_zero: db 0
 dyn_count: db 0
 dyn_x: db 0
@@ -279,6 +382,10 @@ dyn_table_h: db 0
 dyn_failed: db 0
         ALIGN 256
 text_owners: ds 256,0
+        IFDEF RT_CACHE
+        INCLUDE "pattern_cache.asm"
+        ENDIF
+        IFNDEF RT_FULL_LUT
         ALIGN 512
 expand_lut:
         DUP 16,col
@@ -287,3 +394,15 @@ expand_lut:
         db ((col*((bits>>1)&1))<<4)|(col*(bits&1))
         EDUP
         EDUP
+
+        ENDIF
+
+        IFDEF RT_PREPAINT
+        INCLUDE "spritepaint_cell.asm"
+        ENDIF
+
+        IFDEF RT_LIVEPAINT
+dyn_page: db 40
+        INCLUDE "live_bridge.asm"
+        INCLUDE "spritepaint_cell.asm"
+        ENDIF
