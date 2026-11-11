@@ -5,6 +5,10 @@ implementation directions in the earlier source-only review, not its scoped resu
 No renderer variant, timing-constant adjustment, intake/capacity/caller/ISR census
 or engine promotion. All measurements below concern existing diagnostic routes.
 
+Documentary follow-up: book-ingest-review.md compares the supplied summary without
+downloading the book. SCROLL6 matches8914..8973 exactly; background/sprite map
+separation guides consumer review, without establishing both maps' addresses.
+
 ## Where we are stuck
 
 The static preexpanded control demonstrates that bulk4bpp publication can fit.
