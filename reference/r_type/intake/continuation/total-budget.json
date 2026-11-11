@@ -1,0 +1,71 @@
+{
+  "scope": "Whole-update ORIGINAL CPU ledger for the same bounded100-update peak cut.\n\nThis prices original work, not another renderer. It cannot close the patched\nwhole-hook budget without matching live phase measurements. No intake, caller,\ncapacity or ISR/access census; no memory read/write tracking or game-art output.\n",
+  "updates": 100,
+  "IRQ_entries": 514,
+  "repeated_instruction_timing_cases": 64,
+  "phases": {
+    "IRQ": {
+      "total_T": 3106991,
+      "mean_native_cpu_ms": 8.877117142857143,
+      "cpu_percent": 8.784448738196659,
+      "max_update_native_cpu_ms": 50.01657142857143
+    },
+    "background_controller_other": {
+      "total_T": 178538,
+      "mean_native_cpu_ms": 0.5101085714285714,
+      "cpu_percent": 0.5047835377766318,
+      "max_update_native_cpu_ms": 2.1237142857142857
+    },
+    "copier_pixel_copy_clear_owner": {
+      "total_T": 13027650,
+      "mean_native_cpu_ms": 37.22185714285715,
+      "cpu_percent": 36.83329742640635,
+      "max_update_native_cpu_ms": 39.716
+    },
+    "copier_pixel_scroll": {
+      "total_T": 1704794,
+      "mean_native_cpu_ms": 4.87084,
+      "cpu_percent": 4.819993203129727,
+      "max_update_native_cpu_ms": 4.888285714285714
+    },
+    "copier_row_setup_and_attr_shift": {
+      "total_T": 4142222,
+      "mean_native_cpu_ms": 11.83492,
+      "cpu_percent": 11.711375031736635,
+      "max_update_native_cpu_ms": 11.838571428571429
+    },
+    "figure_plot": {
+      "total_T": 7823864,
+      "mean_native_cpu_ms": 22.353897142857146,
+      "cpu_percent": 22.120544360322338,
+      "max_update_native_cpu_ms": 70.052
+    },
+    "native_attr_owner_map_shift": {
+      "total_T": 323316,
+      "mean_native_cpu_ms": 0.92376,
+      "cpu_percent": 0.9141168507532821,
+      "max_update_native_cpu_ms": 7.698
+    },
+    "remaining_game_work": {
+      "total_T": 5058145,
+      "mean_native_cpu_ms": 14.451842857142857,
+      "cpu_percent": 14.300979778462743,
+      "max_update_native_cpu_ms": 21.612
+    },
+    "wait_for_3_IRQs": {
+      "total_T": 3700,
+      "mean_native_cpu_ms": 0.010571428571428572,
+      "cpu_percent": 0.010461073215637778,
+      "max_update_native_cpu_ms": 0.010571428571428572
+    }
+  },
+  "total_mean_native_cpu_ms": 101.05491428571429,
+  "limitations": [
+    "RZX trajectory/IRQ schedule differs from natural JNext",
+    "uncontended original3.5MHz CPU; not patched elapsed time or spare time",
+    "current copier already accelerated; its native cost is not extra available savings",
+    "phase maxima occur in different updates and must not be added",
+    "remaining game work is unclassified, not presumed removable"
+  ],
+  "feasibility": "Whole patched-route ledger remains incomplete; no further renderer/guard optimization gate passed"
+}

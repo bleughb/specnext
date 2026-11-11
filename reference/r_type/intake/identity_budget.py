@@ -233,10 +233,11 @@ def run():
     estimate['combined_writer_extra_acceleration_ms_per_update'] = extra_native*7/28000/100
     estimate['combined_writer_estimated_net_ms_per_update'] = (
         ceiling_t-guard_t-selection_t+extra_native*7)/28000/100
-    estimate['combined_writer_additional_work_allowance_fast_T_per_update'] = (
+    estimate['illustrative_combined_writer_residual_fast_T_per_update'] = (
         ceiling_t-guard_t-selection_t+extra_native*7)/100-required_ms*28000
-    estimate['combined_writer_limit'] = ('Additional exact path/credit/R/metadata accounting '
-        'must fit this allowance; native IRQ CPU excluded. No assembled combined writer yet.')
+    estimate['combined_writer_limit'] = ('Illustrative CPU estimate from a different trajectory, '
+        'not a whole-route budget or implementation gate. Price all retained/replaced work, '
+        'IRQ, accounting and publication first. No assembled combined writer yet.')
     result = dict(scope=__doc__, source=source_result, peak_totals=dict(totals),
                   updates=100, estimates=estimate, counter_cases=counter_cases,
                   per_update=[dict(r) for r in rows])

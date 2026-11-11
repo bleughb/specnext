@@ -192,3 +192,10 @@ Compact counters: `continuation/identity-budget.json`, `continuation/plot-guard-
 These commands need the documented Python environment and the checked-in originals,
 not the private SD image or JNext. Decoder bytes/cut RZX/real states stay privately in
 /workspace/work/r_type_review. The review gives reproduction commands and stop criteria.
+
+Inferno correction: the combined CPU estimate is not a whole-route budget or an
+implementation gate. `total_budget.py` / `continuation/total-budget.json` price the
+entire original100-update CPU sample. The current copier already runs at28MHz:
+its pixel-scroll section is nominally0.609ms/update of current CPU, not4.871ms new
+savings. Hardware backgrounds remain conditional on a complete cost/consumer ledger;
+the review lists missing live phase costs. No more guard/backend tuning before that gate.

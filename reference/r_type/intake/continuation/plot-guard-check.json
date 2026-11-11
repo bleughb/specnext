@@ -9,9 +9,10 @@
   "corpus_max_packed_length": 1500,
   "combined_estimated_net_ms_per_update": 13.506037142857144,
   "required_saving_ms_per_update": 9.21475597142857,
-  "remaining_integration_allowance_ms_per_update": 4.291281171428574,
-  "decision": "component passes; combined-writer integration remains unimplemented",
+  "illustrative_residual_ms_per_update": 4.291281171428574,
+  "decision": "comparison component passes; whole-route budget unresolved, no implementation gate passed",
   "pending": [
+    "complete whole-route cost and consumer ledger before further implementation",
     "runtime dispatch and lifetime/ownership invalidation",
     "exact combined-writer credit including all wrapper/accounting costs",
     "ABI/R/IRQ/painted RGB and pause/menu/DI",

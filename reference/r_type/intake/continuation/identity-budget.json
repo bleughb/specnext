@@ -33,8 +33,8 @@
     "combined_writer_extra_native_T": 4587005,
     "combined_writer_extra_acceleration_ms_per_update": 11.4675125,
     "combined_writer_estimated_net_ms_per_update": 14.033389642857143,
-    "combined_writer_additional_work_allowance_fast_T_per_update": 134921.7428,
-    "combined_writer_limit": "Additional exact path/credit/R/metadata accounting must fit this allowance; native IRQ CPU excluded. No assembled combined writer yet."
+    "illustrative_combined_writer_residual_fast_T_per_update": 134921.7428,
+    "combined_writer_limit": "Illustrative CPU estimate from a different trajectory, not a whole-route budget or implementation gate. Price all retained/replaced work, IRQ, accounting and publication first. No assembled combined writer yet."
   },
   "counter_cases": [
     {
