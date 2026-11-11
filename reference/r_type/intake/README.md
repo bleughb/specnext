@@ -173,3 +173,22 @@ next evaluate identity once per plot/level before implementing another prototype
 `publication_inlined.asm` and its inline helper/cost files are UNTESTED WIP, with zero
 placeholder costs. They are retained for provenance and must not be selected for delivery.
 All generated NEX/JNS/raw captures stay in work; private card access remains read-only.
+
+## Source-only identity/budget follow-up
+
+[Source identity review](continuation/source-identity-review.md) establishes the proposed
+invocation-local validation/fallback contract and rejects unchecked level-installed IDs.
+`identity_budget.py` reconstructs all1288 packed plots, checks source mutations against
+the retained ISR write set, and counts only100 original peak updates after frame29404.
+Plot-only identity cannot recover the required9.22ms/update on this CPU estimate;
+combined acceleration of remaining native plot work has a plausible bounded budget.
+No intake/caller/capacity/ISR census was repeated and no renderer variant was added.
+
+`plot_guard.asm` / `plot_guard_check.py`: one comparison component for that combined
+direction, assembled by the bundled pinned tool.352 images accepted,1056 changed-source
+cases rejected, actual broken-CP negative caught; exact hit59*length+100 CPU T before
+caller CALL. AF/R, dispatch/invalidation, IRQ and live hardware painting remain open.
+Compact counters: `continuation/identity-budget.json`, `continuation/plot-guard-check.json`.
+These commands need the documented Python environment and the checked-in originals,
+not the private SD image or JNext. Decoder bytes/cut RZX/real states stay privately in
+/workspace/work/r_type_review. The review gives reproduction commands and stop criteria.
