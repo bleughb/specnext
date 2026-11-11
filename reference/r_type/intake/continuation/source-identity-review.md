@@ -1,5 +1,9 @@
 # Source identity and combined-writer budget — 2026-11-11
 
+Historical source-only checkpoint. The SD/JNext dependency is now restored; latest
+matching live costs and SMC review are in [live-budget-review.md](live-budget-review.md).
+The estimates below are retained hypotheses, not current implementation directions.
+
 Follow-up to [completion-review.md](completion-review.md). No new intake,
 capacity, caller or ISR census. No renderer variant or engine promotion.
 Sources restored at nexclash6b85acb/specnext6eeaa01; nexclash refreshed from

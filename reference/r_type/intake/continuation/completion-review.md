@@ -4,6 +4,14 @@ This is a feasibility checkpoint, not an engine or release. No new renderer expe
 are authorized by this plan itself. Design remains approved. One owner-approved reviewer
 has already reviewed the earlier bottleneck; this reassessment is by the primary agent.
 
+Latest evaluation: [live-budget-review.md](live-budget-review.md), after restoring the
+private SD and JNext. Fresh fixture/profile:10.925% slow, exclusive current-route costs
+measured without changing clocks/state. Whole clone/clear/copier/paper work is14.176ms;
+pixel scroll alone0.984ms. Native8EB1/8EDA/8F0B-C write sequences match; no watched hook
+or packed-art writes. Next review is the whole display pipeline's consumers and native
+time credit, before any replacement. Older9.215ms/0.609ms estimates belong to older
+samples; the fresh required saving is9.386ms. No completed painted route or engine.
+
 Source-only follow-up: [source-identity-review.md](source-identity-review.md) evaluates
 identity and the entire original CPU budget. Plot-only identity fails the estimate;
 combined acceleration remains a hypothesis, not a whole-route budget. A guard component
