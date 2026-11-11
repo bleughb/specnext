@@ -4,11 +4,12 @@ This is a feasibility checkpoint, not an engine or release. No new renderer expe
 are authorized by this plan itself. Design remains approved. One owner-approved reviewer
 has already reviewed the earlier bottleneck; this reassessment is by the primary agent.
 
-Source-only follow-up: [source-identity-review.md](source-identity-review.md) now evaluates
-the preferred identity direction. Plot-only identity fails the bounded CPU budget;
-combined remaining-native-work acceleration is plausible. An assembled packed-source
-guard passes component checks; runtime dispatch/invalidation, combined writer and live
-painted pace remain unimplemented/unproven. This does not supersede the delivery gates.
+Source-only follow-up: [source-identity-review.md](source-identity-review.md) evaluates
+identity and the entire original CPU budget. Plot-only identity fails the estimate;
+combined acceleration remains a hypothesis, not a whole-route budget. A guard component
+passes; runtime dispatch/invalidation, combined writer and live pace remain open.
+Inferno correction: complete the total cost/consumer ledger BEFORE more implementation.
+Pixel scrolling is already accelerated; its native cost cannot be spent again as savings.
 
 ## Bounded result
 

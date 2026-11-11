@@ -80,7 +80,6 @@ def run():
     extra = (10*totals['known_packed_bytes'] + 117*totals['known_plots'])/28000/100
     combined = est['combined_writer_estimated_net_ms_per_update']-extra
     required = est['required_saving_ms_per_update']
-    assert combined > required, 'combined-writer component has no plausible remaining budget'
     result = dict(scope=__doc__, assembler='bundled sjasmplus1.24.0',
         matching_packed_images=hits, changed_source_cases_rejected=misses,
         zero_length_rejected=True, actual_runtime_false_acceptance_control_caught=True,
@@ -88,9 +87,10 @@ def run():
         corpus_max_packed_length=max(map(len,unique)),
         combined_estimated_net_ms_per_update=combined,
         required_saving_ms_per_update=required,
-        remaining_integration_allowance_ms_per_update=combined-required,
-        decision='component passes; combined-writer integration remains unimplemented',
-        pending=['runtime dispatch and lifetime/ownership invalidation',
+        illustrative_residual_ms_per_update=combined-required,
+        decision='comparison component passes; whole-route budget unresolved, no implementation gate passed',
+        pending=['complete whole-route cost and consumer ledger before further implementation',
+                 'runtime dispatch and lifetime/ownership invalidation',
                  'exact combined-writer credit including all wrapper/accounting costs',
                  'ABI/R/IRQ/painted RGB and pause/menu/DI',
                  'JNext live painted100-update peak <=2%, private SD image required'])
