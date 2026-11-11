@@ -116,3 +116,60 @@ and its frame2000 original fixture for the shared pace command. Use probe8649 an
 flags currently have no plot hooks, entry-IFF0 is explicitly unsupported, source paper
 handling is not integrated, full banked RAM/IRQ equivalence and colour/recolour are open.
 Core3.03 DDMA is still untested; this JNext core exercises ordinary DMA in both modes.
+
+## Native text tiles and per-pixel provenance (continuation)
+
+Current accepted native-colour candidate: `publication_tilemap.asm`, hardware1bpp text tiles
+with source bank7 assets relocated through the original8F21 read gate. `continuation/` holds
+compact results; this is still feasibility, with no engine/profile/record/sheets or release stamp.
+The full-sprite peak route11.36% slow, full-byte LUT5.40%, and worse cache trial stay rejected.
+Native tiles1.32% slow over100 updates (worst20 window2.27%),378 state bytes equal every update,
+50Hz native IRQs both and equal FE writes. Includes640 saved foreground attrs for native pause.
+
+Reproduce using ../venv101/bin/python from nexclash, with these intake scripts:
+
+- `irq_equivalence.py`: native IRQ supplied-R consumers,218 reads/14 states, wrong-R controls.
+- `copier_equivalence.py`: full caller registers/R, eight logical game banks, exact clean ULA,
+  rendered glyphs;18 dead stack bytes overwritten before read through caller/first native IRQ.
+- `interrupt_boundaries.py`:113543 quiet native IRQ injections/841 PCs; negative MMU0 restore.
+- `text_check.py`:80 live graphic identity and ABI/R cases, including reused owner88.
+- `tilemap_bank_check.py`:80 relocation bank/edge/R cases. Bank7 assets clone into bank24;
+  physical bank7 becomes BRAM text map/defs. Separate full paging-port census was necessary
+  to establish this relocation; it did not repeat intake/capacity or ISR scans.
+- `tilemap_geometry.py`: empty/edge/inks,511-glyph capacity/512 overflow, mutated actual bound.
+- `tilemap_preview.py`: actual JNext frame versus independent49152-pixel RGB oracle;
+  post-preparation glyph bit corruption produces one pixel/one glyph mismatch.
+- `pause_check.py`: checks actual converter output uses CALL,12 ABI/R/picture cases including
+  repeated pause and deliberate future-source changes. `pause_jnext.py`: actual CapsShift+1/2,
+ 261 repeated pause calls/one resume, correct native continuation/layer visibility/IFF.
+- `integrated_check.py --asm publication_tilemap.asm --source /workspace/work/r_type_integrated/peak.z80
+  --out /workspace/work/r_type_tilemap_final`:100returns each mode,42240 checked RAM bytes and
+  caller registers exact;100 wrong-IY controls caught. Longest publication interval includes
+  the native game-over pause, rather than a skipped game update.
+
+`cell_plot.asm` / `publication_cell.asm` are a separate small successful-writer trial.
+Original8EA2 helper plus all four row-copy bodies run at28MHz, with original outputs/R,
+source RAM and clock restored. Per-plot clock latching, native DI fallback, and descriptors
+(source attr pointer, flip, effective ink including Force override, owner, level) support the
+pending per-pixel colour route. Only successful writes enter this gate; rejected collision
+checks never create metadata. Private page50 is never game data.
+
+`cell_check.py`:160 crossed real-helper/synthetic-continuation cases, exact caller registers/R,
+logical game RAM and descriptors. Credit matches the COMPLETE original minus COMPLETE hook
+CPU cost, including bookkeeping, and retains fractional scanline units.9 division edges pass.
+`plot_equivalence.py --cell`:64 full real plot calls including both IFF states. The pre-latch
+refinement pace result1.53% is retained; remeasure later changes before any acceptance claim.
+`cell_interrupts.py` tested759 quiet IRQ boundaries across all four flips before the latest
+clock-latch/DI refinements; those need their updated run. No full-recording claim.
+
+The retained `publication_fastplots.asm` broad acceleration trial is rejected:7.83% overall,
+13.37% worst20. `plot_equivalence.py` passes64 ABI/R/live-bank cases, which does not establish
+pace. Independent review diagnosed wrapper work incorrectly multiplied as original time and
+per-call raster quantisation; current exact cell credit avoids both. See continuation review.
+
+Current decision: see [completion review](continuation/completion-review.md) for the
+bounded cached-ID failure, alternatives and completion gates. Layer2 is parked;
+next evaluate identity once per plot/level before implementing another prototype.
+`publication_inlined.asm` and its inline helper/cost files are UNTESTED WIP, with zero
+placeholder costs. They are retained for provenance and must not be selected for delivery.
+All generated NEX/JNS/raw captures stay in work; private card access remains read-only.

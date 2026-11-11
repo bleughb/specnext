@@ -50,6 +50,11 @@ def oracle(memory, text=()):
     return bytes(patterns), bytes(attrs)
 
 
+def full_lut():
+    return bytes(((col if bits&(128>>i) else 0)<<4)|(col if bits&(64>>i) else 0)
+                 for col in range(16) for bits in range(256) for i in (0,2,4,6))
+
+
 def run():
     import argparse
     ap=argparse.ArgumentParser()
@@ -84,13 +89,14 @@ def run():
             code[syms['restore_pixels']+1-0x2000:syms['restore_pixels']+3-0x2000]=Z.w16(6144)
         if name == 'bad-lut':
             # Corrupt the runtime table in this very binary, not a separate oracle.
-            code[syms['expand_lut']-0x2000:syms['expand_lut']-0x2000+512] = bytes(512)
-        banks.update({10: bytes.fromhex('ed915118c30020'), 12: code,
+            pass  # Full lookup bank below is the runtime corruption target.
+        lut=bytes(16384) if name=='bad-lut' else full_lut()
+        banks.update({24:bytes(16384),25:bytes(16384),26:bytes(16384),23:lut,10: bytes.fromhex('ed915118c30020'), 12: code,
                       20: bytes([0xA5])*16384, 21: bytes([0x5A])*16384, 22: bytes(16384)})
         nex = folder / 'publication.nex'
         Z.write_nex(str(nex), snap, banks)
         s = J.Script(500)
-        labels = [('PREP','prepare'), ('READY','shadow_ready'), ('GEN','dynamic_patterns'),
+        labels = [('PREP','prepare'), ('READY','shadow_ready'), ('GEN','dynamic_patterns'), ('SCAN','dynamic_patterns.scan'),
                   ('COPY','clear_call'), ('PREPEND','prep_end'), ('TAIL','tail_begin'),
                   ('BEGIN','pstart'), ('ROW','rend'), ('END','pend'), ('IRQIN','irq_in'), ('IRQOUT','irq_out')]
         for tag, label in labels:

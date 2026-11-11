@@ -1,0 +1,3 @@
+15 signed budget edges PASS
+320 resolved cell cases PASS; exact registers/R/game RAM, source/ID metadata; CPU credit verified
+credit range -982 1765 fast T; all10 outcomes x8 row/Force variants

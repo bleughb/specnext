@@ -1,0 +1,27 @@
+[
+  {
+    "kind": "empty",
+    "overflow": false,
+    "out_of_range_writes": 0
+  },
+  {
+    "kind": "edges-inks",
+    "overflow": false,
+    "out_of_range_writes": 0
+  },
+  {
+    "kind": "capacity",
+    "overflow": false,
+    "out_of_range_writes": 0
+  },
+  {
+    "kind": "overflow",
+    "overflow": true,
+    "out_of_range_writes": 0
+  },
+  {
+    "kind": "broken-capacity",
+    "overflow": false,
+    "out_of_range_writes": 8
+  }
+]
