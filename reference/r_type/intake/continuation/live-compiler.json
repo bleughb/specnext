@@ -1,0 +1,8 @@
+{
+  "cells": 8711,
+  "groups": 3528,
+  "pool_bytes": 451584,
+  "table_bytes": 262144,
+  "max_probe": 119,
+  "mean_probe": 1.3850304213063942
+}

@@ -1,0 +1,402 @@
+[
+  {
+    "bank": 1,
+    "address": "0xc000",
+    "R": 0
+  },
+  {
+    "bank": 1,
+    "address": "0xc000",
+    "R": 127
+  },
+  {
+    "bank": 1,
+    "address": "0xc000",
+    "R": 128
+  },
+  {
+    "bank": 1,
+    "address": "0xc000",
+    "R": 255
+  },
+  {
+    "bank": 1,
+    "address": "0xdd01",
+    "R": 0
+  },
+  {
+    "bank": 1,
+    "address": "0xdd01",
+    "R": 127
+  },
+  {
+    "bank": 1,
+    "address": "0xdd01",
+    "R": 128
+  },
+  {
+    "bank": 1,
+    "address": "0xdd01",
+    "R": 255
+  },
+  {
+    "bank": 1,
+    "address": "0xe000",
+    "R": 0
+  },
+  {
+    "bank": 1,
+    "address": "0xe000",
+    "R": 127
+  },
+  {
+    "bank": 1,
+    "address": "0xe000",
+    "R": 128
+  },
+  {
+    "bank": 1,
+    "address": "0xe000",
+    "R": 255
+  },
+  {
+    "bank": 1,
+    "address": "0xffff",
+    "R": 0
+  },
+  {
+    "bank": 1,
+    "address": "0xffff",
+    "R": 127
+  },
+  {
+    "bank": 1,
+    "address": "0xffff",
+    "R": 128
+  },
+  {
+    "bank": 1,
+    "address": "0xffff",
+    "R": 255
+  },
+  {
+    "bank": 3,
+    "address": "0xc000",
+    "R": 0
+  },
+  {
+    "bank": 3,
+    "address": "0xc000",
+    "R": 127
+  },
+  {
+    "bank": 3,
+    "address": "0xc000",
+    "R": 128
+  },
+  {
+    "bank": 3,
+    "address": "0xc000",
+    "R": 255
+  },
+  {
+    "bank": 3,
+    "address": "0xdd01",
+    "R": 0
+  },
+  {
+    "bank": 3,
+    "address": "0xdd01",
+    "R": 127
+  },
+  {
+    "bank": 3,
+    "address": "0xdd01",
+    "R": 128
+  },
+  {
+    "bank": 3,
+    "address": "0xdd01",
+    "R": 255
+  },
+  {
+    "bank": 3,
+    "address": "0xe000",
+    "R": 0
+  },
+  {
+    "bank": 3,
+    "address": "0xe000",
+    "R": 127
+  },
+  {
+    "bank": 3,
+    "address": "0xe000",
+    "R": 128
+  },
+  {
+    "bank": 3,
+    "address": "0xe000",
+    "R": 255
+  },
+  {
+    "bank": 3,
+    "address": "0xffff",
+    "R": 0
+  },
+  {
+    "bank": 3,
+    "address": "0xffff",
+    "R": 127
+  },
+  {
+    "bank": 3,
+    "address": "0xffff",
+    "R": 128
+  },
+  {
+    "bank": 3,
+    "address": "0xffff",
+    "R": 255
+  },
+  {
+    "bank": 4,
+    "address": "0xc000",
+    "R": 0
+  },
+  {
+    "bank": 4,
+    "address": "0xc000",
+    "R": 127
+  },
+  {
+    "bank": 4,
+    "address": "0xc000",
+    "R": 128
+  },
+  {
+    "bank": 4,
+    "address": "0xc000",
+    "R": 255
+  },
+  {
+    "bank": 4,
+    "address": "0xdd01",
+    "R": 0
+  },
+  {
+    "bank": 4,
+    "address": "0xdd01",
+    "R": 127
+  },
+  {
+    "bank": 4,
+    "address": "0xdd01",
+    "R": 128
+  },
+  {
+    "bank": 4,
+    "address": "0xdd01",
+    "R": 255
+  },
+  {
+    "bank": 4,
+    "address": "0xe000",
+    "R": 0
+  },
+  {
+    "bank": 4,
+    "address": "0xe000",
+    "R": 127
+  },
+  {
+    "bank": 4,
+    "address": "0xe000",
+    "R": 128
+  },
+  {
+    "bank": 4,
+    "address": "0xe000",
+    "R": 255
+  },
+  {
+    "bank": 4,
+    "address": "0xffff",
+    "R": 0
+  },
+  {
+    "bank": 4,
+    "address": "0xffff",
+    "R": 127
+  },
+  {
+    "bank": 4,
+    "address": "0xffff",
+    "R": 128
+  },
+  {
+    "bank": 4,
+    "address": "0xffff",
+    "R": 255
+  },
+  {
+    "bank": 6,
+    "address": "0xc000",
+    "R": 0
+  },
+  {
+    "bank": 6,
+    "address": "0xc000",
+    "R": 127
+  },
+  {
+    "bank": 6,
+    "address": "0xc000",
+    "R": 128
+  },
+  {
+    "bank": 6,
+    "address": "0xc000",
+    "R": 255
+  },
+  {
+    "bank": 6,
+    "address": "0xdd01",
+    "R": 0
+  },
+  {
+    "bank": 6,
+    "address": "0xdd01",
+    "R": 127
+  },
+  {
+    "bank": 6,
+    "address": "0xdd01",
+    "R": 128
+  },
+  {
+    "bank": 6,
+    "address": "0xdd01",
+    "R": 255
+  },
+  {
+    "bank": 6,
+    "address": "0xe000",
+    "R": 0
+  },
+  {
+    "bank": 6,
+    "address": "0xe000",
+    "R": 127
+  },
+  {
+    "bank": 6,
+    "address": "0xe000",
+    "R": 128
+  },
+  {
+    "bank": 6,
+    "address": "0xe000",
+    "R": 255
+  },
+  {
+    "bank": 6,
+    "address": "0xffff",
+    "R": 0
+  },
+  {
+    "bank": 6,
+    "address": "0xffff",
+    "R": 127
+  },
+  {
+    "bank": 6,
+    "address": "0xffff",
+    "R": 128
+  },
+  {
+    "bank": 6,
+    "address": "0xffff",
+    "R": 255
+  },
+  {
+    "bank": 7,
+    "address": "0xc000",
+    "R": 0
+  },
+  {
+    "bank": 7,
+    "address": "0xc000",
+    "R": 127
+  },
+  {
+    "bank": 7,
+    "address": "0xc000",
+    "R": 128
+  },
+  {
+    "bank": 7,
+    "address": "0xc000",
+    "R": 255
+  },
+  {
+    "bank": 7,
+    "address": "0xdd01",
+    "R": 0
+  },
+  {
+    "bank": 7,
+    "address": "0xdd01",
+    "R": 127
+  },
+  {
+    "bank": 7,
+    "address": "0xdd01",
+    "R": 128
+  },
+  {
+    "bank": 7,
+    "address": "0xdd01",
+    "R": 255
+  },
+  {
+    "bank": 7,
+    "address": "0xe000",
+    "R": 0
+  },
+  {
+    "bank": 7,
+    "address": "0xe000",
+    "R": 127
+  },
+  {
+    "bank": 7,
+    "address": "0xe000",
+    "R": 128
+  },
+  {
+    "bank": 7,
+    "address": "0xe000",
+    "R": 255
+  },
+  {
+    "bank": 7,
+    "address": "0xffff",
+    "R": 0
+  },
+  {
+    "bank": 7,
+    "address": "0xffff",
+    "R": 127
+  },
+  {
+    "bank": 7,
+    "address": "0xffff",
+    "R": 128
+  },
+  {
+    "bank": 7,
+    "address": "0xffff",
+    "R": 255
+  }
+]

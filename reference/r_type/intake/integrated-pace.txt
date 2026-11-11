@@ -1,0 +1,17 @@
+PACE  diagnostic.nex (a300a515) vs play.z80 (27d88c83): probe 0x8649 (given), input keyed to updates, seed 1
+phase                     updates  original     build  penalty  hook/upd orig hook
+all                           100     6.34s     6.40s   +0.82%   39.03ms    0.00ms
+quiet (fastest third)          20     1.22s     1.22s   +0.02%   35.24ms    0.00ms
+busy (slowest third)           20     1.39s     1.41s   +1.26%   42.16ms    0.00ms
+worst window u41-60            20     1.24s     1.26s   +1.72%   41.30ms    0.00ms
+per second (play)         original     build
+game updates                 15.83     15.83
+AY data writes                   0         0
+port FE writes                2037      1969
+interrupts taken             49.83     49.83
+hook time % of time           0.00     61.12
+hook time, worst 1 s %        0.00     66.94
+interrupts off % time         10.0      22.2
+longest interrupt gap ms      40.5      40.5
+lockstep: not checked (no state addresses in the profile)
+RESULT: penalty +0.82% over 100 updates

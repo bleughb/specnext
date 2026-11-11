@@ -1,0 +1,210 @@
+{
+  "scope": "Source-only background initialization oracle; no renderer or intake scan.\n\nCompare native FEEB with an independent block-map decoder on reconstructed levels.\nGenerated source images stay outside Git. IRQs are excluded; this does not prove\nscroll progression, timing, RGB composition or a replacement writer.\n",
+  "decoded_sha256": "b70b5d3e4cb8b022190cb8fdbcb65e071925764914b1eb0d69b39482fac9aeb2",
+  "cases": [
+    {
+      "level": 1,
+      "start": 0,
+      "columns": 107,
+      "ideal_flip_pixel_byte_differences": 1
+    },
+    {
+      "level": 1,
+      "start": 53,
+      "columns": 107,
+      "ideal_flip_pixel_byte_differences": 5
+    },
+    {
+      "level": 1,
+      "start": 99,
+      "columns": 107,
+      "ideal_flip_pixel_byte_differences": 3
+    },
+    {
+      "level": 2,
+      "start": 0,
+      "columns": 67,
+      "ideal_flip_pixel_byte_differences": 0
+    },
+    {
+      "level": 2,
+      "start": 33,
+      "columns": 67,
+      "ideal_flip_pixel_byte_differences": 0
+    },
+    {
+      "level": 2,
+      "start": 59,
+      "columns": 67,
+      "ideal_flip_pixel_byte_differences": 10
+    },
+    {
+      "level": 3,
+      "start": 0,
+      "columns": 64,
+      "ideal_flip_pixel_byte_differences": 2
+    },
+    {
+      "level": 3,
+      "start": 32,
+      "columns": 64,
+      "ideal_flip_pixel_byte_differences": 0
+    },
+    {
+      "level": 3,
+      "start": 56,
+      "columns": 64,
+      "ideal_flip_pixel_byte_differences": 7
+    },
+    {
+      "level": 4,
+      "start": 0,
+      "columns": 74,
+      "ideal_flip_pixel_byte_differences": 0
+    },
+    {
+      "level": 4,
+      "start": 37,
+      "columns": 74,
+      "ideal_flip_pixel_byte_differences": 13
+    },
+    {
+      "level": 4,
+      "start": 66,
+      "columns": 74,
+      "ideal_flip_pixel_byte_differences": 0
+    },
+    {
+      "level": 5,
+      "start": 0,
+      "columns": 74,
+      "ideal_flip_pixel_byte_differences": 0
+    },
+    {
+      "level": 5,
+      "start": 37,
+      "columns": 74,
+      "ideal_flip_pixel_byte_differences": 0
+    },
+    {
+      "level": 5,
+      "start": 66,
+      "columns": 74,
+      "ideal_flip_pixel_byte_differences": 0
+    },
+    {
+      "level": 6,
+      "start": 0,
+      "columns": 62,
+      "ideal_flip_pixel_byte_differences": 0
+    },
+    {
+      "level": 6,
+      "start": 31,
+      "columns": 62,
+      "ideal_flip_pixel_byte_differences": 0
+    },
+    {
+      "level": 6,
+      "start": 54,
+      "columns": 62,
+      "ideal_flip_pixel_byte_differences": 5
+    },
+    {
+      "level": 7,
+      "start": 0,
+      "columns": 74,
+      "ideal_flip_pixel_byte_differences": 0
+    },
+    {
+      "level": 7,
+      "start": 37,
+      "columns": 74,
+      "ideal_flip_pixel_byte_differences": 2
+    },
+    {
+      "level": 7,
+      "start": 66,
+      "columns": 74,
+      "ideal_flip_pixel_byte_differences": 0
+    },
+    {
+      "level": 8,
+      "start": 0,
+      "columns": 184,
+      "ideal_flip_pixel_byte_differences": 0
+    },
+    {
+      "level": 8,
+      "start": 92,
+      "columns": 184,
+      "ideal_flip_pixel_byte_differences": 0
+    },
+    {
+      "level": 8,
+      "start": 176,
+      "columns": 184,
+      "ideal_flip_pixel_byte_differences": 0
+    }
+  ],
+  "foreground_flip_cases": [
+    {
+      "normalized_table_control": false,
+      "flip": 0,
+      "native_row": 1,
+      "compiled_row": 1,
+      "matches": true
+    },
+    {
+      "normalized_table_control": false,
+      "flip": 1,
+      "native_row": 0,
+      "compiled_row": 128,
+      "matches": false
+    },
+    {
+      "normalized_table_control": false,
+      "flip": 2,
+      "native_row": 1,
+      "compiled_row": 1,
+      "matches": true
+    },
+    {
+      "normalized_table_control": false,
+      "flip": 3,
+      "native_row": 0,
+      "compiled_row": 128,
+      "matches": false
+    },
+    {
+      "normalized_table_control": true,
+      "flip": 0,
+      "native_row": 1,
+      "compiled_row": 1,
+      "matches": true
+    },
+    {
+      "normalized_table_control": true,
+      "flip": 1,
+      "native_row": 128,
+      "compiled_row": 128,
+      "matches": true
+    },
+    {
+      "normalized_table_control": true,
+      "flip": 2,
+      "native_row": 1,
+      "compiled_row": 1,
+      "matches": true
+    },
+    {
+      "normalized_table_control": true,
+      "flip": 3,
+      "native_row": 128,
+      "compiled_row": 128,
+      "matches": true
+    }
+  ],
+  "passed": 24,
+  "ideal_flip_negative_detected": 9
+}

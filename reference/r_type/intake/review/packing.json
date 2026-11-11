@@ -1,0 +1,56 @@
+{
+  "frames": 90102,
+  "desync": null,
+  "refreshes": 18576,
+  "layouts": {
+    "global": {
+      "max_sprites": 126,
+      "max_patterns": 111,
+      "max_union": 219,
+      "max_mono_patterns": 107,
+      "max_mono_union": 206,
+      "over_sprites": 0,
+      "over_patterns": 0,
+      "over_union": 370,
+      "over_mono_union": 234,
+      "sprites_frame": 87564,
+      "patterns_frame": 87709,
+      "union_frame": 87573,
+      "mono_patterns_frame": 87564,
+      "mono_union_frame": 87607
+    },
+    "owner_min": {
+      "max_sprites": 144,
+      "max_patterns": 114,
+      "max_union": 226,
+      "max_mono_patterns": 104,
+      "max_mono_union": 176,
+      "over_sprites": 58,
+      "over_patterns": 0,
+      "over_union": 258,
+      "over_mono_union": 32,
+      "sprites_frame": 87525,
+      "patterns_frame": 87525,
+      "union_frame": 87535,
+      "mono_patterns_frame": 29374,
+      "mono_union_frame": 29344
+    },
+    "owner_best": {
+      "max_sprites": 144,
+      "max_patterns": 114,
+      "max_union": 226,
+      "max_mono_patterns": 101,
+      "max_mono_union": 174,
+      "over_sprites": 57,
+      "over_patterns": 0,
+      "over_union": 257,
+      "over_mono_union": 33,
+      "sprites_frame": 87525,
+      "patterns_frame": 87525,
+      "union_frame": 87535,
+      "mono_patterns_frame": 29374,
+      "mono_union_frame": 29344
+    }
+  },
+  "scope": "Original refresh states, no interrupts or hook work modified; exact nibble patterns, optional monochrome palette normalization"
+}

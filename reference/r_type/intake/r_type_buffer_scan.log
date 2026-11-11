@@ -1,0 +1,33 @@
+Source    : /workspace/work/r_type_play.rzx, 501 frames
+Counting  : from the start
+Lowest SP : 63602 (0xF872) (any SP value: games that use SP as a data pointer show it here)
+Range 0x6000-0x77FF: 2894 of 6144 bytes untouched
+  untouched   0x732A-0x7400 (215 bytes)
+  untouched   0x762A-0x7700 (215 bytes)
+  untouched   0x742A-0x74F9 (208 bytes)
+  untouched   0x722A-0x72DD (180 bytes)
+  untouched   0x752A-0x75DC (179 bytes)
+  untouched   0x702A-0x70D9 (176 bytes)
+  touched     0x600B-0x6013 (9 bytes, rw), first: write at PC 36143
+  touched     0x601A-0x601C (3 bytes, rw), first: write at PC 36143
+  touched     0x602A-0x6034 (11 bytes, rw), first: read at PC 34955
+  touched     0x6037-0x603D (7 bytes, rw), first: write at PC 36143
+  touched     0x6041-0x6043 (3 bytes, rw), first: write at PC 36143
+  touched     0x6049-0x605E (22 bytes, rw), first: write at PC 36143
+  touched     0x6061-0x6063 (3 bytes, rw), first: write at PC 36143
+  touched     0x6068-0x606C (5 bytes, rw), first: write at PC 36143
+  touched     0x606F-0x607E (16 bytes, rw), first: write at PC 36143
+  touched     0x6081-0x6085 (5 bytes, rw), first: write at PC 36143
+  touched     0x6087-0x608B (5 bytes, rw), first: write at PC 36143
+  touched     0x608E-0x609E (17 bytes, rw), first: write at PC 36143
+  ... 265 more touched spans
+  write-first 0x6801-0x681E (30 bytes)
+  write-first 0x6824-0x683E (27 bytes)
+  write-first 0x6844-0x685E (27 bytes)
+  write-first 0x6861-0x687E (30 bytes)
+  write-first 0x6881-0x689E (30 bytes)
+  write-first 0x68A2-0x68B6 (21 bytes)
+  writers   18 instructions: 36143 (0x8D2F) x3211, 36147 (0x8D33) x3211, 36151 (0x8D37) x3211, 36155 (0x8D3B) x3211, 36159 (0x8D3F) x3211, 36163 (0x8D43) x3211, 36167 (0x8D47) x3211, 36171 (0x8D4B) x3211, 36358 (0x8E06) x1792, 49262 (0xC06E) x450
+  writers+  8 more instructions in 5 routine span(s): 35692-35692 (0x8B6C) x150, 36367-36367 (0x8E0F) x256, 42130-42137 (0xA492) x424, 42158-42161 (0xA4AE) x424, 49746-49752 (0xC252) x16
+  readers   23 instructions: 34955 (0x888B) x3532, 34959 (0x888F) x3532, 34963 (0x8893) x3532, 34967 (0x8897) x3532, 34971 (0x889B) x3532, 34975 (0x889F) x3532, 34979 (0x88A3) x3532, 34983 (0x88A7) x3532, 35696 (0x8B70) x900, 35700 (0x8B74) x900
+  readers+  13 more instructions in 12 routine span(s): 35590-35590 (0x8B06) x300, 38139-38139 (0x94FB) x150, 38310-38310 (0x95A6) x150, 38326-38326 (0x95B6) x150, 39468-39468 (0x9A2C) x100, 40448-40448 (0x9E00) x604, 42482-42484 (0xA5F2) x24, 49289-49289 (0xC089) x364, 49363-49363 (0xC0D3) x364, 49745-49745 (0xC251) x14, 50230-50230 (0xC436) x103, 64963-64963 (0xFDC3) x13
