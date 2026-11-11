@@ -7,6 +7,9 @@ Current evaluation: [live budget / SMC review](continuation/live-budget-review.m
 Private card and official JNext1.2.0 restored; fresh explicit fixture/profile fails10.925%.
 The existing-route ledger and targeted SMC watch are measured; no renderer was added.
 Read the whole-pipeline consumer/native-credit directions there before more coding.
+Follow-up: [background consumers](continuation/background-consumer-review.md).
+`background_contract.py` matches24 native initializations across eight levels;
+also exposes the actual01->00 flip-table/compiler mismatch. No new renderer.
 
 - `plain.py` builds ../Rtype.nex from ../Rtype.z80 and checks the plain boot. `plain-boot.json`
   records its MD5, exact-R check and the negative control for printer restoration.

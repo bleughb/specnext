@@ -5,6 +5,11 @@ implementation directions in the earlier source-only review, not its scoped resu
 No renderer variant, timing-constant adjustment, intake/capacity/caller/ISR census
 or engine promotion. All measurements below concern existing diagnostic routes.
 
+Consumer/source follow-up: background-consumer-review.md identifies the separate
+level stream, both640-byte state maps, additional SMC modes, native-credit
+boundaries and an actual flip-table/compiler mismatch.24 initialization cases
+pass; no renderer/timing/RGB acceptance changes.
+
 Documentary follow-up: book-ingest-review.md compares the supplied summary without
 downloading the book. SCROLL6 matches8914..8973 exactly; background/sprite map
 separation guides consumer review, without establishing both maps' addresses.

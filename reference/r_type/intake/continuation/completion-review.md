@@ -4,6 +4,13 @@ This is a feasibility checkpoint, not an engine or release. No new renderer expe
 are authorized by this plan itself. Design remains approved. One owner-approved reviewer
 has already reviewed the earlier bottleneck; this reassessment is by the primary agent.
 
+Latest consumer/source proof: [background-consumer-review.md](background-consumer-review.md).
+Both640-byte maps have native state consumers; separate level stream identified.
+Independent native initialization matches24 cases across eight levels. Actual flip
+table01->00 exposes a foreground compiler mismatch; no painted RGB pass. Additional
+initialization/clipping/destination SMC and original-time-credit boundaries documented.
+Next price retained semantics/accounting before a bounded combined experiment.
+
 Latest evaluation: [live-budget-review.md](live-budget-review.md), after restoring the
 private SD and JNext. Fresh fixture/profile:10.925% slow, exclusive current-route costs
 measured without changing clocks/state. Whole clone/clear/copier/paper work is14.176ms;
@@ -51,7 +58,7 @@ See `resolved-pace.json` and `resolved-pace.txt`; generated diagnostic stays out
 | Sparse painted overlay on native tiles |May reduce work for lightly painted sheets; all-painted L2 still11.81% |Conditional optimization only; cannot make completion depend on users painting few pixels.|
 | Layer2 full foreground |Independent static RGB passes; measured21.46→17.17→11.81% |Park current implementation. Larger copies/clearing remain costly; no evidence a backend switch solves identity overhead.|
 | Standard4bpp tilemap |Peak274 patterns,263 after flips versus176 usable definitions |Capacity failure for current layout. Copper bands would need new capacity/atomic-publication proof; park.|
-| Hardware scrolling |Does not replace collision/owner production or sprite identity |No measured bottleneck it solves here; retain ULA scenery.|
+| Hardware scrolling |Level stream identified;24 initialization cases pass. Pixel scroll costs0.984ms versus9.386ms needed |Specific saving is insufficient alone; state/dirty/IRQ and native credit still required. No backend experiment yet.|
 | Copper |Can schedule display state, not source-identity computation |No current measured benefit; do not add complexity without a specific publication bottleneck.|
 | DMA / DDMA blitter |Ordinary DMA already batches publication; DDMA3.03 unavailable in current emulator |Keep DMA. DDMA needs compatible validation and fallback; cannot remove pointer lookup or validate source identity.|
 | Inline cell-entry optimization |Unfinished source with zero placeholder timing constants |Quarantine; never select for builds or claim verified. It addresses entry overhead but lacks evidence it can recover10.75%.|
