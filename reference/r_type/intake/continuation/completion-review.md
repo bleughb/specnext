@@ -12,6 +12,10 @@ or packed-art writes. Next review is the whole display pipeline's consumers and 
 time credit, before any replacement. Older9.215ms/0.609ms estimates belong to older
 samples; the fresh required saving is9.386ms. No completed painted route or engine.
 
+Book follow-up: book-ingest-review.md records an exact96-byte SCROLL6 match and
+background-tile/sprite-map hypothesis. No PDF download or intake restart; the
+dossier's embedded research handoff is not the active project plan.
+
 Source-only follow-up: [source-identity-review.md](source-identity-review.md) evaluates
 identity and the entire original CPU budget. Plot-only identity fails the estimate;
 combined acceleration remains a hypothesis, not a whole-route budget. A guard component
