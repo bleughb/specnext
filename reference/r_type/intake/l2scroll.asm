@@ -13,6 +13,14 @@
 L2BANK  EQU 9                   ; 16K bank: 8K pages 18..23
 L2PAGE  EQU L2BANK*2
 TRANSP  EQU 0xE3
+        MACRO L2_OFF
+        nextreg 0x69,0
+        IFDEF L2_SPRITES
+        nextreg 0x15,0x44       ; sprites hidden
+        xor a
+        ld (spr_on),a
+        ENDIF
+        ENDM
         ORG 0x2000
 hook_setup:
         nextreg 0x12,L2BANK
@@ -26,6 +34,9 @@ hook_setup:
         nextreg 0x18,247
         nextreg 0x18,0
         nextreg 0x18,159
+        IFDEF L2_SPRITES
+        call spr_setup
+        ENDIF
         ret
 
 ; ---- ISR wrapper: BE26 replaces PUSH IX / PUSH IY / PUSH HL -------------------
@@ -46,16 +57,16 @@ irq_out:
         jp 0xBE55
 
 ; ---- 863D replaces CALL 73D8: life/level restart, Layer 2 off -----------------
-l2_off: nextreg 0x69,0
+l2_off: L2_OFF
         jp 0x73D8
 ; 8BE8 replaces LD HL,5800: continue screen. FE03 replaces CALL 73C2: title
 ; and between-level screens. Both clear the ULA; Layer 2 must not stay over them.
 l2_off_continue:
-        nextreg 0x69,0
+        L2_OFF
         ld hl,0x5800
         jp 0x8BEB
 l2_off_title:
-        nextreg 0x69,0
+        L2_OFF
         call 0x73C2
         jp 0xFE06
 
@@ -71,7 +82,11 @@ l2_scroll:
         inc a
         ld (l2_s),a
         nextreg 0x16,a
-.no:    ld ix,0x8080
+.no:
+        IFDEF L2_SPRITES
+        call spr_publish
+        ENDIF
+        ld ix,0x8080
         jp 0x8846
 
 ; ---- 89C3 replaces LD HL,5E00: the new column goes to Layer 2 -----------------
@@ -193,6 +208,9 @@ l2_convert:
         ENDIF
         ld a,1
         ld (l2_ready),a
+        IFDEF L2_SPRITES
+        call spr_start
+        ENDIF
         pop hl
         pop de
         pop bc
@@ -281,5 +299,10 @@ l2_ready: db 0
 cur_mmu0: db 0xFF
         ALIGN 16
 zero8:  ds 8
+        IFDEF L2_SPRITES
+        INCLUDE "l2sprites_body.asm"
+        ENDIF
         ASSERT $ < 0x3E00
+        IFNDEF L2_SPRITES
         SAVEBIN "l2scroll_code.bin",hook_setup,$-hook_setup
+        ENDIF
