@@ -1,0 +1,84 @@
+{
+  "scope": "Relaxed-equivalence trial (owner decision 2026-11-15): main loop at 28MHz.\n\nSame fresh peak29405/no-input fixture and 100-update probe as live_budget.py.\nCompares the original, the cached-producer route and the same route with\nRT_TURBO (main loop returns from the copier hook at 28MHz; the native ISR and\nits beeper effects stay at 3.5MHz). Original slowdown is intentionally not kept,\nso a faster-than-original result is expected and accepted. State is reported,\nnot required to match: R and IRQ arrival points legitimately differ.\nGenerated programs/logs stay in work.\n",
+  "program_md5": {
+    "original": "9cfed755be2d7ae90a3876ea617f87bf",
+    "resolved": "91f7066eaf48f4df38db755cb444ca91",
+    "turbo": "dbe0ec578736699f112f1055830a5625"
+  },
+  "original": {
+    "total_s": 10.516004285714287,
+    "penalty_percent": 0.0,
+    "updates_per_s": 9.509315257302372,
+    "frames_per_update": {
+      "3": 30,
+      "4": 35,
+      "5": 26,
+      "7": 1,
+      "8": 5,
+      "9": 1,
+      "10": 1,
+      "93": 1
+    },
+    "updates_with_state_difference": 0,
+    "rates": {
+      "updates": 9.3,
+      "AY": 0.0,
+      "BP": 1110.5,
+      "INT": 50.0,
+      "hook": 0.0,
+      "hook_worst": 0.0,
+      "DI": 6.5,
+      "gap": 20.264857142857142
+    }
+  },
+  "resolved": {
+    "total_s": 11.664884821428572,
+    "penalty_percent": 10.92506720708557,
+    "updates_per_s": 8.57273788218624,
+    "frames_per_update": {
+      "3": 30,
+      "4": 1,
+      "5": 47,
+      "6": 12,
+      "7": 1,
+      "9": 6,
+      "11": 2,
+      "92": 1
+    },
+    "updates_with_state_difference": 100,
+    "rates": {
+      "updates": 8.4,
+      "AY": 0.0,
+      "BP": 960.5,
+      "INT": 50.0,
+      "hook": 54.43169367106483,
+      "hook_worst": 72.66047747359413,
+      "DI": 9.51,
+      "gap": 20.264607142857145
+    }
+  },
+  "turbo": {
+    "total_s": 9.679320607142857,
+    "penalty_percent": -7.9562888701751655,
+    "updates_per_s": 10.331303617136617,
+    "frames_per_update": {
+      "3": 30,
+      "4": 50,
+      "5": 11,
+      "6": 6,
+      "7": 2,
+      "83": 1
+    },
+    "updates_with_state_difference": 98,
+    "rates": {
+      "updates": 10.0,
+      "AY": 0.0,
+      "BP": 1200.625,
+      "INT": 50.0,
+      "hook": 92.76428161443721,
+      "hook_worst": 98.27152430866491,
+      "DI": 10.2875,
+      "gap": 20.260214285714287
+    }
+  }
+}
