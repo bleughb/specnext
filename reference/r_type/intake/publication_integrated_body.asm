@@ -16,6 +16,11 @@ hook_entry:
         inc b
         in a,(c)
         and 3
+        IFDEF RT_TURBO
+        ; Relaxed-equivalence trial: the main loop returns at 28MHz. Every
+        ; beeper writer runs inside the ISR, whose wrapper forces 3.5MHz.
+        ld a,3
+        ENDIF
         ld (hook_speed),a
         nextreg 7,3
         pop bc
