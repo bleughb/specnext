@@ -33,11 +33,17 @@ def fixture(frame=2000, name='play'):
     return path
 
 
-def build(src=None, folder=OUT, asm=None):
+SPRITE_SITES = [(0x8CFD, 'c5d5d9', 'plot_n', 0xC3), (0x8D65, 'c5d506', 'plot_h', 0xC3),
+                (0x8DD3, 'c5d5d9', 'plot_v', 0xC3), (0x8E29, 'c5d506', 'plot_hv', 0xC3),
+                (0x8886, '7cc620', 'spr_gate', 0xC3)]
+
+
+def build(src=None, folder=OUT, asm=None, sprites=False):
     src = Path(src) if src else fixture()
     folder = Path(folder)
     folder.mkdir(exist_ok=True)
-    blocks, syms = assemble(str(asm or HERE/"l2scroll.asm"), sjasm.find())
+    blocks, syms = assemble(str(asm or HERE/('l2sprites.asm' if sprites else 'l2scroll.asm')), sjasm.find())
+    sites = SITES+(SPRITE_SITES if sprites else [])
     code = blocks['code']
 
     class Prototype(Plain):
@@ -52,7 +58,7 @@ def build(src=None, folder=OUT, asm=None):
             setup = bytearray(self.stub_extra[:11]+Z.nextreg(0x51, 24)+b'\xCD'+Z.w16(syms['hook_setup'])+b'\xC9')
             setup[1:3] = Z.w16(self.setup_call+len(setup))
             self.stub_extra = bytes(setup)+backup
-            for addr, old, label, opcode in SITES:
+            for addr, old, label, opcode in sites:
                 # 8000..BFFF is bank 2; the C000+ game code sits in bank 0.
                 bank, base = (2, 0x8000) if addr < 0xC000 else (0, 0xC000)
                 old = bytes.fromhex(old)
@@ -61,7 +67,7 @@ def build(src=None, folder=OUT, asm=None):
                 data[addr-base:addr-base+3] = bytes([opcode])+Z.w16(syms[label])
                 snap.banks[bank] = bytes(data)
 
-    dst = folder/'l2scroll.nex'
+    dst = folder/('l2sprites.nex' if sprites else 'l2scroll.nex')
     Z.convert(str(src), str(dst), tail_req=0x5B00, force50=True, quiet=True, patch=Prototype())
     (folder/'symbols.json').write_text(json.dumps(syms, indent=2)+'\n')
     print(dst, flush=True)
@@ -69,4 +75,4 @@ def build(src=None, folder=OUT, asm=None):
 
 
 if __name__ == '__main__':
-    build()
+    build(sprites='--sprites' in sys.argv, folder=OUT/'sprites' if '--sprites' in sys.argv else OUT)
