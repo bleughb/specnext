@@ -149,10 +149,15 @@ l2_stage:
         pop hl
         push hl
         bit 7,a
+        ld e,0
         jr nz,.bg
         ld hl,zero8             ; not scenery: clear the Layer 2 cell
         xor a
-.bg:
+        ld e,TRANSP
+.bg:    push af
+        ld a,e
+        ld (pc_blk),a
+        pop af
 .x:     ld c,0
         call put_cell
         pop hl
@@ -194,6 +199,8 @@ l2_convert:
         nextreg 0x16,0
         ld a,0x24               ; INC H: down a ULA character cell
         ld (src_step),a
+        xor a
+        ld (pc_blk),a
         ld b,0
 .row:   ld c,0
 .col:   ld l,b
@@ -281,13 +288,13 @@ put_cell:
         rrca
         rrca
         and 7
-        jr z,.clear             ; black paper: the ULA shows through
+        jr z,.clear             ; black paper: see pc_blk
 .br:    or 0
         ld hl,col_tab
         add hl,a
         ld a,(hl)
         jr .pp
-.clear: ld a,TRANSP
+.clear: ld a,(pc_blk)
 .pp:    ld (pc_pap+1),a
         ld a,b
         rrca
@@ -337,6 +344,10 @@ src_step:
 col_tab: db 0x00,0x02,0xA0,0xA2,0x14,0x16,0xB4,0xB6
         db 0x00,0x03,0xE0,0xE7,0x1C,0x1F,0xFC,0xFF
 l2_s:   db 0
+; Black paper of a scenery cell is opaque: in the original a figure never draws
+; into a cell the scenery owns (8EC2), so scenery hides any figure behind it.
+; Cleared cells stay transparent.
+pc_blk: db 0
 l2_ready: db 0
 cur_mmu0: db 0xFF
         ALIGN 16
