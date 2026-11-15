@@ -31,3 +31,33 @@ merge, and a pixel painted two ways is refused. Copy the `_colours.json` to
 
 Regenerate the sheets (after a new recording, or to show the default map's colours):
 `py -3 r_type_colour.py sheets`.
+
+## Figure IDs and identification sheets
+
+Every figure has a stable ID, `L<level>-<number>` (L0 = TEXT), and belongs to a family,
+`L<level>-F<number>`: the figures of a level that share graphics, such as one enemy's frames.
+
+- `r_type_<LEVEL>_IDENTIFY.png`: every figure of the level at 2x, in today's colours, with its ID
+  above it. For looking up a figure; never read back.
+- `r_type_figures.json`: the registry of all figures and families: level, family, how often the
+  recording drew it, its parts (graphic address, size, place, flip), its box on the identify
+  sheet, colour keys, and the user's `name` and `layer` (layer choices in `layers`; "original" =
+  as the game draws). A figure's `null` name or layer means "use the family's".
+
+IDs never change for a figure the recording drew before: regenerating the sheets keeps them, a
+longer recording adds new numbers after the highest, and figures it no longer sees stay listed
+with `"unseen": true`, so names are never lost.
+
+Name or layer figures by editing `r_type_figures.json`, or with a patch file:
+
+```
+{"families": {"L3-F07": {"name": "Battleship turret", "layer": 5}},
+ "figures":  {"L1-036": {"name": "Charge beam"}}}
+```
+
+```
+py -3 r_type_colour.py figures PATCH.json
+```
+
+Unknown IDs or layers are refused and nothing changes. Layers are recorded only for now: the build
+does not use them yet.
