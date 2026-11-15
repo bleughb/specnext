@@ -23,6 +23,7 @@ MAXSPR  EQU 128
 FLAGMAP EQU 0x3A00              ; one byte per cell, same layout as the owner map 7E00
 COOL    EQU 50                  ; updates between cache restarts
 BUDGET  EQU 24                  ; tiles converted per update
+CACHE_LIM EQU 128               ; pattern slots for cached graphics
 
 spr_setup:
         nextreg 0x43,0x20       ; edit the first sprite palette
@@ -111,16 +112,27 @@ spr_after:
         ld a,(cand)
         ld hl,succ
         cp (hl)
-        jr nz,.bad
-        ld a,(cur_serial)
+        jr z,.ok
+        ld hl,stat_part         ; partly hidden: whatever owns its missing cells
+        inc (hl)                ; must be in front, so its sprites go behind all
+        push bc                 ; others (published last)
+        ld a,(save_n)
+        ld c,a
+        ld a,(spr_n)
+        sub c
+        jr z,.pe
+        ld b,a
+        ld a,c
+        ld hl,spr_part
+        add hl,a
+.pm:    ld (hl),1
+        inc hl
+        djnz .pm
+.pe:    pop bc
+.ok:    ld a,(cur_serial)
         ld hl,plot_ok
         add hl,a
         ld (hl),1
-        jr .x
-.bad:   ld a,(save_n)
-        ld (spr_n),a            ; take its sprites back
-        ld hl,stat_part
-        inc (hl)
 .x:     xor a
         ld (cur_serial),a
         pop hl
@@ -326,7 +338,7 @@ convert:
 .need:  add a,c
         jp c,conv_fail
         djnz .need
-        cp 129
+        cp CACHE_LIM+1
         jp nc,conv_fail
         ld hl,next_slot         ; spread conversion work: at most BUDGET tiles an
         sub (hl)                ; update, or one figure of any size
@@ -348,7 +360,7 @@ convert:
         ld a,(next_slot)
         ld (ix+3),a
         ld (c_slot),a
-        ld a,128
+        ld a,CACHE_LIM
         ld (slot_lim),a
         call conv_core
         jp c,conv_fail
@@ -396,40 +408,7 @@ conv_core:
         ld hl,(r_sum)
         ld (ix+14),l
         ld (ix+15),h
-        ld hl,celltab
-        ld de,celltab+1
-        ld bc,CELLW*CELLH*2-1
-        ld (hl),0
-        ldir
-        ld hl,(r_src)
-        ld a,(r_h)
-        ld b,a
-        ld de,celltab
-.row:   push bc
-        push de
-        ld a,(r_w)
-        ld b,a
-.col:   ld a,(hl)
-        cp 0x36
-        jr z,.skip
-        ld a,l
-        ld (de),a
-        inc de
-        ld a,h
-        ld (de),a
-        inc de
-        ld a,9
-        add hl,a
-        jr .next
-.skip:  inc de
-        inc de
-        inc hl
-.next:  djnz .col
-        pop de
-        ld a,CELLW*2
-        add de,a
-        pop bc
-        djnz .row
+        call build_cells
         push ix
         pop hl
         ld a,5
@@ -473,6 +452,51 @@ conv_core:
 .full:  pop bc
         pop bc
         scf
+        ret
+
+; celltab = pointers to the cells of the graphic r_src (0 = empty or absent).
+build_cells:
+        ld a,(r_h)              ; clear only the rows a tile can read: h+1
+        inc a
+        ld d,a
+        ld e,CELLW*2
+        mul d,e
+        dec de
+        ld b,d
+        ld c,e
+        ld hl,celltab
+        ld de,celltab+1
+        ld (hl),0
+        ldir
+        ld hl,(r_src)
+        ld a,(r_h)
+        ld b,a
+        ld de,celltab
+.r:   push bc
+        push de
+        ld a,(r_w)
+        ld b,a
+.c:   ld a,(hl)
+        cp 0x36
+        jr z,.k
+        ld a,l
+        ld (de),a
+        inc de
+        ld a,h
+        ld (de),a
+        inc de
+        ld a,9
+        add hl,a
+        jr .n
+.k:  inc de
+        inc de
+        inc hl
+.n:  djnz .c
+        pop de
+        ld a,CELLW*2
+        add de,a
+        pop bc
+        djnz .r
         ret
 
 ; DE and r_sum = sum of every byte of the graphic stream at r_src.
@@ -548,79 +572,115 @@ do_tile:
         scf
         ret
 
-half:   xor a
+; Two cells of one tile half, line-major. Colours are worked out once per cell
+; into four-byte tables (entry = pixel pair, bit 1 = left pixel).
+half:   ld de,(ea)
+        ld hl,tab_l
+        call cell_tab
+        ld de,(eb)
+        ld hl,tab_r
+        call cell_tab
+        xor a
 .l:     ld (e_line),a
         ld de,(ea)
-        call emit_cell
+        ld hl,tab_l
+        call emit_line
         ld de,(eb)
-        call emit_cell
+        ld hl,tab_r
+        call emit_line
         ld a,(e_line)
         inc a
         cp 8
         jr nz,.l
         ret
 
-; Four pattern bytes (eight pixels) of one cell line. DE = cell or 0.
-emit_cell:
+; HL = table for the cell DE (0 = blank). Index = ink + 8*bright; black paper is
+; transparent, coloured paper drawn, black ink on coloured paper opaque black.
+cell_tab:
+        push hl
+        ld bc,0                 ; B paper, C ink
         ld a,d
         or e
-        jr z,.blank
+        jr z,.fill
         ld a,(r_ink)
         or a
         jr nz,.at
         ld a,(de)
-.at:    ld c,a
+.at:    ld l,a
         rrca
         rrca
         rrca
-        ld b,a                  ; bits 0..2 paper, bit 3 bright
+        ld h,a                  ; bits 0..2 paper, bit 3 bright
         and 7
         jr z,.pz
-        ld a,b
-        and 15                  ; coloured paper is drawn
-.pz:    ld (.papa+1),a
-        ld (.papb+1),a
-        ld h,a
-        ld a,c
+        ld a,h
+        and 15
+.pz:    ld b,a
+        ld a,l
         and 7
         jr nz,.ic
-        ld a,h
-        or a
-        jr z,.iz                ; black on black: nothing to show
-        ld a,8                  ; black ink on a coloured paper: opaque black
-        jr .iz
-.ic:    ld l,a
         ld a,b
+        or a
+        jr z,.fill              ; black on black: nothing to show
+        ld c,8
+        jr .fill
+.ic:    ld c,a
+        ld a,h
         and 8
-        or l
-.iz:    ld (.inka+1),a
-        ld (.inkb+1),a
+        or c
+        ld c,a
+.fill:  pop hl
+        ld a,b
+        rlca
+        rlca
+        rlca
+        rlca
+        ld e,a
+        or b
+        ld (hl),a               ; paper, paper
+        inc hl
+        ld a,e
+        or c
+        ld (hl),a               ; paper, ink
+        inc hl
+        ld a,c
+        rlca
+        rlca
+        rlca
+        rlca
+        ld d,a
+        or b
+        ld (hl),a               ; ink, paper
+        inc hl
+        ld a,d
+        or c
+        ld (hl),a               ; ink, ink
+        ret
+
+; Four pattern bytes of line e_line of cell DE (or 0), table HL.
+emit_line:
+        ld a,d
+        or e
+        jr z,.blank
+        push hl
         ld a,(e_line)
         inc a
         ex de,hl
         add hl,a
         ld c,(hl)
+        pop hl
         ld b,4
-.pair:  sla c
-        jr c,.h1
-.papa:  ld a,0
-        jr .h2
-.h1:
-.inka:  ld a,0
-.h2:    rlca
-        rlca
-        rlca
-        rlca
-        ld e,a
+.p:     xor a
         sla c
-        jr c,.l1
-.papb:  ld a,0
-        jr .l2
-.l1:
-.inkb:  ld a,0
-.l2:    or e
+        rla
+        sla c
+        rla
+        push hl
+        add hl,a
+        ld a,(hl)
+        pop hl
         out (0x5B),a
-        djnz .pair
+        djnz .p
         ret
 .blank: xor a
         out (0x5B),a
@@ -682,7 +742,7 @@ emit:   ld a,(ix+3)
         add a,(hl)
         inc a                   ; column + 1: 0..31 are on or beside the screen
         cp 32
-        jr nc,.adv
+        jp nc,.adv
         ld l,a
         ld h,0
         add hl,hl
@@ -705,7 +765,7 @@ emit:   ld a,(ix+3)
         add a,(hl)
         inc a
         cp 21
-        jr nc,.adv
+        jp nc,.adv
         add a,a
         add a,a
         add a,a
@@ -713,7 +773,7 @@ emit:   ld a,(ix+3)
         ld (e_y),a
         ld a,(spr_n)
         cp MAXSPR
-        jr nc,.adv
+        jp nc,.adv
         ld l,a
         ld h,0
         ld e,l
@@ -758,6 +818,10 @@ emit:   ld a,(ix+3)
         and 0x40
         or 0x80                 ; 4bpp, pattern half
         ld (hl),a
+        ld a,(spr_n)
+        ld hl,spr_part
+        add hl,a
+        ld (hl),0
         ld hl,spr_n
         inc (hl)
 .adv:   ld hl,c_slot
@@ -783,19 +847,36 @@ spr_publish:
         ld bc,0x303B
         xor a
         out (c),a               ; from sprite 0
-        ld hl,spr_list
         ld c,0x57
+        xor a                   ; whole figures first (on top), then partly
+        call .pass              ; hidden ones behind them
+        ld a,1
+        call .pass
+        jr .hide
+.pass:  ld (.want+1),a
         ld a,(spr_n)
         or a
-        jr z,.hide
+        ret z
         ld d,a
-.s:     outinb
+        ld hl,spr_list
+        ld ix,spr_part
+.s:     ld a,(ix+0)
+        inc ix
+.want:  cp 0
+        jr nz,.skip
+        outinb
         outinb
         outinb
         outinb
         outinb
         dec d
         jr nz,.s
+        ret
+.skip:  ld a,5
+        add hl,a
+        dec d
+        jr nz,.s
+        ret
 .hide:  ld a,(spr_n)
         ld e,a
         ld a,(spr_prev)
@@ -856,6 +937,8 @@ spr_cool: db 0
 spr_tight: db 0
 cool_len: db COOL
 budget:   db BUDGET
+tab_l:    ds 4
+tab_r:    ds 4
 cur_serial: db 0
 serial:   db 0
 need_reset: db 1
@@ -898,4 +981,5 @@ spr_list: ds MAXSPR*5
 cache:    ds MAXENT*16
 celltab:  ds CELLW*CELLH*2
 plot_ok:  ds 256
+spr_part: ds MAXSPR
         ASSERT $ <= FLAGMAP
