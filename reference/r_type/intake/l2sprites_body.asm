@@ -5,15 +5,23 @@
 ; D/E = height/width in 8x8 cells. A graphic is a row-major stream of cells: one
 ; attribute byte then eight pixel bytes, or the single byte 36 for an empty cell.
 ; Each plot is recorded here; its graphic is converted once into 16x16 4bpp
-; patterns (2x2 cells each, colour index = ink + 8*bright, paper transparent) and
-; cached by graphic address and ink override (8EB1). The game's flips become the
+; patterns (2x2 cells each, colour index = ink + 8*bright; black paper transparent,
+; coloured paper drawn) and
+; cached by graphic address and ink override (8EB1), with a checksum: the game
+; rewrites some graphics in place and those are converted again into the same slots. The game's flips become the
 ; sprite mirror flags. The native plotter still runs for the owner/collision maps;
 ; the copier's figure copy to the ULA is skipped while sprites are on (8886).
 ; All sprites recorded since the previous copier call are published at 8842.
+; A figure that does not fit (128 sprites, 128 patterns) is drawn natively on the
+; ULA for that update. The cell hook flags only cells a sprite shows; the copier
+; copies every other buffer cell natively, including cells produced outside the
+; plotters (the level 3 battleship).
 CELLW   EQU 17                  ; cells kept per row (16 + one empty)
 CELLH   EQU 21
 MAXENT  EQU 64
 MAXSPR  EQU 128
+FLAGMAP EQU 0x3A00              ; one byte per cell, same layout as the owner map 7E00
+COOL    EQU 50                  ; updates between cache restarts
 
 spr_setup:
         nextreg 0x43,0x20       ; edit the first sprite palette
@@ -51,42 +59,147 @@ spr_start:
 ; ---- plotter entries: record, then the displaced instructions -----------------
 plot_n: xor a
         call spr_record
-        push bc
+        call .body
+        jp spr_after
+.body:  push bc
         push de
         exx
         jp 0x8D00
 plot_h: ld a,1
         call spr_record
-        push bc
+        call .body
+        jp spr_after
+.body:  push bc
         push de
         ld b,0x5D
         jp 0x8D69
 plot_v: ld a,2
         call spr_record
-        push bc
+        call .body
+        jp spr_after
+.body:  push bc
         push de
         exx
         jp 0x8DD6
 plot_hv:
         ld a,3
         call spr_record
-        push bc
+        call .body
+        jp spr_after
+.body:  push bc
         push de
         ld b,0x5D
         jp 0x8E2D
+
+; The native plot has finished. A figure keeps its sprites only if every cell the
+; plotter tried was drawn (8EC2 candidates = 8EA2 writes); otherwise another
+; figure or the scenery owns part of it and the native ULA cells show it exactly.
+spr_after:
+        push af
+        push hl
+        ld a,(cur_serial)
+        or a
+        jr z,.x
+        ld a,(emitted)
+        or a
+        jr z,.x
+        ld a,(cand)
+        ld hl,succ
+        cp (hl)
+        jr nz,.bad
+        ld a,(cur_serial)
+        ld hl,plot_ok
+        add hl,a
+        ld (hl),1
+        jr .x
+.bad:   ld a,(save_n)
+        ld (spr_n),a            ; take its sprites back
+        ld hl,stat_part
+        inc (hl)
+.x:     xor a
+        ld (cur_serial),a
+        pop hl
+        pop af
+        ret
+
+; 8EC2 replaces LD A,B / RRCA / RRCA: the plotter is testing one cell.
+cand_hook:
+        push hl
+        ld hl,cand
+        inc (hl)
+        pop hl
+        ld a,b
+        rrca
+        rrca
+        jp 0x8EC5
 
 ; 8886 replaces LD A,H / ADD A,20: skip the eight-byte figure copy to the ULA.
 spr_gate:
         ld a,(spr_on)
         or a
-        jp nz,0x88A9
+        jr z,.native
+        push hl
+        ld a,d
+        add a,high(FLAGMAP)-0x7E
+        ld h,a
+        ld l,e
+        ld a,(hl)               ; serial of the plot that drew this cell, or 0
+        ld (hl),0               ; one use: other producers of buffer cells never set it
+        or a
+        jr z,.nat
+        ld hl,plot_ok
+        add hl,a
+        ld a,(hl)
+        or a
+        pop hl
+        jr z,.native
+        xor a                   ; a sprite shows it: the ULA cell must be blank,
+        ld (hl),a               ; or older pixels show in the figure's colours
+        inc h
+        ld (hl),a
+        inc h
+        ld (hl),a
+        inc h
+        ld (hl),a
+        inc h
+        ld (hl),a
+        inc h
+        ld (hl),a
+        inc h
+        ld (hl),a
+        inc h
+        ld (hl),a
+        jp 0x88A9
+.nat:   pop hl
+.native:
         ld a,h
         add a,0x20
         jp 0x8889
 
+; 8EA2 replaces LD A,(7A9C): a plotter is about to draw one cell (DE = its owner
+; map byte). Remember whether that figure is shown by sprites or by the ULA.
+cell_hook:
+        push hl
+        ld a,d
+        add a,high(FLAGMAP)-0x7E
+        ld h,a
+        ld l,e
+        ld a,(cur_serial)
+        ld (hl),a
+        ld hl,succ
+        inc (hl)
+        pop hl
+        ld a,(0x7A9C)
+        jp 0x8EA5
+
 ; ---- record one plot: A = flip, HL/BC/DE as the plotter receives them ---------
 spr_record:
         ld (r_flip),a
+        xor a
+        ld (cur_serial),a
+        ld (emitted),a
+        ld (cand),a
+        ld (succ),a
         ld a,(spr_on)
         or a
         ret z
@@ -102,13 +215,33 @@ spr_record:
         ld (r_col),bc           ; r_col = C, r_row = B
         ld a,(0x8EB1)
         ld (r_ink),a
+        ld a,(need_reset)
+        or a
+        jr z,.nr
+        push de
+        ld hl,plot_ok
+        ld de,plot_ok+1
+        ld bc,255
+        ld (hl),0
+        ldir
+        pop de
+        xor a
+        ld (need_reset),a
+        ld (serial),a
+.nr:    ld a,(serial)
+        inc a
+        jr z,.out               ; more than 255 plots in one update: native
+        ld (serial),a
+        ld (cur_serial),a
+        ld a,(spr_n)
+        ld (save_n),a
         ld a,e
         dec a
         cp 16
         jr nc,.out
         ld a,d
         dec a
-        cp 20
+        cp 18                   ; at most 8 x 9 sprites: the entry bitmap is 72 bits
         jr nc,.out
         ld a,e
         inc a
@@ -118,11 +251,29 @@ spr_record:
         inc a
         srl a
         ld (ny),a
+        call stream_sum
         call cache_find
-        jr z,.have
+        jr z,.hit
         call convert
         jr c,.out
-.have:  call emit
+        jr .have
+.hit:   ld hl,(r_sum)
+        ld a,(ix+14)
+        cp l
+        jr nz,.stale
+        ld a,(ix+15)
+        cp h
+        jr z,.have
+.stale: call reconvert          ; the game rewrote this graphic in place
+        jr c,.out
+.have:  ld a,(spr_n)
+        add a,(ix+4)
+        jr c,.out
+        cp MAXSPR+1
+        jr nc,.out              ; no sprites left: the whole figure stays on the ULA
+        call emit
+        ld a,1
+        ld (emitted),a
 .out:   pop ix
         pop bc
         pop de
@@ -158,10 +309,62 @@ cache_find:
 convert:
         ld a,(cache_n)
         cp MAXENT
-        jp nc,.fail
+        jp nc,conv_fail
         ld a,(spr_ovf)
         or a
-        jp nz,.fail
+        jp nz,conv_keep
+        ld hl,(r_src)
+        ld (ix+0),l
+        ld (ix+1),h
+        ld a,(r_ink)
+        ld (ix+2),a
+        ld a,(next_slot)
+        ld (ix+3),a
+        ld (c_slot),a
+        ld a,128
+        ld (slot_lim),a
+        call conv_core
+        jp c,conv_fail
+        ld a,(c_slot)
+        ld (next_slot),a
+        sub (ix+3)
+        ld (ix+4),a             ; sprites this figure needs
+        ld hl,cache_n
+        inc (hl)
+        or a
+        ret
+; Same entry, same pattern slots, new pixels. Carry = it no longer fits.
+reconvert:
+        ld hl,stat_re
+        inc (hl)
+        ld a,(ix+3)
+        ld (c_slot),a
+        add a,(ix+4)
+        ld (slot_lim),a
+        call conv_core
+        ret nc
+        ld (ix+0),0xFF          ; grew: forget it, a later plot converts it afresh
+        ld (ix+1),0xFF
+        scf
+        ret
+conv_fail:
+        ld a,(spr_cool)
+        or a
+        jr nz,conv_keep         ; restarted recently: the live set does not fit
+        ld a,1
+        ld (spr_ovf),a
+conv_keep:
+        ld hl,stat_drop
+        inc (hl)
+        scf
+        ret
+
+; Upload the graphic r_src into slots c_slot.. below slot_lim; bitmap and
+; checksum into entry IX. Carry = out of slots.
+conv_core:
+        ld hl,(r_sum)
+        ld (ix+14),l
+        ld (ix+15),h
         ld hl,celltab
         ld de,celltab+1
         ld bc,CELLW*CELLH*2-1
@@ -196,19 +399,11 @@ convert:
         add de,a
         pop bc
         djnz .row
-        ld hl,(r_src)
-        ld (ix+0),l
-        ld (ix+1),h
-        ld a,(r_ink)
-        ld (ix+2),a
-        ld a,(next_slot)
-        ld (ix+3),a
-        ld (c_slot),a
         push ix
         pop hl
         ld a,5
         add hl,a
-        ld b,10
+        ld b,9
         xor a
 .clr:   ld (hl),a
         inc hl
@@ -242,19 +437,38 @@ convert:
         ld (rowbase),hl
         pop bc
         djnz .ty
-        ld a,(c_slot)
-        ld (next_slot),a
-        ld hl,cache_n
-        inc (hl)
         or a
         ret
 .full:  pop bc
         pop bc
-.fail:  ld a,1
-        ld (spr_ovf),a
-        ld hl,stat_drop
-        inc (hl)
         scf
+        ret
+
+; DE and r_sum = sum of every byte of the graphic stream at r_src.
+stream_sum:
+        ld hl,(r_src)
+        ld de,0
+        ld a,(r_h)
+        ld b,a
+.row:   push bc
+        ld a,(r_w)
+        ld b,a
+.col:   ld a,(hl)
+        cp 0x36
+        jr z,.one
+        ld c,9
+.s:     ld a,(hl)
+        add de,a
+        inc hl
+        dec c
+        jr nz,.s
+        jr .next
+.one:   add de,a
+        inc hl
+.next:  djnz .col
+        pop bc
+        djnz .row
+        ld (r_sum),de
         ret
 
 ; HL = cell-pointer pair of the tile's top row. Z = empty; NZ = uploaded; C = full.
@@ -274,7 +488,8 @@ do_tile:
         djnz .z
         ret z
         ld a,(c_slot)
-        cp 128
+        ld hl,slot_lim
+        cp (hl)
         jr nc,.ovf
         ld bc,0x303B
         ld e,a
@@ -324,35 +539,56 @@ emit_cell:
         jr nz,.at
         ld a,(de)
 .at:    ld c,a
+        rrca
+        rrca
+        rrca
+        ld b,a                  ; bits 0..2 paper, bit 3 bright
         and 7
-        ld b,a
+        jr z,.pz
+        ld a,b
+        and 15                  ; coloured paper is drawn
+.pz:    ld (.papa+1),a
+        ld (.papb+1),a
+        ld h,a
         ld a,c
-        rrca
-        rrca
-        rrca
+        and 7
+        jr nz,.ic
+        ld a,h
+        or a
+        jr z,.iz                ; black on black: nothing to show
+        ld a,8                  ; black ink on a coloured paper: opaque black
+        jr .iz
+.ic:    ld l,a
+        ld a,b
         and 8
-        or b
-        ld (.lo+1),a
-        rlca
-        rlca
-        rlca
-        rlca
-        ld (.hi+1),a
+        or l
+.iz:    ld (.inka+1),a
+        ld (.inkb+1),a
         ld a,(e_line)
         inc a
         ex de,hl
         add hl,a
         ld c,(hl)
         ld b,4
-.pair:  ld e,0
+.pair:  sla c
+        jr c,.h1
+.papa:  ld a,0
+        jr .h2
+.h1:
+.inka:  ld a,0
+.h2:    rlca
+        rlca
+        rlca
+        rlca
+        ld e,a
         sla c
-        jr nc,.q1
-.hi:    ld e,0
-.q1:    sla c
-        ld a,e
-        jr nc,.q2
-.lo:    or 0
-.q2:    out (0x5B),a
+        jr c,.l1
+.papb:  ld a,0
+        jr .l2
+.l1:
+.inkb:  ld a,0
+.l2:    or e
+        out (0x5B),a
         djnz .pair
         ret
 .blank: xor a
@@ -549,11 +785,20 @@ spr_publish:
         cp (hl)
         jr c,.nm
         ld (hl),a
-.nm:    xor a
+.nm:    ld a,1
+        ld (need_reset),a
+        xor a
         ld (spr_n),a
-        ld a,(spr_ovf)
+        ld a,(spr_cool)
+        or a
+        jr z,.c0
+        dec a
+        ld (spr_cool),a
+.c0:    ld a,(spr_ovf)
         or a
         ret z
+        ld a,COOL
+        ld (spr_cool),a
         xor a                   ; no room this update: start the cache again
         ld (spr_ovf),a
         ld (next_slot),a
@@ -566,6 +811,18 @@ spr_on:   db 0
 spr_n:    db 0
 spr_prev: db 0
 spr_ovf:  db 0
+spr_cool: db 0
+cur_serial: db 0
+serial:   db 0
+need_reset: db 1
+emitted:  db 0
+cand:     db 0
+succ:     db 0
+save_n:   db 0
+stat_part: db 0
+stat_re:  db 0
+slot_lim: db 128
+r_sum:    dw 0
 next_slot: db 0
 cache_n:  db 0
 stat_flush: db 0
@@ -596,3 +853,5 @@ eb:       dw 0
 spr_list: ds MAXSPR*5
 cache:    ds MAXENT*16
 celltab:  ds CELLW*CELLH*2
+plot_ok:  ds 256
+        ASSERT $ <= FLAGMAP

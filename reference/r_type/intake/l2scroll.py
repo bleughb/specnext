@@ -35,7 +35,7 @@ def fixture(frame=2000, name='play'):
 
 SPRITE_SITES = [(0x8CFD, 'c5d5d9', 'plot_n', 0xC3), (0x8D65, 'c5d506', 'plot_h', 0xC3),
                 (0x8DD3, 'c5d5d9', 'plot_v', 0xC3), (0x8E29, 'c5d506', 'plot_hv', 0xC3),
-                (0x8886, '7cc620', 'spr_gate', 0xC3)]
+                (0x8886, '7cc620', 'spr_gate', 0xC3), (0x8EA2, '3a9c7a', 'cell_hook', 0xC3), (0x8EC2, '780f0f', 'cand_hook', 0xC3)]
 
 
 def build(src=None, folder=OUT, asm=None, sprites=False):
