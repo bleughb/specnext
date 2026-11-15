@@ -75,6 +75,7 @@ l2_scroll:
         ld a,(l2_ready)
         or a
         call z,l2_convert       ; started from a mid-level snapshot
+        call l2_sync
         ld a,(0x7A8E)
         or a
         jr nz,.no
@@ -88,6 +89,27 @@ l2_scroll:
         ENDIF
         ld ix,0x8080
         jp 0x8846
+
+; Scroll and sprites change together while the raster is below the play area
+; (video line 160 or later). A copier call normally starts just after the frame
+; interrupt, so this only waits after an update that overran.
+l2_sync:
+        ld bc,0x243B
+.w:     ld a,0x1E
+        out (c),a
+        inc b
+        in a,(c)
+        dec b
+        and 1
+        ret nz
+        ld a,0x1F
+        out (c),a
+        inc b
+        in a,(c)
+        dec b
+        cp 160
+        jr c,.w
+        ret
 
 ; ---- 89C3 replaces LD HL,5E00: the new column goes to Layer 2 -----------------
 l2_stage:
