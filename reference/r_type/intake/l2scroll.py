@@ -38,11 +38,12 @@ SPRITE_SITES = [(0x8CFD, 'c5d5d9', 'plot_n', 0xC3), (0x8D65, 'c5d506', 'plot_h',
                 (0x8886, '7cc620', 'spr_gate', 0xC3), (0x8EA2, '3a9c7a', 'cell_hook', 0xC3), (0x8EC2, '780f0f', 'cand_hook', 0xC3)]
 
 
-def build(src=None, folder=OUT, asm=None, sprites=False):
+def build(src=None, folder=OUT, asm=None, sprites=False, full=False):
     src = Path(src) if src else fixture()
     folder = Path(folder)
     folder.mkdir(exist_ok=True)
-    blocks, syms = assemble(str(asm or HERE/('l2sprites.asm' if sprites else 'l2scroll.asm')), sjasm.find())
+    blocks, syms = assemble(str(asm or HERE/('l2sprites_full.asm' if full else 'l2sprites.asm' if sprites else 'l2scroll.asm')), sjasm.find())
+    sprites = sprites or full
     sites = SITES+(SPRITE_SITES if sprites else [])
     code = blocks['code']
 
@@ -75,4 +76,7 @@ def build(src=None, folder=OUT, asm=None, sprites=False):
 
 
 if __name__ == '__main__':
-    build(sprites='--sprites' in sys.argv, folder=OUT/'sprites' if '--sprites' in sys.argv else OUT)
+    if '--full' in sys.argv:
+        build(HERE.parent/'Rtype.z80', OUT/'full', full=True)
+    else:
+        build(sprites='--sprites' in sys.argv, folder=OUT/'sprites' if '--sprites' in sys.argv else OUT)
