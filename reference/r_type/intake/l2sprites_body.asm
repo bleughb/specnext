@@ -22,6 +22,7 @@ MAXENT  EQU 64
 MAXSPR  EQU 128
 FLAGMAP EQU 0x3A00              ; one byte per cell, same layout as the owner map 7E00
 COOL    EQU 50                  ; updates between cache restarts
+BUDGET  EQU 24                  ; tiles converted per update
 
 spr_setup:
         nextreg 0x43,0x20       ; edit the first sprite palette
@@ -49,6 +50,10 @@ spr_start:
         ld (cache_n),a
         ld (spr_n),a
         ld (spr_ovf),a
+        ld (spr_tight),a
+        ld (spr_cool),a
+        ld a,COOL
+        ld (cool_len),a
         ld a,MAXSPR
         ld (spr_prev),a         ; the next publication hides every stale sprite
         ld a,1
@@ -313,6 +318,28 @@ convert:
         ld a,(spr_ovf)
         or a
         jp nz,conv_keep
+        ld a,(ny)               ; refuse before any work if it cannot fit even
+        ld b,a                  ; with every tile used
+        ld a,(nx)
+        ld c,a
+        ld a,(next_slot)
+.need:  add a,c
+        jp c,conv_fail
+        djnz .need
+        cp 129
+        jp nc,conv_fail
+        ld hl,next_slot         ; spread conversion work: at most BUDGET tiles an
+        sub (hl)                ; update, or one figure of any size
+        ld c,a                  ; tiles this figure may need
+        ld a,(budget)
+        cp BUDGET
+        jr z,.first
+        cp c
+        jr c,conv_later
+        sub c
+        jr .spend
+.first: xor a
+.spend: ld (budget),a
         ld hl,(r_src)
         ld (ix+0),l
         ld (ix+1),h
@@ -350,13 +377,17 @@ reconvert:
 conv_fail:
         ld a,(spr_cool)
         or a
-        jr nz,conv_keep         ; restarted recently: the live set does not fit
-        ld a,1
+        jr z,.ask
+        ld a,1                  ; restarted recently and still full: the figures
+        ld (spr_tight),a        ; on screen need more than 128 patterns
+        jr conv_keep
+.ask:   ld a,1
         ld (spr_ovf),a
 conv_keep:
         ld hl,stat_drop
         inc (hl)
-        scf
+conv_later:
+        scf                     ; the figure is drawn natively this update
         ret
 
 ; Upload the graphic r_src into slots c_slot.. below slot_lim; bitmap and
@@ -785,7 +816,9 @@ spr_publish:
         cp (hl)
         jr c,.nm
         ld (hl),a
-.nm:    ld a,1
+.nm:    ld a,BUDGET
+        ld (budget),a
+        ld a,1
         ld (need_reset),a
         xor a
         ld (spr_n),a
@@ -797,9 +830,17 @@ spr_publish:
 .c0:    ld a,(spr_ovf)
         or a
         ret z
-        ld a,COOL
+        ld a,(spr_tight)
+        or a
+        ld a,(cool_len)
+        jr z,.len
+        add a,a                 ; restarting did not make room last time: wait longer
+        jr nc,.len
+        ld a,255
+.len:   ld (cool_len),a
         ld (spr_cool),a
         xor a                   ; no room this update: start the cache again
+        ld (spr_tight),a
         ld (spr_ovf),a
         ld (next_slot),a
         ld (cache_n),a
@@ -812,6 +853,9 @@ spr_n:    db 0
 spr_prev: db 0
 spr_ovf:  db 0
 spr_cool: db 0
+spr_tight: db 0
+cool_len: db COOL
+budget:   db BUDGET
 cur_serial: db 0
 serial:   db 0
 need_reset: db 1
