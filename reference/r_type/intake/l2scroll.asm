@@ -13,8 +13,13 @@
 L2BANK  EQU 9                   ; 16K bank: 8K pages 18..23
 L2PAGE  EQU L2BANK*2
 TRANSP  EQU 0xE3
+        ; Outside play (titles, high scores, name entry, continue) the game runs at
+        ; its own 3.5MHz: those screens time themselves with busy loops.
         MACRO L2_OFF
         nextreg 0x69,0
+        xor a
+        ld (run_fast),a
+        nextreg 7,0
         IFDEF L2_SPRITES
         nextreg 0x15,0x44       ; sprites hidden
         xor a
@@ -39,6 +44,9 @@ hook_setup:
         nextreg 5,a
         pop bc
         pop af
+        IFDEF L2_NOTAPE
+        call spec_hold
+        ENDIF
         nextreg 0x12,L2BANK
         nextreg 0x14,TRANSP
         nextreg 0x70,0          ; 256x192, 8bpp
@@ -66,7 +74,8 @@ irq_in: push ix
 irq_out:
         ld a,(cur_mmu0)
         nextreg 0x50,a
-        nextreg 7,3
+        ld a,(run_fast)
+        nextreg 7,a
         pop af
         ex af,af'
         pop hl
@@ -85,8 +94,74 @@ l2_off_title:
         L2_OFF
         xor a                   ; 7A8B: the game's start-up Kempston test (73EC),
         ld (0x7A8B),a           ; "absent" in the snapshot. Port 1F is real here.
+        ; L2_NOTAPE builds patch the prompts out of FE03 itself (l2scroll.py
+        ; NOTAPE): its level load pages 7FFD, which maps ROM over this hook page,
+        ; so the load must return into the game's own code.
         call 0x73C2
         jp 0xFE06
+
+; 92E8 replaces LD DE,71C9: game over, high-score check and name entry.
+l2_off_scores:
+        L2_OFF
+        ld de,0x71C9
+        jp 0x92EB
+
+        IFDEF L2_NOTAPE
+; Full build start: keep the R-TYPE technical specification (the snapshot's
+; screen) up for five seconds or until a key or fire, then let it go.
+spec_hold:
+        push af
+        push bc
+        push de
+        ld e,250
+.f:     call .frame
+        xor a
+        in a,(0xFE)
+        cpl
+        and 0x1F
+        jr nz,.key
+        in a,(0x1F)
+        inc a
+        jr z,.n                 ; FF: no Kempston interface answering
+        dec a
+        and 0x1F
+        jr nz,.key
+.n:     dec e
+        jr nz,.f
+        jr .out
+.key:   call .frame             ; wait for release so the game does not see it
+        xor a
+        in a,(0xFE)
+        cpl
+        and 0x1F
+        jr nz,.key
+        in a,(0x1F)
+        inc a
+        jr z,.out
+        dec a
+        and 0x1F
+        jr nz,.key
+.out:   pop de
+        pop bc
+        pop af
+        ret
+.frame: ld bc,0x243B            ; one frame: wait for line 192, then for line 0
+.w1:    ld a,0x1F
+        out (c),a
+        inc b
+        in a,(c)
+        dec b
+        cp 192
+        jr nz,.w1
+.w2:    ld a,0x1F
+        out (c),a
+        inc b
+        in a,(c)
+        dec b
+        cp 1
+        jr nz,.w2
+        ret
+        ENDIF
 
 ; ---- 8842 replaces LD IX,8080: one pixel per scrolling copier call ------------
 l2_scroll:
@@ -255,6 +330,9 @@ l2_convert:
         IFNDEF L2_HIDE
         nextreg 0x69,0x80
         ENDIF
+        ld a,3                  ; play runs at 28MHz (the ISR stays 3.5MHz)
+        ld (run_fast),a
+        nextreg 7,3
         ld a,1
         ld (l2_ready),a
         IFDEF L2_SPRITES
@@ -344,6 +422,7 @@ src_step:
 col_tab: db 0x00,0x02,0xA0,0xA2,0x14,0x16,0xB4,0xB6
         db 0x00,0x03,0xE0,0xE7,0x1C,0x1F,0xFC,0xFF
 l2_s:   db 0
+run_fast: db 0
 ; Black paper of a scenery cell is opaque: in the original a figure never draws
 ; into a cell the scenery owns (8EC2), so scenery hides any figure behind it.
 ; Cleared cells stay transparent.
