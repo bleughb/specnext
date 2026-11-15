@@ -7,6 +7,7 @@ recolour` (same code path: nexclash.recolour.run with this engine):
 
     python r_type_colour.py sheets [-o DIR]                          the sheets, one pair per level
     python r_type_colour.py recolour BUILD.nex PAINTED.png [-o OUT_painted.nex] [--onto MAP | --replace]
+    python r_type_colour.py figures PATCH.json                       names / layers into r_type_figures.json
 
 Keys: one per graphics byte, 'LL:AAAA' = level byte (7 19C, '0'..'9') : address of the byte in the
 unpacked graphic stream; check = the byte's value; bit 0 = leftmost pixel. Defaults: ink = the
@@ -121,7 +122,12 @@ def composites(data):
             built.append(dict(base, x=q['x'], y=q['y'], dx=q['dx'], dy=q['dy'], mir=q['flip'] & 1,
                               dmir=q['flip'] & 1, vmir=(q['flip'] >> 1) & 1, group=fig['level']))
         if ok and any(px[4] for b in built for px in b['pixels']):
-            out[fig['level']].append(dict(count=fig['count'], group=fig['level'], parts=built))
+            # what makes the figure itself: its plots (graphic, size, place, flip) in drawing order
+            shape = [dict(graphic='%04X' % plots[q['plot']]['address'], w=plots[q['plot']]['w'],
+                          h=plots[q['plot']]['h'], dx=q['dx'], dy=q['dy'], flip=q['flip']) for q in fig['parts']]
+            sig = hashlib.sha1(json.dumps([fig['level'], shape]).encode()).hexdigest()[:12]
+            out[fig['level']].append(dict(count=fig['count'], group=fig['level'], parts=built,
+                                          sig=sig, shape=shape))
     return out
 
 
@@ -181,6 +187,8 @@ def sheets(out_dir=None, colours=None, say=print):
                       rgb, colours=cmap, width=width, paint_clear=True, identity=ident)
         say('%-8s painting %3d figures, reference %3d' % (level_name(lv), n1, n2))
         made.append(pre)
+    import r_type_figures as F
+    F.update(out_dir, composites(data), cmap, rgb, say)
     return made
 
 
@@ -273,6 +281,9 @@ def main(argv):
     sub = ap.add_subparsers(dest='cmd', required=True)
     s = sub.add_parser('sheets')
     s.add_argument('-o', '--out')
+    fp = sub.add_parser('figures', help='apply names / layers: {figures|families: {id: {name, layer}}}')
+    fp.add_argument('patch')
+    fp.add_argument('-o', '--out')
     r = sub.add_parser('recolour')
     r.add_argument('nex')
     r.add_argument('painted')
@@ -283,6 +294,9 @@ def main(argv):
     a = ap.parse_args(argv)
     if a.cmd == 'sheets':
         sheets(a.out)
+    elif a.cmd == 'figures':
+        import r_type_figures as F
+        F.apply(a.out or REF / 'colours', json.loads(Path(a.patch).read_text()))
     else:
         from nexclash import recolour as rc
         rc.engines = lambda: {RECORD: sys.modules[__name__]}     # until R-Type has a record
