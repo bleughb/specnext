@@ -23,6 +23,22 @@ TRANSP  EQU 0xE3
         ENDM
         ORG 0x2000
 hook_setup:
+        ; The game reads Kempston only on port 1F. NextZXOS may leave either
+        ; connector in another mode, so make both Kempston 1; keep 50/60Hz and
+        ; the scandoubler bit. (l2_off_title clears the game's "no Kempston"
+        ; flag; patching the test at C027 fails the game's own load check.)
+        push af
+        push bc
+        ld bc,0x243B
+        ld a,5
+        out (c),a
+        inc b
+        in a,(c)
+        and 0x05
+        or 0x50                 ; mode 001 (Kempston 1) on both connectors
+        nextreg 5,a
+        pop bc
+        pop af
         nextreg 0x12,L2BANK
         nextreg 0x14,TRANSP
         nextreg 0x70,0          ; 256x192, 8bpp
@@ -67,14 +83,18 @@ l2_off_continue:
         jp 0x8BEB
 l2_off_title:
         L2_OFF
+        xor a                   ; 7A8B: the game's start-up Kempston test (73EC),
+        ld (0x7A8B),a           ; "absent" in the snapshot. Port 1F is real here.
         call 0x73C2
         jp 0xFE06
 
 ; ---- 8842 replaces LD IX,8080: one pixel per scrolling copier call ------------
 l2_scroll:
+        IFNDEF L2_NOLAZY
         ld a,(l2_ready)
         or a
-        call z,l2_convert       ; started from a mid-level snapshot
+        call z,l2_convert       ; test builds started from a mid-level snapshot
+        ENDIF
         call l2_sync
         ld a,(0x7A8E)
         or a
