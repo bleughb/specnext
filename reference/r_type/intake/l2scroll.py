@@ -38,7 +38,12 @@ SPRITE_SITES = [(0x8CFD, 'c5d5d9', 'plot_n', 0xC3), (0x8D65, 'c5d506', 'plot_h',
                 (0x8886, '7cc620', 'spr_gate', 0xC3), (0x8EA2, '3a9c7a', 'cell_hook', 0xC3), (0x8EC2, '780f0f', 'cand_hook', 0xC3)]
 
 
-def build(src=None, folder=OUT, asm=None, sprites=False, full=False):
+def assembled(full):
+    """The sprite build's hook code bytes (bank 12), full game or snapshot test build."""
+    return assemble(str(HERE/('l2sprites_full.asm' if full else 'l2sprites.asm')), sjasm.find())[0]['code']
+
+
+def build(src=None, folder=OUT, asm=None, sprites=False, full=False, colours=None):
     src = Path(src) if src else fixture()
     folder = Path(folder)
     folder.mkdir(exist_ok=True)
@@ -52,6 +57,11 @@ def build(src=None, folder=OUT, asm=None, sprites=False, full=False):
         slot1 = (24, 0x3E00)
         hook_page_data = code
         extra_banks = {12: code}
+        if sprites:
+            # Colour pages (r_type_colour.py): the default map, or empty = the game's colours.
+            import r_type_colour as RC
+            cbanks, cinfo = RC.tables(RC.load_colours() if colours is None else colours)
+            extra_banks = {**extra_banks, **cbanks}
 
         def apply(self, snap):
             super().apply(snap)

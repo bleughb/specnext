@@ -24,6 +24,10 @@ FLAGMAP EQU 0x3A00              ; one byte per cell, same layout as the owner ma
 COOL    EQU 50                  ; updates between cache restarts
 BUDGET  EQU 24                  ; tiles converted per update
 CACHE_LIM EQU 128               ; pattern slots for cached graphics
+COL_DIR EQU 64                  ; colour pages (r_type_colour.py): directory
+COL_REC0 EQU 65                 ; first record page
+COL_REC EQU 40                  ; bytes per painted cell
+COL_PER_PAGE EQU 8192/COL_REC
 
 spr_setup:
         nextreg 0x43,0x20       ; edit the first sprite palette
@@ -580,19 +584,226 @@ half:   ld de,(ea)
         ld de,(eb)
         ld hl,tab_r
         call cell_tab
+        ld de,(ea)
+        call col_lookup
+        ld (ov_pa),a
+        ld (ov_oa),hl
+        ld de,(eb)
+        call col_lookup
+        ld (ov_pb),a
+        ld (ov_ob),hl
         xor a
 .l:     ld (e_line),a
         ld de,(ea)
         ld hl,tab_l
         call emit_line
+        ld a,(ov_pa)
+        ld hl,(ov_oa)
+        call col_apply
+        call line_out
         ld de,(eb)
         ld hl,tab_r
         call emit_line
+        ld a,(ov_pb)
+        ld hl,(ov_ob)
+        call col_apply
+        call line_out
         ld a,(e_line)
         inc a
         cp 8
         jr nz,.l
         ret
+
+line_out:
+        ld hl,lbuf
+        ld bc,0x045B
+        otir
+        ret
+
+; ---- painted colours (r_type_colour.py) -------------------------------------
+; DE = cell (attribute byte address) or 0 -> A = colour page of its record (0 =
+; unpainted) and HL = the record's offset in slot 0. Flash draws (8EB1 ink
+; override) keep the forced colour.
+col_lookup:
+        ld a,d
+        or e
+        ret z
+        ld a,(r_ink)
+        or a
+        jp nz,.none
+        ld a,(0x719C)
+        sub 0x30
+        cp 16
+        jp nc,.none
+        add a,a
+        add a,a
+        ld l,a
+        ld h,0
+        ld a,COL_DIR
+        call col_map
+        ld c,(hl)
+        inc hl
+        ld b,(hl)
+        inc hl
+        ld (cl_count),bc
+        ld a,b
+        or c
+        jp z,.unmap
+        ld a,(hl)
+        inc hl
+        ld h,(hl)
+        ld l,a
+        ld (cl_first),hl
+        ld hl,0
+        ld (cl_lo),hl
+.bs:    ld a,b                  ; BC = items left; lo = first candidate
+        or c
+        jr z,.end
+        ld (cl_n),bc
+        srl b
+        rr c                    ; half
+        ld (cl_half),bc
+        ld hl,(cl_lo)
+        add hl,bc
+        ld (cl_mid),hl
+        call cl_addr
+        or a
+        sbc hl,de               ; carry: entry < cell
+        jr nc,.left
+        ld hl,(cl_mid)
+        inc hl
+        ld (cl_lo),hl
+        ld hl,(cl_n)
+        ld bc,(cl_half)
+        or a
+        sbc hl,bc
+        dec hl                  ; n - half - 1
+        ld b,h
+        ld c,l
+        jr .bs
+.left:  ld bc,(cl_half)
+        jr .bs
+.end:   ld hl,(cl_lo)
+        ld bc,(cl_count)
+        or a
+        sbc hl,bc
+        jp nc,.unmap            ; past the end: not painted
+        ld hl,(cl_lo)
+        call cl_addr
+        or a
+        sbc hl,de
+        jp nz,.unmap
+        ld hl,(cl_lo)
+        ld bc,(cl_first)
+        add hl,bc               ; record number
+        ld a,COL_REC0
+        ld bc,COL_PER_PAGE
+.pg:    or a
+        sbc hl,bc
+        jr c,.inpg
+        inc a
+        jr .pg
+.inpg:  add hl,bc               ; L = record within its page
+        ld d,l
+        ld e,COL_REC
+        mul d,e
+        ex de,hl                ; HL = offset in the page
+        ld (cl_page),a
+        call col_unmap
+        ld a,(cl_page)
+        ret
+.unmap: call col_unmap
+.none:  xor a
+        ret
+
+; HL = index into this level's sorted addresses -> HL = the cell address there.
+cl_addr:
+        ld bc,(cl_first)
+        add hl,bc
+        add hl,hl
+        ld bc,64
+        add hl,bc
+        ld a,(hl)
+        inc hl
+        ld h,(hl)
+        ld l,a
+        ret
+
+col_map:
+        ld (cur_mmu0),a         ; variable first: the ISR restores slot 0 from it
+        nextreg 0x50,a
+        ret
+col_unmap:
+        ld a,0xFF
+        ld (cur_mmu0),a
+        nextreg 0x50,0xFF
+        ret
+
+; A = record page (0 = none), HL = record offset: paint line e_line of lbuf.
+; byte = (default AND keep) OR painted nibbles, then transparent pixels cleared.
+col_apply:
+        or a
+        ret z
+        call col_map
+        push hl
+        ld a,(e_line)
+        add a,a
+        add a,a
+        add hl,a
+        ld de,lbuf
+        ld b,4
+.c:     ld a,(hl)
+        or a
+        jr z,.k
+        ld c,a
+        ld a,0xFF
+        bit 7,c
+        jr nz,.h0
+        bit 6,c
+        jr nz,.h0
+        bit 5,c
+        jr nz,.h0
+        bit 4,c
+        jr z,.h1
+.h0:    and 0x0F                ; high nibble painted
+.h1:    ld (.km+1),a
+        ld a,c
+        and 0x0F
+        ld a,(.km+1)
+        jr z,.l1
+        and 0xF0                ; low nibble painted
+.l1:    ld (.km+1),a
+        ld a,(de)
+.km:    and 0
+        or c
+        ld (de),a
+.k:     inc hl
+        inc de
+        djnz .c
+        pop hl
+        ld a,(e_line)
+        add a,32
+        add hl,a
+        ld c,(hl)               ; transparent mask, bit 7 = leftmost
+        ld a,c
+        or a
+        jr z,.done
+        ld de,lbuf
+        ld b,4
+.t:     ld a,0xFF
+        sla c
+        jr nc,.t1
+        and 0x0F
+.t1:    sla c
+        jr nc,.t2
+        and 0xF0
+.t2:    ld (.tm+1),a
+        ld a,(de)
+.tm:    and 0
+        ld (de),a
+        inc de
+        djnz .t
+.done:  jp col_unmap
 
 ; HL = table for the cell DE (0 = blank). Index = ink + 8*bright; black paper is
 ; transparent, coloured paper drawn, black ink on coloured paper opaque black.
@@ -657,7 +868,7 @@ cell_tab:
         ld (hl),a               ; ink, ink
         ret
 
-; Four pattern bytes of line e_line of cell DE (or 0), table HL.
+; Four pattern bytes of line e_line of cell DE (or 0), table HL -> lbuf.
 emit_line:
         ld a,d
         or e
@@ -669,6 +880,7 @@ emit_line:
         add hl,a
         ld c,(hl)
         pop hl
+        ld de,lbuf
         ld b,4
 .p:     xor a
         sla c
@@ -679,14 +891,13 @@ emit_line:
         add hl,a
         ld a,(hl)
         pop hl
-        out (0x5B),a
+        ld (de),a
+        inc de
         djnz .p
         ret
-.blank: xor a
-        out (0x5B),a
-        out (0x5B),a
-        out (0x5B),a
-        out (0x5B),a
+.blank: ld hl,0
+        ld (lbuf),hl
+        ld (lbuf+2),hl
         ret
 
 ; HL = bitmap byte, A = mask for tile t_idx of entry IX.
@@ -938,6 +1149,18 @@ spr_tight: db 0
 cool_len: db COOL
 budget:   db BUDGET
 tab_l:    ds 4
+lbuf:     ds 4
+ov_pa:    db 0
+ov_pb:    db 0
+ov_oa:    dw 0
+ov_ob:    dw 0
+cl_count: dw 0
+cl_first: dw 0
+cl_lo:    dw 0
+cl_n:     dw 0
+cl_half:  dw 0
+cl_mid:   dw 0
+cl_page:  db 0
 tab_r:    ds 4
 cur_serial: db 0
 serial:   db 0
