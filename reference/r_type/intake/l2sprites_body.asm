@@ -18,10 +18,10 @@
 ; plotters (the level 3 battleship).
 CELLW   EQU 17                  ; cells kept per row (16 + one empty)
 CELLH   EQU 19                  ; plots are at most 18 cells high (spr_record), plus the row a tile reads below
-MAXENT  EQU 64
+MAXENT  EQU 56
 MAXSPR  EQU 128
 BEHIND_PG EQU 26               ; bank 13: the behind-scenery flags (behind_flags.asm)
-FLAGMAP EQU 0x3A00              ; one byte per cell, same layout as the owner map 7E00
+FLAGMAP EQU 0x3B00              ; one byte per cell, same layout as the owner map 7E00 (to 3D80; 256-aligned)
 COOL    EQU 50                  ; updates between cache restarts
 BUDGET  EQU 24                  ; tiles converted per update
 CACHE_LIM EQU 128               ; pattern slots for cached graphics
@@ -266,8 +266,10 @@ spr_rec_body:
         ld a,(0x8EBF)
         cp 0x60
         ret nz                  ; the plotter is drawing scenery straight to the ULA
+        IFDEF L2_BEHIND_FLAGS
         call behind_chk
         ret z                   ; flagged (behind_flags.asm): the game draws it, behind Layer 2
+        ENDIF
         push hl
         push de
         push bc
@@ -796,6 +798,7 @@ cl_addr:
         ld l,a
         ret
 
+        IFDEF L2_BEHIND_FLAGS
 ; HL = graphic. Z if behind_flags.asm lists it for this level (0x719C): such a figure stays in the
 ; ULA, under Layer 2, so the scenery hides it as in the original. Table: page BEHIND_PG, entries
 ; level, graphic low, graphic high; level 0 ends it.
@@ -835,6 +838,8 @@ behind_chk:
         pop de
         pop bc
         ret
+
+        ENDIF                   ; L2_BEHIND_FLAGS
 
         IFDEF L2_GLIDE
 GLIDE_PG EQU 27                 ; bank 13 high half: glide.asm
@@ -1709,4 +1714,5 @@ cache:    ds MAXENT*ENT
 celltab:  ds CELLW*CELLH*2
 plot_ok:  ds 256
 spr_part: ds MAXSPR
+        DISPLAY "hook page end ",$," FLAGMAP ",FLAGMAP
         ASSERT $ <= FLAGMAP
