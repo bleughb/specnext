@@ -97,7 +97,8 @@ def build(src=None, folder=OUT, asm=None, sprites=False, full=False, colours=Non
             import r_type_colour as RC
             cbanks, cinfo = RC.tables(RC.load_colours() if colours is None else colours)
             extra_banks = {**extra_banks, **cbanks}
-            extra_banks[13] = behind_flags()
+            glide = blocks.get('glide', b'')    # glide.asm, page 27 (bank 13 high half)
+            extra_banks[13] = behind_flags()[:8192]+bytes(0x100)+glide+bytes(8192-0x100-len(glide))
 
         def apply(self, snap):
             super().apply(snap)
