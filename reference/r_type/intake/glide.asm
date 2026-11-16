@@ -110,11 +110,7 @@ g_publish:
         xor a
         ld (g_mov_n),a
         ld (g_k),a
-        ld a,(g_fr)             ; P = frames since the last publish
-        ld c,a
-        xor a
-        ld (g_fr),a
-        ld a,c
+        ld a,(hk_last)          ; P = frames the last update took (hook page, every interrupt)
         cp 2
         jp c,.done              ; one frame or none: nothing to spread
         cp 9
