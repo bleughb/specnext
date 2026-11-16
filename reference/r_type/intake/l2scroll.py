@@ -6,6 +6,7 @@ the ULA and the main loop runs at 28MHz (ISR at 3.5MHz). Not an engine or a
 deliverable; no full-recording verification. Generated files stay in work.
 """
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -16,7 +17,8 @@ from asm2profile import assemble, sjasm
 from nexclash import rzx, z80tonex as Z
 from plain import Plain
 
-OUT = Path('/workspace/work/r_type_l2scroll')
+# RTYPE_WORK: the work folder (default /workspace/work; tools/README.md)
+OUT = Path(os.environ.get('RTYPE_WORK') or '/workspace/work') / 'r_type_l2scroll'
 # address, original bytes, label, opcode (C3 JP / CD CALL)
 SITES = [(0x8842, 'dd218080', 'l2_scroll', 0xC3), (0x89C3, '21005e', 'l2_stage', 0xC3),
          (0x8734, 'cdebfe', 'l2_init', 0xCD), (0x863D, 'cdd873', 'l2_off', 0xCD),

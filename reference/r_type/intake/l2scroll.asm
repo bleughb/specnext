@@ -31,7 +31,7 @@ hook_setup:
         ; The game reads Kempston only on port 1F. NextZXOS may leave either
         ; connector in another mode, so make both Kempston 1; keep 50/60Hz and
         ; the scandoubler bit. (l2_off_title clears the game's "no Kempston"
-        ; flag; patching the test at C027 fails the game's own load check.)
+        ; flag 7A8B at every title.)
         push af
         push bc
         ld bc,0x243B
