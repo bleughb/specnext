@@ -67,6 +67,12 @@ spr_setup:
 
 ; A level (or life) has just been drawn: empty cache, sprites on.
 spr_start:
+        ld a,(run_fast)         ; conversion budget: unlimited outside play (see spr_publish)
+        or a
+        ld a,BUDGET
+        jr nz,.bg
+        ld a,250
+.bg:    ld (budget),a
         xor a
         ld (next_slot),a
         ld (cache_n),a
@@ -1610,8 +1616,12 @@ spr_pub_body:
         cp (hl)
         jr c,.nm
         ld (hl),a
-.nm:    ld a,BUDGET
-        ld (budget),a
+.nm:    ld a,(run_fast)         ; outside play (title) convert everything at once: no scroll to
+        or a                    ; protect, and a figure waiting for conversion steps natively
+        ld a,BUDGET
+        jr nz,.bg
+        ld a,250
+.bg:    ld (budget),a
         ld a,1
         ld (need_reset),a
         xor a
