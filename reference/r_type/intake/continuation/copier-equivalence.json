@@ -1,0 +1,59 @@
+{
+  "scope": "Whole assembled copier hook versus original, IRQ-free functional proof.\n\nUses the shared NextModel DMA/Z80N handlers and real MMU page effects. Not a timing\nmodel. Compares every caller register including R and all eight game banks, with\nexplicit patch-site, visual ULA and dead-stack differences reported separately.\n",
+  "results": [
+    {
+      "convergence": [],
+      "frame": 3620,
+      "register_diffs": [],
+      "ram_diffs": [],
+      "dead_stack_offsets": [
+        16350,
+        16351,
+        16352,
+        16353,
+        16354,
+        16355,
+        16356,
+        16357,
+        16358,
+        16359,
+        16360,
+        16361,
+        16362,
+        16363,
+        16364,
+        16365,
+        16366,
+        16367
+      ],
+      "sprites": 23
+    },
+    {
+      "convergence": [],
+      "frame": 29405,
+      "register_diffs": [],
+      "ram_diffs": [],
+      "dead_stack_offsets": [
+        16350,
+        16351,
+        16352,
+        16353,
+        16354,
+        16355,
+        16356,
+        16357,
+        16358,
+        16359,
+        16360,
+        16361,
+        16362,
+        16363,
+        16364,
+        16365,
+        16366,
+        16367
+      ],
+      "sprites": 105
+    }
+  ]
+}

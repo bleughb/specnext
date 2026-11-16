@@ -1,0 +1,21 @@
+{
+  "scope": "Assembled packed-plot guard: source mutations, ABI and exact CPU budget.\n\nTests the identity component proposed for a combined faster original/hardware\nwriter. No renderer, native-R restoration, interrupts, pace or hardware proof.\nInput geometry/dispatch is a host model, not an implemented runtime dispatcher.\n",
+  "assembler": "bundled sjasmplus1.24.0",
+  "matching_packed_images": 352,
+  "changed_source_cases_rejected": 1056,
+  "zero_length_rejected": true,
+  "actual_runtime_false_acceptance_control_caught": true,
+  "hit_cpu_T": "59*packed_length+100, caller CALL excluded",
+  "corpus_max_packed_length": 1500,
+  "combined_estimated_net_ms_per_update": 13.506037142857144,
+  "required_saving_ms_per_update": 9.21475597142857,
+  "illustrative_residual_ms_per_update": 4.291281171428574,
+  "decision": "comparison component passes; whole-route budget unresolved, no implementation gate passed",
+  "pending": [
+    "complete whole-route cost and consumer ledger before further implementation",
+    "runtime dispatch and lifetime/ownership invalidation",
+    "exact combined-writer credit including all wrapper/accounting costs",
+    "ABI/R/IRQ/painted RGB and pause/menu/DI",
+    "JNext live painted100-update peak <=2%, private SD image required"
+  ]
+}
