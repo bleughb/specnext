@@ -170,8 +170,9 @@ def colour_identity(peek):
 
 
 def sheets(out_dir=None, colours=None, say=print):
-    """Per level: r_type_<LEVEL>_PAINTING_SPRITES.png (fewest whole figures showing every graphics
-    byte) and _REFERENCE_ALL_SPRITES.png (every figure), each with its _layout.json."""
+    """Per level, two sheets in the same arrangement (r_type_figures.draw_level): the identification
+    sheet (IDs, 2x) and the painting sheet (1:1 + _layout.json; every figure, a graphic paintable the
+    first time it appears and faded after). The registry r_type_figures.json is updated too."""
     from nexclash import coloursheet as cs, z80tonex as Z
     out_dir = Path(out_dir or REF / 'colours')
     out_dir.mkdir(exist_ok=True)
@@ -179,20 +180,9 @@ def sheets(out_dir=None, colours=None, say=print):
     ident = colour_identity(Peek(Z.Z80Snapshot(str(REF / 'Rtype.z80')).banks))
     cmap = colours if colours is not None else cs.load(os.environ.get('NEXCLASH_COLOURS') or COLOURS)
     rgb = cs.palette_rgb(PALETTE)
-    made = []
-    for lv, comps in sorted(composites(data).items()):
-        pre = str(out_dir / ('r_type_%s' % level_name(lv)))
-        # the sheet must be wider than the widest figure (level 3's battleship sections)
-        wide = max(max(x for x, _ in cs.owners(c, clear=True)) + 1 for c in comps)
-        width = max(cs.WIDTH, wide + 4)
-        n1 = cs.write(cs.choose(comps, {}), pre + '_PAINTING_SPRITES.png', pre + '_PAINTING_SPRITES_layout.json',
-                      rgb, colours=cmap, width=width, paint_clear=True, identity=ident)
-        n2 = cs.write(comps, pre + '_REFERENCE_ALL_SPRITES.png', pre + '_REFERENCE_ALL_SPRITES_layout.json',
-                      rgb, colours=cmap, width=width, paint_clear=True, identity=ident)
-        say('%-8s painting %3d figures, reference %3d' % (level_name(lv), n1, n2))
-        made.append(pre)
     import r_type_figures as F
-    F.update(out_dir, composites(data), cmap, rgb, say)
+    F.update(out_dir, composites(data), cmap, rgb, say, ident)
+    made = sorted(out_dir.glob('r_type_*_PAINTING_SPRITES.png'))
     return made
 
 
@@ -431,6 +421,63 @@ def _expected_art():
     return art_md5(Z.Z80Snapshot(str(REF / 'Rtype.z80')).banks)
 
 
+def import_painting(nex, painted, layout=None, output=None, onto=None, replace=False, say=print):
+    """The normal recolour (nexclash.recolour.run) for an R-Type painting sheet, plus:
+    - faded pixels (later copies of a graphic already shown) are not read back: they are cleared from
+      a working copy first, and any that were painted are reported by figure ID;
+    - both sheets of the level are redrawn in the bundle with the new colours (the shared redraw
+      knows neither the faded copies nor the identification sheet)."""
+    import shutil
+    import tempfile
+    from PIL import Image
+    from nexclash import coloursheet as cs, recolour as rc
+    rc.engines = lambda: {RECORD: sys.modules[__name__]}     # until R-Type has a record
+    lay_path = Path(layout or rc.find_layout(painted))
+    lay = json.loads(lay_path.read_text())
+    img = Image.open(painted).convert('RGB')
+    painted_faded = collections.Counter()
+    for comp in lay['composites']:
+        for px, py, r, g, b in comp.get('dim', ()):
+            xy = (comp['x'] + px, comp['y'] + py)
+            if img.getpixel(xy) != (r, g, b):
+                painted_faded[comp.get('id', '?')] += 1
+            img.putpixel(xy, cs.BG_RGB)
+    for fid, n in sorted(painted_faded.items()):
+        say('NOTE: %d faded pixel(s) of %s were painted and are ignored: paint the bright copy of that graphic'
+            % (n, fid))
+    work = Path(tempfile.mkdtemp(prefix='rtype_paint_'))
+    try:
+        clean = work / Path(painted).name
+        img.save(clean)
+        out = rc.run(nex, str(clean), layout=str(lay_path), output=output or str(
+            Path(nex).with_name(Path(nex).stem + '_painted.nex')), onto=onto, replace=replace, say=say)
+    finally:
+        shutil.rmtree(work, ignore_errors=True)
+    # redraw both sheets of this level with the merged colours, as the bundle's sheets
+    ostem = Path(out).with_suffix('')
+    merged = cs.load(str(ostem) + '_colours.json')
+    lname = lay_path.name.split('_')[2]
+    redraw_level(lname, merged, Path(out).parent, '%s_r_type_%s' % (ostem.name, lname))
+    say('-> %s_r_type_%s_PAINTING_SPRITES.png / _IDENTIFY.png (redrawn with the new colours)' % (ostem, lname))
+    return out
+
+
+def redraw_level(lname, cmap, out_dir, prefix):
+    """Both sheets of one level, with the registry's IDs, into out_dir as prefix_*."""
+    from nexclash import coloursheet as cs, z80tonex as Z
+    import r_type_figures as F
+    reg = registry()
+    lv = reg['levels'][lname]['level']
+    comps = composites(corpus())[lv]
+    by_sig = {f['sig']: k for k, f in reg['figures'].items()}
+    ids = [by_sig[c['sig']] for c in comps]
+    for c, fid in zip(comps, ids):
+        c['family'] = reg['figures'][fid]['family']
+    ident = colour_identity(Peek(Z.Z80Snapshot(str(REF / 'Rtype.z80')).banks))
+    F.draw_level(out_dir, lname, comps, ids, reg['families'], reg['figures'], reg['families'], cmap,
+                 cs.palette_rgb(PALETTE), ident, prefix=prefix)
+
+
 def main(argv):
     import argparse
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -469,7 +516,7 @@ def main(argv):
     else:
         from nexclash import recolour as rc
         rc.engines = lambda: {RECORD: sys.modules[__name__]}     # until R-Type has a record
-        rc.run(a.nex, a.painted, layout=a.layout, output=a.output, onto=a.onto, replace=a.replace)
+        import_painting(a.nex, a.painted, layout=a.layout, output=a.output, onto=a.onto, replace=a.replace)
 
 
 if __name__ == '__main__':
