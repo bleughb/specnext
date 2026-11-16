@@ -785,8 +785,10 @@ behind_chk:
         jr z,.yes
 .n:     inc hl
         jr .l
-.no:    inc a
-.yes:   ld b,a
+.no:    ld a,1
+        jr .r
+.yes:   xor a                   ; listed
+.r:     ld b,a
         call col_unmap
         ld a,b
         or a
