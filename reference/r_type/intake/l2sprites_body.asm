@@ -18,7 +18,7 @@
 ; plotters (the level 3 battleship).
 CELLW   EQU 17                  ; cells kept per row (16 + one empty)
 CELLH   EQU 19                  ; plots are at most 18 cells high (spr_record), plus the row a tile reads below
-MAXENT  EQU 54
+MAXENT  EQU 50
 MAXSPR  EQU 128
 BEHIND_PG EQU 26               ; bank 13: the behind-scenery flags (behind_flags.asm)
 FLAGMAP EQU 0x3B00              ; one byte per cell, same layout as the owner map 7E00 (to 3D80; 256-aligned)
@@ -44,6 +44,17 @@ spr_setup:
         nextreg 0x41,a
         inc hl
         djnz .p
+        ld hl,col_tab+1         ; flash colours: entry 16n+1 = colour n (palette offset n)
+        ld bc,0x0F11
+.q:     ld a,c
+        nextreg 0x40,a
+        ld a,(hl)
+        nextreg 0x41,a
+        inc hl
+        ld a,c
+        add a,16
+        ld c,a
+        djnz .q
         nextreg 0x43,0
         nextreg 0x4B,0          ; colour index 0 is transparent
         nextreg 0x1C,2          ; reset sprite clip index
@@ -256,8 +267,23 @@ spr_rec_body:
         ld (r_src),hl
         ld (r_w),de             ; r_w = E, r_h = D
         ld (r_col),bc           ; r_col = C, r_row = B
-        ld a,(0x8EB1)
-        ld (r_ink),a
+        ld a,(0x8EB1)           ; colour override (flashing): convert once in colour 1 and pick
+        or a                    ; the colour with the sprite palette offset, so the flash colours
+        jr z,.ink               ; share one cache entry (spr_setup: entry 16n+1 = colour n)
+        ld b,a
+        and 7
+        bit 6,b
+        jr z,.nb
+        add a,8
+.nb:    rlca
+        rlca
+        rlca
+        rlca
+        ld (r_pal),a
+        ld a,1
+        jr .ik
+.ink:   ld (r_pal),a
+.ik:    ld (r_ink),a
         ld a,(need_reset)
         or a
         jr z,.nr
@@ -1142,6 +1168,9 @@ emit:   ld a,(ix+3)
         add a,a
         or e                    ; Y mirror
         ld d,a
+        ld a,(r_pal)            ; flash colour (palette offset)
+        or d
+        ld d,a
         ld a,(e_x+1)
         and 1
         or d
@@ -1270,6 +1299,9 @@ emit_pre:
         and 2
         add a,a
         or e                    ; Y mirror
+        ld d,a
+        ld a,(r_pal)            ; flash colour (palette offset)
+        or d
         ld d,a
         ld a,(e_x+1)
         and 1
@@ -1648,6 +1680,7 @@ r_col:    db 0
 r_row:    db 0
 r_flip:   db 0
 r_ink:    db 0
+r_pal:    db 0
 nx:       db 0
 ny:       db 0
 c_slot:   db 0

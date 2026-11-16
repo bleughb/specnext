@@ -21,7 +21,7 @@ glide_start:
 
 MAXF    EQU 64                  ; figures per update
 FENT    EQU 16                  ; 0-1 IY, 2 order (object), 3 first sprite, 4 sprites, 5 column, 6 row,
-                                ; 7 order (object + graphic), 8-9 graphic
+                                ; 7 order (object + graphic), 8-9 graphic, 10 colour override (8EB1)
 MENT    EQU 13                  ; 0 sprite, 1-2 x, 3 y, 4 attr 2 without x bit 8, 5-6 x offset, 7-8 y offset,
                                 ; 9-10 x step, 11-12 y step (8.8, signed)
 
@@ -94,6 +94,8 @@ g_record:
         ld (ix+8),a
         ld a,(r_src+1)
         ld (ix+9),a
+        ld a,(r_ink)
+        ld (ix+10),a
         ld hl,g_cur_n
         inc (hl)
         pop ix
@@ -175,6 +177,9 @@ g_publish:
         djnz .f2
         jp .nx
 .found:                         ; IY = the same figure last update
+        ld a,(ix+10)            ; a flashing figure (colour override) steps as the original:
+        or (iy+10)              ; flash frames and effects sharing an object pair up wrongly
+        jp nz,.nx
         ld a,(ix+5)
         sub (iy+5)
         ld hl,g_ax
