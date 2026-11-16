@@ -406,17 +406,26 @@ l2_convert:
         call put_cell
         pop bc
         jr .next
-.sky:   push bc                 ; nothing drawn: the next cell has transparent to its left
-        ld a,b
-        add a,a
-        add a,a
-        add a,a
-        ld hl,pc_lp
-        add hl,a
-        ld b,8
-.zs:    ld (hl),0
-        inc hl
-        djnz .zs
+.sky:   push bc                 ; sky: draw it clear, so screen B's first byte carries the half
+        ld a,c                  ; pixel of the scenery to its left (else right edges shimmer)
+        ld l,a
+        ld h,0
+        add hl,hl
+        add hl,hl
+        add hl,hl
+        ld de,32
+        add hl,de
+        ld (pc_x),hl
+        ld a,0x2C               ; INC L: zero8 is consecutive bytes
+        ld (put_cell.step),a
+        xor a
+        ld (pc_blk),a
+        ld hl,zero8
+        call put_cell
+        ld a,0x24
+        ld (put_cell.step),a
+        ld a,8
+        ld (pc_blk),a
         pop bc
 .next:  inc c
         ld a,c
@@ -425,7 +434,7 @@ l2_convert:
         inc b
         ld a,b
         cp 20
-        jr nz,.row
+        jp nz,.row
         IFNDEF L2_HIDE
         nextreg 0x69,0x80
         ENDIF

@@ -18,7 +18,7 @@
 ; plotters (the level 3 battleship).
 CELLW   EQU 17                  ; cells kept per row (16 + one empty)
 CELLH   EQU 19                  ; plots are at most 18 cells high (spr_record), plus the row a tile reads below
-MAXENT  EQU 56
+MAXENT  EQU 54
 MAXSPR  EQU 128
 BEHIND_PG EQU 26               ; bank 13: the behind-scenery flags (behind_flags.asm)
 FLAGMAP EQU 0x3B00              ; one byte per cell, same layout as the owner map 7E00 (to 3D80; 256-aligned)
