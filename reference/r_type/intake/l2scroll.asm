@@ -96,6 +96,13 @@ irq_in: push ix
 irq_out:
         call l2_half
         IFDEF L2_GLIDE
+        ld hl,hk_fr
+        inc (hl)
+        jr nz,.fr
+        dec (hl)
+.fr:
+        ENDIF
+        IFDEF L2_GLIDE
         call glide_irq
         ENDIF
         ld a,(cur_mmu0)
@@ -208,7 +215,9 @@ l2_scroll:
         or a
         call z,l2_convert       ; test builds started from a mid-level snapshot
         ENDIF
-        call l2_sync
+        ld a,(run_fast)         ; outside play nothing scrolls: no need to wait for the raster
+        or a
+        call nz,l2_sync
         ld a,(0x7A8E)
         or a
         jr nz,.no

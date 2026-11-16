@@ -860,8 +860,20 @@ g_call: push hl
 .j:     call 0
         jp col_unmap
 g_busy: db 0
+hk_fr:  db 0                    ; frames since the last publish (irq_out)
+hk_last: db 0
 ; 8842: publish with the glide start positions; the interrupt keeps off the sprite port meanwhile.
 glide_publish:
+        ld a,(run_fast)         ; outside play (title) the game's updates alternate 2 and 3 frames;
+        or a                    ; even them out at 3 so a glide spans its whole update (R judder)
+        jr nz,.go
+.w:     ld a,(hk_fr)
+        cp 3
+        jr c,.w
+.go:    ld a,(hk_fr)            ; the update's length for glide (counted on every interrupt)
+        ld (hk_last),a
+        xor a
+        ld (hk_fr),a
         ld a,1
         ld (g_busy),a
         ld a,3
