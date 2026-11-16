@@ -50,7 +50,7 @@ spr_setup:
         nextreg 0x19,247
         nextreg 0x19,0
         nextreg 0x19,159
-        nextreg 0x15,0x44       ; Layer 2 over sprites over ULA; sprite 0 on top; hidden
+        nextreg 0x15,LORDER     ; layer order (LORDER); sprite 0 on top; hidden
         ret
 
 ; A level (or life) has just been drawn: empty cache, sprites on.
@@ -68,7 +68,7 @@ spr_start:
         ld (spr_prev),a         ; the next publication hides every stale sprite
         ld a,1
         ld (spr_on),a
-        nextreg 0x15,0x45
+        nextreg 0x15,LORDER+1
         ret
 
 ; ---- plotter entries: record, then the displaced instructions -----------------
