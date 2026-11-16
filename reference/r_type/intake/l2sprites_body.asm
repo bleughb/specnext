@@ -27,8 +27,8 @@ TITLE_PACE EQU 4               ; frames per title update (16 / 4 = 4 pixels a fr
 BUDGET  EQU 24                  ; tiles converted per update
 CACHE_LIM EQU 128               ; pattern slots for cached graphics
 COL_DIR EQU 64                  ; colour pages (r_type_colour.py): directory
-PRE_DIR EQU 88                  ; outlined graphics: directory page
-PRE_PAT0 EQU 89                 ; outlined graphics: first pattern page (64 x 128 bytes each)
+PRE_DIR EQU 48                  ; outlined graphics: directory page (bank 24)
+PRE_PAT0 EQU 49                 ; outlined graphics: first pattern page (64 x 128 bytes each)
 PRE_ENTRY EQU 12
 ENT     EQU 20                  ; cache entry: 0-1 graphic, 2 ink, 3 first slot, 4 sprites,
                                 ; 5-13 tile bitmap, 14-15 checksum, 16 outlined, 17-18 tiles x/y
