@@ -17,8 +17,8 @@ cell's ink (black ink on coloured paper = opaque black), coloured paper drawn, b
 painted: a forced-ink draw keeps the forced colour.
 
 Runtime (l2sprites_body.asm col_lookup): colour data only in banks 32..47 (pages 64..95), which the
-game never maps. Page 64: a directory per level (count, first) then the sorted cell addresses;
-pages 65..87: 40-byte records per painted cell (8 lines x 4 bytes of nibbles, left pixel high, 0 =
+game never maps. Pages 64-65: a directory per level (count, first) then the sorted cell addresses;
+pages 66..87: 40-byte records per painted cell (8 lines x 4 bytes of nibbles, left pixel high, 0 =
 default; then 8 transparent masks, bit 7 = leftmost). Pages 88..95: graphics with an outline
 (r_type_figures.json), pre-rendered one pixel bigger on every side with their border (outline_pages). Patterns are converted once per graphic, so
 the lookup costs only at conversion. The graphic stream is unpacked per level into the same
@@ -44,12 +44,12 @@ sys.path[:0] = [str(ROOT)]
 RECORD = 'r_type'
 COLOURS = str(ROOT / 'docs' / 'profiles' / (RECORD + '_colours.json'))
 COLOUR_BANKS = list(range(32, 48))
-DIR_PAGE, REC_PAGE0, LAST_PAGE = 64, 65, 87
+DIR_PAGE, REC_PAGE0, LAST_PAGE = 64, 66, 87     # directory: pages 64-65
 PRE_DIR, PRE_PAT0, PRE_LAST = 88, 89, 95      # outlined graphics: directory, then 128-byte patterns
 PRE_ENTRY = 12
 REC = 40
 PER_PAGE = 8192 // REC
-DIR_ENTRIES = (8192 - 64) // 2
+DIR_ENTRIES = (16384 - 64) // 2
 PALETTE = [0x00, 0x02, 0xA0, 0xA2, 0x14, 0x16, 0xB4, 0xB6,
            0x00, 0x03, 0xE0, 0xE7, 0x1C, 0x1F, 0xFC, 0xFF]       # l2scroll.asm col_tab
 LEVEL_NAMES = {0x30: 'TEXT'}
@@ -334,11 +334,74 @@ def outline_pages(entries):
     return pages
 
 
-def tables(cmap, data=None, reg=None):
+FILL = 8                        # opaque black (the converter's index for black ink on coloured paper)
+
+
+def fill_map(data=None, reg=None):
+    """Filled figures (owner request 2026-11-16): {key: entry} in colour-map form painting a graphic's
+    enclosed see-through pixels opaque black. Per graphic (plot), its see-through pixels (black paper,
+    black ink with no paper, empty cells) are flooded 4-connected from outside its box; those the flood
+    cannot reach are inside the figure. A registry family with "fill": false is left see-through."""
+    data = data or corpus()
+    reg = reg if reg is not None else registry()
+    skip = {(lv, g.upper()) for f in reg.get('families', {}).values() if f.get('fill') is False
+            for lv in [f['level']] for g in f['graphics']}
+    cells, out = data['cells'], {}
+    for p in data['plots'].values():
+        lname = level_name(p['level'])
+        if (lname, '%04X' % p['address']) in skip:
+            continue
+        w, h = p['w'], p['h']
+        solid = [[False] * w for _ in range(h)]
+        where = {}
+        for cx, cy, ck in p['cells']:
+            c = cells[ck]
+            ink, pap = defaults(c['attribute'])
+            for line, byte in enumerate(c['bits']):
+                key = '%02X:%04X' % (c['level'], (c['address'] + 1 + line) & 0xFFFF)
+                for bit in range(8):
+                    on = byte & (0x80 >> bit)
+                    x, y = cx * 8 + bit, cy * 8 + line
+                    if x < w and y < h:
+                        solid[y][x] = bool(ink) if on else bool(pap)
+                        where[(x, y)] = (key, bit, byte)
+        seen = [[False] * w for _ in range(h)]
+        stack = [(x, y) for x in range(w) for y in (0, h - 1)] + [(x, y) for y in range(h) for x in (0, w - 1)]
+        while stack:
+            x, y = stack.pop()
+            if 0 <= x < w and 0 <= y < h and not seen[y][x] and not solid[y][x]:
+                seen[y][x] = True
+                stack += [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
+        for (x, y), (key, bit, byte) in where.items():
+            if not solid[y][x] and not seen[y][x]:
+                e = out.setdefault(key, [byte, 'fill', [0] * 8, 0])
+                e[2][bit] = FILL
+    return out
+
+
+def with_fill(cmap, data=None, reg=None):
+    """The colour map with filled figures underneath: painted or cleared pixels win."""
+    out = {k: [v[0], v[1], list(v[2]) + [0] * (8 - len(v[2])), v[3] if len(v) > 3 else 0]
+           for k, v in fill_map(data, reg).items()}
+    for k, v in cmap.items():
+        if k in out and v[0] == out[k][0]:
+            nib = list(v[2]) + [0] * (8 - len(v[2]))
+            mask = v[3] if len(v) > 3 else 0
+            fill = out[k][2]
+            out[k] = [v[0], v[1], [n or (0 if mask & (0x80 >> i) else fill[i]) for i, n in enumerate(nib)],
+                      mask]
+        else:
+            out[k] = v
+    return out
+
+
+def tables(cmap, data=None, reg=None, fill=True):
     """Colour map + registry outlines -> ({bank: 16384 bytes} for COLOUR_BANKS, info). Unknown keys
     and wrong check bytes are ignored and counted; more painted cells than the directory holds is an
     error."""
     data = data or corpus()
+    if fill:
+        cmap = with_fill(cmap, data, reg)
     pre, oinfo = outlined_patterns(cmap, data, reg)
     idx = byte_index(data)
     recs = {}
@@ -370,7 +433,8 @@ def tables(cmap, data=None, reg=None):
         d = (lv - 0x30) * 4
         pages[DIR_PAGE][d:d + 4] = bytes([len(mine) & 255, len(mine) >> 8, n & 255, n >> 8])
         for k in mine:
-            pages[DIR_PAGE][64 + 2 * n:66 + 2 * n] = bytes([k[1] & 255, k[1] >> 8])
+            o = 64 + 2 * n
+            pages[DIR_PAGE + o // 8192][o % 8192:o % 8192 + 2] = bytes([k[1] & 255, k[1] >> 8])
             page, off = REC_PAGE0 + n // PER_PAGE, (n % PER_PAGE) * REC
             pages[page][off:off + REC] = recs[k]
             n += 1
