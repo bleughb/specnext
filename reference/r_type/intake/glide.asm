@@ -1,11 +1,12 @@
-; R-Type sprite build, trial (L2_GLIDE, level 1 only): figures glide between the game's steps.
+; R-Type sprite build (L2_GLIDE): figures glide between the game's steps, in play and on the title.
 ;
-; The game moves every figure in whole 8x8 cells, once per update (3 frames). Each figure plot is
-; tagged with the object that drew it: the IY register (enemy slots 8501.., the ship, shots) plus
-; its order among that object's plots this update. At publish, a figure that was also drawn last
-; update and moved at most 3 cells starts two thirds of the way back; the interrupt then steps it
-; on a third each frame, so it arrives where the game put it two frames later. Game logic,
-; collisions and timing are untouched; only sprite positions shown between updates change.
+; The game moves every figure in whole 8x8 cells, once per update (3 frames in play, 4-9 on the
+; title). Each figure plot is tagged with the object that drew it: the IY register (enemy slots
+; 8501.., the ship, shots) plus its order among that object's plots this update. At publish, a
+; figure that was also drawn last update and moved at most 4 cells (across, down or both) is shown
+; 1/P of the way from its old place, P = the frames the last update took (2..8); the interrupt
+; moves it on 1/P each frame (8.8 fixed point), arriving where the game put it as the next update
+; is due. Game logic, collisions and timing are untouched; only sprite positions shown change.
 ;
 ; Lives in page GLIDE_PG (bank 13 high half) at 0x0100, mapped into slot 0 while it runs.
 ; Entry points: 0100 record (after a figure's sprites are emitted), 0103 publish (before the
@@ -19,14 +20,13 @@ glide_start:
         jp g_frame
 
 MAXF    EQU 64                  ; figures per update
-FENT    EQU 8                   ; 0-1 IY, 2 order, 3 first sprite, 4 sprites, 5 column, 6 row
-MENT    EQU 9                   ; 0 sprite, 1-2 x, 3 y, 4 attr 2 without x bit 8, 5-6 step 1, 7-8 step 2
+FENT    EQU 16                  ; 0-1 IY, 2 order (object), 3 first sprite, 4 sprites, 5 column, 6 row,
+                                ; 7 order (object + graphic), 8-9 graphic
+MENT    EQU 13                  ; 0 sprite, 1-2 x, 3 y, 4 attr 2 without x bit 8, 5-6 x offset, 7-8 y offset,
+                                ; 9-10 x step, 11-12 y step (8.8, signed)
 
 ; ---- after a figure's sprites are in spr_list (save_n .. spr_n-1) ----------------------------
 g_record:
-        ld a,(0x719C)
-        cp '1'
-        ret nz                  ; trial: level 1 only
         ld a,(g_cur_n)
         cp MAXF
         ret nc
@@ -36,29 +36,37 @@ g_record:
         push ix
         push iy
         pop de                  ; DE = IY of the object drawing
-        push de
-        pop iy
-        ld c,0                  ; order among this object's figures
+        ld bc,0                 ; C = order among its figures, B = among those of this graphic
         ld a,(g_cur_n)
         or a
         jr z,.add
-        ld b,a
-        ld hl,g_cur
-.s:     ld a,(hl)
+        ld (g_tmp),a
+        ld ix,g_cur
+.s:     ld a,(ix+0)
         cp e
         jr nz,.n
-        inc hl
-        ld a,(hl)
-        dec hl
+        ld a,(ix+1)
         cp d
         jr nz,.n
         inc c
-.n:     ld a,FENT
-        add hl,a
-        djnz .s
+        ld a,(r_src)
+        cp (ix+8)
+        jr nz,.n
+        ld a,(r_src+1)
+        cp (ix+9)
+        jr nz,.n
+        inc b
+.n:     push de
+        ld de,FENT
+        add ix,de
+        pop de
+        ld hl,g_tmp
+        dec (hl)
+        jr nz,.s
 .add:   ld a,(g_cur_n)
         ld l,a
         ld h,0
+        add hl,hl
         add hl,hl
         add hl,hl
         add hl,hl
@@ -66,25 +74,26 @@ g_record:
         ld de,g_cur
         add hl,de
         pop de
-        ld (hl),e
-        inc hl
-        ld (hl),d
-        inc hl
-        ld (hl),c
-        inc hl
+        push hl
+        pop ix
+        ld (ix+0),e
+        ld (ix+1),d
+        ld (ix+2),c
+        ld (ix+7),b
         ld a,(save_n)
-        ld (hl),a
-        inc hl
-        ld b,a
+        ld (ix+3),a
+        ld c,a
         ld a,(spr_n)
-        sub b
-        ld (hl),a
-        inc hl
+        sub c
+        ld (ix+4),a
         ld a,(r_col)
-        ld (hl),a
-        inc hl
+        ld (ix+5),a
         ld a,(r_row)
-        ld (hl),a
+        ld (ix+6),a
+        ld a,(r_src)
+        ld (ix+8),a
+        ld a,(r_src+1)
+        ld (ix+9),a
         ld hl,g_cur_n
         inc (hl)
         pop ix
@@ -99,6 +108,24 @@ g_publish:
         xor a
         ld (g_mov_n),a
         ld (g_k),a
+        ld a,(g_fr)             ; P = frames since the last publish
+        ld c,a
+        xor a
+        ld (g_fr),a
+        ld a,c
+        cp 2
+        jp c,.done              ; one frame or none: nothing to spread
+        cp 9
+        jr c,.pk
+        ld a,8
+.pk:    ld (g_p),a
+        dec a
+        ld (g_kn),a
+        ld a,(g_p)
+        ld hl,g_recip
+        add hl,a
+        ld a,(hl)
+        ld (g_r),a
         ld a,(g_cur_n)
         or a
         jp z,.done
@@ -111,29 +138,43 @@ g_publish:
         ld a,(g_prev_n)
         or a
         jp z,.nx
-        ld b,a
-        ld hl,g_prev
-.f:     ld a,(hl)
+        ld b,a                  ; same object, same graphic, same order among those
+        ld iy,g_prev
+.f1:    ld a,(iy+0)
         cp (ix+0)
-        jr nz,.fn
-        inc hl
-        ld a,(hl)
-        dec hl
+        jr nz,.n1
+        ld a,(iy+1)
         cp (ix+1)
-        jr nz,.fn
-        inc hl
-        inc hl
-        ld a,(hl)
-        dec hl
-        dec hl
+        jr nz,.n1
+        ld a,(iy+8)
+        cp (ix+8)
+        jr nz,.n1
+        ld a,(iy+9)
+        cp (ix+9)
+        jr nz,.n1
+        ld a,(iy+7)
+        cp (ix+7)
+        jr z,.found
+.n1:    ld de,FENT
+        add iy,de
+        djnz .f1
+        ld a,(g_prev_n)         ; else (a new animation frame): same object, same order
+        ld b,a
+        ld iy,g_prev
+.f2:    ld a,(iy+0)
+        cp (ix+0)
+        jr nz,.n2
+        ld a,(iy+1)
+        cp (ix+1)
+        jr nz,.n2
+        ld a,(iy+2)
         cp (ix+2)
         jr z,.found
-.fn:    ld a,FENT
-        add hl,a
-        djnz .f
+.n2:    ld de,FENT
+        add iy,de
+        djnz .f2
         jp .nx
-.found: push hl
-        pop iy                  ; IY = the same figure last update
+.found:                         ; IY = the same figure last update
         ld a,(ix+5)
         sub (iy+5)
         ld hl,g_ax
@@ -144,12 +185,14 @@ g_publish:
         ld hl,g_ay
         call axis
         jp c,.nx
-        ld a,(g_ax+3)
-        ld c,a
-        ld a,(g_ay+3)
-        or c
+        ld hl,(g_ax+2)
+        ld a,h
+        or l
+        ld hl,(g_ay+2)
+        or h
+        or l
         jp z,.nx                ; did not move
-        ld a,(ix+3)             ; each of its sprites: start part of the way back
+        ld a,(ix+3)             ; each of its sprites
         ld c,a
         ld b,(ix+4)
 .sp:    push bc
@@ -165,65 +208,49 @@ g_publish:
         add hl,de
         ld de,spr_list
         add hl,de
-        ld a,(g_mov_n)          ; DE = mov record
+        push hl
+        ld a,(g_mov_n)          ; IY = mov record
         ld e,a
         ld d,MENT
         mul d,e
-        push hl
-        ld hl,g_mov
-        add hl,de
-        ex de,hl
+        ld iy,g_mov
+        add iy,de
         pop hl
-        ld a,c
-        ld (de),a               ; sprite
-        inc de
-        ld a,(g_ax)             ; x = x + start offset (9 bits)
-        ld c,a
-        rlca
-        sbc a,a
-        ld b,a                  ; BC = offset, sign extended
-        push hl
+        ld (iy+0),c
+        ld a,(hl)               ; target x (9 bits), y, attr 2
+        ld (iy+1),a
+        inc hl
         ld a,(hl)
+        ld (iy+3),a
         inc hl
-        inc hl
-        ld h,(hl)
-        ld l,a
-        ld a,h
+        ld a,(hl)
         and 1
-        ld h,a
-        add hl,bc
-        ld a,l
-        ld (de),a
-        inc de
-        ld a,h
-        and 1
-        ld (de),a
-        inc de
-        ld b,a
-        ld a,l
-        pop hl
-        ld (hl),a               ; x low
-        inc hl
-        ld a,(g_ay)             ; y = y + start offset
-        add a,(hl)
-        ld (hl),a
-        ld (de),a
-        inc de
-        inc hl
+        ld (iy+2),a
         ld a,(hl)
         and 0xFE
-        ld (de),a               ; attr 2 without x bit 8
-        or b
+        ld (iy+4),a
+        dec hl
+        dec hl
+        ld de,(g_ax)            ; offsets and steps
+        ld (iy+5),e
+        ld (iy+6),d
+        ld de,(g_ay)
+        ld (iy+7),e
+        ld (iy+8),d
+        ld de,(g_ax+2)
+        ld (iy+9),e
+        ld (iy+10),d
+        ld de,(g_ay+2)
+        ld (iy+11),e
+        ld (iy+12),d
+        call g_pos              ; the position shown now -> spr_list
+        ld (hl),e
+        inc hl
+        ld (hl),c
+        inc hl
+        ld a,(iy+4)
+        or d
         ld (hl),a
-        inc de
-        ld hl,g_ax+1
-        ldi
-        ld hl,g_ay+1
-        ldi
-        ld hl,g_ax+2
-        ldi
-        ld hl,g_ay+2
-        ldi
         ld hl,g_mov_n
         inc (hl)
 .spx:   pop bc
@@ -235,6 +262,8 @@ g_publish:
         pop bc
         dec b
         jp nz,.e
+        ld a,(g_kn)
+        ld (g_k),a
 .done:  ld hl,g_cur             ; this update becomes the previous one
         ld de,g_prev
         ld bc,MAXF*FENT
@@ -246,18 +275,46 @@ g_publish:
         pop iy
         ret
 
-; A = signed move in cells, HL = 4 bytes: start offset, step 1, step 2, moved (0/1).
-; Carry if more than 3 cells (a jump, not a move).
-axis:   ld (hl),0
-        inc hl
+; IY = mov record -> E = x low, D = x bit 8, C = y: target + offset rounded to whole pixels.
+g_pos:  push hl
+        ld l,(iy+5)
+        ld h,(iy+6)
+        ld de,0x80
+        add hl,de
+        ld a,h                  ; whole pixels, signed
+        ld e,a
+        rlca
+        sbc a,a
+        ld d,a
+        ld l,(iy+1)
+        ld h,(iy+2)
+        add hl,de
+        push hl
+        ld l,(iy+7)
+        ld h,(iy+8)
+        ld de,0x80
+        add hl,de
+        ld a,h
+        add a,(iy+3)
+        ld c,a
+        pop de
+        ld a,d
+        and 1
+        ld d,a
+        pop hl
+        ret
+
+; A = signed move in cells, HL = 4 bytes: offset now, step per frame (both 8.8, signed).
+; Shown now: 1/P of the way, so offset = -(distance - step). Carry if more than 4 cells.
+axis:   push hl
         ld (hl),0
         inc hl
         ld (hl),0
         inc hl
         ld (hl),0
-        dec hl
-        dec hl
-        dec hl
+        inc hl
+        ld (hl),0
+        pop hl
         or a
         ret z
         ld c,0
@@ -265,100 +322,121 @@ axis:   ld (hl),0
         jr z,.p
         neg
         dec c                   ; C = FF: negative
-.p:     cp 4
+.p:     cp 5
         ccf
         ret c
+        add a,a
+        add a,a
+        add a,a                 ; pixels (8..32)
+        ld b,a
         push hl
-        ld hl,g_two
-        add hl,a
-        ld d,(hl)               ; two thirds of the move (pixels)
-        ld hl,g_one
-        add hl,a
-        ld e,(hl)               ; one third
-        pop hl
-        ld a,d                  ; start: two thirds back
-        neg
-        call .sg
-        ld (hl),a
+        ld d,a
+        ld a,(g_r)
+        ld e,a
+        mul d,e                 ; DE = step = pixels * 256 / P
+        ld h,b
+        ld l,0
+        or a
+        sbc hl,de               ; HL = distance still to go
+        bit 0,c
+        jr nz,.neg
+        push de                 ; positive move: offset = -HL, step = +DE
+        ex de,hl
+        ld hl,0
+        or a
+        sbc hl,de
+        ex de,hl                ; DE = offset
+        pop hl                  ; HL = step
+        jr .st
+.neg:   push hl                 ; negative move: offset = +HL, step = -DE
+        ld hl,0
+        or a
+        sbc hl,de               ; HL = step
+        pop de                  ; DE = offset
+.st:    ex (sp),hl              ; HL = destination; step on the stack
+        ld (hl),e
         inc hl
-        ld a,d                  ; step 1: two thirds - one third
-        sub e
-        call .sg
-        ld (hl),a
+        ld (hl),d
         inc hl
-        ld a,e                  ; step 2: one third
-        call .sg
-        ld (hl),a
+        pop de
+        ld (hl),e
         inc hl
-        ld (hl),1
+        ld (hl),d
         or a
         ret
-.sg:    bit 0,c                 ; negate if the move was negative
-        ret z
-        neg
-        ret
-g_two:  db 0,5,11,16
-g_one:  db 0,3,5,8
 
-; ---- each interrupt: step the gliding sprites ------------------------------------------------
+; ---- each interrupt: count frames; move the gliding sprites on --------------------------------
 g_frame:
-        ld a,(g_k)
-        cp 2
-        ret nc
+        ld a,(g_fr)
         inc a
+        jr z,.k
+        ld (g_fr),a
+.k:     ld a,(g_k)
+        or a
+        ret z
+        dec a
         ld (g_k),a
         ld a,(g_mov_n)
         or a
         ret z
+        ld (g_cnt),a
         push bc
         push de
         push hl
-        push ix
-        ld e,a
-        ld ix,g_mov
+        push iy
+        ld iy,g_mov
 .m:     ld a,(g_k)
-        cp 1
-        ld a,(ix+5)
-        ld d,(ix+6)
-        jr z,.k1
-        ld a,(ix+7)
-        ld d,(ix+8)
-.k1:    ld c,a                  ; x += step (9 bits)
-        rlca
-        sbc a,a
-        ld b,a
-        ld l,(ix+1)
-        ld h,(ix+2)
-        add hl,bc
-        ld a,h
-        and 1
-        ld h,a
-        ld (ix+1),l
-        ld (ix+2),h
-        ld a,(ix+3)
-        add a,d
-        ld (ix+3),a
+        or a
+        jr nz,.adv
+        ld (iy+5),a             ; last frame: exactly where the game put it
+        ld (iy+6),a
+        ld (iy+7),a
+        ld (iy+8),a
+        jr .out
+.adv:   ld l,(iy+5)
+        ld h,(iy+6)
+        ld e,(iy+9)
+        ld d,(iy+10)
+        add hl,de
+        ld (iy+5),l
+        ld (iy+6),h
+        ld l,(iy+7)
+        ld h,(iy+8)
+        ld e,(iy+11)
+        ld d,(iy+12)
+        add hl,de
+        ld (iy+7),l
+        ld (iy+8),h
+.out:   call g_pos
+        ld h,c                  ; y
         ld bc,0x303B
-        ld a,(ix+0)
+        ld a,(iy+0)
         out (c),a
         ld c,0x57
-        out (c),l
-        ld a,(ix+3)
+        out (c),e
+        out (c),h
+        ld a,(iy+4)
+        or d
         out (c),a
-        ld a,(ix+4)
-        or h
-        out (c),a
-        ld bc,MENT
-        add ix,bc
-        dec e
+        ld de,MENT
+        add iy,de
+        ld hl,g_cnt
+        dec (hl)
         jr nz,.m
-        pop ix
+        pop iy
         pop hl
         pop de
         pop bc
         ret
 
-g_k:      db 2
+g_recip:  db 0,0,128,85,64,51,43,37,32     ; 256 / P
+g_fr:     db 0
+g_tmp:    db 0
+g_p:      db 0
+g_kn:     db 0
+g_r:      db 0
+g_cnt:    db 0
+g_k:      db 0
 g_cur_n:  db 0
 g_prev_n: db 0
 g_mov_n:  db 0

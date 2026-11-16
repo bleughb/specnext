@@ -2,7 +2,7 @@
 ; the title screens (which also call the copier) keep Layer 2 and sprites off.
         DEFINE L2_SPRITES
         IFNDEF L2_NOGLIDE
-        DEFINE L2_GLIDE          ; trial: figures glide between updates (level 1)
+        DEFINE L2_GLIDE          ; figures glide between updates (glide.asm)
         ENDIF
         DEFINE L2_NOLAZY
         DEFINE L2_NOTAPE
