@@ -1,0 +1,31 @@
+{
+  "diagnostic_md5": "a300a51515aa39534e3047ef18e16db9",
+  "scope": "Early copier diagnostic through shared converter, not an engine or delivery",
+  "source_refresh_main": "dace0cc",
+  "jnext": "1.2.0",
+  "private_card": "outside both repositories; read-only",
+  "pattern_inputs": [
+    {
+      "frame": 3620,
+      "sprites": 23,
+      "patterns_md5": "57887c5c65cdaa59c67d35291bd65626"
+    },
+    {
+      "frame": 29405,
+      "sprites": 105,
+      "patterns_md5": "18d521be7ddac3bc46b8b5937eda3100"
+    }
+  ],
+  "pending": [
+    "supplied-R IRQ-consumer equivalence and natural-game state comparison",
+    "per-plot text classifier integration",
+    "source attribute/paper semantics with IRQ writes",
+    "complete banked RAM and stack convergence/instruction-level IRQ proof",
+    "worst-scene integrated pace and full recording",
+    "engine/profile/record/colour sheets and stamped full verify"
+  ],
+  "synthetic_shadow_unchanged": {
+    "bytes": 2726,
+    "md5": "66fdd5ed592011b8a08eafcccad27f7b"
+  }
+}

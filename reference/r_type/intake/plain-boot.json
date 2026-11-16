@@ -1,0 +1,23 @@
+{
+  "md5": "657362a108b54e5080cb88ccf2dcfdc6",
+  "tail": [
+    23296,
+    23375
+  ],
+  "boot_problems": [],
+  "negative_control": [
+    [
+      "RAM differs",
+      176,
+      [
+        23375,
+        23376,
+        23377,
+        23378,
+        23379,
+        23380
+      ]
+    ]
+  ],
+  "scope": "All 8 NEX game banks, boot registers including R, mapped RAM and ROM; with/without NEXLOAD"
+}

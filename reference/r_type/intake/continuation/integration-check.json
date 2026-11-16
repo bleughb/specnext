@@ -1,0 +1,95 @@
+[
+  {
+    "variant": "dma",
+    "returns": 100,
+    "register_mismatches": 0,
+    "checked_registers": [
+      "AF",
+      "BC",
+      "DE",
+      "HL",
+      "IX",
+      "IY",
+      "AF2",
+      "BC2",
+      "DE2",
+      "HL2",
+      "I",
+      "IM"
+    ],
+    "tail_to_return_ram_bytes": 42240,
+    "ram_mismatches": 0,
+    "max_hook_ms": 86.80175,
+    "max_publication_interval_ms": 1935.3766071428572,
+    "min_private_sp": 15574,
+    "critical_irq_count": 0,
+    "limits": [
+      "IRQ supplied-R proof is separate",
+      "IRQ effects before tail not checked here",
+      "pacing may accept native IRQ after publication",
+      "no recolour; not an engine"
+    ]
+  },
+  {
+    "variant": "default",
+    "returns": 100,
+    "register_mismatches": 0,
+    "checked_registers": [
+      "AF",
+      "BC",
+      "DE",
+      "HL",
+      "IX",
+      "IY",
+      "AF2",
+      "BC2",
+      "DE2",
+      "HL2",
+      "I",
+      "IM"
+    ],
+    "tail_to_return_ram_bytes": 42240,
+    "ram_mismatches": 0,
+    "max_hook_ms": 86.14121428571428,
+    "max_publication_interval_ms": 1942.6240714285714,
+    "min_private_sp": 15578,
+    "critical_irq_count": 0,
+    "limits": [
+      "IRQ supplied-R proof is separate",
+      "IRQ effects before tail not checked here",
+      "pacing may accept native IRQ after publication",
+      "no recolour; not an engine"
+    ]
+  },
+  {
+    "variant": "bad-restore",
+    "returns": 100,
+    "register_mismatches": 100,
+    "checked_registers": [
+      "AF",
+      "BC",
+      "DE",
+      "HL",
+      "IX",
+      "IY",
+      "AF2",
+      "BC2",
+      "DE2",
+      "HL2",
+      "I",
+      "IM"
+    ],
+    "tail_to_return_ram_bytes": 42240,
+    "ram_mismatches": 0,
+    "max_hook_ms": 77.65735714285714,
+    "max_publication_interval_ms": 1931.3956785714286,
+    "min_private_sp": 15580,
+    "critical_irq_count": 0,
+    "limits": [
+      "IRQ supplied-R proof is separate",
+      "IRQ effects before tail not checked here",
+      "pacing may accept native IRQ after publication",
+      "no recolour; not an engine"
+    ]
+  }
+]

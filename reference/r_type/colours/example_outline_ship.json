@@ -1,0 +1,112 @@
+{
+ "families": {
+  "L1-F08": {
+   "name": "Player ship",
+   "outline": true
+  },
+  "L1-F09": {
+   "name": "Player ship",
+   "outline": true
+  },
+  "L1-F17": {
+   "name": "Player ship",
+   "outline": true
+  },
+  "L2-F01": {
+   "name": "Player ship",
+   "outline": true
+  },
+  "L2-F10": {
+   "name": "Player ship",
+   "outline": true
+  },
+  "L2-F22": {
+   "name": "Player ship",
+   "outline": true
+  },
+  "L3-F01": {
+   "name": "Player ship",
+   "outline": true
+  },
+  "L3-F21": {
+   "name": "Player ship",
+   "outline": true
+  },
+  "L3-F23": {
+   "name": "Player ship",
+   "outline": true
+  },
+  "L4-F01": {
+   "name": "Player ship",
+   "outline": true
+  },
+  "L4-F14": {
+   "name": "Player ship",
+   "outline": true
+  },
+  "L4-F20": {
+   "name": "Player ship",
+   "outline": true
+  },
+  "L5-F01": {
+   "name": "Player ship",
+   "outline": true
+  },
+  "L5-F53": {
+   "name": "Player ship",
+   "outline": true
+  },
+  "L5-F54": {
+   "name": "Player ship",
+   "outline": true
+  },
+  "L6-F01": {
+   "name": "Player ship",
+   "outline": true
+  },
+  "L6-F51": {
+   "name": "Player ship",
+   "outline": true
+  },
+  "L6-F55": {
+   "name": "Player ship",
+   "outline": true
+  },
+  "L7-F01": {
+   "name": "Player ship",
+   "outline": true
+  },
+  "L7-F41": {
+   "name": "Player ship",
+   "outline": true
+  },
+  "L7-F43": {
+   "name": "Player ship",
+   "outline": true
+  },
+  "L8-F01": {
+   "name": "Player ship",
+   "outline": true
+  },
+  "L8-F34": {
+   "name": "Player ship",
+   "outline": true
+  },
+  "L8-F37": {
+   "name": "Player ship",
+   "outline": true
+  },
+  "L9-F01": {
+   "name": "Player ship",
+   "outline": true
+  },
+  "L9-F22": {
+   "name": "Player ship",
+   "outline": true
+  },
+  "L9-F23": {
+   "name": "Player ship",
+   "outline": true
+  }
+ }
+}

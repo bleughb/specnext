@@ -1,0 +1,17 @@
+PACE  diagnostic.nex (ca586da4) vs peak.z80 (aab78a9d): probe 0x8649 (given), input keyed to updates, seed 1
+phase                     updates  original     build  penalty  hook/upd orig hook
+all                           100    10.53s    10.69s   +1.53%   46.78ms    0.00ms
+quiet (fastest third)          20     1.22s     1.22s   +0.01%   35.22ms    0.00ms
+busy (slowest third)           20     3.26s     3.28s   +0.64%   40.44ms    0.00ms
+worst window u21-40            20     2.03s     2.10s   +3.47%   54.69ms    0.00ms
+per second (play)         original     build
+game updates                  9.22      9.00
+AY data writes                   0         0
+port FE writes                1086      1086
+interrupts taken             50.00     50.00
+hook time % of time           0.00     41.99
+hook time, worst 1 s %        0.00     55.53
+interrupts off % time          6.9      12.3
+longest interrupt gap ms      20.3      20.3
+lockstep: game state equal at every update up to 100
+RESULT: penalty +1.53% over 100 updates

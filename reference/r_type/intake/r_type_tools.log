@@ -1,0 +1,174 @@
+test_committed_git_contribution (__main__.WorkflowChecks.test_committed_git_contribution) ... ok
+test_feasibility_discovers_record_without_changed_notes (__main__.WorkflowChecks.test_feasibility_discovers_record_without_changed_notes) ... ok
+test_feasibility_evidence_and_exemptions (__main__.WorkflowChecks.test_feasibility_evidence_and_exemptions) ... ok
+test_new_template_compares_r (__main__.WorkflowChecks.test_new_template_compares_r) ... ok
+test_package_asset_exceptions_are_exact (__main__.WorkflowChecks.test_package_asset_exceptions_are_exact) ... ok
+test_recognition_skips_expensive_work_and_full_opt_in (__main__.WorkflowChecks.test_recognition_skips_expensive_work_and_full_opt_in) ... ok
+test_release_archive_contribution (__main__.WorkflowChecks.test_release_archive_contribution) ... skipped 'use --package ZIP to smoke-test the built archive'
+test_runner_keeps_failure_and_early_warning (__main__.WorkflowChecks.test_runner_keeps_failure_and_early_warning) ... ok
+test_runner_success_and_launch_failure (__main__.WorkflowChecks.test_runner_success_and_launch_failure) ... ok
+test_template_coverage_and_reproducible_reruns (__main__.WorkflowChecks.test_template_coverage_and_reproducible_reruns) ... ok
+test_cli_failure_and_success_exit_status (workflow_fixture.FailureChecks.test_cli_failure_and_success_exit_status) ... ok
+test_export_import_roundtrip_on_another_worktree (workflow_fixture.FailureChecks.test_export_import_roundtrip_on_another_worktree) ... ok
+test_finish_and_engine_failure_are_not_overridden (workflow_fixture.FailureChecks.test_finish_and_engine_failure_are_not_overridden) ... ok
+test_import_refusals_do_not_touch_checkout (workflow_fixture.FailureChecks.test_import_refusals_do_not_touch_checkout) ... ok
+test_import_success_and_rollback (workflow_fixture.FailureChecks.test_import_success_and_rollback) ... ok
+test_legacy_archive_can_add_a_new_file (workflow_fixture.FailureChecks.test_legacy_archive_can_add_a_new_file) ... ok
+test_patch_requires_a_current_sprite_build (workflow_fixture.FailureChecks.test_patch_requires_a_current_sprite_build) ... ok
+test_selftest_does_not_accept_outputs_from_failed_command (workflow_fixture.FailureChecks.test_selftest_does_not_accept_outputs_from_failed_command) ... ok
+test_worktree_uses_the_real_git_permission_probe (workflow_fixture.FailureChecks.test_worktree_uses_the_real_git_permission_probe) ... ok
+test_git_discovery_prunes_noise_but_keeps_modified_tracked_files (workflow_fixture.ExportChecks.test_git_discovery_prunes_noise_but_keeps_modified_tracked_files) ... ok
+test_new_configuration_dependency_and_skill_files_roundtrip (workflow_fixture.ExportChecks.test_new_configuration_dependency_and_skill_files_roundtrip) ... ok
+test_package_walk_prunes_noise_before_hashing_or_descending (workflow_fixture.ExportChecks.test_package_walk_prunes_noise_before_hashing_or_descending) ... ok
+test_player_inputs_are_summarised_not_hashed_or_exported (workflow_fixture.ExportChecks.test_player_inputs_are_summarised_not_hashed_or_exported) ... ok
+test_unsupported_changes_block_export_until_explicitly_excluded (workflow_fixture.ExportChecks.test_unsupported_changes_block_export_until_explicitly_excluded) ... ok
+test_unsupported_toolkit_artwork_cannot_be_silently_dropped (workflow_fixture.ExportChecks.test_unsupported_toolkit_artwork_cannot_be_silently_dropped) ... ok
+test_upstream_merge_is_not_exported_and_stale_override_is_refused (workflow_fixture.ExportChecks.test_upstream_merge_is_not_exported_and_stale_override_is_refused) ... ok
+
+----------------------------------------------------------------------
+Ran 26 tests in 2.221s
+
+OK (skipped=1)
+Contribution baseline: 9faf79c083a61f5400f128fdcf2bc56ef95e20ef
+survey: plain conversion ...
+/workspace/work/nexclash/selftest.py:1291: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  list(Image.open(rp).getdata()) == list(Image.open(rp2).getdata()) and
+OK   tools: records plan() on synthetic stamps, recipe digest and ROM identity mutations
+OK   tools: tape sets - .tap / .tzx data blocks alike, damaged tapes refused, set matching (order, unknown file), records' inputs.tapes well formed
+OK   tools: tape sets in selftest - every set staged MD5-checked, a shared file once, --tape per set in order, a wrong MD5 or a missing file refused, a "missing" file skips its set
+OK   tools: check status at the stamp / PRF1 boundary (checker exception, partial, no coverage, unmodelled ROM, missing run -> INCOMPLETE; fault, boot -> FAIL; pin, last frame -> complete)
+OK   tools: empty evidence (no rows, states or cases) = not measured: no stamp, qualified PRF1; not applicable stays distinct and does not block
+OK   tools: case selection - failed cases, samples and the full set give each case the same phase and injections
+OK   tools: no-push-access gate (refuses other games, allows --canary / own new game)
+OK   tools: coloursheet: 8-bit palette: unchanged colour16 retained; edit to17 read exactly
+OK   tools: coloursheet: wide palette saved and reloaded without merging pixel indices
+OK   tools: coloursheet: unchanged equal-RGB palette aliases preserve their displayed index
+OK   tools: coloursheet: 2 figures (body + legs joined, mirrored copy the same one), 1:1
+OK   tools: coloursheet: same role again -> two figures; a repeating role (wheels) -> one
+OK   tools: coloursheet: 8x8 swatches 1-15 in palette order
+OK   tools: coloursheet: read-back: 1 key, bit 1 = 10, clear pixel ignored
+OK   tools: coloursheet: read-back: no copy-spread reported for a figure shown once
+OK   tools: coloursheet: painting sheet: shared body once (2 figures, the second only its new legs)
+OK   tools: coloursheet: painting sheet: untouched -> the same map
+OK   tools: coloursheet: painting sheet: repaint edits only that pixel
+OK   tools: coloursheet: painting sheet: painted back to the default -> no entry
+OK   tools: coloursheet: grey on an opaque pixel without clear=True: kept default
+OK   tools: coloursheet: clear=True: grey -> transparent mask bit
+OK   tools: coloursheet: clear mask survives save / load
+OK   tools: coloursheet: sheet drawn with the mask: that pixel grey, re-read -> the same map
+OK   tools: coloursheet: transparent pixel painted back to its default -> no entry
+OK   tools: coloursheet: paint_clear: same boxes, layout marked
+OK   tools: coloursheet: paintable only: clear pixel background without paint_clear, grey with it; PNGs differ only there
+OK   tools: coloursheet: paintable only: untouched sheet -> no ignored paint (background is not paint)
+OK   tools: coloursheet: paint_clear: a clear pixel painted -> its nibble
+OK   tools: coloursheet: paint_clear: sheet drawn with it shows it, re-read -> the same map
+OK   tools: coloursheet: paint_clear: painted grey again -> no entry
+OK   tools: coloursheet: resized sheet refused
+OK   tools: coloursheet: set_state: colour + transparent
+OK   tools: coloursheet: set_state: back to default removes the override (entry gone)
+OK   tools: coloursheet: merge: user reset + transparent applied, newer current entries kept
+OK   tools: coloursheet: merge: changed on the sheet AND since -> conflict, nothing applied
+OK   tools: coloursheet: merge: the same change on both sides -> no conflict
+OK   tools: coloursheet: redraw from the layout with its own map = the written sheet, same layout
+OK   tools: coloursheet: changes: one pixel painted two ways in two figures -> conflict
+OK   tools: coloursheet: changes: painted the same in both copies -> one change
+OK   tools: coloursheet: redrawn with the merged map, read back -> no changes
+OK   tools: recolour .nex offsets / splice / refusals on a synthetic .nex
+OK   tools: paint - regions closed off by drawn lines, neck split, no straight cut, head guess, labels carried to a mirrored frame, sheet read-back, row-band control flagged
+OK   tools: z80n - every Z80N instruction against worked results (core 3.02.05 / guide r3)
+OK   tools: play checks: jnext runner (32-bit cycle unwrap, repeatable input, keys)
+OK   tools: soak: still-picture and tight-loop detectors (synthetic)
+OK   tools: pace: penalty by update windows, quiet / busy thirds, lockstep (synthetic)
+OK   tools: flicker: out of step, vanished figure, one-frame attribute change (synthetic)
+OK   tools: looksheet: straight cut, drawn line, vanishing colour, white rim (synthetic)
+OK   tools: nxc - nexclash/nxc.py and tools/zx0 match their pins; PRF1, target, patch_by rules
+OK   tools: hooklib R kept: 160 random hooks against the original, R and every register
+OK   tools: hooklib every-site matrix: 7 hooks x 4 incoming clocks, exit = incoming, results equal
+OK   tools: hooklib pace limiter, wait at 28 MHz: 8 windows (4 clocks, 28 MHz factor 8 / 6.4) within 2 lines (worst 1.52); 6 runs of 6 plot + blit cycles with debt and carry within 0.5% (worst 0.38%)
+OK   tools: hooklib pace limiter, wait at the caller's clock: 8 windows (4 clocks, 28 MHz factor 8 / 6.4) within 2 lines (worst 1.56); 6 runs of 6 plot + blit cycles with debt and carry within 0.5% (worst 0.16%)
+OK   tools: hooklib pace limiter, game-routine windows (x K): 128 windows (2 factors, 4 clocks, 16 phases) within K / 16 + 2 lines, means within 2% (worst 7.88%)
+OK   tools: hooklib pace limiter, nested hooks left out of a K window, into the debt: 384 windows (2 factors, 4 clocks, nested 0 / 37 / 75 lines, 16 phases), time less debt unchanged by the nested length (worst 1.33 lines); 2 with no window: debt windows
+OK   tools: hooklib pace limiter, interrupt time left out: 6 windows / debt windows with a 30-line handler, also inside a reading
+OK   tools: hooklib pace limiter, debt repaid from the game's delay + cap 0xBFFF: 203 cases
+OK   tools: hooklib pace limiter, debt repaid from the game's delay + cap 0x1000: 203 cases
+OK   tools: hooklib pace limiter: no line counter -> gives up, no hang
+OK   tools: hooklib pace limiter across frame wraps: 392 waits of 700 lines (16 start phases, 4 clocks, 48K / 128K / 60 Hz timing, plain and interrupted), frame length kept
+OK   tools: hooklib content cache (256 x OUTI): rules (miss, hit, mutable invalidates, hide keeps, inval, reset) + 600 random uploads, 64 hits / 536 uploads
+OK   tools: hooklib content cache (OTIR): rules (miss, hit, mutable invalidates, hide keeps, inval, reset) + 600 random uploads, 64 hits / 536 uploads
+OK   tools: hooklib interrupt state: 7 cases (IFF on / off, an interrupt during the first LD A,I) caller's IFF back; line read with interrupts off 222 T at 28 MHz (< 256)
+OK   tools: hooklib fixed-R IFF: 16 captures, six M1s for both paths including the interrupted read
+OK   tools: hooklib fixed-R IFF negative: omitted padding detected
+FAIL tools: hooklib IFF audit: 206 LD A,I / LD A,R in asm/ (28 read twice, 174 values), none trusted after one read (['IFF read once: asm/inferno_hooks.asm:5722!', 'IFF read once: asm/inferno_hooks.asm:5726!', 'IFF read once: asm/inferno_hooks.asm:7563!'])
+OK   tools: hooklib atomic commit: 33 frames, back half only, one burst, the right images shown
+OK   tools: hooklib negative control: forced 3.5 MHz exit -> "exit speed is not the incoming clock!" (3)
+OK   tools: hooklib negative control: wrong R on exit -> "R differs!" (160)
+OK   tools: hooklib negative control: limiter never waits -> "hook faster than the original (limiter not waiting)!" (3)
+OK   tools: hooklib negative control: missing cache invalidation -> "stale pattern!" (102)
+OK   tools: hooklib negative control: one pattern buffer -> "upload into a shown pattern!" (16384)
+OK   tools: hooklib negative control: attributes split by uploads -> "attribute writes split by uploads!" (21)
+OK   tools: hooklib negative control: IFF read once -> "interrupts left off!" (1)
+OK   tools: hooklib negative control: interrupt time counted -> "interrupt time counted in the window!" (2)
+OK   tools: hooklib negative control: K window never waits -> "K window mean off by more than 2%!" (6)
+OK   tools: hooklib negative control: debt never repaid -> "debt not repaid from the delay!" (200)
+OK   tools: hooklib negative control: nested time scaled by K -> "nested hook time scaled by K!" (12)
+OK   tools: hooklib negative control: window time before a nested hook lost -> "window time before a nested hook lost!" (5)
+OK   tools: DMA policies, assembled hooks, functional model, negative controls and profiler
+OK   tools: master palette - 256 standard colours match coloursheet.palette_rgb, forms, nearest; palette_check: 94 palettes, 16 warn (report only)
+OK   tools: rzx extract: Chuckie Egg RZX snapshot 0 = SZX, 11786 bytes, md5 a6c4560d
+OK   tools: inspect: 48K, IM 2, no loader warning
+OK   tools: inspect: retained BASIC at IM 1 entry returning to RAM is not a running loader
+OK   tools: inspect: BASIC MAIN-EXEC still warns about a loader
+OK   tools: inspect: IM 1 returning to ROM does not suppress a possible loader warning
+OK   tools: isr: handler 40092, no IX/IY reads
+OK   tools: isr: slots touched 0 r, 3 r, 4 x, 5 r, 7 rw (slot 2 free for a hook page)
+OK   tools: scan RZX (300 frames): printer buffer 0x5B00-0x5BFF untouched, screen written
+OK   tools: scan --writers (300 frames): screen writers 43909 x141017, 43916 x42204, 42409, 40068; 3 readers
+OK   tools: probe attr_census (3000 frames, every 50): 60 samples, 35 sets, commonest x6 starting 00 x106
+OK   tools: probe pacing_census (1000 frames from loop 39241): 424 updates, frames per update 0/1/2 = 85/330/9, no idle, ISR OUT 0x9CA6 x751
+OK   tools: probe routine_skip: skipping CALL 38200 at 39244 (760 frames) leaves 133/133 updates identical
+OK   tools: probe routine_skip: skipping the hens (CALL 37150 at 39238) differs in page 0x73 on 44/44 updates
+OK   tools: probe rzx_census (300 frames): ISR 40092 x299 from frame 0, 43909 x141017 (= scan --writers)
+OK   tools: probe rzx_census captures first hit per PC/frame before execution, exact code bytes
+OK   tools: probe rzx_census: two-hit bound per PC/frame, absent frame has no sample
+OK   tools: scan --writers: writers outside the top 10 joined into routine spans (100-104 x6, 120 x2)
+OK   tools: preview: 2 shots, plotter 39500 in 4 caller groups (40385: 184 calls, 8832 bytes)
+OK   tools: preview: frame-only C/Python capture identical (autosave RZX, ULA and buffer)
+OK   tools: cost plotter 39500 (1500 frames): 1402 calls, median 19535 T
+OK   tools: nxc: `patch` Chuckie Egg writes chuckie_egg.nxc and keeps only the plain chuckie_egg.nex (not in the .nxc)
+OK   tools: nxc: nxc.py lists it (target, version 1.0, patch_by, credit, PRF1 from the record)
+OK   tools: nxc: applied to the game it gives the `--nex` sprite build exactly (1c316433)
+OK   tools: nxc: nightshade default output = nightshade.nex, nightshade.nxc (the outputs the .nxc does not hold are kept)
+OK   tools: nxc: nightshade offers colour sets ['Enhanced']
+OK   tools: nxc: nightshade offers toggles none
+OK   tools: nxc: nightshade default read back = the record's sprites (8dd3f193)
+OK   tools: nxc: nightshade Enhanced read back = the record's enhanced (666e680d)
+OK   tools: nxc: starquake default output = starquake.nex, starquake.nxc, starquake_sprites.nex (the outputs the .nxc does not hold are kept)
+OK   tools: nxc: starquake offers colour sets none
+OK   tools: nxc: starquake offers toggles none
+OK   tools: nxc: starquake default read back = the record's loading (4c5ce962)
+SKIP tools: nxc multi-output atic_atac rework v13: missing atic_atac/Atic_Atac_1983_Ultimate_Play_The_Game_a.z80
+OK   tools: nxc: PRF1 read from the .nxc, (a) INCOMPLETE, no Verify line, record matching: historical record proof + INCOMPLETE
+OK   tools: nxc: PRF1 read from the .nxc, (b) INCOMPLETE, no Verify line, no record: not verified + INCOMPLETE
+OK   tools: nxc: PRF1 read from the .nxc, (c) complete rebuild, no Verify line: the record's proof unchanged
+OK   tools: nxc: PRF1 read from the .nxc, (d) INCOMPLETE with a Verify line: packaged, INCOMPLETE kept
+SKIP tools: play checks in JNext (no jnext or no $NEXCLASH_JNEXT_CARD)
+OK   tools: survey: entry CALL tracked; nested and outer writes attributed separately
+OK   tools: survey (600 frames): engine chuckie, plain boot OK, 43899 x1059 calls on top, 40000 x814 from 6 callers at 665 T
+OK   tools: survey: unknown engine directs stage 1 rather than recommending auto
+OK   tools: rom paths: nextboot.selfcheck - raster line ends a 250-frame hold (frozen line: never), NR 0x1E/0x1F, a .nex that does not boot is reported
+OK   tools: rom paths: the 128K ROM 1 keypad code reading its own byte 0x386E: listed, not compared
+OK   tools: rom paths: negative - game code (PC 0x8000) reading keypad byte 0x386E as data, the Next's differing: MISMATCH
+OK   tools: rom paths: explicit runtime entry prefix
+OK   tools: rom paths: explicit runtime entry later
+OK   tools: rom paths: explicit runtime entry missing
+OK   tools: rom paths: input runs out in frame 30 of 30 (last frame): frames 1-29 checked, no raise
+OK   tools: rom paths: input runs out in frame 12 of 30 (partial): frames 1-11 checked, no raise
+SKIP tools: rom paths on Knight Tyme (reference files not found)
+SKIP tools: rom paths on Spellbound (reference files not found)
+SKIP tools: rom paths on Three Weeks (reference files not found)
+OK   tools: alt image 0: chuckie_egg (Sinclair's ROM + hooks) with altrom0 0x3500-0x3600 boots with image 0 = the 128K ROM 0 + its bytes
+OK   tools: alt image 0: knight_tyme (its own complete image 1) with altrom0 0x3500-0x3600 boots with image 0 = the 128K ROM 0 + its bytes
+OK   tools: rom3 v2.10 fix-ups: chuckie_egg boot, no v2.10 bytes: plain copy (outside the hook bytes: 0 bytes differ from the system ROM3, image = alt_image model)
+OK   tools: rom3 v2.10 fix-ups: chuckie_egg boot, v2.10 bytes at all 11 sites: v2.09 bytes back (outside the hook bytes: 32 bytes differ from the system ROM3, image = alt_image model)
+OK   tools: rom3 v2.10 fix-ups: chuckie_egg boot, negative: BEEPER 3 of 4 bytes: left alone, 10 sites back (outside the hook bytes: 28 bytes differ from the system ROM3, image = alt_image model)
+TOOLS FAILED
