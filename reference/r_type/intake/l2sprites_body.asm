@@ -17,7 +17,7 @@
 ; copies every other buffer cell natively, including cells produced outside the
 ; plotters (the level 3 battleship).
 CELLW   EQU 17                  ; cells kept per row (16 + one empty)
-CELLH   EQU 21
+CELLH   EQU 19                  ; plots are at most 18 cells high (spr_record), plus the row a tile reads below
 MAXENT  EQU 64
 MAXSPR  EQU 128
 BEHIND_PG EQU 26               ; bank 13: the behind-scenery flags (behind_flags.asm)
@@ -75,6 +75,13 @@ spr_start:
         nextreg 0x15,LORDER+1
         ENDIF
         ret
+
+; ---- FDF8 replaces LD HL,4000: the game clears the screen (title -> high scores, game start).
+; The last sprites must not stay over the next page: hidden until the next publish shows them.
+spr_cls:
+        nextreg 0x15,LORDER
+        ld hl,0x4000
+        jp 0xFDFB
 
 ; ---- plotter entries: record, then the displaced instructions -----------------
 plot_n: xor a
@@ -230,8 +237,18 @@ cell_hook:
 ; Runs at 28MHz even outside play (title: the game's own 3.5MHz timing must not pay for it).
 spr_record:
         nextreg 7,3
+        IFDEF L2_GLIDE          ; conversion uploads patterns through port 303B, which the glide
+        push af                 ; interrupt also selects: keep it off until this plot is done
+        ld a,1
+        ld (g_busy),a
+        pop af
+        ENDIF
         call spr_rec_body
         push af
+        IFDEF L2_GLIDE
+        xor a
+        ld (g_busy),a
+        ENDIF
         ld a,(run_fast)
         nextreg 7,a
         pop af
@@ -1527,6 +1544,13 @@ spr_publish:
         nextreg 7,a
         ret
 spr_pub_body:
+        ld a,(spr_on)
+        or a
+        jr z,.vis
+        IFNDEF L2_SPR_HIDE
+        nextreg 0x15,LORDER+1   ; shown again after a screen clear (spr_cls)
+        ENDIF
+.vis:
         ld a,(spr_on)
         or a
         ret z

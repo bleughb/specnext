@@ -56,7 +56,8 @@ NOTAPE = [(0xFE22, '200e', '180e'),            # JR NZ,FE32 -> JR FE32: no REWIN
 
 SPRITE_SITES = [(0x8CFD, 'c5d5d9', 'plot_n', 0xC3), (0x8D65, 'c5d506', 'plot_h', 0xC3),
                 (0x8DD3, 'c5d5d9', 'plot_v', 0xC3), (0x8E29, 'c5d506', 'plot_hv', 0xC3),
-                (0x8886, '7cc620', 'spr_gate', 0xC3), (0x8EA2, '3a9c7a', 'cell_hook', 0xC3), (0x8EC2, '780f0f', 'cand_hook', 0xC3)]
+                (0x8886, '7cc620', 'spr_gate', 0xC3), (0x8EA2, '3a9c7a', 'cell_hook', 0xC3), (0x8EC2, '780f0f', 'cand_hook', 0xC3),
+                (0xFDF8, '210040', 'spr_cls', 0xC3)]
 
 
 def behind_flags(path=HERE/'behind_flags.asm'):
