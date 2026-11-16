@@ -28,6 +28,12 @@ SITES = [(0x8842, 'dd218080', 'l2_scroll', 0xC3), (0x89C3, '21005e', 'l2_stage',
          (0x8F40, 'f301fd', 'unpack_fast', 0xC3)]
 
 
+# Game pace (owner decision 2026-11-17): the main loop waits for PACE interrupts per update (868C:
+# LD A,(7A8A) / CP 3). The original's updates averaged 4.35 frames (3 at least, more when busy); at
+# 28MHz every update finishes in time, so 3 played ~45% fast. 4 is close to the original, steady.
+PACE = 4
+
+
 def fixture(frame=2000, name='play'):
     OUT.mkdir(exist_ok=True)
     path = OUT/(name+'.z80')
@@ -119,6 +125,10 @@ def build(src=None, folder=OUT, asm=None, sprites=False, full=False, colours=Non
                 data[addr-base:addr-base+3] = bytes([opcode])+Z.w16(syms[label])
                 snap.banks[bank] = bytes(data)
 
+            data = bytearray(snap.banks[2])
+            assert data[0x868F-0x8000:0x8691-0x8000] == bytes([0xFE, 3]), 'pace site'
+            data[0x8690-0x8000] = PACE
+            snap.banks[2] = bytes(data)
             for addr, old, new in RAMFIX:
                 bank, base = (5, 0x4000) if addr < 0x8000 else (2, 0x8000)
                 data = bytearray(snap.banks[bank])
