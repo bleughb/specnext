@@ -89,6 +89,15 @@ irq_out:
         pop hl
         jp 0xBE55
 
+; ---- 8F40 replaces DI / LD BC,7FFD: a level's data is unpacked with interrupts off (several
+; seconds at 3.5MHz, hidden on tape by the loading screen's logo). Run it at 28MHz; the first
+; interrupt after it (EI at 5C4C) puts the speed back (irq_out: run_fast).
+unpack_fast:
+        nextreg 7,3
+        di
+        ld bc,0x7FFD
+        jp 0x8F44
+
 ; ---- 863D replaces CALL 73D8: life/level restart, Layer 2 off -----------------
 l2_off: L2_OFF
         jp 0x73D8

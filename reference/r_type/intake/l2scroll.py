@@ -24,7 +24,8 @@ SITES = [(0x8842, 'dd218080', 'l2_scroll', 0xC3), (0x89C3, '21005e', 'l2_stage',
          (0x8734, 'cdebfe', 'l2_init', 0xCD), (0x863D, 'cdd873', 'l2_off', 0xCD),
          (0x8BE8, '210058', 'l2_off_continue', 0xC3), (0xFE03, 'cdc273', 'l2_off_title', 0xC3),
          (0x92E8, '11c971', 'l2_off_scores', 0xC3),
-         (0xBE26, 'dde5fde5e5', 'irq_in', 0xC3), (0xBE52, 'f108e1', 'irq_out', 0xC3)]
+         (0xBE26, 'dde5fde5e5', 'irq_in', 0xC3), (0xBE52, 'f108e1', 'irq_out', 0xC3),
+         (0x8F40, 'f301fd', 'unpack_fast', 0xC3)]
 
 
 def fixture(frame=2000, name='play'):
