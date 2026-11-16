@@ -87,9 +87,11 @@ Kempston (owner report 2026-11-15, fixed): the game tests port 1F once at cold s
 so no build from it could use Kempston. Fix in the prototype: FE03 hook clears 7A8B, and
 hook_setup sets NR 05 to mode 001 (Kempston 1, port 1F) on both connectors, keeping bits 2
 and 0. NR 05 modes are 000 Sinclair 2, 001 Kempston 1, 010 cursor, 011 Sinclair 1,
-100 Kempston 2, 101 MD 1, 110 MD 2. Do NOT patch C027 or other bank-0 bytes in the start
-snapshot: the game's own level-load check then resets the machine. hook_setup must keep
-AF and BC (the converter stub uses them; clobbering reset the machine at the load check).
+100 Kempston 2, 101 MD 1, 110 MD 2. [CORRECTED 2026-11-16: an earlier version of this note said patching C027 or other
+bank-0 bytes made "the game's own level-load check" reset the machine. That was wrong: the resets
+came from the level unpack writing 7FFD, which on the Next maps ROM over the slot-1 hook page (fixed
+by RAMFIX in l2scroll.py). Patching bank 0 is fine; the full build patches FE03 there.] hook_setup
+must keep AF and BC (the converter stub uses them).
 JNext: keys 1, 1 past the two prompts, K:FIRE at the title selects device 3 (74FB) and
 starts; K:DOWN/RIGHT/UP/FIRE move and fire, 146 updates by frame 1290.
 Outlines (2026-11-16, owner spec: 4-neighbour border, optional per sprite): registry `outline`
