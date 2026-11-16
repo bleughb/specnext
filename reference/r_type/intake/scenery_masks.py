@@ -16,6 +16,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 DECODED = Path('/workspace/work/r_type_review/decoded.bin')
+GAP = 2                         # black gaps this narrow between scenery parts stay solid
 
 
 def word(data, a):
@@ -67,6 +68,37 @@ def open_black(cells, width):
                     solid[i] = 1
                 else:
                     black[i] = 1
+    # a black run of up to GAP pixels with coloured scenery on both sides (across or down) is a wall:
+    # narrow gaps between scenery parts stay solid (owner, 2026-11-17)
+    wall = bytearray(solid)
+    for y in range(H):
+        x = 0
+        while x < W:
+            i = y * W + x
+            if not black[i]:
+                x += 1
+                continue
+            e = x
+            while e < W and black[y * W + e]:
+                e += 1
+            if x > 0 and e < W and solid[i - 1] and solid[y * W + e] and e - x <= GAP:
+                for k in range(x, e):
+                    wall[y * W + k] = 1
+            x = e
+    for x in range(W):
+        y = 0
+        while y < H:
+            i = y * W + x
+            if not black[i]:
+                y += 1
+                continue
+            e = y
+            while e < H and black[e * W + x]:
+                e += 1
+            if y > 0 and e < H and solid[i - W] and solid[e * W + x] and e - y <= GAP:
+                for k in range(y, e):
+                    wall[k * W + x] = 1
+            y = e
     seen = bytearray(W * H)
     stack = [i for i in range(W * H) if not solid[i] and not black[i]]   # sky
     for i in stack:
@@ -75,7 +107,7 @@ def open_black(cells, width):
         i = stack.pop()
         x, y = i % W, i // W
         for j, ok in ((i - 1, x > 0), (i + 1, x < W - 1), (i - W, y > 0), (i + W, y < H - 1)):
-            if ok and not seen[j] and not solid[j]:
+            if ok and not seen[j] and not wall[j]:
                 seen[j] = 1
                 stack.append(j)
     out = {}
