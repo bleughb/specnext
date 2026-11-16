@@ -1,8 +1,16 @@
 # R-Type colour sheets
 
-One pair of sheets per level, drawn in the game's own colours (the colours the sprite build shows
-today). Paint the `_PAINTING_SPRITES.png` of a level; the `_REFERENCE_ALL_SPRITES.png` shows every
-figure and is not read back.
+Two sheets per level, in the game's own colours (what the sprite build shows today), with the same
+figures in the same arrangement:
+
+- `r_type_<LEVEL>_IDENTIFY.png`: every figure at 2x with its ID above it. For finding a figure;
+  never read back.
+- `r_type_<LEVEL>_PAINTING_SPRITES.png`: the same figures at 1:1 and in the same places (positions
+  are the identification sheet's halved), with no text. This is the sheet you paint.
+
+Related figures sit together: frames of one object (they share artwork, or their artwork is stored
+back to back at a similar size and in the same colours) and look-alike figures are grouped, in
+order of their lowest ID.
 
 ## Painting
 
@@ -10,7 +18,10 @@ figure and is not read back.
 - Use the 15 swatches in the top row (the Spectrum colours; swatch 9 is opaque black).
 - Grey inside a figure's box is transparent. A grey pixel can be painted (outlines), and a
   coloured pixel can be painted grey to make it see-through.
-- A graphic shared by several figures appears once; painting it colours every figure that uses it.
+- **Bright pixels are paintable, faded ones are not.** The first time a graphic appears it is
+  drawn bright; later copies of it (other frames, other figures using the same graphic) are drawn
+  faded. Painting the bright copy colours every figure that uses that graphic. Paint on a faded
+  copy is ignored, and the import names the figure so you can repaint the bright copy.
 - Flash frames (a hit enemy drawn in one forced colour) keep the forced colour.
 - LEVEL1 also holds the title-screen "R-TYPE" letters: the title is drawn by the original screen,
   so painting them has no effect.
@@ -24,8 +35,10 @@ py -3 r_type_colour.py recolour BUILD.nex r_type_LEVEL3_PAINTING_SPRITES_painted
 ```
 
 The layout `r_type_LEVEL3_PAINTING_SPRITES_layout.json` must be next to the painted PNG. The output
-is the usual recolour bundle: `BUILD_painted.nex`, its `_colours.json`, the sheets redrawn with the
-new colours, and a report. Paint the next level on the redrawn sheet or the original: paintings
+is the usual recolour bundle: `BUILD_painted.nex`, its `_colours.json`, both sheets of that level
+redrawn with the new colours (`BUILD_painted_r_type_<LEVEL>_PAINTING_SPRITES.png` and
+`_IDENTIFY.png`), and a report. The shared recolour also prints a note that no reference sheet was
+found: R-Type has none (the identification sheet replaces it), so ignore that note. Paint the next level on the redrawn sheet or the original: paintings
 merge, and a pixel painted two ways is refused. Copy the `_colours.json` to
 `nexclash/docs/profiles/r_type_colours.json` to make the painting the default for new builds.
 
@@ -37,8 +50,6 @@ Regenerate the sheets (after a new recording, or to show the default map's colou
 Every figure has a stable ID, `L<level>-<number>` (L0 = TEXT), and belongs to a family,
 `L<level>-F<number>`: the figures of a level that share graphics, such as one enemy's frames.
 
-- `r_type_<LEVEL>_IDENTIFY.png`: every figure of the level at 2x, in today's colours, with its ID
-  above it. For looking up a figure; never read back.
 - `r_type_figures.json`: the registry of all figures and families: level, family, how often the
   recording drew it, its parts (graphic address, size, place, flip), its box on the identify
   sheet, colour keys, and the user's `name` and `layer` (layer choices in `layers`; "original" =
