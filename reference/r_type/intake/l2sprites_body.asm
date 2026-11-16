@@ -130,29 +130,8 @@ spr_after:
         ld a,(emitted)
         or a
         jr z,.x
-        IFNDEF L2_CELL_ORDER    ; every figure is whole: overlaps follow plot order, pixel by
-        jr .ok                  ; pixel (L2_CELL_ORDER = the old rule: partly hidden goes behind)
-        ENDIF
-        ld a,(cand)
-        ld hl,succ
-        cp (hl)
-        jr z,.ok
-        ld hl,stat_part         ; partly hidden: whatever owns its missing cells
-        inc (hl)                ; must be in front, so its sprites go behind all
-        push bc                 ; others (published last)
-        ld a,(save_n)
-        ld c,a
-        ld a,(spr_n)
-        sub c
-        jr z,.pe
-        ld b,a
-        ld a,c
-        ld hl,spr_part
-        add hl,a
-.pm:    ld (hl),1
-        inc hl
-        djnz .pm
-.pe:    pop bc
+        ; Every figure is whole: overlaps follow plot order, pixel by pixel (the old rule, partly
+        ; hidden figures behind all others, was removed 2026-11-17).
 .ok:    ld a,(cur_serial)
         ld hl,plot_ok
         add hl,a
@@ -1180,10 +1159,6 @@ emit:   ld a,(ix+3)
         and 0x40
         or 0x80                 ; 4bpp, pattern half
         ld (hl),a
-        ld a,(spr_n)
-        ld hl,spr_part
-        add hl,a
-        ld (hl),0
         ld hl,spr_n
         inc (hl)
 .adv:   ld hl,c_slot
@@ -1313,10 +1288,6 @@ emit_pre:
         and 0x40
         or 0x80                 ; 4bpp, pattern half
         ld (hl),a
-        ld a,(spr_n)
-        ld hl,spr_part
-        add hl,a
-        ld (hl),0
         ld hl,spr_n
         inc (hl)
 .adv:   ld hl,c_slot
@@ -1563,35 +1534,18 @@ spr_pub_body:
         xor a
         out (c),a               ; from sprite 0
         ld c,0x57
-        xor a                   ; whole figures first (on top), then partly
-        call .pass              ; hidden ones behind them
-        ld a,1
-        call .pass
-        jr .hide
-.pass:  ld (.want+1),a
-        ld a,(spr_n)
+        ld a,(spr_n)            ; in plot order: sprite 0 (first plotted) on top
         or a
-        ret z
+        jr z,.hide
         ld d,a
         ld hl,spr_list
-        ld ix,spr_part
-.s:     ld a,(ix+0)
-        inc ix
-.want:  cp 0
-        jr nz,.skip
-        outinb
+.s:     outinb
         outinb
         outinb
         outinb
         outinb
         dec d
         jr nz,.s
-        ret
-.skip:  ld a,5
-        add hl,a
-        dec d
-        jr nz,.s
-        ret
 .hide:  ld a,(spr_n)
         ld e,a
         ld a,(spr_prev)
@@ -1713,6 +1667,5 @@ spr_list: ds MAXSPR*5
 cache:    ds MAXENT*ENT
 celltab:  ds CELLW*CELLH*2
 plot_ok:  ds 256
-spr_part: ds MAXSPR
         DISPLAY "hook page end ",$," FLAGMAP ",FLAGMAP
         ASSERT $ <= FLAGMAP
