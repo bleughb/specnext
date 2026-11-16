@@ -31,7 +31,7 @@ PRE_PAT0 EQU 89                 ; outlined graphics: first pattern page (64 x 12
 PRE_ENTRY EQU 12
 ENT     EQU 20                  ; cache entry: 0-1 graphic, 2 ink, 3 first slot, 4 sprites,
                                 ; 5-13 tile bitmap, 14-15 checksum, 16 outlined, 17-18 tiles x/y
-COL_REC0 EQU 65                 ; first record page
+COL_REC0 EQU 66                 ; first record page (the directory spans pages 64-65)
 COL_REC EQU 40                  ; bytes per painted cell
 COL_PER_PAGE EQU 8192/COL_REC
 
@@ -751,6 +751,14 @@ cl_addr:
         add hl,hl
         ld bc,64
         add hl,bc
+        ld a,COL_DIR            ; the sorted addresses run on into the next page
+        bit 5,h
+        jr z,.p
+        inc a
+        res 5,h
+.p:     push hl
+        call col_map
+        pop hl
         ld a,(hl)
         inc hl
         ld h,(hl)

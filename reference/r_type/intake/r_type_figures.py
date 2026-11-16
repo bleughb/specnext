@@ -27,6 +27,7 @@ Registry format (schema 1), designed for an interactive page to read and write:
   outline: false / true ("black", palette 8) / a palette index 1-15: a 1-pixel border around the
   figure's outer edge (pixels directly above, below, left or right, no diagonals; holes and dither
   gaps left alone), drawn outside the graphic: its sprites are pre-rendered one pixel bigger. Figures sharing a graphic share its border, so it is normally set per family.
+  fill (families): false keeps a figure's enclosed black see-through (default: filled, r_type_colour.fill_map).
   name / layer / outline on a figure: null = the family's. Unknown fields are kept on rewrite.
 Only `name` and `layer` are user data; everything else is regenerated. A page edits the JSON
 (or exports a patch {figures|families: {id: {name, layer}}}) and `r_type_colour.py` reads it back.
@@ -385,7 +386,7 @@ def draw_level(out_dir, lname, comps, ids, fams, figs_reg, fams_reg, cmap, rgb, 
 
 def apply(out_dir, patch, say=print):
     """Read back user data: patch = {figures|families: {id: {name, layer}}} (a page export or a
-    hand-edited file). Only name and layer change; unknown IDs or layers are refused."""
+    hand-edited file). Only name, layer, outline and fill change; unknown IDs or layers are refused."""
     out_dir = Path(out_dir)
     reg_path = out_dir / 'r_type_figures.json'
     reg = _load(reg_path)
@@ -396,7 +397,7 @@ def apply(out_dir, patch, say=print):
             if fid not in reg.get(kind, {}):
                 bad.append('%s %s: not in the registry' % (kind, fid))
                 continue
-            for field in ('name', 'layer', 'outline'):
+            for field in ('name', 'layer', 'outline', 'fill'):
                 if field not in change:
                     continue
                 v = change[field]
@@ -410,6 +411,9 @@ def apply(out_dir, patch, say=print):
                     except ValueError as e:
                         bad.append('%s %s: %s' % (kind, fid, e))
                         continue
+                if field == 'fill' and v not in (True, False, None):
+                    bad.append('%s %s: fill must be true or false' % (kind, fid))
+                    continue
                 if field == 'name' and v is not None and not isinstance(v, str):
                     bad.append('%s %s: name must be text' % (kind, fid))
                     continue
