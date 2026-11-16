@@ -51,7 +51,9 @@ RAMFIX = [(0x5C4C, None, '01fd7f3e10ed79ed9151%02x37fbc9' % SLOT1_BANK),
 NOTAPE = [(0xFE22, '200e', '180e'),            # JR NZ,FE32 -> JR FE32: no REWIND SIDE 2 + key
           (0xFE39, '0e01', '1820'),            # LD C,1 -> JR FE5B: no LOADING ... + key, no tape text
           (0xFE76, 'cdc5c2', '181000'),        # CALL C2C5 -> JR FE88: no level text
-          (0xFE96, 'cd', 'c9')]                # CALL C2C5 -> RET: no LOADED OK, STOP TAPE + key
+          (0xFE96, 'cd', 'c9'),                # CALL C2C5 -> RET: no LOADED OK, STOP TAPE + key
+          (0xFE16, 'cd4d8a', '000000')]        # CALL 8A4D -> nothing: the logo animation played while a
+                                               # level loaded; the title (7796) plays it again straight after
 
 
 SPRITE_SITES = [(0x8CFD, 'c5d5d9', 'plot_n', 0xC3), (0x8D65, 'c5d506', 'plot_h', 0xC3),
