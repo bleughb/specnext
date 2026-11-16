@@ -25,6 +25,11 @@ COOL    EQU 50                  ; updates between cache restarts
 BUDGET  EQU 24                  ; tiles converted per update
 CACHE_LIM EQU 128               ; pattern slots for cached graphics
 COL_DIR EQU 64                  ; colour pages (r_type_colour.py): directory
+PRE_DIR EQU 88                  ; outlined graphics: directory page
+PRE_PAT0 EQU 89                 ; outlined graphics: first pattern page (64 x 128 bytes each)
+PRE_ENTRY EQU 12
+ENT     EQU 20                  ; cache entry: 0-1 graphic, 2 ink, 3 first slot, 4 sprites,
+                                ; 5-13 tile bitmap, 14-15 checksum, 16 outlined, 17-18 tiles x/y
 COL_REC0 EQU 65                 ; first record page
 COL_REC EQU 40                  ; bytes per painted cell
 COL_PER_PAGE EQU 8192/COL_REC
@@ -292,8 +297,17 @@ spr_record:
         jr c,.out
         cp MAXSPR+1
         jr nc,.out              ; no sprites left: the whole figure stays on the ULA
-        call emit
-        ld a,1
+        ld a,(ix+16)
+        or a
+        jr z,.em
+        ld a,(ix+17)
+        ld (nx),a
+        ld a,(ix+18)
+        ld (ny),a
+        call emit_pre
+        jr .emd
+.em:    call emit
+.emd:   ld a,1
         ld (emitted),a
 .out:   pop ix
         pop bc
@@ -311,7 +325,7 @@ cache_find:
         ld hl,(r_src)
         ld a,(r_ink)
         ld c,a
-        ld de,16
+        ld de,ENT
 .l:     ld a,(ix+0)
         cp l
         jr nz,.n
@@ -334,6 +348,8 @@ convert:
         ld a,(spr_ovf)
         or a
         jp nz,conv_keep
+        call pre_find           ; an outlined graphic: copy its pre-rendered patterns
+        jp z,conv_pre
         ld a,(ny)               ; refuse before any work if it cannot fit even
         ld b,a                  ; with every tile used
         ld a,(nx)
@@ -363,6 +379,7 @@ convert:
         ld (ix+2),a
         ld a,(next_slot)
         ld (ix+3),a
+        ld (ix+16),0
         ld (c_slot),a
         ld a,CACHE_LIM
         ld (slot_lim),a
@@ -380,6 +397,7 @@ convert:
 reconvert:
         ld hl,stat_re
         inc (hl)
+        ld (ix+16),0            ; converted normally from now on
         ld a,(ix+3)
         ld (c_slot),a
         add a,(ix+4)
@@ -1050,6 +1068,346 @@ emit:   ld a,(ix+3)
         jp nz,.ty
         ret
 
+; Outlined graphic (conv_pre): tiles of the pre-rendered canvas, which starts one pixel up and
+; left of the plot and is r_w*8+2 by r_h*8+2 pixels; a mirrored tile mirrors around that canvas.
+emit_pre:
+        ld a,(ix+3)
+        ld (c_slot),a
+        xor a
+        ld (t_idx),a
+        ld c,a                  ; tile row
+.ty:    ld b,0                  ; tile column
+.tx:    push bc
+        call bit_addr
+        and (hl)
+        jp z,.next
+        pop bc
+        push bc
+        ld d,b
+        ld e,16
+        mul d,e                 ; 16 * column
+        ld a,(r_flip)
+        and 1
+        jr z,.xh
+        ld a,(r_w)
+        call canvas_size        ; HL = r_w * 8 + 2
+        or a
+        sbc hl,de
+        ld de,16
+        or a
+        sbc hl,de               ; width - 16 * (column + 1)
+        ex de,hl
+.xh:    ld a,(r_col)
+        call cell_px            ; HL = signed cell * 8 + 31 (sprite X of pixel -1)
+        add hl,de
+        bit 7,h
+        jp nz,.adv
+        push hl
+        ld de,320
+        or a
+        sbc hl,de
+        pop hl
+        jp nc,.adv
+        ld (e_x),hl
+        pop bc
+        push bc
+        ld d,c
+        ld e,16
+        mul d,e
+        ld a,(r_flip)
+        and 2
+        jr z,.yh
+        ld a,(r_h)
+        call canvas_size
+        or a
+        sbc hl,de
+        ld de,16
+        or a
+        sbc hl,de
+        ex de,hl
+.yh:    ld a,(r_row)
+        call cell_px
+        add hl,de
+        ld a,h
+        or a
+        jp nz,.adv
+        ld a,l
+        ld (e_y),a
+        ld a,(spr_n)
+        cp MAXSPR
+        jp nc,.adv
+        ld l,a
+        ld h,0
+        ld e,l
+        ld d,h
+        add hl,hl
+        add hl,hl
+        add hl,de
+        ld de,spr_list
+        add hl,de
+        ld a,(e_x)
+        ld (hl),a
+        inc hl
+        ld a,(e_y)
+        ld (hl),a
+        inc hl
+        ld a,(r_flip)
+        ld d,a
+        and 1
+        rlca
+        rlca
+        rlca
+        ld e,a                  ; X mirror
+        ld a,d
+        and 2
+        add a,a
+        or e                    ; Y mirror
+        ld d,a
+        ld a,(e_x+1)
+        and 1
+        or d
+        ld (hl),a
+        inc hl
+        ld a,(c_slot)
+        ld d,a
+        srl a
+        or 0xC0                 ; visible, fifth byte follows
+        ld (hl),a
+        inc hl
+        ld a,d
+        rrca
+        rrca
+        and 0x40
+        or 0x80                 ; 4bpp, pattern half
+        ld (hl),a
+        ld a,(spr_n)
+        ld hl,spr_part
+        add hl,a
+        ld (hl),0
+        ld hl,spr_n
+        inc (hl)
+.adv:   ld hl,c_slot
+        inc (hl)
+.next:  ld hl,t_idx
+        inc (hl)
+        pop bc
+        inc b
+        ld a,(nx)
+        cp b
+        jp nz,.tx
+        inc c
+        ld a,(ny)
+        cp c
+        jp nz,.ty
+        ret
+
+
+canvas_size:                    ; A = cells -> HL = A * 8 + 2
+        ld l,a
+        ld h,0
+        add hl,hl
+        add hl,hl
+        add hl,hl
+        inc hl
+        inc hl
+        ret
+cell_px:                        ; A = signed cell -> HL = A * 8 + 31
+        ld l,a
+        rla
+        sbc a,a
+        ld h,a
+        add hl,hl
+        add hl,hl
+        add hl,hl
+        push de
+        ld de,31
+        add hl,de
+        pop de
+        ret
+
+; Z: the graphic being converted (level, r_src, r_w, r_h; plain ink) has pre-rendered outline
+; patterns; HL = its directory entry, PRE_DIR mapped in slot 0. NZ: none (slot 0 unmapped).
+pre_find:
+        ld a,(r_ink)
+        or a
+        jr nz,.no
+        ld a,PRE_DIR
+        call col_map
+        ld bc,(0)
+        ld a,b
+        or c
+        jr z,.un
+        ld hl,2
+.l:     push hl
+        ld a,(0x719C)
+        cp (hl)
+        jr nz,.n
+        inc hl
+        ld a,(r_src)
+        cp (hl)
+        jr nz,.n
+        inc hl
+        ld a,(r_src+1)
+        cp (hl)
+        jr nz,.n
+        inc hl
+        ld a,(r_w)
+        cp (hl)
+        jr nz,.n
+        inc hl
+        ld a,(r_h)
+        cp (hl)
+        jr nz,.n
+        pop hl
+        xor a
+        ret
+.n:     pop hl
+        ld de,PRE_ENTRY
+        add hl,de
+        dec bc
+        ld a,b
+        or c
+        jr nz,.l
+.un:    call col_unmap
+.no:    or 1
+        ret
+
+; HL = directory entry (PRE_DIR in slot 0): claim slots, copy the patterns, fill cache entry IX.
+conv_pre:
+        ld de,5
+        add hl,de
+        ld a,(hl)
+        ld (p_nx),a
+        inc hl
+        ld a,(hl)
+        ld (p_ny),a
+        inc hl
+        ld a,(hl)
+        ld (p_nt),a
+        inc hl
+        ld e,(hl)
+        inc hl
+        ld d,(hl)
+        inc hl
+        ld (p_pat),de
+        ld e,(hl)
+        inc hl
+        ld d,(hl)
+        ld (p_map),de
+        ld a,(next_slot)
+        ld hl,p_nt
+        add a,(hl)
+        jp c,.full
+        cp CACHE_LIM+1
+        jp nc,.full
+        ld a,(p_nt)
+        ld c,a
+        ld a,(budget)
+        cp BUDGET
+        jr z,.first
+        cp c
+        jp c,.later
+        sub c
+        jr .spend
+.first: xor a
+.spend: ld (budget),a
+        ld hl,(r_src)
+        ld (ix+0),l
+        ld (ix+1),h
+        ld (ix+2),0
+        ld a,(next_slot)
+        ld (ix+3),a
+        ld (c_slot),a
+        ld a,(p_nt)
+        ld (ix+4),a
+        ld hl,(r_sum)
+        ld (ix+14),l
+        ld (ix+15),h
+        ld (ix+16),1
+        ld a,(p_nx)
+        ld (ix+17),a
+        ld a,(p_ny)
+        ld (ix+18),a
+        push ix
+        pop hl
+        ld a,5
+        add hl,a
+        ld b,9
+        xor a
+.c:     ld (hl),a
+        inc hl
+        djnz .c
+        ld (t_idx),a
+        ld a,(p_nx)
+        ld d,a
+        ld a,(p_ny)
+        ld e,a
+        mul d,e
+        ld b,e                  ; tiles (at most 72)
+        ld hl,(p_map)
+.m:     ld a,(hl)
+        or a
+        jr z,.m0
+        push hl
+        push bc
+        call set_bit
+        pop bc
+        pop hl
+.m0:    inc hl
+        ld a,(t_idx)
+        inc a
+        ld (t_idx),a
+        djnz .m
+        ld a,(p_nt)
+        ld b,a
+        ld hl,(p_pat)
+.u:     push bc
+        push hl
+        ld a,l
+        and 63
+        ld d,a
+        ld e,128
+        mul d,e                 ; offset of the pattern in its page
+        ld a,l
+        rlca
+        rlca
+        and 3
+        ld c,a
+        ld a,h
+        add a,a
+        add a,a
+        or c                    ; pattern / 64
+        add a,PRE_PAT0
+        call col_map
+        ld a,(c_slot)
+        ld c,a
+        srl a
+        bit 0,c
+        jr z,.s
+        or 0x80                 ; upper 128 bytes of the 8-bit pattern
+.s:     ld bc,0x303B
+        out (c),a
+        ex de,hl
+        ld bc,0x805B            ; 128 bytes to the pattern port
+        otir
+        ld hl,c_slot
+        inc (hl)
+        pop hl
+        inc hl
+        pop bc
+        djnz .u
+        call col_unmap
+        ld a,(c_slot)
+        ld (next_slot),a
+        ld hl,cache_n
+        inc (hl)
+        or a
+        ret
+.later: call col_unmap
+        jp conv_later
+.full:  call col_unmap
+        jp conv_fail
+
 ; ---- 8842: show everything recorded since the previous copier call ------------
 spr_publish:
         ld a,(spr_on)
@@ -1161,6 +1519,11 @@ cl_n:     dw 0
 cl_half:  dw 0
 cl_mid:   dw 0
 cl_page:  db 0
+p_nx:     db 0
+p_ny:     db 0
+p_nt:     db 0
+p_pat:    dw 0
+p_map:    dw 0
 tab_r:    ds 4
 cur_serial: db 0
 serial:   db 0
@@ -1201,7 +1564,7 @@ br:       dw 0
 ea:       dw 0
 eb:       dw 0
 spr_list: ds MAXSPR*5
-cache:    ds MAXENT*16
+cache:    ds MAXENT*ENT
 celltab:  ds CELLW*CELLH*2
 plot_ok:  ds 256
 spr_part: ds MAXSPR

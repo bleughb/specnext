@@ -24,7 +24,10 @@ Registry format (schema 1), designed for an interactive page to read and write:
   figures: {id: {sig, level, family, name, layer, count (draws in the recording), size [w, h],
                  parts [{graphic, w, h, dx, dy, flip}], box [x, y, w, h] on the identify sheet,
                  keys (colour-map keys it shows), painted (keys with a colour)}}
-  name / layer on a figure: null = the family's. Unknown fields are kept on rewrite.
+  outline: false / true ("black", palette 8) / a palette index 1-15: a 1-pixel border around the
+  figure's outer edge (pixels directly above, below, left or right, no diagonals; holes and dither
+  gaps left alone), drawn outside the graphic: its sprites are pre-rendered one pixel bigger. Figures sharing a graphic share its border, so it is normally set per family.
+  name / layer / outline on a figure: null = the family's. Unknown fields are kept on rewrite.
 Only `name` and `layer` are user data; everything else is regenerated. A page edits the JSON
 (or exports a patch {figures|families: {id: {name, layer}}}) and `r_type_colour.py` reads it back.
 """
@@ -148,6 +151,7 @@ def update(out_dir, comps_by_level, cmap, rgb, say=print):
             prev = old_fams.get(best, {})
             fam = dict(prev)
             fam.update(level=lname, name=prev.get('name', ''), layer=prev.get('layer', 'original'),
+                       outline=prev.get('outline', False),
                        figures=sorted(ids[i] for i in group), graphics=graphics)
             fams[best] = fam
             for i in group:
@@ -156,8 +160,21 @@ def update(out_dir, comps_by_level, cmap, rgb, say=print):
         order = sorted(range(len(comps)), key=lambda i: int(ids[i].split('-')[1]))
         place, x, y, rowh = {}, 2, 2, 0
         drawn = {}
+        from r_type_colour import outline_colour, ring
         for i in order:
             pix = _render(comps[i], cmap, rgb)
+            prev = old_figs.get(ids[i], {})
+            ov = prev.get('outline')
+            if ov is None:
+                ov = fams.get(comps[i]['family'], old_fams.get(comps[i]['family'], {})).get('outline')
+            col = outline_colour(ov)
+            if col is not None:                 # the border the build draws, 1 pixel outside
+                inv = {v: k for k, v in enumerate(rgb)}
+                idx = {(x + 1, y + 1): inv.get(c, 8) for (x, y), c in pix.items()}
+                xs = [q[0] for q in idx] or [0]
+                ys = [q[1] for q in idx] or [0]
+                idx = ring(idx, max(xs) + 2, max(ys) + 2, col)
+                pix = {(x - 1, y - 1): rgb[n] for (x, y), n in idx.items() if n}
             allpx = cs.owners(comps[i], clear=True)
             xs = [p[0] for p in allpx] or [0]
             ys = [p[1] for p in allpx] or [0]
@@ -189,7 +206,7 @@ def update(out_dir, comps_by_level, cmap, rgb, say=print):
             keys = {q[2] for p in c['parts'] for q in p['pixels'] if q[4]}
             f = dict(prev)
             f.update(sig=c['sig'], level=lname, family=c['family'], name=prev.get('name'),
-                     layer=prev.get('layer'), count=c['count'],
+                     layer=prev.get('layer'), outline=prev.get('outline'), count=c['count'],
                      size=[place[i][2], place[i][3]], parts=c['shape'],
                      box=[place[i][0] * SCALE, place[i][1] * SCALE, place[i][2] * SCALE, place[i][3] * SCALE],
                      keys=len(keys), painted=sum(1 for k in keys if k in cmap))
@@ -220,13 +237,20 @@ def apply(out_dir, patch, say=print):
             if fid not in reg.get(kind, {}):
                 bad.append('%s %s: not in the registry' % (kind, fid))
                 continue
-            for field in ('name', 'layer'):
+            for field in ('name', 'layer', 'outline'):
                 if field not in change:
                     continue
                 v = change[field]
                 if field == 'layer' and v not in ok_layers and not (kind == 'figures' and v is None):
                     bad.append('%s %s: layer %r (choices %s)' % (kind, fid, v, sorted(map(str, ok_layers))))
                     continue
+                if field == 'outline':
+                    from r_type_colour import outline_colour
+                    try:
+                        outline_colour(v)
+                    except ValueError as e:
+                        bad.append('%s %s: %s' % (kind, fid, e))
+                        continue
                 if field == 'name' and v is not None and not isinstance(v, str):
                     bad.append('%s %s: name must be text' % (kind, fid))
                     continue
