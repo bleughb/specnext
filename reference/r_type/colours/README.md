@@ -61,3 +61,26 @@ py -3 r_type_colour.py figures PATCH.json
 
 Unknown IDs or layers are refused and nothing changes. Layers are recorded only for now: the build
 does not use them yet.
+
+## Outlines (borders)
+
+A family or figure can have a 1-pixel border around its outer edge: pixels directly above, below,
+left or right of the figure, no diagonals. Holes and the gaps of a dotted pattern are left alone.
+The border is drawn outside the graphic, so the figure is shown one pixel bigger on every side;
+the build pre-renders those sprites (colour pages 88-95). Set `outline` in the registry:
+`true` (black) or a palette index 1-15; `false` = none (the default).
+
+```
+{"families": {"L1-F08": {"outline": true}}}
+```
+
+`example_outline_ship.json` outlines the player ship (its three frames) on every level. Apply
+it, then either rebuild or restyle an existing build without rebuilding:
+
+```
+py -3 r_type_colour.py figures ../colours/example_outline_ship.json
+py -3 r_type_colour.py restyle BUILD.nex          -> BUILD_styled.nex
+```
+
+The identification sheets show the borders. During a hit flash an outlined figure is drawn without
+its border, in the flash colour.

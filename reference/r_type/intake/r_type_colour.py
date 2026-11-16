@@ -7,7 +7,8 @@ recolour` (same code path: nexclash.recolour.run with this engine):
 
     python r_type_colour.py sheets [-o DIR]                          the sheets, one pair per level
     python r_type_colour.py recolour BUILD.nex PAINTED.png [-o OUT_painted.nex] [--onto MAP | --replace]
-    python r_type_colour.py figures PATCH.json                       names / layers into r_type_figures.json
+    python r_type_colour.py figures PATCH.json                       names / layers / outlines into the registry
+    python r_type_colour.py restyle BUILD.nex                        BUILD_styled.nex with the registry's outlines
 
 Keys: one per graphics byte, 'LL:AAAA' = level byte (7 19C, '0'..'9') : address of the byte in the
 unpacked graphic stream; check = the byte's value; bit 0 = leftmost pixel. Defaults: ink = the
@@ -17,8 +18,9 @@ painted: a forced-ink draw keeps the forced colour.
 
 Runtime (l2sprites_body.asm col_lookup): colour data only in banks 32..47 (pages 64..95), which the
 game never maps. Page 64: a directory per level (count, first) then the sorted cell addresses;
-pages 65..: 40-byte records per painted cell (8 lines x 4 bytes of nibbles, left pixel high, 0 =
-default; then 8 transparent masks, bit 7 = leftmost). Patterns are converted once per graphic, so
+pages 65..87: 40-byte records per painted cell (8 lines x 4 bytes of nibbles, left pixel high, 0 =
+default; then 8 transparent masks, bit 7 = leftmost). Pages 88..95: graphics with an outline
+(r_type_figures.json), pre-rendered one pixel bigger on every side with their border (outline_pages). Patterns are converted once per graphic, so
 the lookup costs only at conversion. The graphic stream is unpacked per level into the same
 addresses: the level is part of every key.
 
@@ -42,7 +44,9 @@ sys.path[:0] = [str(ROOT)]
 RECORD = 'r_type'
 COLOURS = str(ROOT / 'docs' / 'profiles' / (RECORD + '_colours.json'))
 COLOUR_BANKS = list(range(32, 48))
-DIR_PAGE, REC_PAGE0, LAST_PAGE = 64, 65, 95
+DIR_PAGE, REC_PAGE0, LAST_PAGE = 64, 65, 87
+PRE_DIR, PRE_PAT0, PRE_LAST = 88, 89, 95      # outlined graphics: directory, then 128-byte patterns
+PRE_ENTRY = 12
 REC = 40
 PER_PAGE = 8192 // REC
 DIR_ENTRIES = (8192 - 64) // 2
@@ -192,10 +196,160 @@ def sheets(out_dir=None, colours=None, say=print):
     return made
 
 
-def tables(cmap, data=None):
-    """Colour map -> ({bank: 16384 bytes} for COLOUR_BANKS, info). Unknown keys and wrong check
-    bytes are ignored and counted; more painted cells than the directory holds is an error."""
+FIGURES = REF / 'colours' / 'r_type_figures.json'
+
+
+def registry(path=None):
+    p = Path(path or os.environ.get('RTYPE_FIGURES') or FIGURES)
+    return json.loads(p.read_text()) if p.exists() else {}
+
+
+def outline_colour(v):
+    """Registry outline value -> palette index, or None (off). true / 'black' = 8 (opaque black)."""
+    if v in (None, False, 0, 'off', 'none'):
+        return None
+    if v in (True, 'black', 'on'):
+        return 8
+    if isinstance(v, int) and 1 <= v <= 15:
+        return v
+    raise ValueError('outline %r: use true / "black" or a palette index 1-15' % (v,))
+
+
+def outline_wanted(reg=None):
+    """{(level byte, graphic address): palette index} for every family / figure with an outline."""
+    reg = reg if reg is not None else registry()
+    want = {}
+    fams = reg.get('families', {})
+    for fid, f in reg.get('figures', {}).items():
+        v = f.get('outline')
+        if v is None:
+            v = fams.get(f.get('family'), {}).get('outline')
+        col = outline_colour(v)
+        if col is None:
+            continue
+        lv = reg['levels'][f['level']]['level']
+        for p in f['parts']:
+            g = int(p['graphic'], 16)
+            if want.get((lv, g), col) != col:
+                raise ValueError('%s: graphic %04X has two outline colours (figures sharing it differ)'
+                                 % (fid, g))
+            want[(lv, g)] = col
+    return want
+
+
+def ring(pix, w, h, col):
+    """pix {(x, y): index} on a w x h canvas -> the same with a border: every clear pixel outside
+    the figure (4-connected to the canvas edge) with a visible pixel directly above, below, left or
+    right (no diagonals) takes col. Enclosed holes and dither gaps are left alone."""
+    N4 = ((1, 0), (-1, 0), (0, 1), (0, -1))
+    opaque = {q for q, n in pix.items() if n}
+    out = set()
+    stack = [(x, y) for x in range(w) for y in (0, h - 1)] + [(x, y) for y in range(h) for x in (0, w - 1)]
+    while stack:
+        q = stack.pop()
+        if q in out or q in opaque or not (0 <= q[0] < w and 0 <= q[1] < h):
+            continue
+        out.add(q)
+        stack += [(q[0] + dx, q[1] + dy) for dx, dy in N4]
+    res = dict(pix)
+    for q in out:
+        if any((q[0] + dx, q[1] + dy) in opaque for dx, dy in N4):
+            res[q] = col
+    return res
+
+
+def plot_canvas(p, cells, cmap, pad):
+    """{(x, y): palette index} of a plot as the sprite converter draws it (painted map applied),
+    shifted by pad pixels."""
+    from nexclash import coloursheet as cs
+    pix = {}
+    for cx, cy, ck in p['cells']:
+        c = cells[ck]
+        for x, y, key, bit, code, d in cell_part_pixels(c, cx, cy):
+            st = cs.state(cmap, key, bit)
+            n = 0 if st == 'T' else (st[1] if st != 'D' else (d if code else 0))
+            pix[(x + pad, y + pad)] = n
+    return pix
+
+
+def outlined_patterns(cmap, data=None, reg=None):
+    """Outlined graphics pre-rendered one pixel bigger on every side, with their border, as 16x16
+    4bpp patterns. -> ([entry dicts], info). The build copies these instead of converting the
+    graphic; the sprites go one pixel up and left. Flash draws (forced ink) convert normally."""
     data = data or corpus()
+    want = outline_wanted(reg)
+    cells = data['cells']
+    entries, seen, info = [], set(), collections.Counter()
+    for p in data['plots'].values():
+        col = want.get((p['level'], p['address']))
+        if col is None:
+            continue
+        if not all(plain_cell(cells[ck]) for _, _, ck in p['cells']):
+            continue
+        k = (p['level'], p['address'], p['w'], p['h'])
+        if k in seen:
+            continue
+        seen.add(k)
+        wp, hp = p['w'] + 2, p['h'] + 2
+        pnx, pny = (wp + 15) // 16, (hp + 15) // 16
+        if pnx * pny > 72:
+            info['outlined graphics too big (more than 72 sprites)'] += 1
+            continue
+        pix = ring(plot_canvas(p, cells, cmap, 1), wp, hp, col)
+        tiles, pats = [], []
+        for ty in range(pny):
+            for tx in range(pnx):
+                b = bytearray(128)
+                for y in range(16):
+                    for x in range(16):
+                        n = pix.get((tx * 16 + x, ty * 16 + y), 0)
+                        b[y * 8 + x // 2] |= n << (0 if x & 1 else 4)
+                tiles.append(1 if any(b) else 0)
+                if any(b):
+                    pats.append(bytes(b))
+        entries.append(dict(level=p['level'], address=p['address'], w=p['w'] // 8, h=p['h'] // 8,
+                            pnx=pnx, pny=pny, tiles=tiles, patterns=pats))
+        info['graphics outlined'] += 1
+        info['border pixels'] += sum(1 for q, n in pix.items() if n == col and
+                                     plot_canvas(p, cells, cmap, 1).get(q, 0) != col)
+    return entries, dict(info)
+
+
+def outline_pages(entries):
+    """Directory page PRE_DIR (count, then 12-byte entries: level, address, w, h (cells), pnx, pny,
+    tiles used, first pattern (2), tile-map offset (2); tile maps after the entries) and pattern pages
+    PRE_PAT0.. (64 patterns each). -> {page: bytearray}"""
+    pages = {p: bytearray(8192) for p in range(PRE_DIR, PRE_LAST + 1)}
+    d = pages[PRE_DIR]
+    n = len(entries)
+    maps_at = 2 + PRE_ENTRY * n
+    if maps_at + sum(len(e['tiles']) for e in entries) > 8192:
+        raise ValueError('too many outlined graphics for the directory page')
+    total = sum(len(e['patterns']) for e in entries)
+    if total > 64 * (PRE_LAST - PRE_PAT0 + 1):
+        raise ValueError('%d outlined patterns; the pages hold %d' % (total, 64 * (PRE_LAST - PRE_PAT0 + 1)))
+    d[0:2] = bytes([n & 255, n >> 8])
+    pat, mo = 0, maps_at
+    for i, e in enumerate(entries):
+        o = 2 + PRE_ENTRY * i
+        d[o:o + PRE_ENTRY] = bytes([e['level'], e['address'] & 255, e['address'] >> 8, e['w'], e['h'],
+                                    e['pnx'], e['pny'], len(e['patterns']), pat & 255, pat >> 8,
+                                    mo & 255, mo >> 8])
+        d[mo:mo + len(e['tiles'])] = bytes(e['tiles'])
+        mo += len(e['tiles'])
+        for b in e['patterns']:
+            pg, off = PRE_PAT0 + pat // 64, (pat % 64) * 128
+            pages[pg][off:off + 128] = b
+            pat += 1
+    return pages
+
+
+def tables(cmap, data=None, reg=None):
+    """Colour map + registry outlines -> ({bank: 16384 bytes} for COLOUR_BANKS, info). Unknown keys
+    and wrong check bytes are ignored and counted; more painted cells than the directory holds is an
+    error."""
+    data = data or corpus()
+    pre, oinfo = outlined_patterns(cmap, data, reg)
     idx = byte_index(data)
     recs = {}
     info = collections.Counter()
@@ -218,6 +372,7 @@ def tables(cmap, data=None):
     if len(recs) > DIR_ENTRIES or len(recs) > PER_PAGE * (LAST_PAGE - REC_PAGE0 + 1):
         raise ValueError('%d painted cells; the colour pages hold %d' % (len(recs), DIR_ENTRIES))
     pages = {p: bytearray(8192) for p in range(DIR_PAGE, LAST_PAGE + 1)}
+    pages.update(outline_pages(pre))
     order = sorted(recs)
     n = 0
     for lv in range(0x30, 0x40):
@@ -230,6 +385,7 @@ def tables(cmap, data=None):
             pages[page][off:off + REC] = recs[k]
             n += 1
     info['painted cells'] = n
+    info.update(oinfo)
     banks = {b: bytes(pages[2 * b]) + bytes(pages[2 * b + 1]) for b in COLOUR_BANKS}
     return banks, dict(info)
 
@@ -284,6 +440,9 @@ def main(argv):
     fp = sub.add_parser('figures', help='apply names / layers: {figures|families: {id: {name, layer}}}')
     fp.add_argument('patch')
     fp.add_argument('-o', '--out')
+    st = sub.add_parser('restyle', help='BUILD.nex -> BUILD_styled.nex with the current registry (outlines)')
+    st.add_argument('nex')
+    st.add_argument('--colours', help='colour map the build holds (default: its sidecar, else the default)')
     r = sub.add_parser('recolour')
     r.add_argument('nex')
     r.add_argument('painted')
@@ -294,6 +453,16 @@ def main(argv):
     a = ap.parse_args(argv)
     if a.cmd == 'sheets':
         sheets(a.out)
+    elif a.cmd == 'restyle':
+        from nexclash import coloursheet as cs, recolour as rc
+        nex = Path(a.nex).read_bytes()
+        side = Path(a.nex).with_name(Path(a.nex).stem + '_colours.json')
+        cmap = cs.load(a.colours or (str(side) if side.exists() else COLOURS))
+        new, info = tables(cmap)
+        out, changed = rc.splice(nex, new)
+        dst = Path(a.nex).with_name(Path(a.nex).stem + '_styled.nex')
+        dst.write_bytes(out)
+        print(dict(info, **{'banks changed': changed}), '->', dst)
     elif a.cmd == 'figures':
         import r_type_figures as F
         F.apply(a.out or REF / 'colours', json.loads(Path(a.patch).read_text()))
