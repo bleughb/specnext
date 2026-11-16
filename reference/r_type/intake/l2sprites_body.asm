@@ -18,11 +18,12 @@
 ; plotters (the level 3 battleship).
 CELLW   EQU 17                  ; cells kept per row (16 + one empty)
 CELLH   EQU 19                  ; plots are at most 18 cells high (spr_record), plus the row a tile reads below
-MAXENT  EQU 50
+MAXENT  EQU 46
 MAXSPR  EQU 128
 BEHIND_PG EQU 26               ; bank 13: the behind-scenery flags (behind_flags.asm)
 FLAGMAP EQU 0x3B00              ; one byte per cell, same layout as the owner map 7E00 (to 3D80; 256-aligned)
 COOL    EQU 50                  ; updates between cache restarts
+TITLE_PACE EQU 4               ; frames per title update (16 / 4 = 4 pixels a frame)
 BUDGET  EQU 24                  ; tiles converted per update
 CACHE_LIM EQU 128               ; pattern slots for cached graphics
 COL_DIR EQU 64                  ; colour pages (r_type_colour.py): directory
@@ -233,18 +234,8 @@ cell_hook:
 ; Runs at 28MHz even outside play (title: the game's own 3.5MHz timing must not pay for it).
 spr_record:
         nextreg 7,3
-        IFDEF L2_GLIDE          ; conversion uploads patterns through port 303B, which the glide
-        push af                 ; interrupt also selects: keep it off until this plot is done
-        ld a,1
-        ld (g_busy),a
-        pop af
-        ENDIF
         call spr_rec_body
         push af
-        IFDEF L2_GLIDE
-        xor a
-        ld (g_busy),a
-        ENDIF
         ld a,(run_fast)
         nextreg 7,a
         pop af
@@ -622,6 +613,9 @@ do_tile:
         ld hl,slot_lim
         cp (hl)
         jr nc,.ovf
+        IFDEF L2_GLIDE
+        call g_hold             ; the glide interrupt also selects port 303B: off while uploading
+        ENDIF
         ld bc,0x303B
         ld e,a
         srl a
@@ -641,6 +635,9 @@ do_tile:
         call half
         ld hl,c_slot
         inc (hl)
+        IFDEF L2_GLIDE
+        call g_release
+        ENDIF
         or 1
         ret
 .ovf:   xor a
@@ -864,17 +861,54 @@ g_call: push hl
         nextreg 0x50,a
         pop hl
 .j:     call 0
-        jp col_unmap
+.mu:    ld a,(g_miss)           ; steps the interrupt skipped meanwhile
+        or a
+        jp z,col_unmap
+        dec a
+        ld (g_miss),a
+        call 0x0106
+        jr .mu
 g_busy: db 0
+g_miss: db 0
+; Around a pattern upload: the glide interrupt counts the steps it skips (g_busy 2); afterwards
+; they are made up at once (the upload takes a fraction of a frame). Preserve all registers.
+g_hold: push af
+        ld a,2
+        ld (g_busy),a
+        pop af
+        ret
+g_release:
+        push af
+        push bc
+        push hl
+        xor a
+        ld (g_busy),a
+.mu:    ld a,(g_miss)
+        or a
+        jr z,.md
+        dec a
+        ld (g_miss),a
+        ld a,(cur_mmu0)         ; the caller's slot 0 (a colour page) comes back after
+        push af
+        ld a,6
+        call g_call
+        pop af
+        ld (cur_mmu0),a
+        nextreg 0x50,a
+        jr .mu
+.md:    pop hl
+        pop bc
+        pop af
+        ret
 hk_fr:  db 0                    ; frames since the last publish (irq_out)
 hk_last: db 0
 ; 8842: publish with the glide start positions; the interrupt keeps off the sprite port meanwhile.
 glide_publish:
         ld a,(run_fast)         ; outside play (title) the game's updates alternate 2 and 3 frames;
-        or a                    ; even them out at 3 so a glide spans its whole update (R judder)
-        jr nz,.go
+        or a                    ; hold each at TITLE_PACE frames: the logo letters move 16 pixels
+        jr nz,.go               ; an update, so 4 gives exactly 4 pixels every frame (owner, 2026-11-17)
 .w:     ld a,(hk_fr)
-        cp 3
+        cp TITLE_PACE
         jr c,.w
 .go:    ld a,(hk_fr)            ; the update's length for glide (counted on every interrupt)
         ld (hk_last),a
@@ -894,13 +928,18 @@ glide_irq:
         ret
         ENDIF
         ld a,(g_busy)
+        cp 2
+        jr z,.miss              ; recording a plot: make the step up afterwards
         or a
-        ret nz
+        ret nz                  ; publishing
         ld a,(cur_mmu0)
         cp GLIDE_PG
-        ret z
+        jr z,.miss              ; the main code is in glide: g_call makes the step up
         nextreg 0x50,GLIDE_PG   ; irq_out maps cur_mmu0 back
         jp 0x0106
+.miss:  ld hl,g_miss
+        inc (hl)
+        ret
         ENDIF
 
 col_map:
@@ -1539,11 +1578,17 @@ conv_pre:
         bit 0,c
         jr z,.s
         or 0x80                 ; upper 128 bytes of the 8-bit pattern
-.s:     ld bc,0x303B
+.s:     IFDEF L2_GLIDE
+        call g_hold
+        ENDIF
+        ld bc,0x303B
         out (c),a
         ex de,hl
         ld bc,0x805B            ; 128 bytes to the pattern port
         otir
+        IFDEF L2_GLIDE
+        call g_release
+        ENDIF
         ld hl,c_slot
         inc (hl)
         pop hl

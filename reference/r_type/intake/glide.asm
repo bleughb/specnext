@@ -265,7 +265,9 @@ g_publish:
         jp nz,.e
         ld a,(g_kn)
         ld (g_k),a
-.done:  ld hl,g_cur             ; this update becomes the previous one
+.done:  xor a
+        ld (g_miss),a           ; steps skipped before this publish belong to the old moves
+        ld hl,g_cur             ; this update becomes the previous one
         ld de,g_prev
         ld bc,MAXF*FENT
         ldir
