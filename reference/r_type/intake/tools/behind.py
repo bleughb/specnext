@@ -1,6 +1,7 @@
 """Which figures the original draws behind scenery (README.md).
 
     py -3 behind.py [--frames N] [--out FILE]
+    py -3 behind.py --flags [--min UPDATES]     rewrite ../behind_flags.asm from the last scan
 
 Replays the full recording (Rtype.rzx) in the Python emulator. The original gives each 8x8 cell one
 owner; when a figure's plot reaches a cell the scenery owns (owner map 7E00 = FF, tested at 8ED6), the
@@ -67,11 +68,54 @@ def families():
     return out
 
 
+FLAGS = HERE.parent/'behind_flags.asm'
+
+
+def write_flags(rows, minimum=50):
+    """behind_flags.asm: every graphic of each family the original hides behind scenery in at least
+    `minimum` updates. The sprite build keeps those figures in the ULA, under Layer 2."""
+    reg = json.load(open(ROOT/'reference/r_type/colours/r_type_figures.json'))
+    fam = families()
+    best = defaultdict(int)
+    for r in rows:
+        for (lv, g), lst in fam.items():
+            if g == r['graphic'] and lv == 'LEVEL' + chr(r['level_byte']):
+                for fid, _ in lst:
+                    best[fid] = max(best[fid], r['updates'])
+    keep = sorted((f for f, n in best.items() if n >= minimum),
+                  key=lambda f: (reg['families'][f]['level'], -best[f]))
+    lines = ['; R-Type sprite build: figures drawn BEHIND the scenery, as in the original.',
+             '; Every other figure is a hardware sprite in front of the scenery (l2scroll.asm LORDER).',
+             '; A flagged figure is not made a sprite: the game draws it in the ULA, under Layer 2, so the',
+             '; scenery hides it exactly as the original does (8x8 cells).',
+             ';',
+             ';     FLAG level, graphic        level = the level byte at 719C ("1" = 0x31 ... "8" = 0x38)',
+             ';',
+             '; Edit by hand: delete or comment out a line to bring that figure in front, or add a line',
+             '; (graphics are in colours/r_type_figures.json, families -> graphics). Generated first by',
+             '; tools/behind.py --flags --min %d from a scan of the original (updates hidden).' % minimum,
+             '']
+    for f in keep:
+        fa = reg['families'][f]
+        lv = ord(fa['level'][-1])
+        lines.append('; %s  hidden %d updates  figures %s' % (f, best[f], ', '.join(fa['figures'])))
+        for g in fa['graphics']:
+            lines.append('        FLAG 0x%02X, 0x%s' % (lv, g.upper()))
+    FLAGS.write_text(chr(10).join(lines)+chr(10))
+    return keep
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('--frames', type=int)
     ap.add_argument('--out')
+    ap.add_argument('--flags', action='store_true')
+    ap.add_argument('--min', type=int, default=50)
     a = ap.parse_args(argv)
+    if a.flags:
+        keep = write_flags(json.load(open(a.out or rtenv.OUT/'behind.json')), a.min)
+        print('%d families flagged -> %s' % (len(keep), FLAGS))
+        return 0
     hidden = scan(a.frames)
     fam = families()
     rows = []
