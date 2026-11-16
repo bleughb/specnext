@@ -97,6 +97,9 @@ l2_off_continue:
         jp 0x8BEB
 l2_off_title:
         L2_OFF
+        IFDEF L2_SPRITES
+        call spr_start          ; title figures (logo, TM) as sprites too; Layer 2 stays off
+        ENDIF
         xor a                   ; 7A8B: the game's start-up Kempston test (73EC),
         ld (0x7A8B),a           ; "absent" in the snapshot. Port 1F is real here.
         ; L2_NOTAPE builds patch the prompts out of FE03 itself (l2scroll.py

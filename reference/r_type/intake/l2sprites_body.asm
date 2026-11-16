@@ -227,7 +227,16 @@ cell_hook:
         jp 0x8EA5
 
 ; ---- record one plot: A = flip, HL/BC/DE as the plotter receives them ---------
+; Runs at 28MHz even outside play (title: the game's own 3.5MHz timing must not pay for it).
 spr_record:
+        nextreg 7,3
+        call spr_rec_body
+        push af
+        ld a,(run_fast)
+        nextreg 7,a
+        pop af
+        ret
+spr_rec_body:
         ld (r_flip),a
         xor a
         ld (cur_serial),a
@@ -1468,6 +1477,12 @@ conv_pre:
 
 ; ---- 8842: show everything recorded since the previous copier call ------------
 spr_publish:
+        nextreg 7,3
+        call spr_pub_body
+        ld a,(run_fast)
+        nextreg 7,a
+        ret
+spr_pub_body:
         ld a,(spr_on)
         or a
         ret z
