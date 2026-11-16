@@ -15,11 +15,13 @@ L2A_PAGE EQU L2A_BANK*2
 L2B_BANK EQU 53                 ; screen B (half a pixel to the right), banks 53-57 (pages 106-115)
 L2B_PAGE EQU L2B_BANK*2
 TRANSP  EQU 0xE3
-        IFDEF L2_SPR_BEHIND
-LORDER  EQU 0x44                ; NR 0x15: Layer 2 over sprites over ULA, sprite 0 on top
-        ELSE
+        IFDEF L2_SPR_FRONT
 LORDER  EQU 0x40                ; NR 0x15: sprites over Layer 2 over ULA, sprite 0 on top
+        ELSE
+LORDER  EQU 0x44                ; NR 0x15: Layer 2 (scenery) over sprites over ULA, as the original;
+                                ; scenery black open to the sky is see-through (scenery_masks.py)
         ENDIF
+MASK_PAGE0 EQU 32               ; scenery masks: level n in 16K bank 15+n (pages 30+2n keys, 31+2n masks)
         ; Outside play (titles, high scores, name entry, continue) the game runs at
         ; its own 3.5MHz: those screens time themselves with busy loops.
         MACRO L2_OFF
@@ -499,6 +501,9 @@ put_cell:
         jr .pp
 .blk:   ld a,(pc_blk)
 .pp:    ld (pc_pap),a
+        ld a,e
+        or 0x80
+        ld (pc_key),a           ; key: the attribute as stored with the scenery bit (raw level data)
         pop hl
         ld de,pc_src            ; the 8 source bytes (zeroed in the ULA)
         ld b,8
@@ -510,6 +515,7 @@ put_cell:
         inc de
 .step:  inc h                   ; INC H (ULA cell) or INC L (staging): set by the caller
         djnz .cp
+        call mask_find          ; a scenery cell's see-through pixels (none for a cleared cell)
         ld a,(pc_row)
         add a,a
         add a,a
@@ -526,7 +532,23 @@ put_cell:
         ld a,(pc_ink)
         jr nz,.ok
         ld a,(pc_pap)
-.ok:    ld (de),a
+.ok:    cp 8                    ; black: see-through where its mask bit is set
+        jr nz,.st
+        push hl
+        ld a,l
+        add a,8                 ; pc_mask follows pc_src (same 256-byte page)
+        ld l,a
+        ld a,(hl)
+        and c
+        pop hl
+        ld a,8
+        jr z,.st
+        IFDEF L2_EDGE_DEBUG
+        ld a,10                 ; debug: see-through scenery pixels in bright red
+        ELSE
+        xor a
+        ENDIF
+.st:    ld (de),a
         inc hl
         inc de
         djnz .ix
@@ -590,13 +612,107 @@ put_cell:
         call wrap320
         ld (pc_c),hl
         srl c
-        jr nc,.colm
+        jp nc,.colm
         ld a,0xFF
         ld (cur_mmu0),a
         nextreg 0x50,0xFF
         ret
 
 ; RRRGGGBB of the Layer 2 palette: 0 = transparent (TRANSP), 1-7 colours, 8 black, 9-15 bright
+; pc_key (attribute | 80, then pc_src) -> pc_mask: binary search of this level's sorted keys (page
+; MASK_PAGE0 + 2*(level-1): count, then 9-byte keys), masks in the next page (8 bytes each). Returns
+; with Z set (found or not: the mask is zero when the cell is not listed).
+mask_find:
+        push bc
+        push de
+        push hl
+        ld hl,pc_mask
+        ld b,8
+.z:     ld (hl),0
+        inc hl
+        djnz .z
+        ld a,(pc_blk)
+        cp 8
+        jp nz,.out              ; not scenery
+        ld a,(0x719C)
+        sub '1'
+        cp 8
+        jp nc,.out
+        add a,a
+        add a,MASK_PAGE0
+        ld (mf_pg),a
+        ld (cur_mmu0),a
+        nextreg 0x50,a
+        ld hl,(0)
+        ld (mf_n),hl
+        ld hl,0
+        ld (mf_lo),hl
+.bs:    ld hl,(mf_n)
+        ld a,h
+        or l
+        jp z,.miss
+        srl h
+        rr l
+        ld (mf_h),hl
+        ld de,(mf_lo)
+        add hl,de
+        ld (mf_mid),hl
+        ld d,h
+        ld e,l
+        add hl,hl
+        add hl,hl
+        add hl,hl
+        add hl,de
+        inc hl
+        inc hl                  ; 2 + 9 * mid
+        ld de,pc_key
+        ld b,9
+.cmp:   ld a,(de)
+        cp (hl)
+        jp nz,.ne
+        inc hl
+        inc de
+        djnz .cmp
+        ld a,(mf_pg)            ; found: its mask
+        inc a
+        ld (cur_mmu0),a
+        nextreg 0x50,a
+        ld hl,(mf_mid)
+        add hl,hl
+        add hl,hl
+        add hl,hl
+        ld de,pc_mask
+        ld bc,8
+        ldir
+        jr .miss
+.ne:    jr c,.left              ; key below this entry
+        ld hl,(mf_mid)
+        inc hl
+        ld (mf_lo),hl
+        ld hl,(mf_n)
+        ld de,(mf_h)
+        or a
+        sbc hl,de
+        dec hl
+        ld (mf_n),hl
+        jr .bs
+.left:  ld hl,(mf_h)
+        ld (mf_n),hl
+        jr .bs
+.miss:  ld a,0xFF
+        ld (cur_mmu0),a
+        nextreg 0x50,0xFF
+.out:   pop hl
+        pop de
+        pop bc
+        xor a
+        ret
+mf_pg:  db 0
+mf_n:   dw 0
+mf_lo:  dw 0
+mf_h:   dw 0
+mf_mid: dw 0
+
 ; RRRGGGBB for the eight normal then the eight bright Spectrum colours (sprite palette).
 col_tab: db 0x00,0x02,0xA0,0xA2,0x14,0x16,0xB4,0xB6
         db 0x00,0x03,0xE0,0xE7,0x1C,0x1F,0xFC,0xFF
@@ -614,11 +730,14 @@ pc_row: db 0
 pc_y:   db 0
 pc_x:   dw 0
 pc_c:   dw 0
-pc_src: ds 8
 pc_idx: ds 8
 pc_lp:  ds 160
 l2_ready: db 0
 cur_mmu0: db 0xFF
+        ALIGN 32
+pc_key: db 0                    ; attribute | 80, then the cell's 8 bytes: the mask key
+pc_src: ds 8
+pc_mask: ds 8                   ; see-through pixels of the cell (bit 7 = leftmost)
         ALIGN 16
 zero8:  ds 8
         IFDEF L2_SPRITES
