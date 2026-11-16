@@ -328,6 +328,11 @@ spr_rec_body:
 .em:    call emit
 .emd:   ld a,1
         ld (emitted),a
+        IFDEF L2_GLIDE
+        xor a
+        call g_call             ; glide.asm: record this figure and its object
+        ld a,1                  ; as before: the native plotter runs next
+        ENDIF
 .out:   pop ix
         pop bc
         pop de
@@ -813,6 +818,45 @@ behind_chk:
         pop de
         pop bc
         ret
+
+        IFDEF L2_GLIDE
+GLIDE_PG EQU 27                 ; bank 13 high half: glide.asm
+; A = glide.asm entry (0 record, 3 publish): call it with its page in slot 0.
+g_call: push hl
+        ld l,a
+        ld h,1                  ; glide.asm entries at 0100
+        ld (.j+1),hl
+        ld a,GLIDE_PG
+        ld (cur_mmu0),a
+        nextreg 0x50,a
+        pop hl
+.j:     call 0
+        jp col_unmap
+g_busy: db 0
+; 8842: publish with the glide start positions; the interrupt keeps off the sprite port meanwhile.
+glide_publish:
+        ld a,1
+        ld (g_busy),a
+        ld a,3
+        call g_call
+        call spr_publish
+        xor a
+        ld (g_busy),a
+        ret
+; From the interrupt: step the gliding sprites (not while the main code is in glide or publishing).
+glide_irq:
+        IFDEF L2_GLIDE_NOIRQ
+        ret
+        ENDIF
+        ld a,(g_busy)
+        or a
+        ret nz
+        ld a,(cur_mmu0)
+        cp GLIDE_PG
+        ret z
+        nextreg 0x50,GLIDE_PG   ; irq_out maps cur_mmu0 back
+        jp 0x0106
+        ENDIF
 
 col_map:
         ld (cur_mmu0),a         ; variable first: the ISR restores slot 0 from it

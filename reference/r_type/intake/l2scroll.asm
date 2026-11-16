@@ -77,6 +77,9 @@ irq_in: push ix
         jp 0xBE2B
 ; BE52 replaces POP AF / EX AF,AF' / POP HL.
 irq_out:
+        IFDEF L2_GLIDE
+        call glide_irq
+        ENDIF
         ld a,(cur_mmu0)
         nextreg 0x50,a
         ld a,(run_fast)
@@ -188,7 +191,11 @@ l2_scroll:
         nextreg 0x16,a
 .no:
         IFDEF L2_SPRITES
+        IFDEF L2_GLIDE
+        call glide_publish
+        ELSE
         call spr_publish
+        ENDIF
         ENDIF
         ld ix,0x8080
         jp 0x8846
