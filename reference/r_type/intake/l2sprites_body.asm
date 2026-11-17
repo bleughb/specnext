@@ -20,6 +20,7 @@ CELLW   EQU 17                  ; cells kept per row (16 + one empty)
 CELLH   EQU 21
 MAXENT  EQU 64
 MAXSPR  EQU 128
+BEHIND_PG EQU 26               ; bank 13: the behind-scenery flags (behind_flags.asm)
 FLAGMAP EQU 0x3A00              ; one byte per cell, same layout as the owner map 7E00
 COOL    EQU 50                  ; updates between cache restarts
 BUDGET  EQU 24                  ; tiles converted per update
@@ -50,7 +51,7 @@ spr_setup:
         nextreg 0x19,247
         nextreg 0x19,0
         nextreg 0x19,159
-        nextreg 0x15,0x44       ; Layer 2 over sprites over ULA; sprite 0 on top; hidden
+        nextreg 0x15,LORDER     ; layer order (LORDER); sprite 0 on top; hidden
         ret
 
 ; A level (or life) has just been drawn: empty cache, sprites on.
@@ -68,7 +69,11 @@ spr_start:
         ld (spr_prev),a         ; the next publication hides every stale sprite
         ld a,1
         ld (spr_on),a
-        nextreg 0x15,0x45
+        IFDEF L2_SPR_HIDE
+        nextreg 0x15,LORDER     ; debug: sprites hidden, only native (ULA) figures show
+        ELSE
+        nextreg 0x15,LORDER+1
+        ENDIF
         ret
 
 ; ---- plotter entries: record, then the displaced instructions -----------------
@@ -118,6 +123,9 @@ spr_after:
         ld a,(emitted)
         or a
         jr z,.x
+        IFNDEF L2_CELL_ORDER    ; every figure is whole: overlaps follow plot order, pixel by
+        jr .ok                  ; pixel (L2_CELL_ORDER = the old rule: partly hidden goes behind)
+        ENDIF
         ld a,(cand)
         ld hl,succ
         cp (hl)
@@ -232,6 +240,8 @@ spr_record:
         ld a,(0x8EBF)
         cp 0x60
         ret nz                  ; the plotter is drawing scenery straight to the ULA
+        call behind_chk
+        ret z                   ; flagged (behind_flags.asm): the game draws it, behind Layer 2
         push hl
         push de
         push bc
@@ -745,6 +755,46 @@ cl_addr:
         inc hl
         ld h,(hl)
         ld l,a
+        ret
+
+; HL = graphic. Z if behind_flags.asm lists it for this level (0x719C): such a figure stays in the
+; ULA, under Layer 2, so the scenery hides it as in the original. Table: page BEHIND_PG, entries
+; level, graphic low, graphic high; level 0 ends it.
+behind_chk:
+        push bc
+        push de
+        push hl
+        ex de,hl
+        ld a,BEHIND_PG
+        call col_map
+        ld a,(0x719C)
+        ld c,a
+        ld hl,0
+.l:     ld a,(hl)
+        or a
+        jr z,.no
+        inc hl
+        cp c
+        ld a,(hl)
+        inc hl
+        jr nz,.n
+        cp e
+        jr nz,.n
+        ld a,(hl)
+        cp d
+        jr z,.yes
+.n:     inc hl
+        jr .l
+.no:    ld a,1
+        jr .r
+.yes:   xor a                   ; listed
+.r:     ld b,a
+        call col_unmap
+        ld a,b
+        or a
+        pop hl
+        pop de
+        pop bc
         ret
 
 col_map:

@@ -59,6 +59,19 @@ SPRITE_SITES = [(0x8CFD, 'c5d5d9', 'plot_n', 0xC3), (0x8D65, 'c5d506', 'plot_h',
                 (0x8886, '7cc620', 'spr_gate', 0xC3), (0x8EA2, '3a9c7a', 'cell_hook', 0xC3), (0x8EC2, '780f0f', 'cand_hook', 0xC3)]
 
 
+def behind_flags(path=HERE/'behind_flags.asm'):
+    """Bank 13: the figures drawn behind scenery, from the FLAG lines of behind_flags.asm."""
+    import re
+    out = bytearray()
+    for line in open(path):
+        m = re.match(r'\s*FLAG\s+(\w+)\s*,\s*(\w+)', line.split(';')[0])
+        if m:
+            lv, g = (int(x, 0) for x in m.groups())
+            out += bytes([lv, g & 255, g >> 8])
+    assert len(out) < 16383, 'too many behind-scenery flags'
+    return bytes(out+bytes(16384-len(out)))
+
+
 def assembled(full):
     """The sprite build's hook code bytes (bank 12), full game or snapshot test build."""
     return assemble(str(HERE/('l2sprites_full.asm' if full else 'l2sprites.asm')), sjasm.find())[0]['code']
@@ -84,6 +97,7 @@ def build(src=None, folder=OUT, asm=None, sprites=False, full=False, colours=Non
             import r_type_colour as RC
             cbanks, cinfo = RC.tables(RC.load_colours() if colours is None else colours)
             extra_banks = {**extra_banks, **cbanks}
+            extra_banks[13] = behind_flags()
 
         def apply(self, snap):
             super().apply(snap)

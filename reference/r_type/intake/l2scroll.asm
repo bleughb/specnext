@@ -13,6 +13,11 @@
 L2BANK  EQU 9                   ; 16K bank: 8K pages 18..23
 L2PAGE  EQU L2BANK*2
 TRANSP  EQU 0xE3
+        IFDEF L2_SPR_BEHIND
+LORDER  EQU 0x44                ; NR 0x15: Layer 2 over sprites over ULA, sprite 0 on top
+        ELSE
+LORDER  EQU 0x40                ; NR 0x15: sprites over Layer 2 over ULA, sprite 0 on top
+        ENDIF
         ; Outside play (titles, high scores, name entry, continue) the game runs at
         ; its own 3.5MHz: those screens time themselves with busy loops.
         MACRO L2_OFF
@@ -21,7 +26,7 @@ TRANSP  EQU 0xE3
         ld (run_fast),a
         nextreg 7,0
         IFDEF L2_SPRITES
-        nextreg 0x15,0x44       ; sprites hidden
+        nextreg 0x15,LORDER     ; sprites hidden
         xor a
         ld (spr_on),a
         ENDIF
