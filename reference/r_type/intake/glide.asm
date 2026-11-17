@@ -680,6 +680,9 @@ reveal_off:
 ; slot, FF = no room.
 c_alloc:
         ld a,(ca_n)
+        inc a
+        call z,c_count          ; FF: the tiles of celltab that are not empty (convert)
+        ld a,(ca_n)
         or a
         jr nz,.retry
         inc a
@@ -771,6 +774,47 @@ c_alloc:
 .full:  call c_evict
         jr nc,.ent
         jr .none
+
+; ca_n = the 16x16 tiles of the graphic in celltab (build_cells) with any cell, as do_tile sees
+; them: a big graphic reserves only the slots it uses, so it fits between other entries' runs.
+c_count:
+        xor a
+        ld (ca_n),a
+        ld hl,celltab
+        ld a,(ny)
+        ld b,a
+.ty:    push bc
+        push hl
+        ld a,(nx)
+        ld b,a
+.tx:    push bc
+        push hl
+        ld b,4                  ; this row's two cell pointers
+        xor a
+.r0:    or (hl)
+        inc hl
+        djnz .r0
+        ld de,CELLW*2-4
+        add hl,de
+        ld b,4                  ; and the row below
+.r1:    or (hl)
+        inc hl
+        djnz .r1
+        or a
+        jr z,.e
+        ld hl,ca_n
+        inc (hl)
+.e:     pop hl
+        ld de,4
+        add hl,de
+        pop bc
+        djnz .tx
+        pop hl
+        ld de,CELLW*4
+        add hl,de
+        pop bc
+        djnz .ty
+        ret
 
 ; Forget the least recently used live entry not shown this update. Carry = none.
 c_evict:

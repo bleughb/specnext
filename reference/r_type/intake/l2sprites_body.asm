@@ -404,16 +404,18 @@ convert:
         cp c
         jr nc,.sub
         cp BUDGET
-        jr nz,conv_later
+        jp nz,conv_later
         xor a
         jr .spend
 .sub:   sub c
 .spend: ld (budget),a
-        ld a,c
+        call build_cells        ; c_alloc reserves only the tiles that are not empty
+        ld a,0xFF
         call alloc              ; IX = entry, A = first slot
         jp c,conv_fail
         ld (c_slot),a
-        add a,c
+        ld hl,ca_n
+        add a,(hl)
         ld (slot_lim),a
         ld hl,(r_src)
         ld (ix+0),l

@@ -130,6 +130,9 @@ l2_off: L2_OFF
 ; and between-level screens. Both clear the ULA; Layer 2 must not stay over them.
 l2_off_continue:
         L2_OFF
+        IFDEF L2_SPRITES
+        call spr_start          ; the continue screen's logo as sprites, as on the title
+        ENDIF
         ld hl,0x5800
         jp 0x8BEB
 l2_off_title:

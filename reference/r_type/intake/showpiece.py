@@ -160,6 +160,9 @@ def copper(pals):
     return bytes(out), len(prog)
 
 
+NEON_DOWN = 11                     # owner 2026-11-17: picture rows 1-232 -> 12-243, black 12 above, 12 below
+
+
 def indexed_320(path):
     """A 320x256 paletted image (owner's own conversion): shown as it is in Layer 2 320x256 x 256 colours.
     -> ({bank: data}, palette bytes (256 x hi, lo: 9-bit)) or None if the image is not one."""
@@ -178,9 +181,11 @@ def indexed_320(path):
         out += bytes([hi, b & 1])
     px = im.load()
     data = bytearray(81920)                # column-major: column x, row y -> x * 256 + y
+    blank = px[0, 0]
     for x in range(320):
         for y in range(256):
-            data[x * 256 + y] = px[x, y]
+            sy = y - NEON_DOWN
+            data[x * 256 + y] = px[x, sy] if 0 <= sy < 256 else blank
     return {L2_BANK0 + n: bytes(data[n * 16384:(n + 1) * 16384]) for n in range(5)}, bytes(out)
 
 
