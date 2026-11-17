@@ -84,8 +84,9 @@ def main(argv=None):
         base = rtenv.OUT / 'compare' / ('f%05d%s' % (frame, '_in%d' % a.seed if keys else ''))
         rs = emu.run(spr, updates, updates, keys, emulator, base / 'spr')
         rc = emu.run(ctl, updates, updates, keys, emulator, base / 'ctl')
-        slow_s = sum(1 for f in rs.frames[2:] if f > 3)
-        slow_c = sum(1 for f in rc.frames[2:] if f > 3)
+        import l2scroll as L
+        slow_s = sum(1 for f in rs.frames[2:] if f > L.PACE)
+        slow_c = sum(1 for f in rc.frames[2:] if f > L.PACE)
         verdict = 'ok' if slow_s - slow_c <= a.slow else 'FAIL'
         fails += verdict == 'FAIL'
         print('%5d pacing %-4s sprite %s control %s (slow updates %d / %d)' % (

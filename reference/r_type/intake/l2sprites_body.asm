@@ -17,7 +17,7 @@
 ; copies every other buffer cell natively, including cells produced outside the
 ; plotters (the level 3 battleship).
 CELLW   EQU 17                  ; cells kept per row (16 + one empty)
-CELLH   EQU 21
+CELLH   EQU 19                  ; plots are at most 18 cells high (spr_record), plus the row a tile reads below
 MAXENT  EQU 64
 MAXSPR  EQU 128
 BEHIND_PG EQU 26               ; bank 13: the behind-scenery flags (behind_flags.asm)
@@ -31,7 +31,7 @@ PRE_PAT0 EQU 89                 ; outlined graphics: first pattern page (64 x 12
 PRE_ENTRY EQU 12
 ENT     EQU 20                  ; cache entry: 0-1 graphic, 2 ink, 3 first slot, 4 sprites,
                                 ; 5-13 tile bitmap, 14-15 checksum, 16 outlined, 17-18 tiles x/y
-COL_REC0 EQU 65                 ; first record page
+COL_REC0 EQU 66                 ; first record page (the directory spans pages 64-65)
 COL_REC EQU 40                  ; bytes per painted cell
 COL_PER_PAGE EQU 8192/COL_REC
 
@@ -75,6 +75,13 @@ spr_start:
         nextreg 0x15,LORDER+1
         ENDIF
         ret
+
+; ---- FDF8 replaces LD HL,4000: the game clears the screen (title -> high scores, game start).
+; The last sprites must not stay over the next page: hidden until the next publish shows them.
+spr_cls:
+        nextreg 0x15,LORDER
+        ld hl,0x4000
+        jp 0xFDFB
 
 ; ---- plotter entries: record, then the displaced instructions -----------------
 plot_n: xor a
@@ -227,7 +234,26 @@ cell_hook:
         jp 0x8EA5
 
 ; ---- record one plot: A = flip, HL/BC/DE as the plotter receives them ---------
+; Runs at 28MHz even outside play (title: the game's own 3.5MHz timing must not pay for it).
 spr_record:
+        nextreg 7,3
+        IFDEF L2_GLIDE          ; conversion uploads patterns through port 303B, which the glide
+        push af                 ; interrupt also selects: keep it off until this plot is done
+        ld a,1
+        ld (g_busy),a
+        pop af
+        ENDIF
+        call spr_rec_body
+        push af
+        IFDEF L2_GLIDE
+        xor a
+        ld (g_busy),a
+        ENDIF
+        ld a,(run_fast)
+        nextreg 7,a
+        pop af
+        ret
+spr_rec_body:
         ld (r_flip),a
         xor a
         ld (cur_serial),a
@@ -319,6 +345,11 @@ spr_record:
 .em:    call emit
 .emd:   ld a,1
         ld (emitted),a
+        IFDEF L2_GLIDE
+        xor a
+        call g_call             ; glide.asm: record this figure and its object
+        ld a,1                  ; as before: the native plotter runs next
+        ENDIF
 .out:   pop ix
         pop bc
         pop de
@@ -751,6 +782,14 @@ cl_addr:
         add hl,hl
         ld bc,64
         add hl,bc
+        ld a,COL_DIR            ; the sorted addresses run on into the next page
+        bit 5,h
+        jr z,.p
+        inc a
+        res 5,h
+.p:     push hl
+        call col_map
+        pop hl
         ld a,(hl)
         inc hl
         ld h,(hl)
@@ -796,6 +835,45 @@ behind_chk:
         pop de
         pop bc
         ret
+
+        IFDEF L2_GLIDE
+GLIDE_PG EQU 27                 ; bank 13 high half: glide.asm
+; A = glide.asm entry (0 record, 3 publish): call it with its page in slot 0.
+g_call: push hl
+        ld l,a
+        ld h,1                  ; glide.asm entries at 0100
+        ld (.j+1),hl
+        ld a,GLIDE_PG
+        ld (cur_mmu0),a
+        nextreg 0x50,a
+        pop hl
+.j:     call 0
+        jp col_unmap
+g_busy: db 0
+; 8842: publish with the glide start positions; the interrupt keeps off the sprite port meanwhile.
+glide_publish:
+        ld a,1
+        ld (g_busy),a
+        ld a,3
+        call g_call
+        call spr_publish
+        xor a
+        ld (g_busy),a
+        ret
+; From the interrupt: step the gliding sprites (not while the main code is in glide or publishing).
+glide_irq:
+        IFDEF L2_GLIDE_NOIRQ
+        ret
+        ENDIF
+        ld a,(g_busy)
+        or a
+        ret nz
+        ld a,(cur_mmu0)
+        cp GLIDE_PG
+        ret z
+        nextreg 0x50,GLIDE_PG   ; irq_out maps cur_mmu0 back
+        jp 0x0106
+        ENDIF
 
 col_map:
         ld (cur_mmu0),a         ; variable first: the ISR restores slot 0 from it
@@ -1460,6 +1538,19 @@ conv_pre:
 
 ; ---- 8842: show everything recorded since the previous copier call ------------
 spr_publish:
+        nextreg 7,3
+        call spr_pub_body
+        ld a,(run_fast)
+        nextreg 7,a
+        ret
+spr_pub_body:
+        ld a,(spr_on)
+        or a
+        jr z,.vis
+        IFNDEF L2_SPR_HIDE
+        nextreg 0x15,LORDER+1   ; shown again after a screen clear (spr_cls)
+        ENDIF
+.vis:
         ld a,(spr_on)
         or a
         ret z

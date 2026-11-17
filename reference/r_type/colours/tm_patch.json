@@ -1,0 +1,44 @@
+{
+ "families": {
+  "L0-F07": {
+   "name": "TM mark",
+   "fill": false,
+   "outline": true
+  },
+  "L1-F07": {
+   "name": "TM mark",
+   "fill": false,
+   "outline": true
+  },
+  "L2-F95": {
+   "name": "TM mark",
+   "fill": false,
+   "outline": true
+  },
+  "L3-F113": {
+   "name": "TM mark",
+   "fill": false,
+   "outline": true
+  },
+  "L4-F104": {
+   "name": "TM mark",
+   "fill": false,
+   "outline": true
+  },
+  "L5-F97": {
+   "name": "TM mark",
+   "fill": false,
+   "outline": true
+  },
+  "L6-F88": {
+   "name": "TM mark",
+   "fill": false,
+   "outline": true
+  },
+  "L7-F105": {
+   "name": "TM mark",
+   "fill": false,
+   "outline": true
+  }
+ }
+}
