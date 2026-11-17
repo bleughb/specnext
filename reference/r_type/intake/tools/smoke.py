@@ -101,15 +101,17 @@ def main(argv=None):
     except RuntimeError as e:
         print('smoke: FAIL: %s' % e)
         return 1
-    play = frames[2:]
+    import l2scroll
+    pace = l2scroll.PACE
+    play = [f for f in frames[2:] if f < 60]        # the level start (scenery to Layer 2) is a one-off
     worst = max(play) if play else 0
-    slow = sum(1 for f in play if f > 3)
+    slow = sum(1 for f in play if f > pace)
     hist = {f: frames.count(f) for f in sorted(set(frames))}
-    # the game waits for 3 interrupts per update; busier moments take 4. More than a quarter of the
-    # updates over 3 frames, or any over 6, means the hooks are costing play time.
-    ok = worst <= 6 and slow * 4 <= len(play)
+    # the game waits for PACE interrupts per update (l2scroll.PACE). More than a quarter of the
+    # updates over that, or any over PACE + 3, means the hooks are costing play time.
+    ok = worst <= pace + 3 and slow * 4 <= len(play)
     print('title reached, game started, %d updates: frames per update %s' % (len(frames), hist))
-    print('smoke: %s' % ('PASS' if ok else 'FAIL (slowest update %d frames, %d of %d over 3)' % (worst, slow, len(play))))
+    print('smoke: %s' % ('PASS' if ok else 'FAIL (slowest update %d frames, %d of %d over %d)' % (worst, slow, len(play), pace)))
     return 0 if ok else 1
 
 

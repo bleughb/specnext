@@ -77,6 +77,9 @@ irq_in: push ix
         jp 0xBE2B
 ; BE52 replaces POP AF / EX AF,AF' / POP HL.
 irq_out:
+        IFDEF L2_GLIDE
+        call glide_irq
+        ENDIF
         ld a,(cur_mmu0)
         nextreg 0x50,a
         ld a,(run_fast)
@@ -85,6 +88,15 @@ irq_out:
         ex af,af'
         pop hl
         jp 0xBE55
+
+; ---- 8F40 replaces DI / LD BC,7FFD: a level's data is unpacked with interrupts off (several
+; seconds at 3.5MHz, hidden on tape by the loading screen's logo). Run it at 28MHz; the first
+; interrupt after it (EI at 5C4C) puts the speed back (irq_out: run_fast).
+unpack_fast:
+        nextreg 7,3
+        di
+        ld bc,0x7FFD
+        jp 0x8F44
 
 ; ---- 863D replaces CALL 73D8: life/level restart, Layer 2 off -----------------
 l2_off: L2_OFF
@@ -97,6 +109,9 @@ l2_off_continue:
         jp 0x8BEB
 l2_off_title:
         L2_OFF
+        IFDEF L2_SPRITES
+        call spr_start          ; title figures (logo, TM) as sprites too; Layer 2 stays off
+        ENDIF
         xor a                   ; 7A8B: the game's start-up Kempston test (73EC),
         ld (0x7A8B),a           ; "absent" in the snapshot. Port 1F is real here.
         ; L2_NOTAPE builds patch the prompts out of FE03 itself (l2scroll.py
@@ -185,7 +200,11 @@ l2_scroll:
         nextreg 0x16,a
 .no:
         IFDEF L2_SPRITES
+        IFDEF L2_GLIDE
+        call glide_publish
+        ELSE
         call spr_publish
+        ENDIF
         ENDIF
         ld ix,0x8080
         jp 0x8846

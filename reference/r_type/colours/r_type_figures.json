@@ -1557,7 +1557,7 @@
   },
   "L0-F07": {
    "level": "TEXT",
-   "name": "",
+   "name": "TM mark",
    "layer": "original",
    "figures": [
     "L0-007"
@@ -1565,7 +1565,8 @@
    "graphics": [
     "B049"
    ],
-   "outline": false
+   "outline": true,
+   "fill": false
   },
   "L1-F01": {
    "level": "LEVEL1",
@@ -1641,7 +1642,7 @@
   },
   "L1-F07": {
    "level": "LEVEL1",
-   "name": "",
+   "name": "TM mark",
    "layer": "original",
    "figures": [
     "L1-007"
@@ -1649,7 +1650,8 @@
    "graphics": [
     "B049"
    ],
-   "outline": false
+   "outline": true,
+   "fill": false
   },
   "L1-F08": {
    "level": "LEVEL1",
@@ -4330,7 +4332,7 @@
   },
   "L2-F95": {
    "level": "LEVEL2",
-   "name": "",
+   "name": "TM mark",
    "layer": "original",
    "figures": [
     "L2-139"
@@ -4338,7 +4340,8 @@
    "graphics": [
     "B049"
    ],
-   "outline": false
+   "outline": true,
+   "fill": false
   },
   "L3-F01": {
    "level": "LEVEL3",
@@ -4633,7 +4636,7 @@
   },
   "L3-F113": {
    "level": "LEVEL3",
-   "name": "",
+   "name": "TM mark",
    "layer": "original",
    "figures": [
     "L3-228"
@@ -4641,7 +4644,8 @@
    "graphics": [
     "B049"
    ],
-   "outline": false
+   "outline": true,
+   "fill": false
   },
   "L3-F12": {
    "level": "LEVEL3",
@@ -6030,7 +6034,7 @@
   },
   "L4-F104": {
    "level": "LEVEL4",
-   "name": "",
+   "name": "TM mark",
    "layer": "original",
    "figures": [
     "L4-144"
@@ -6038,7 +6042,8 @@
    "graphics": [
     "B049"
    ],
-   "outline": false
+   "outline": true,
+   "fill": false
   },
   "L4-F11": {
    "level": "LEVEL4",
@@ -8339,7 +8344,7 @@
   },
   "L5-F97": {
    "level": "LEVEL5",
-   "name": "",
+   "name": "TM mark",
    "layer": "original",
    "figures": [
     "L5-137"
@@ -8347,7 +8352,8 @@
    "graphics": [
     "B049"
    ],
-   "outline": false
+   "outline": true,
+   "fill": false
   },
   "L6-F01": {
    "level": "LEVEL6",
@@ -9436,7 +9442,7 @@
   },
   "L6-F88": {
    "level": "LEVEL6",
-   "name": "",
+   "name": "TM mark",
    "layer": "original",
    "figures": [
     "L6-129"
@@ -9444,7 +9450,8 @@
    "graphics": [
     "B049"
    ],
-   "outline": false
+   "outline": true,
+   "fill": false
   },
   "L7-F01": {
    "level": "LEVEL7",
@@ -9633,7 +9640,7 @@
   },
   "L7-F105": {
    "level": "LEVEL7",
-   "name": "",
+   "name": "TM mark",
    "layer": "original",
    "figures": [
     "L7-144"
@@ -9641,7 +9648,8 @@
    "graphics": [
     "B049"
    ],
-   "outline": false
+   "outline": true,
+   "fill": false
   },
   "L7-F11": {
    "level": "LEVEL7",

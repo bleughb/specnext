@@ -24,7 +24,14 @@ SITES = [(0x8842, 'dd218080', 'l2_scroll', 0xC3), (0x89C3, '21005e', 'l2_stage',
          (0x8734, 'cdebfe', 'l2_init', 0xCD), (0x863D, 'cdd873', 'l2_off', 0xCD),
          (0x8BE8, '210058', 'l2_off_continue', 0xC3), (0xFE03, 'cdc273', 'l2_off_title', 0xC3),
          (0x92E8, '11c971', 'l2_off_scores', 0xC3),
-         (0xBE26, 'dde5fde5e5', 'irq_in', 0xC3), (0xBE52, 'f108e1', 'irq_out', 0xC3)]
+         (0xBE26, 'dde5fde5e5', 'irq_in', 0xC3), (0xBE52, 'f108e1', 'irq_out', 0xC3),
+         (0x8F40, 'f301fd', 'unpack_fast', 0xC3)]
+
+
+# Game pace (owner decision 2026-11-17): the main loop waits for PACE interrupts per update (868C:
+# LD A,(7A8A) / CP 3). The original's updates averaged 4.35 frames (3 at least, more when busy); at
+# 28MHz every update finishes in time, so 3 played ~45% fast. 4 is close to the original, steady.
+PACE = 4
 
 
 def fixture(frame=2000, name='play'):
@@ -51,12 +58,15 @@ RAMFIX = [(0x5C4C, None, '01fd7f3e10ed79ed9151%02x37fbc9' % SLOT1_BANK),
 NOTAPE = [(0xFE22, '200e', '180e'),            # JR NZ,FE32 -> JR FE32: no REWIND SIDE 2 + key
           (0xFE39, '0e01', '1820'),            # LD C,1 -> JR FE5B: no LOADING ... + key, no tape text
           (0xFE76, 'cdc5c2', '181000'),        # CALL C2C5 -> JR FE88: no level text
-          (0xFE96, 'cd', 'c9')]                # CALL C2C5 -> RET: no LOADED OK, STOP TAPE + key
+          (0xFE96, 'cd', 'c9'),                # CALL C2C5 -> RET: no LOADED OK, STOP TAPE + key
+          (0xFE16, 'cd4d8a', '000000')]        # CALL 8A4D -> nothing: the logo animation played while a
+                                               # level loaded; the title (7796) plays it again straight after
 
 
 SPRITE_SITES = [(0x8CFD, 'c5d5d9', 'plot_n', 0xC3), (0x8D65, 'c5d506', 'plot_h', 0xC3),
                 (0x8DD3, 'c5d5d9', 'plot_v', 0xC3), (0x8E29, 'c5d506', 'plot_hv', 0xC3),
-                (0x8886, '7cc620', 'spr_gate', 0xC3), (0x8EA2, '3a9c7a', 'cell_hook', 0xC3), (0x8EC2, '780f0f', 'cand_hook', 0xC3)]
+                (0x8886, '7cc620', 'spr_gate', 0xC3), (0x8EA2, '3a9c7a', 'cell_hook', 0xC3), (0x8EC2, '780f0f', 'cand_hook', 0xC3),
+                (0xFDF8, '210040', 'spr_cls', 0xC3)]
 
 
 def behind_flags(path=HERE/'behind_flags.asm'):
@@ -97,7 +107,8 @@ def build(src=None, folder=OUT, asm=None, sprites=False, full=False, colours=Non
             import r_type_colour as RC
             cbanks, cinfo = RC.tables(RC.load_colours() if colours is None else colours)
             extra_banks = {**extra_banks, **cbanks}
-            extra_banks[13] = behind_flags()
+            glide = blocks.get('glide', b'')    # glide.asm, page 27 (bank 13 high half)
+            extra_banks[13] = behind_flags()[:8192]+bytes(0x100)+glide+bytes(8192-0x100-len(glide))
 
         def apply(self, snap):
             super().apply(snap)
@@ -114,6 +125,10 @@ def build(src=None, folder=OUT, asm=None, sprites=False, full=False, colours=Non
                 data[addr-base:addr-base+3] = bytes([opcode])+Z.w16(syms[label])
                 snap.banks[bank] = bytes(data)
 
+            data = bytearray(snap.banks[2])
+            assert data[0x868F-0x8000:0x8691-0x8000] == bytes([0xFE, 3]), 'pace site'
+            data[0x8690-0x8000] = PACE
+            snap.banks[2] = bytes(data)
             for addr, old, new in RAMFIX:
                 bank, base = (5, 0x4000) if addr < 0x8000 else (2, 0x8000)
                 data = bytearray(snap.banks[bank])
