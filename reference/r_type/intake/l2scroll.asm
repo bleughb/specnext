@@ -334,6 +334,9 @@ wrap320:
 
 ; ---- 8734 replaces CALL FEEB: move the freshly drawn scenery to Layer 2 -------
 l2_init:
+        ld a,3                  ; 28MHz for the whole level start: the interrupt restores run_fast,
+        ld (run_fast),a         ; which was still 0 here (title), so the draws ran at 3.5MHz
+        nextreg 7,3
         call 0xFEEB
 l2_convert:
         push af
@@ -345,11 +348,9 @@ l2_convert:
         ld a,L2A_PAGE           ; both screens transparent (index 0)
 .fill:  ld (cur_mmu0),a
         nextreg 0x50,a
-        ld hl,0
-        ld de,1
-        ld bc,0x1FFF
-        ld (hl),0
-        ldir
+        ld hl,clr_prog          ; DMA fill of the page from a fixed zero byte (LDIR took 29 frames
+        ld bc,(clr_end-clr_prog)*256+0x6B ; for the 160K at 28MHz)
+        otir
         inc a
         cp L2B_PAGE+10
         jr nz,.fill
@@ -771,6 +772,12 @@ pc_src: ds 8
 pc_mask: ds 8                   ; see-through pixels of the cell (bit 7 = leftmost)
         ALIGN 16
 zero8:  ds 8
+clr_prog: db 0x83,0xC3,0x7D     ; disable, reset; WR0 A->B, A address and length follow
+        dw zero8,0x2000
+        db 0x24,0x10,0xAD       ; A memory fixed; B memory increment; continuous, B address follows
+        dw 0
+        db 0x82,0xCF,0x87       ; stop at end; load; enable
+clr_end:
         IFDEF L2_SPRITES
         INCLUDE "l2sprites_body.asm"
         ENDIF

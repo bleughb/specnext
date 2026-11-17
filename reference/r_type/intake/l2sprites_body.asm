@@ -147,7 +147,10 @@ spr_after:
         jr z,.x
         ld a,(emitted)
         or a
-        jr z,.x
+        jr nz,.ok
+        ld hl,stat_part         ; a plot left to the ULA (8x8 colour blocks)
+        inc (hl)
+        jr .x
         ; Every figure is whole: overlaps follow plot order, pixel by pixel (the old rule, partly
         ; hidden figures behind all others, was removed 2026-11-17).
 .ok:    ld a,(cur_serial)
@@ -296,7 +299,7 @@ spr_rec_body:
         ld (serial),a
 .nr:    ld a,(serial)
         inc a
-        jr z,.out               ; more than 255 plots in one update: native
+        jp z,.out               ; more than 255 plots in one update: native
         ld (serial),a
         ld (cur_serial),a
         ld a,(spr_n)
@@ -304,7 +307,7 @@ spr_rec_body:
         ld a,e
         dec a
         cp 16
-        jr nc,.out
+        jp nc,.out
         ld a,d
         dec a
         cp 18                   ; at most 8 x 9 sprites: the entry bitmap is 72 bits
@@ -332,11 +335,13 @@ spr_rec_body:
         jr z,.have
 .stale: call reconvert          ; the game rewrote this graphic in place
         jr c,.out
-.have:  ld a,(spr_n)
+.have:  ld a,(upd)               ; shown this update: not evicted (c_evict)
+        ld (ix+19),a
+        ld a,(spr_n)
         add a,(ix+4)
         jr c,.out
         cp MAXSPR+1
-        jr nc,.out              ; no sprites left: the whole figure stays on the ULA
+        jp nc,.out              ; no sprites left: the whole figure stays on the ULA
         ld a,(ix+16)
         or a
         jr z,.em
@@ -387,56 +392,56 @@ cache_find:
 
 ; ---- convert the graphic at r_src into patterns; carry = no room --------------
 convert:
-        ld a,(cache_n)
-        cp MAXENT
-        jp nc,conv_fail
-        ld a,(spr_ovf)
-        or a
-        jp nz,conv_keep
         call pre_find           ; an outlined graphic: copy its pre-rendered patterns
         jp z,conv_pre
-        ld a,(ny)               ; refuse before any work if it cannot fit even
-        ld b,a                  ; with every tile used
+        ld a,(ny)               ; spread conversion work: at most BUDGET tiles an
+        ld d,a                  ; update, or one figure of any size
         ld a,(nx)
-        ld c,a
-        ld a,(next_slot)
-.need:  add a,c
-        jp c,conv_fail
-        djnz .need
-        cp CACHE_LIM+1
-        jp nc,conv_fail
-        ld hl,next_slot         ; spread conversion work: at most BUDGET tiles an
-        sub (hl)                ; update, or one figure of any size
-        ld c,a                  ; tiles this figure may need
-        ld a,(budget)
-        cp BUDGET
-        jr z,.first
+        ld e,a
+        mul d,e
+        ld c,e                  ; tiles this figure may need
+        ld a,(budget)           ; fits: spend it; too big: only as the update's first
         cp c
-        jr c,conv_later
-        sub c
+        jr nc,.sub
+        cp BUDGET
+        jr nz,conv_later
+        xor a
         jr .spend
-.first: xor a
+.sub:   sub c
 .spend: ld (budget),a
+        ld a,c
+        call alloc              ; IX = entry, A = first slot
+        jp c,conv_fail
+        ld (c_slot),a
+        add a,c
+        ld (slot_lim),a
         ld hl,(r_src)
         ld (ix+0),l
         ld (ix+1),h
         ld a,(r_ink)
         ld (ix+2),a
-        ld a,(next_slot)
-        ld (ix+3),a
         ld (ix+16),0
-        ld (c_slot),a
-        ld a,CACHE_LIM
-        ld (slot_lim),a
         call conv_core
         jp c,conv_fail
         ld a,(c_slot)
-        ld (next_slot),a
         sub (ix+3)
-        ld (ix+4),a             ; sprites this figure needs
-        ld hl,cache_n
-        inc (hl)
+        ld (ix+4),a             ; sprites this figure needs (the rest of its slots free again)
         or a
+        ret
+; A = slots wanted: glide.asm c_alloc. IX = entry, A = first slot; carry = no room. Keeps BC, DE, HL.
+alloc:  push bc
+        push de
+        push hl
+        ld (ca_n),a
+        ld a,0x0F
+        call g_call
+        pop hl
+        pop de
+        pop bc
+        ld ix,(ca_ent)
+        ld a,(ca_slot)
+        add a,1                 ; carry when FF
+        dec a
         ret
 ; Same entry, same pattern slots, new pixels. Carry = it no longer fits.
 reconvert:
@@ -453,18 +458,12 @@ reconvert:
         ld (ix+1),0xFF
         scf
         ret
-conv_fail:
-        ld a,(spr_cool)
-        or a
-        jr z,.ask
-        ld a,1                  ; restarted recently and still full: the figures
-        ld (spr_tight),a        ; on screen need more than 128 patterns
-        jr conv_keep
-.ask:   ld a,1
-        ld (spr_ovf),a
+conv_fail:                      ; the figures shown this update need more than 128 patterns
 conv_keep:
         ld hl,stat_drop
         inc (hl)
+        scf
+        ret
 conv_later:
         scf                     ; the figure is drawn natively this update
         ret
@@ -1487,30 +1486,25 @@ conv_pre:
         inc hl
         ld d,(hl)
         ld (p_map),de
-        ld a,(next_slot)
-        ld hl,p_nt
-        add a,(hl)
-        jp c,.full
-        cp CACHE_LIM+1
-        jp nc,.full
         ld a,(p_nt)
         ld c,a
-        ld a,(budget)
-        cp BUDGET
-        jr z,.first
+        ld a,(budget)           ; fits: spend it; too big: only as the update's first
         cp c
-        jp c,.later
-        sub c
+        jr nc,.sub
+        cp BUDGET
+        jp nz,.later
+        xor a
         jr .spend
-.first: xor a
+.sub:   sub c
 .spend: ld (budget),a
+        ld a,(p_nt)
+        call alloc              ; unmaps the directory: p_* are already read
+        jp c,conv_fail
+        ld (c_slot),a
         ld hl,(r_src)
         ld (ix+0),l
         ld (ix+1),h
         ld (ix+2),0
-        ld a,(next_slot)
-        ld (ix+3),a
-        ld (c_slot),a
         ld a,(p_nt)
         ld (ix+4),a
         ld hl,(r_sum)
@@ -1596,16 +1590,10 @@ conv_pre:
         pop bc
         djnz .u
         call col_unmap
-        ld a,(c_slot)
-        ld (next_slot),a
-        ld hl,cache_n
-        inc (hl)
         or a
         ret
 .later: call col_unmap
         jp conv_later
-.full:  call col_unmap
-        jp conv_fail
 
 ; ---- 8842: show everything recorded since the previous copier call ------------
 spr_publish:
@@ -1661,7 +1649,9 @@ spr_pub_body:
         cp (hl)
         jr c,.nm
         ld (hl),a
-.nm:    ld a,(run_fast)         ; outside play (title) convert everything at once: no scroll to
+.nm:    ld hl,upd
+        inc (hl)
+        ld a,(run_fast)        ; outside play (title) convert everything at once: no scroll to
         or a                    ; protect, and a figure waiting for conversion steps natively
         ld a,BUDGET
         jr nz,.bg
@@ -1737,6 +1727,10 @@ slot_lim: db 128
 r_sum:    dw 0
 next_slot: db 0
 cache_n:  db 0
+upd:      db 0                  ; publications so far (wraps): cache entry stamps
+ca_n:     db 0                  ; alloc / c_alloc
+ca_slot:  db 0
+ca_ent:   dw 0
 stat_flush: db 0
 stat_drop: db 0
 stat_max: db 0

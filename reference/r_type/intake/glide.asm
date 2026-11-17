@@ -20,6 +20,7 @@ glide_start:
         jp g_frame
         jp reveal_on            ; 0109 (showpiece.py, spec_hold)
         jp reveal_off           ; 010C
+        jp c_alloc              ; 010F (l2sprites_body alloc)
 
 MAXF    EQU 64                  ; figures per update
 COPPER_AT EQU 0x1800            ; showpiece Copper list, 2048 bytes in this page (showpiece.py)
@@ -670,6 +671,146 @@ reveal_off:
         nextreg 0x43,0x10
         ret
 
+; ---- 010F: claim ca_n consecutive pattern slots and a cache entry (l2sprites_body alloc) --------
+; Pattern RAM holds 128 4-bit patterns. When the slots or the entries run out, the least recently
+; used entry (stamp ix+19 = the update it was last shown, upd) is forgotten, never one shown this
+; update; until 2026-11-17 the whole cache was restarted instead, and figures waiting for
+; conversion showed natively (8x8 attribute blocks) for several updates.
+; Out: ca_ent = entry (stamped, marked free FFFF, slots ix+3/ix+4 reserved), ca_slot = first
+; slot, FF = no room.
+c_alloc:
+        ld a,(ca_n)
+        or a
+        jr nz,.retry
+        inc a
+        ld (ca_n),a
+.retry: ld hl,ca_own            ; slots held by live entries
+        ld de,ca_own+1
+        ld bc,127
+        ld (hl),0
+        ldir
+        ld ix,cache
+        ld a,(cache_n)
+        or a
+        jr z,.scan
+        ld b,a
+.mk:    ld a,(ix+0)
+        and (ix+1)
+        inc a
+        jr z,.mn                ; FFFF: a free entry
+        ld a,(ix+4)
+        or a
+        jr z,.mn
+        ld c,a
+        ld hl,ca_own
+        ld a,(ix+3)
+        add hl,a
+.m1:    ld (hl),1
+        inc hl
+        dec c
+        jr nz,.m1
+.mn:    ld de,ENT
+        add ix,de
+        djnz .mk
+.scan:  ld hl,ca_own            ; first run of ca_n free slots
+        ld a,(ca_n)
+        ld d,a
+        ld c,0
+        ld b,128
+.s:     ld a,(hl)
+        or a
+        jr z,.fr
+        ld c,0
+        jr .sn
+.fr:    inc c
+        ld a,c
+        cp d
+        jr z,.found
+.sn:    inc hl
+        djnz .s
+        call c_evict
+        jr nc,.retry
+.none:  ld a,0xFF
+        ld (ca_slot),a
+        ret
+.found: ld de,ca_own
+        or a
+        sbc hl,de
+        ld a,l
+        ld hl,ca_n
+        sub (hl)
+        inc a
+        ld (ca_slot),a
+.ent:   ld ix,cache             ; a free entry, else a new one, else the least recently used
+        ld a,(cache_n)
+        or a
+        jr z,.app
+        ld b,a
+        ld de,ENT
+.e1:    ld a,(ix+0)
+        and (ix+1)
+        inc a
+        jr z,.got
+        add ix,de
+        djnz .e1
+.app:   ld a,(cache_n)
+        cp MAXENT
+        jr nc,.full
+        inc a
+        ld (cache_n),a
+.got:   ld (ca_ent),ix
+        ld (ix+0),0xFF
+        ld (ix+1),0xFF
+        ld a,(ca_slot)
+        ld (ix+3),a
+        ld a,(ca_n)
+        ld (ix+4),a
+        ld a,(upd)
+        ld (ix+19),a
+        ret
+.full:  call c_evict
+        jr nc,.ent
+        jr .none
+
+; Forget the least recently used live entry not shown this update. Carry = none.
+c_evict:
+        ld ix,cache
+        ld a,(cache_n)
+        or a
+        scf
+        ret z
+        ld b,a
+        ld c,0                  ; oldest age so far
+        ld hl,0
+.v:     ld a,(ix+0)
+        and (ix+1)
+        inc a
+        jr z,.vn
+        ld a,(upd)
+        sub (ix+19)
+        jr z,.vn                ; shown this update
+        cp c
+        jr c,.vn
+        jr z,.vn
+        ld c,a
+        push ix
+        pop hl
+.vn:    ld de,ENT
+        add ix,de
+        djnz .v
+        ld a,h
+        or l
+        scf
+        ret z
+        push hl
+        pop ix
+        ld (ix+0),0xFF
+        ld (ix+1),0xFF
+        ld hl,stat_flush        ; counts evictions now
+        inc (hl)
+        or a
+        ret
+
 g_recip:  db 0,0,128,85,64,51,43,37,32     ; 256 / P
 g_fr:     db 0
 g_tmp:    db 0
@@ -686,6 +827,7 @@ g_ay:     ds 4
 g_cur:    ds MAXF*FENT
 g_prev:   ds MAXF*FENT
 g_mov:    ds MAXSPR*MENT
+ca_own:   ds 128
 glide_end:
         ASSERT glide_end < COPPER_AT     ; COPPER_AT-1: the showpiece mode byte
 ; (the SAVEBIN is in l2sprites.asm / l2sprites_full.asm: the build reads output names from the top file)
