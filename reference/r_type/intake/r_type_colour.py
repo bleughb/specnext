@@ -16,10 +16,10 @@ cell's ink (black ink on coloured paper = opaque black), coloured paper drawn, b
 (paintable: paint_clear). Grey = transparent (clear=True). Flash colours (8EB1 ink override) are not
 painted: a forced-ink draw keeps the forced colour.
 
-Runtime (l2sprites_body.asm col_lookup): colour data only in banks 32..47 (pages 64..95), which the
+Runtime (l2sprites_body.asm col_lookup): colour data only in banks 24..27 and 32..47, which the
 game never maps. Pages 64-65: a directory per level (count, first) then the sorted cell addresses;
-pages 66..87: 40-byte records per painted cell (8 lines x 4 bytes of nibbles, left pixel high, 0 =
-default; then 8 transparent masks, bit 7 = leftmost). Pages 88..95: graphics with an outline
+pages 66..95: 40-byte records per painted cell (8 lines x 4 bytes of nibbles, left pixel high, 0 =
+default; then 8 transparent masks, bit 7 = leftmost). Pages 48..55 (banks 24-27): graphics with an outline
 (r_type_figures.json), pre-rendered one pixel bigger on every side with their border (outline_pages). Patterns are converted once per graphic, so
 the lookup costs only at conversion. The graphic stream is unpacked per level into the same
 addresses: the level is part of every key.
@@ -43,9 +43,9 @@ sys.path[:0] = [str(ROOT)]
 
 RECORD = 'r_type'
 COLOURS = str(ROOT / 'docs' / 'profiles' / (RECORD + '_colours.json'))
-COLOUR_BANKS = list(range(32, 48))
-DIR_PAGE, REC_PAGE0, LAST_PAGE = 64, 66, 87     # directory: pages 64-65
-PRE_DIR, PRE_PAT0, PRE_LAST = 88, 89, 95      # outlined graphics: directory, then 128-byte patterns
+COLOUR_BANKS = list(range(24, 28)) + list(range(32, 48))   # 24-27: outline pre-renders
+DIR_PAGE, REC_PAGE0, LAST_PAGE = 64, 66, 95     # directory: pages 64-65; records 66-95
+PRE_DIR, PRE_PAT0, PRE_LAST = 48, 49, 55      # outlined graphics (banks 24-27): directory, then 128-byte patterns
 PRE_ENTRY = 12
 REC = 40
 PER_PAGE = 8192 // REC
@@ -334,6 +334,7 @@ def outline_pages(entries):
     return pages
 
 
+GAP = 2                         # fill_map: see-through gaps this narrow count as inside
 FILL = 8                        # opaque black (the converter's index for black ink on coloured paper)
 
 
@@ -365,11 +366,40 @@ def fill_map(data=None, reg=None):
                     if x < w and y < h:
                         solid[y][x] = bool(ink) if on else bool(pap)
                         where[(x, y)] = (key, bit, byte)
+        # a gap of up to GAP see-through pixels with the figure on both sides (across or down) is a
+        # wall for the outside flood, so narrow gaps between parts fill in (owner, 2026-11-17)
+        wall = [row[:] for row in solid]
+        for y in range(h):
+            x = 0
+            while x < w:
+                if solid[y][x]:
+                    x += 1
+                    continue
+                e = x
+                while e < w and not solid[y][e]:
+                    e += 1
+                if x > 0 and e < w and e - x <= GAP:
+                    for i in range(x, e):
+                        wall[y][i] = True
+                x = e
+        for x in range(w):
+            y = 0
+            while y < h:
+                if solid[y][x]:
+                    y += 1
+                    continue
+                e = y
+                while e < h and not solid[e][x]:
+                    e += 1
+                if y > 0 and e < h and e - y <= GAP:
+                    for i in range(y, e):
+                        wall[i][x] = True
+                y = e
         seen = [[False] * w for _ in range(h)]
         stack = [(x, y) for x in range(w) for y in (0, h - 1)] + [(x, y) for y in range(h) for x in (0, w - 1)]
         while stack:
             x, y = stack.pop()
-            if 0 <= x < w and 0 <= y < h and not seen[y][x] and not solid[y][x]:
+            if 0 <= x < w and 0 <= y < h and not seen[y][x] and not wall[y][x]:
                 seen[y][x] = True
                 stack += [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
         for (x, y), (key, bit, byte) in where.items():
