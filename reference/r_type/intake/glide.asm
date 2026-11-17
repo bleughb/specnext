@@ -460,6 +460,8 @@ reveal_on:
         inc hl
         djnz .pal
         nextreg 0x70,0x10       ; 320x256 x 8
+        ld a,1                  ; then the pixelate / depixelate transition from the original
+        ld (tr_on),a
         jr .show
 .cop:   ld hl,COPPER_AT         ; the list is in this page (no mapping: at start-up the stack is in slot 6)
         ld bc,2048
@@ -472,7 +474,12 @@ reveal_on:
         jr nz,.up
         nextreg 0x70,0x20       ; 640x256 x 4
         nextreg 0x62,0xC0       ; Copper on, from the top every frame
-.show:  nextreg 0x12,48         ; screen A
+.show:  ld a,(tr_on)
+        or a
+        ld a,48                 ; screen A: the picture
+        jr z,.sa
+        ld a,ORIG_BANK          ; the transition starts from the original, in Layer 2
+.sa:    nextreg 0x12,a
         nextreg 0x16,0
         nextreg 0x71,0
         nextreg 0x17,0
@@ -482,10 +489,179 @@ reveal_on:
         nextreg 0x18,0
         nextreg 0x18,255
         nextreg 0x69,0x80
+        ld a,(tr_on)
+        or a
+        call nz,transition
         pop hl
         pop de
         pop bc
         ret
+;---- pixelate the original, swap at the blockiest, depixelate the picture ------------------------
+; Each step draws a mosaic (one source pixel per BxB block: one source column per block, copied
+; across it) into Layer 2 screen B and shows it. Source in slot 7, destination in slot 3 (the start-
+; up stack is in slot 6), both restored; 28MHz while it runs.
+ORIG_BANK EQU 58                ; showpiece.py ORIG_BANK0
+transition:
+        push bc
+        push de
+        push hl
+        ld bc,0x243B
+        ld a,0x07
+        out (c),a
+        inc b
+        in a,(c)
+        ld (tr_spd),a
+        dec b
+        ld a,0x53
+        out (c),a
+        inc b
+        in a,(c)
+        ld (tr_m3),a
+        dec b
+        ld a,0x57
+        out (c),a
+        inc b
+        in a,(c)
+        ld (tr_m7),a
+        nextreg 7,3
+        ld b,15                 ; the original, now on Layer 2 (looks the same)
+        call waitf
+        ld hl,tr_out
+        ld a,ORIG_BANK*2
+        call .seq
+        ld hl,tr_in
+        ld a,96                 ; the picture: page 96 (bank 48)
+        call .seq
+        nextreg 0x12,48         ; full detail
+        ld a,(tr_m3)
+        nextreg 0x53,a
+        ld a,(tr_m7)
+        nextreg 0x57,a
+        ld a,(tr_spd)
+        and 3
+        nextreg 7,a
+        pop hl
+        pop de
+        pop bc
+        ret
+.seq:   ld (tr_src),a
+.s:     ld a,(hl)
+        or a
+        ret z
+        ld (tr_blk),a
+        push hl
+        call mosaic
+        nextreg 0x12,53         ; screen B
+        ld b,2
+        call waitf
+        pop hl
+        inc hl
+        jr .s
+tr_out: db 2,3,4,6,8,12,16,24,0
+tr_in:  db 24,16,12,8,6,4,3,2,0
+
+; One mosaic of block tr_blk from pages tr_src.. into screen B (pages 106..).
+mosaic: ld hl,0
+        ld (tr_x),hl
+.col:   ld hl,(tr_x)
+        ld de,320
+        or a
+        sbc hl,de
+        ret nc
+        ld hl,(tr_x)
+        call colpage            ; A = column / 32
+        ld b,a
+        ld a,(tr_src)
+        add a,b
+        nextreg 0x57,a
+        ld a,l
+        and 31
+        add a,0xE0
+        ld h,a                  ; HL = source column (slot 7)
+        ld d,high colbuf
+        ld e,0
+.rb:    ld l,e
+        ld a,(hl)               ; the block's pixel
+        ld b,0
+        ld c,a
+        ld a,(tr_blk)
+        ld b,a
+        ld a,c
+.fl:    ld (de),a
+        inc e
+        jr z,.cdone
+        djnz .fl
+        jr .rb
+.cdone: ld a,(tr_blk)           ; copy across the block's columns
+        ld b,a
+.cc:    push bc
+        ld hl,(tr_x)
+        ld de,320
+        or a
+        sbc hl,de
+        jr nc,.cx
+        ld hl,(tr_x)
+        call colpage
+        add a,106               ; screen B, page 106 (bank 53)
+        nextreg 0x53,a
+        ld a,l
+        and 31
+        add a,0x60
+        ld d,a
+        ld e,0
+        ld hl,colbuf
+        ld bc,256
+        ldir
+        ld hl,(tr_x)
+        inc hl
+        ld (tr_x),hl
+        pop bc
+        djnz .cc
+        jr .col
+.cx:    pop bc
+        ret
+colpage:                        ; HL = column (0-319) -> A = column / 32
+        ld a,h
+        rlca
+        rlca
+        rlca
+        ld b,a
+        ld a,l
+        rlca
+        rlca
+        rlca
+        and 7
+        or b
+        ret
+waitf:  push bc                 ; B frames
+        ld bc,0x243B
+.w1:    ld a,0x1F
+        out (c),a
+        inc b
+        in a,(c)
+        dec b
+        cp 192
+        jr nz,.w1
+.w2:    ld a,0x1F
+        out (c),a
+        inc b
+        in a,(c)
+        dec b
+        cp 1
+        jr nz,.w2
+        pop bc
+        djnz waitf
+        ret
+tr_on:  db 0
+tr_spd: db 0
+tr_m3:  db 0
+tr_m7:  db 0
+tr_src: db 0
+tr_blk: db 0
+tr_x:   dw 0
+        ALIGN 256
+colbuf: ds 256
+
 ; Back to the game: Copper and Layer 2 off, the first Layer 2 palette shown (hook_setup sets the
 ; game's Layer 2 registers and palette straight after).
 reveal_off:
