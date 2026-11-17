@@ -183,14 +183,49 @@ def indexed_320(path):
     return {L2_BANK0 + n: bytes(data[n * 16384:(n + 1) * 16384]) for n in range(5)}, bytes(out)
 
 
+ORIG_BANK0 = 58                    # the original screen as a Layer 2 image (the transition starts from it)
+
+
+def original_banks(source, pal):
+    """The original 256x192 screen at its place in 320x256 (32, 32), in the same 8-bit Layer 2 as the
+    picture, for the pixelate / depixelate transition (glide.asm transition). Its colours go into
+    palette entries the picture does not use. -> ({bank: data}, palette bytes)."""
+    pic = Image.open(source)
+    used = {c for _, c in pic.getcolors(1024)}
+    free = [i for i in range(255, -1, -1) if i not in used]
+    orig = Image.open(ORIGINAL).convert('RGB')
+    cols = {}
+    pal = bytearray(pal)
+    for c in sorted(set(orig.getdata())) + [(0, 0, 0)]:
+        if c in cols:
+            continue
+        i = free.pop(0)
+        r, g, b = (min(7, (v * 7 + 127) // 255) for v in c)
+        hi = (r << 5) | (g << 2) | (b >> 1)
+        if hi == TRANSP:
+            g = g + 1 if g < 7 else g - 1
+            hi = (r << 5) | (g << 2) | (b >> 1)
+        pal[2 * i:2 * i + 2] = bytes([hi, b & 1])
+        cols[c] = i
+    black = cols[(0, 0, 0)]
+    data = bytearray([black]) * 81920
+    px = orig.load()
+    for x in range(256):
+        for y in range(192):
+            data[(x + 32) * 256 + y + 32] = cols[px[x, y]]
+    return {ORIG_BANK0 + n: bytes(data[n * 16384:(n + 1) * 16384]) for n in range(5)}, bytes(pal)
+
+
 def build(source=None):
     """-> ({bank: data}, info). The glide page payload (bank COPPER_BANK) starts with a mode byte:
     0 = Copper list (640x256, bands), 1 = 9-bit palette (320x256 x 256 colours)."""
     ix = indexed_320(source or SOURCE)
     if ix:
         banks, pal = ix
+        ob, pal = original_banks(source or SOURCE, pal)
+        banks.update(ob)
         banks[COPPER_BANK] = bytes([1]) + pal + bytes(16383 - len(pal))
-        return banks, dict(mode='320x256x256', palette=256)
+        return banks, dict(mode='320x256x256', palette=256, original_banks=sorted(ob))
     img = upscale(source or SOURCE)
     idx, pals = convert(img)
     banks = layer2_banks(idx)
