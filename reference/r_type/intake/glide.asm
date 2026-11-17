@@ -18,8 +18,11 @@ glide_start:
         jp g_record
         jp g_publish
         jp g_frame
+        jp reveal_on            ; 0109 (showpiece.py, spec_hold)
+        jp reveal_off           ; 010C
 
 MAXF    EQU 64                  ; figures per update
+COPPER_AT EQU 0x1800            ; showpiece Copper list, 2048 bytes in this page (showpiece.py)
 FENT    EQU 16                  ; 0-1 IY, 2 order (object), 3 first sprite, 4 sprites, 5 column, 6 row,
                                 ; 7 order (object + graphic), 8-9 graphic, 10 colour override (8EB1)
 MENT    EQU 13                  ; 0 sprite, 1-2 x, 3 y, 4 attr 2 without x bit 8, 5-6 x offset, 7-8 y offset,
@@ -432,6 +435,65 @@ g_frame:
         pop bc
         ret
 
+; ---- start-up showpiece (showpiece.py): the spec screen at 640x256, Copper palette bands -----------
+; The picture is already in Layer 2 screen A (banks 48-52, built in). Upload the Copper list (built
+; into this page at COPPER_AT by l2scroll.py), full-screen clip, start the Copper (restarting every
+; frame) and show Layer 2. Preserves BC, DE and HL.
+reveal_on:
+        push bc
+        push de
+        push hl
+        nextreg 0x62,0          ; Copper stopped, upload index 0
+        nextreg 0x61,0
+        ld a,(COPPER_AT-1)      ; 1: a 320x256 x 256-colour picture and its palette (showpiece.py)
+        or a
+        jr z,.cop
+        nextreg 0x43,0x10       ; Layer 2 first palette, shown
+        nextreg 0x40,0
+        ld hl,COPPER_AT
+        ld b,0
+.pal:   ld a,(hl)
+        nextreg 0x44,a
+        inc hl
+        ld a,(hl)
+        nextreg 0x44,a
+        inc hl
+        djnz .pal
+        nextreg 0x70,0x10       ; 320x256 x 8
+        jr .show
+.cop:   ld hl,COPPER_AT         ; the list is in this page (no mapping: at start-up the stack is in slot 6)
+        ld bc,2048
+.up:    ld a,(hl)
+        nextreg 0x60,a
+        inc hl
+        dec bc
+        ld a,b
+        or c
+        jr nz,.up
+        nextreg 0x70,0x20       ; 640x256 x 4
+        nextreg 0x62,0xC0       ; Copper on, from the top every frame
+.show:  nextreg 0x12,48         ; screen A
+        nextreg 0x16,0
+        nextreg 0x71,0
+        nextreg 0x17,0
+        nextreg 0x1C,1
+        nextreg 0x18,0          ; the whole layer
+        nextreg 0x18,159
+        nextreg 0x18,0
+        nextreg 0x18,255
+        nextreg 0x69,0x80
+        pop hl
+        pop de
+        pop bc
+        ret
+; Back to the game: Copper and Layer 2 off, the first Layer 2 palette shown (hook_setup sets the
+; game's Layer 2 registers and palette straight after).
+reveal_off:
+        nextreg 0x62,0
+        nextreg 0x69,0
+        nextreg 0x43,0x10
+        ret
+
 g_recip:  db 0,0,128,85,64,51,43,37,32     ; 256 / P
 g_fr:     db 0
 g_tmp:    db 0
@@ -449,5 +511,5 @@ g_cur:    ds MAXF*FENT
 g_prev:   ds MAXF*FENT
 g_mov:    ds MAXSPR*MENT
 glide_end:
-        ASSERT glide_end <= 0x2000
+        ASSERT glide_end < COPPER_AT     ; COPPER_AT-1: the showpiece mode byte
 ; (the SAVEBIN is in l2sprites.asm / l2sprites_full.asm: the build reads output names from the top file)
