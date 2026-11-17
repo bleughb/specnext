@@ -25,6 +25,9 @@ MASK_PAGE0 EQU 32               ; scenery masks: level n in 16K bank 15+n (pages
         ; Outside play (titles, high scores, name entry, continue) the game runs at
         ; its own 3.5MHz: those screens time themselves with busy loops.
         MACRO L2_OFF
+        IFDEF L2_SHIP
+        call ship_stop          ; battleship tilemap off, bank 7 data back (ship.asm)
+        ENDIF
         nextreg 0x69,0
         xor a
         ld (run_fast),a
@@ -119,6 +122,9 @@ irq_out:
 ; interrupt after it (EI at 5C4C) puts the speed back (irq_out: run_fast).
 unpack_fast:
         nextreg 7,3
+        IFDEF L2_SHIP
+        call ship_stop          ; bank 7 holds packed data: put it back first
+        ENDIF
         di
         ld bc,0x7FFD
         jp 0x8F44

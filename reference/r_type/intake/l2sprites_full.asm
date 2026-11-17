@@ -3,6 +3,9 @@
         DEFINE L2_SPRITES
         IFNDEF L2_NOGLIDE
         DEFINE L2_GLIDE          ; figures glide between updates (glide.asm)
+        IFNDEF L2_NOSHIP
+        DEFINE L2_SHIP           ; level 3 battleship hull on the tilemap (ship.asm)
+        ENDIF
         ENDIF
         DEFINE L2_NOLAZY
         DEFINE L2_NOTAPE
@@ -11,4 +14,8 @@
         IFDEF L2_GLIDE
         INCLUDE "glide.asm"
         SAVEBIN "l2sprites_glide.bin",glide_start,glide_end-glide_start
+        ENDIF
+        IFDEF L2_SHIP
+        INCLUDE "ship.asm"
+        SAVEBIN "l2sprites_ship.bin",ship_start,ship_end-ship_start
         ENDIF

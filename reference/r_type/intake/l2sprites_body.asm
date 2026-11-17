@@ -22,7 +22,6 @@ MAXENT  EQU 44
 MAXSPR  EQU 128
 BEHIND_PG EQU 26               ; bank 13: the behind-scenery flags (behind_flags.asm)
 FLAGMAP EQU 0x3B00              ; one byte per cell, same layout as the owner map 7E00 (to 3D80; 256-aligned)
-COOL    EQU 50                  ; updates between cache restarts
 TITLE_PACE EQU 4               ; frames per title update (16 / 4 = 4 pixels a frame)
 BUDGET  EQU 24                  ; tiles converted per update
 CACHE_LIM EQU 128               ; pattern slots for cached graphics
@@ -75,14 +74,8 @@ spr_start:
         ld a,250
 .bg:    ld (budget),a
         xor a
-        ld (next_slot),a
         ld (cache_n),a
         ld (spr_n),a
-        ld (spr_ovf),a
-        ld (spr_tight),a
-        ld (spr_cool),a
-        ld a,COOL
-        ld (cool_len),a
         ld a,MAXSPR
         ld (spr_prev),a         ; the next publication hides every stale sprite
         ld a,1
@@ -194,7 +187,7 @@ spr_gate:
         or a
         pop hl
         jr z,.native
-        xor a                   ; a sprite shows it: the ULA cell must be blank,
+.blank: xor a                   ; a sprite shows it: the ULA cell must be blank,
         ld (hl),a               ; or older pixels show in the figure's colours
         inc h
         ld (hl),a
@@ -212,6 +205,14 @@ spr_gate:
         ld (hl),a
         jp 0x88A9
 .nat:   pop hl
+        IFDEF L2_SHIP
+        ld a,(ship_on)          ; the battleship's cells are on the tilemap (ship.asm)
+        or a
+        jr z,.native
+        ld a,(de)
+        cp 0x9C
+        jr z,.blank
+        ENDIF
 .native:
         ld a,h
         add a,0x20
@@ -256,6 +257,35 @@ spr_rec_body:
         ld a,(0x8EBF)
         cp 0x60
         ret nz                  ; the plotter is drawing scenery straight to the ULA
+        IFDEF L2_SHIP
+        ld a,d                  ; level 3 battleship hull strip (1x13, object 85D9): tilemap
+        cp 13
+        jr nz,.nsh
+        ld a,(0x719C)
+        cp '3'
+        jr nz,.nsh
+        push hl
+        push iy
+        pop hl
+        ld a,l
+        cp 0xD9
+        jr nz,.nsp
+        ld a,h
+        cp 0x85
+.nsp:   pop hl
+        jr nz,.nsh
+        push bc
+        push de
+        push hl
+        xor a
+        call s_call
+        pop hl
+        pop de
+        pop bc
+        or a
+        ret z                   ; ship.asm shows it; the copier gate blanks its ULA cells
+.nsh:
+        ENDIF
         IFDEF L2_BEHIND_FLAGS
         call behind_chk
         ret z                   ; flagged (behind_flags.asm): the game draws it, behind Layer 2
@@ -911,7 +941,11 @@ glide_publish:
 .w:     ld a,(hk_fr)
         cp TITLE_PACE
         jr c,.w
-.go:    ld a,(hk_fr)            ; the update's length for glide (counted on every interrupt)
+.go:
+        IFDEF L2_SHIP
+        call ship_tick_h
+        ENDIF
+        ld a,(hk_fr)            ; the update's length for glide (counted on every interrupt)
         ld (hk_last),a
         xor a
         ld (hk_fr),a
@@ -941,6 +975,37 @@ glide_irq:
 .miss:  ld hl,g_miss
         inc (hl)
         ret
+        ENDIF
+
+        IFDEF L2_SHIP
+SHIP_PG EQU 127                 ; bank 63 high half: ship.asm (level 3 battleship tilemap)
+; A = ship.asm entry (0 plot, 3 off, 6 tick): call it with its page in slot 0; A comes back.
+s_call: push hl
+        ld l,a
+        ld h,1
+        ld (.j+1),hl
+        ld a,SHIP_PG
+        ld (cur_mmu0),a
+        nextreg 0x50,a
+        pop hl
+.j:     call 0
+        push af
+        call col_unmap
+        pop af
+        ret
+ship_stop:
+        ld a,(ship_on)
+        or a
+        ret z
+        ld a,3
+        jr s_call
+ship_tick_h:
+        ld a,(ship_on)
+        or a
+        ret z
+        ld a,6
+        jr s_call
+ship_on: db 0                   ; ship.asm holds page 14 (set by its build, cleared by ship_off)
         ENDIF
 
 col_map:
@@ -1663,39 +1728,11 @@ spr_pub_body:
         ld (need_reset),a
         xor a
         ld (spr_n),a
-        ld a,(spr_cool)
-        or a
-        jr z,.c0
-        dec a
-        ld (spr_cool),a
-.c0:    ld a,(spr_ovf)
-        or a
-        ret z
-        ld a,(spr_tight)
-        or a
-        ld a,(cool_len)
-        jr z,.len
-        add a,a                 ; restarting did not make room last time: wait longer
-        jr nc,.len
-        ld a,255
-.len:   ld (cool_len),a
-        ld (spr_cool),a
-        xor a                   ; no room this update: start the cache again
-        ld (spr_tight),a
-        ld (spr_ovf),a
-        ld (next_slot),a
-        ld (cache_n),a
-        ld hl,stat_flush
-        inc (hl)
         ret
 
 spr_on:   db 0
 spr_n:    db 0
 spr_prev: db 0
-spr_ovf:  db 0
-spr_cool: db 0
-spr_tight: db 0
-cool_len: db COOL
 budget:   db BUDGET
 tab_l:    ds 4
 lbuf:     ds 4
@@ -1727,7 +1764,6 @@ stat_part: db 0
 stat_re:  db 0
 slot_lim: db 128
 r_sum:    dw 0
-next_slot: db 0
 cache_n:  db 0
 upd:      db 0                  ; publications so far (wraps): cache entry stamps
 ca_n:     db 0                  ; alloc / c_alloc
