@@ -69,6 +69,25 @@ SPRITE_SITES = [(0x8CFD, 'c5d5d9', 'plot_n', 0xC3), (0x8D65, 'c5d506', 'plot_h',
                 (0xFDF8, '210040', 'spr_cls', 0xC3)]
 
 
+def scenery_banks():
+    """Banks 16-23: per level 1-8 the scenery see-through masks (scenery_masks.py): page 2n-2 of the
+    bank pair = count + sorted 9-byte keys (attribute with the scenery bit, 8 bytes as drawn), next page
+    the 8-byte masks in the same order (l2scroll.asm mask_find)."""
+    import scenery_masks as SM
+    out = {}
+    for level, (table, stats) in SM.all_levels().items():
+        keys = sorted(table)
+        assert len(keys) <= (8192 - 2) // 9 and len(keys) <= 1024, (level, len(keys))
+        kp = bytearray(8192)
+        mp = bytearray(8192)
+        kp[0:2] = bytes([len(keys) & 255, len(keys) >> 8])
+        for n, k in enumerate(keys):
+            kp[2 + 9 * n:11 + 9 * n] = bytes([k[0]]) + bytes(k[1])
+            mp[8 * n:8 * n + 8] = bytes(table[k])
+        out[15 + level] = bytes(kp + mp)
+    return out
+
+
 def behind_flags(path=HERE/'behind_flags.asm'):
     """Bank 13: the figures drawn behind scenery, from the FLAG lines of behind_flags.asm."""
     import re
@@ -109,6 +128,15 @@ def build(src=None, folder=OUT, asm=None, sprites=False, full=False, colours=Non
             extra_banks = {**extra_banks, **cbanks}
             glide = blocks.get('glide', b'')    # glide.asm, page 27 (bank 13 high half)
             extra_banks[13] = behind_flags()[:8192]+bytes(0x100)+glide+bytes(8192-0x100-len(glide))
+            extra_banks.update(scenery_banks())
+            if full:
+                import showpiece                     # start-up showpiece: picture in Layer 2 screen A, Copper
+                sp = showpiece.build()[0]             # list in the glide page at 1800 (glide.asm COPPER_AT)
+                cop = sp.pop(showpiece.COPPER_BANK)[:2049]   # mode byte, then the list or palette
+                extra_banks.update(sp)
+                b13 = bytearray(extra_banks[13])
+                b13[8192 + 0x17FF:8192 + 0x2000] = cop
+                extra_banks[13] = bytes(b13)
 
         def apply(self, snap):
             super().apply(snap)

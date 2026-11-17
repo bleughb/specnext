@@ -10,14 +10,18 @@
 ; instead and its staging pixels are zeroed, so the ULA keeps no scenery and the
 ; native shift moves blank cells. Owner/attribute/dirty maps are untouched.
         DEVICE ZXSPECTRUMNEXT
-L2BANK  EQU 9                   ; 16K bank: 8K pages 18..23
-L2PAGE  EQU L2BANK*2
+L2A_BANK EQU 48                 ; Layer 2 640x256x4: screen A, 16K banks 48-52 (pages 96-105)
+L2A_PAGE EQU L2A_BANK*2
+L2B_BANK EQU 53                 ; screen B (half a pixel to the right), banks 53-57 (pages 106-115)
+L2B_PAGE EQU L2B_BANK*2
 TRANSP  EQU 0xE3
-        IFDEF L2_SPR_BEHIND
-LORDER  EQU 0x44                ; NR 0x15: Layer 2 over sprites over ULA, sprite 0 on top
-        ELSE
+        IFDEF L2_SPR_FRONT
 LORDER  EQU 0x40                ; NR 0x15: sprites over Layer 2 over ULA, sprite 0 on top
+        ELSE
+LORDER  EQU 0x44                ; NR 0x15: Layer 2 (scenery) over sprites over ULA, as the original;
+                                ; scenery black open to the sky is see-through (scenery_masks.py)
         ENDIF
+MASK_PAGE0 EQU 32               ; scenery masks: level n in 16K bank 15+n (pages 30+2n keys, 31+2n masks)
         ; Outside play (titles, high scores, name entry, continue) the game runs at
         ; its own 3.5MHz: those screens time themselves with busy loops.
         MACRO L2_OFF
@@ -52,17 +56,30 @@ hook_setup:
         IFDEF L2_NOTAPE
         call spec_hold
         ENDIF
-        nextreg 0x12,L2BANK
+        nextreg 0x12,L2A_BANK
         nextreg 0x14,TRANSP
-        nextreg 0x70,0          ; 256x192, 8bpp
+        nextreg 0x70,0x20       ; 640x256, 4bpp, palette offset 0
         nextreg 0x69,0          ; Layer 2 off until a level is drawn
         nextreg 0x16,0
+        nextreg 0x71,0
         nextreg 0x17,0
         nextreg 0x1C,1          ; reset Layer 2 clip index
-        nextreg 0x18,8          ; visible columns 1..30, rows 0..19
-        nextreg 0x18,247
-        nextreg 0x18,0
-        nextreg 0x18,159
+        nextreg 0x18,20         ; play columns 1..30 (x 40..279 of 320, clip x in pairs), rows 0..19
+        nextreg 0x18,139
+        nextreg 0x18,32
+        nextreg 0x18,191
+        nextreg 0x43,0x10       ; Layer 2 first palette, auto-increment
+        nextreg 0x40,0
+        push hl
+        push bc
+        ld hl,l2_pal
+        ld b,16
+.pal:   ld a,(hl)
+        nextreg 0x41,a
+        inc hl
+        djnz .pal
+        pop bc
+        pop hl
         IFDEF L2_SPRITES
         call spr_setup
         ENDIF
@@ -77,6 +94,14 @@ irq_in: push ix
         jp 0xBE2B
 ; BE52 replaces POP AF / EX AF,AF' / POP HL.
 irq_out:
+        call l2_half
+        IFDEF L2_GLIDE
+        ld hl,hk_fr
+        inc (hl)
+        jr nz,.fr
+        dec (hl)
+.fr:
+        ENDIF
         IFDEF L2_GLIDE
         call glide_irq
         ENDIF
@@ -135,6 +160,14 @@ spec_hold:
         push de
         ld e,250
 .f:     call .frame
+        IFDEF L2_GLIDE
+        ld a,e                  ; after 2 seconds: the upscaled screen (showpiece.py)
+        cp 150
+        jr nz,.nr
+        ld a,9
+        call g_call
+.nr:
+        ENDIF
         xor a
         in a,(0xFE)
         cpl
@@ -161,7 +194,12 @@ spec_hold:
         dec a
         and 0x1F
         jr nz,.key
-.out:   pop de
+.out:
+        IFDEF L2_GLIDE
+        ld a,12
+        call g_call
+        ENDIF
+        pop de
         pop bc
         pop af
         ret
@@ -190,14 +228,20 @@ l2_scroll:
         or a
         call z,l2_convert       ; test builds started from a mid-level snapshot
         ENDIF
-        call l2_sync
+        ld a,(run_fast)         ; outside play nothing scrolls: no need to wait for the raster
+        or a
+        call nz,l2_sync
         ld a,(0x7A8E)
         or a
         jr nz,.no
-        ld a,(l2_s)
-        inc a
-        ld (l2_s),a
-        nextreg 0x16,a
+        ld hl,(l2_s)            ; one pixel on: first half a pixel (screen B), the rest in 2 frames
+        inc hl
+        call wrap320
+        ld (l2_s),hl
+        call l2_xreg
+        nextreg 0x12,L2B_BANK
+        ld a,2
+        ld (l2_hs),a
 .no:
         IFDEF L2_SPRITES
         IFDEF L2_GLIDE
@@ -231,12 +275,20 @@ l2_sync:
         ret
 
 ; ---- 89C3 replaces LD HL,5E00: the new column goes to Layer 2 -----------------
+; Layer 2 is 640x256 x 4bpp (one byte = one Spectrum pixel, two half pixels), column-major:
+; byte column c (0..319) of a screen is page c/32, offset (c%32)*256 + row. Screen A shows the
+; scenery as drawn; screen B the same shifted right by half a pixel (each byte's left half is the
+; pixel to its left). The scroll register moves whole pixels; showing B right after a step and A two
+; frames later gives half-pixel steps (l2_scroll, l2_half). Play row y is Layer 2 row y+32 and screen
+; x is column x+32 (the layer covers the border).
 l2_stage:
         ld a,0x2C               ; INC L: staging bytes are consecutive
-        ld (src_step),a
-        ld a,(l2_s)
-        add a,248               ; hidden screen column 31
-        ld (.x+1),a
+        ld (put_cell.step),a
+        ld hl,(l2_s)
+        ld de,280               ; hidden screen column 31: 32 + 248
+        add hl,de
+        call wrap320
+        ld (pc_x),hl
         ld hl,0x5E00
         ld b,0
 .row:   push bc
@@ -248,16 +300,15 @@ l2_stage:
         pop hl
         push hl
         bit 7,a
-        ld e,0
+        ld e,8                  ; scenery: black paper opaque
         jr nz,.bg
         ld hl,zero8             ; not scenery: clear the Layer 2 cell
         xor a
-        ld e,TRANSP
+        ld e,0
 .bg:    push af
         ld a,e
         ld (pc_blk),a
         pop af
-.x:     ld c,0
         call put_cell
         pop hl
         pop bc
@@ -270,6 +321,17 @@ l2_stage:
         ld hl,0x5E00
         jp 0x89C6
 
+; HL mod 320 (HL < 640)
+wrap320:
+        push de
+        ld de,320
+        or a
+        sbc hl,de
+        jr nc,.ok
+        add hl,de
+.ok:    pop de
+        ret
+
 ; ---- 8734 replaces CALL FEEB: move the freshly drawn scenery to Layer 2 -------
 l2_init:
         call 0xFEEB
@@ -279,29 +341,45 @@ l2_convert:
         push de
         push hl
         nextreg 0x69,0
-        ld a,L2PAGE
+        nextreg 7,3
+        ld a,L2A_PAGE           ; both screens transparent (index 0)
 .fill:  ld (cur_mmu0),a
         nextreg 0x50,a
         ld hl,0
         ld de,1
         ld bc,0x1FFF
-        ld (hl),TRANSP
+        ld (hl),0
         ldir
         inc a
-        cp L2PAGE+6
+        cp L2B_PAGE+10
         jr nz,.fill
         ld a,0xFF
         ld (cur_mmu0),a
         nextreg 0x50,0xFF
+        ld hl,0
+        ld (l2_s),hl
+        call l2_xreg
         xor a
-        ld (l2_s),a
-        nextreg 0x16,0
+        ld (l2_hs),a
+        nextreg 0x12,L2A_BANK
         ld a,0x24               ; INC H: down a ULA character cell
-        ld (src_step),a
-        xor a
+        ld (put_cell.step),a
+        ld a,8                  ; scenery black paper is opaque black (index 8)
         ld (pc_blk),a
         ld b,0
 .row:   ld c,0
+        push bc                 ; the row starts with nothing to its left
+        ld a,b
+        add a,a
+        add a,a
+        add a,a
+        ld hl,pc_lp
+        add hl,a
+        ld b,8
+.z:     ld (hl),0
+        inc hl
+        djnz .z
+        pop bc
 .col:   ld l,b
         ld h,0
         add hl,hl
@@ -318,7 +396,7 @@ l2_convert:
         ld a,(hl)
         pop hl
         inc a
-        jr nz,.next             ; only owner FF is scenery
+        jr nz,.sky              ; only owner FF is scenery
         push bc
         ld de,0x7800
         add hl,de
@@ -335,13 +413,41 @@ l2_convert:
         rrca
         or c
         ld l,a                  ; HL = ULA cell
-        ld a,c
-        add a,a
-        add a,a
-        add a,a
-        ld c,a
+        push hl
+        ld a,c                  ; Layer 2 column: 32 + 8 * col
+        ld l,a
+        ld h,0
+        add hl,hl
+        add hl,hl
+        add hl,hl
+        ld de,32
+        add hl,de
+        ld (pc_x),hl
+        pop hl
         pop af
         call put_cell
+        pop bc
+        jr .next
+.sky:   push bc                 ; sky: draw it clear, so screen B's first byte carries the half
+        ld a,c                  ; pixel of the scenery to its left (else right edges shimmer)
+        ld l,a
+        ld h,0
+        add hl,hl
+        add hl,hl
+        add hl,hl
+        ld de,32
+        add hl,de
+        ld (pc_x),hl
+        ld a,0x2C               ; INC L: zero8 is consecutive bytes
+        ld (put_cell.step),a
+        xor a
+        ld (pc_blk),a
+        ld hl,zero8
+        call put_cell
+        ld a,0x24
+        ld (put_cell.step),a
+        ld a,8
+        ld (pc_blk),a
         pop bc
 .next:  inc c
         ld a,c
@@ -350,7 +456,7 @@ l2_convert:
         inc b
         ld a,b
         cp 20
-        jr nz,.row
+        jp nz,.row
         IFNDEF L2_HIDE
         nextreg 0x69,0x80
         ENDIF
@@ -368,91 +474,301 @@ l2_convert:
         pop af
         ret
 
-; ---- one 8x8 cell: HL = source bytes (zeroed), A = attribute, B = row, C = x --
+; Layer 2 X scroll = l2_s (0..319)
+l2_xreg:
+        ld a,(l2_s)
+        nextreg 0x16,a
+        ld a,(l2_s+1)
+        and 1
+        nextreg 0x71,a
+        ret
+
+; From the interrupt: two frames after a step, back from the half-pixel screen to the whole one.
+l2_half:
+        ld a,(l2_hs)
+        or a
+        ret z
+        dec a
+        ld (l2_hs),a
+        ret nz
+        nextreg 0x12,L2A_BANK
+        ret
+
+; ---- one 8x8 cell: HL = source bytes (zeroed), A = attribute, B = row, pc_x = column --------
+; Writes the cell to both screens. pc_lp holds, per play row, the colour index of the pixel to
+; the left of the column being drawn (the previous column), for screen B's left half pixel.
 put_cell:
         push hl
         ld e,a
+        ld a,b
+        ld (pc_row),a
+        ld a,e
         and 7
+        jr nz,.ik
+        ld a,8                  ; black ink: opaque black
+.ik:    ld d,a
+        ld a,e
+        and 0x40
+        jr z,.ib
+        ld a,d
+        cp 8
+        jr z,.ib
+        add a,8                 ; bright
+        ld d,a
+.ib:    ld a,d
+        ld (pc_ink),a
+        ld a,e
+        rrca
+        rrca
+        rrca
+        and 7
+        jr z,.blk
         ld d,a
         ld a,e
         and 0x40
-        rrca
-        rrca
-        rrca                    ; 8 when bright
-        ld (.br+1),a
-        or d
-        ld hl,col_tab
-        add hl,a
-        ld a,(hl)
-        ld (pc_ink+1),a
-        ld a,e
-        rrca
-        rrca
-        rrca
-        and 7
-        jr z,.clear             ; black paper: see pc_blk
-.br:    or 0
-        ld hl,col_tab
-        add hl,a
-        ld a,(hl)
+        ld a,d
+        jr z,.pp
+        add a,8
         jr .pp
-.clear: ld a,(pc_blk)
-.pp:    ld (pc_pap+1),a
-        ld a,b
-        rrca
-        rrca
-        and 7
-        add a,L2PAGE
-        ld (cur_mmu0),a         ; variable first: the ISR restores from it
-        nextreg 0x50,a
-        ld a,b
-        and 3
-        add a,a
-        add a,a
-        add a,a
-        ld d,a
-        ld e,c
+.blk:   ld a,(pc_blk)
+.pp:    ld (pc_pap),a
+        ld a,e
+        or 0x80
+        ld (pc_key),a           ; key: the attribute as stored with the scenery bit (raw level data)
         pop hl
+        ld de,pc_src            ; the 8 source bytes (zeroed in the ULA)
         ld b,8
-pc_line:  ld a,(hl)
+.cp:    ld a,(hl)
+        ld (de),a
         IFNDEF L2_KEEP_ULA
         ld (hl),0
         ENDIF
-        push bc
-        ld c,a
+        inc de
+.step:  inc h                   ; INC H (ULA cell) or INC L (staging): set by the caller
+        djnz .cp
+        call mask_find          ; a scenery cell's see-through pixels (none for a cleared cell)
+        ld a,(pc_row)
+        add a,a
+        add a,a
+        add a,a
+        ld (pc_y),a             ; play row of the cell's top line
+        ld c,0x80               ; pixel mask, leftmost first
+        ld hl,(pc_x)
+        ld (pc_c),hl
+.colm:  ld de,pc_idx            ; this pixel column's 8 colour indices
+        ld hl,pc_src
         ld b,8
-pc_px:    sla c
-        jr c,pc_ink
-pc_pap: ld a,0
-        jr pc_put
-pc_ink: ld a,0
-pc_put:   ld (de),a
+.ix:    ld a,(hl)
+        and c
+        ld a,(pc_ink)
+        jr nz,.ok
+        ld a,(pc_pap)
+.ok:    cp 8                    ; black: see-through where its mask bit is set
+        jr nz,.st
+        push hl
+        ld a,l
+        add a,8                 ; pc_mask follows pc_src (same 256-byte page)
+        ld l,a
+        ld a,(hl)
+        and c
+        pop hl
+        ld a,8
+        jr z,.st
+        IFDEF L2_EDGE_DEBUG
+        ld a,10                 ; debug: see-through scenery pixels in bright red
+        ELSE
+        xor a
+        ENDIF
+.st:    ld (de),a
+        inc hl
+        inc de
+        djnz .ix
+        ld hl,(pc_c)            ; page and offset of this column
+        ld a,l
+        and 31
+        ld d,a
+        ld a,(pc_y)
+        add a,32
+        ld e,a                  ; DE = offset in the page
+        add hl,hl
+        add hl,hl
+        add hl,hl
+        ld a,h                  ; column / 32
+        push af
+        add a,L2A_PAGE
+        ld (cur_mmu0),a
+        nextreg 0x50,a
+        push de
+        ld hl,pc_idx            ; screen A: both halves the pixel's colour
+        ld b,8
+.wa:    ld a,(hl)
+        rlca
+        rlca
+        rlca
+        rlca
+        or (hl)
+        ld (de),a
+        inc hl
         inc e
-        djnz pc_px
+        djnz .wa
+        pop de
+        pop af
+        add a,L2B_PAGE
+        ld (cur_mmu0),a
+        nextreg 0x50,a
+        push bc
+        ld a,(pc_y)
+        ld hl,pc_lp
+        add hl,a
+        push hl
+        pop ix                  ; IX = left neighbours for these 8 rows
+        ld hl,pc_idx            ; screen B: left half = the pixel to the left
+        ld b,8
+.wb:    ld a,(ix+0)
+        rlca
+        rlca
+        rlca
+        rlca
+        or (hl)
+        ld (de),a
+        ld a,(hl)
+        ld (ix+0),a
+        inc ix
+        inc hl
+        inc e
+        djnz .wb
         pop bc
-        ld a,e
-        sub 8
-        ld e,a
-        inc d
-src_step:
-        inc h
-        djnz pc_line
+        ld hl,(pc_c)            ; next column (wraps at 320)
+        inc hl
+        call wrap320
+        ld (pc_c),hl
+        srl c
+        jp nc,.colm
         ld a,0xFF
         ld (cur_mmu0),a
         nextreg 0x50,0xFF
         ret
 
-; RRRGGGBB for the eight normal then the eight bright Spectrum colours.
+; RRRGGGBB of the Layer 2 palette: 0 = transparent (TRANSP), 1-7 colours, 8 black, 9-15 bright
+; pc_key (attribute | 80, then pc_src) -> pc_mask: binary search of this level's sorted keys (page
+; MASK_PAGE0 + 2*(level-1): count, then 9-byte keys), masks in the next page (8 bytes each). Returns
+; with Z set (found or not: the mask is zero when the cell is not listed).
+mask_find:
+        push bc
+        push de
+        push hl
+        ld hl,pc_mask
+        ld b,8
+.z:     ld (hl),0
+        inc hl
+        djnz .z
+        ld a,(pc_blk)
+        cp 8
+        jp nz,.out              ; not scenery
+        ld a,(0x719C)
+        sub '1'
+        cp 8
+        jp nc,.out
+        add a,a
+        add a,MASK_PAGE0
+        ld (mf_pg),a
+        ld (cur_mmu0),a
+        nextreg 0x50,a
+        ld hl,(0)
+        ld (mf_n),hl
+        ld hl,0
+        ld (mf_lo),hl
+.bs:    ld hl,(mf_n)
+        ld a,h
+        or l
+        jp z,.miss
+        srl h
+        rr l
+        ld (mf_h),hl
+        ld de,(mf_lo)
+        add hl,de
+        ld (mf_mid),hl
+        ld d,h
+        ld e,l
+        add hl,hl
+        add hl,hl
+        add hl,hl
+        add hl,de
+        inc hl
+        inc hl                  ; 2 + 9 * mid
+        ld de,pc_key
+        ld b,9
+.cmp:   ld a,(de)
+        cp (hl)
+        jp nz,.ne
+        inc hl
+        inc de
+        djnz .cmp
+        ld a,(mf_pg)            ; found: its mask
+        inc a
+        ld (cur_mmu0),a
+        nextreg 0x50,a
+        ld hl,(mf_mid)
+        add hl,hl
+        add hl,hl
+        add hl,hl
+        ld de,pc_mask
+        ld bc,8
+        ldir
+        jr .miss
+.ne:    jr c,.left              ; key below this entry
+        ld hl,(mf_mid)
+        inc hl
+        ld (mf_lo),hl
+        ld hl,(mf_n)
+        ld de,(mf_h)
+        or a
+        sbc hl,de
+        dec hl
+        ld (mf_n),hl
+        jr .bs
+.left:  ld hl,(mf_h)
+        ld (mf_n),hl
+        jr .bs
+.miss:  ld a,0xFF
+        ld (cur_mmu0),a
+        nextreg 0x50,0xFF
+.out:   pop hl
+        pop de
+        pop bc
+        xor a
+        ret
+mf_pg:  db 0
+mf_n:   dw 0
+mf_lo:  dw 0
+mf_h:   dw 0
+mf_mid: dw 0
+
+; RRRGGGBB for the eight normal then the eight bright Spectrum colours (sprite palette).
 col_tab: db 0x00,0x02,0xA0,0xA2,0x14,0x16,0xB4,0xB6
         db 0x00,0x03,0xE0,0xE7,0x1C,0x1F,0xFC,0xFF
-l2_s:   db 0
+l2_pal: db TRANSP,0x02,0xA0,0xA2,0x14,0x16,0xB4,0xB6
+        db 0x00,0x03,0xE0,0xE7,0x1C,0x1F,0xFC,0xFF
+l2_s:   dw 0
+l2_hs:  db 0
 run_fast: db 0
-; Black paper of a scenery cell is opaque: in the original a figure never draws
-; into a cell the scenery owns (8EC2), so scenery hides any figure behind it.
-; Cleared cells stay transparent.
+; Black paper of a scenery cell is opaque (8): in the original a figure never draws into a cell the
+; scenery owns (8EC2), so scenery hides any figure behind it. Cleared cells are transparent (0).
 pc_blk: db 0
+pc_ink: db 0
+pc_pap: db 0
+pc_row: db 0
+pc_y:   db 0
+pc_x:   dw 0
+pc_c:   dw 0
+pc_idx: ds 8
+pc_lp:  ds 160
 l2_ready: db 0
 cur_mmu0: db 0xFF
+        ALIGN 32
+pc_key: db 0                    ; attribute | 80, then the cell's 8 bytes: the mask key
+pc_src: ds 8
+pc_mask: ds 8                   ; see-through pixels of the cell (bit 7 = leftmost)
         ALIGN 16
 zero8:  ds 8
         IFDEF L2_SPRITES

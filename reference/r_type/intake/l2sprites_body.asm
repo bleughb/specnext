@@ -18,16 +18,17 @@
 ; plotters (the level 3 battleship).
 CELLW   EQU 17                  ; cells kept per row (16 + one empty)
 CELLH   EQU 19                  ; plots are at most 18 cells high (spr_record), plus the row a tile reads below
-MAXENT  EQU 64
+MAXENT  EQU 44
 MAXSPR  EQU 128
 BEHIND_PG EQU 26               ; bank 13: the behind-scenery flags (behind_flags.asm)
-FLAGMAP EQU 0x3A00              ; one byte per cell, same layout as the owner map 7E00
+FLAGMAP EQU 0x3B00              ; one byte per cell, same layout as the owner map 7E00 (to 3D80; 256-aligned)
 COOL    EQU 50                  ; updates between cache restarts
+TITLE_PACE EQU 4               ; frames per title update (16 / 4 = 4 pixels a frame)
 BUDGET  EQU 24                  ; tiles converted per update
 CACHE_LIM EQU 128               ; pattern slots for cached graphics
 COL_DIR EQU 64                  ; colour pages (r_type_colour.py): directory
-PRE_DIR EQU 88                  ; outlined graphics: directory page
-PRE_PAT0 EQU 89                 ; outlined graphics: first pattern page (64 x 128 bytes each)
+PRE_DIR EQU 48                  ; outlined graphics: directory page (bank 24)
+PRE_PAT0 EQU 49                 ; outlined graphics: first pattern page (64 x 128 bytes each)
 PRE_ENTRY EQU 12
 ENT     EQU 20                  ; cache entry: 0-1 graphic, 2 ink, 3 first slot, 4 sprites,
                                 ; 5-13 tile bitmap, 14-15 checksum, 16 outlined, 17-18 tiles x/y
@@ -44,6 +45,17 @@ spr_setup:
         nextreg 0x41,a
         inc hl
         djnz .p
+        ld hl,col_tab+1         ; flash colours: entry 16n+1 = colour n (palette offset n)
+        ld bc,0x0F11
+.q:     ld a,c
+        nextreg 0x40,a
+        ld a,(hl)
+        nextreg 0x41,a
+        inc hl
+        ld a,c
+        add a,16
+        ld c,a
+        djnz .q
         nextreg 0x43,0
         nextreg 0x4B,0          ; colour index 0 is transparent
         nextreg 0x1C,2          ; reset sprite clip index
@@ -56,6 +68,12 @@ spr_setup:
 
 ; A level (or life) has just been drawn: empty cache, sprites on.
 spr_start:
+        ld a,(run_fast)         ; conversion budget: unlimited outside play (see spr_publish)
+        or a
+        ld a,BUDGET
+        jr nz,.bg
+        ld a,250
+.bg:    ld (budget),a
         xor a
         ld (next_slot),a
         ld (cache_n),a
@@ -130,29 +148,8 @@ spr_after:
         ld a,(emitted)
         or a
         jr z,.x
-        IFNDEF L2_CELL_ORDER    ; every figure is whole: overlaps follow plot order, pixel by
-        jr .ok                  ; pixel (L2_CELL_ORDER = the old rule: partly hidden goes behind)
-        ENDIF
-        ld a,(cand)
-        ld hl,succ
-        cp (hl)
-        jr z,.ok
-        ld hl,stat_part         ; partly hidden: whatever owns its missing cells
-        inc (hl)                ; must be in front, so its sprites go behind all
-        push bc                 ; others (published last)
-        ld a,(save_n)
-        ld c,a
-        ld a,(spr_n)
-        sub c
-        jr z,.pe
-        ld b,a
-        ld a,c
-        ld hl,spr_part
-        add hl,a
-.pm:    ld (hl),1
-        inc hl
-        djnz .pm
-.pe:    pop bc
+        ; Every figure is whole: overlaps follow plot order, pixel by pixel (the old rule, partly
+        ; hidden figures behind all others, was removed 2026-11-17).
 .ok:    ld a,(cur_serial)
         ld hl,plot_ok
         add hl,a
@@ -237,18 +234,8 @@ cell_hook:
 ; Runs at 28MHz even outside play (title: the game's own 3.5MHz timing must not pay for it).
 spr_record:
         nextreg 7,3
-        IFDEF L2_GLIDE          ; conversion uploads patterns through port 303B, which the glide
-        push af                 ; interrupt also selects: keep it off until this plot is done
-        ld a,1
-        ld (g_busy),a
-        pop af
-        ENDIF
         call spr_rec_body
         push af
-        IFDEF L2_GLIDE
-        xor a
-        ld (g_busy),a
-        ENDIF
         ld a,(run_fast)
         nextreg 7,a
         pop af
@@ -266,8 +253,10 @@ spr_rec_body:
         ld a,(0x8EBF)
         cp 0x60
         ret nz                  ; the plotter is drawing scenery straight to the ULA
+        IFDEF L2_BEHIND_FLAGS
         call behind_chk
         ret z                   ; flagged (behind_flags.asm): the game draws it, behind Layer 2
+        ENDIF
         push hl
         push de
         push bc
@@ -275,8 +264,23 @@ spr_rec_body:
         ld (r_src),hl
         ld (r_w),de             ; r_w = E, r_h = D
         ld (r_col),bc           ; r_col = C, r_row = B
-        ld a,(0x8EB1)
-        ld (r_ink),a
+        ld a,(0x8EB1)           ; colour override (flashing): convert once in colour 1 and pick
+        or a                    ; the colour with the sprite palette offset, so the flash colours
+        jr z,.ink               ; share one cache entry (spr_setup: entry 16n+1 = colour n)
+        ld b,a
+        and 7
+        bit 6,b
+        jr z,.nb
+        add a,8
+.nb:    rlca
+        rlca
+        rlca
+        rlca
+        ld (r_pal),a
+        ld a,1
+        jr .ik
+.ink:   ld (r_pal),a
+.ik:    ld (r_ink),a
         ld a,(need_reset)
         or a
         jr z,.nr
@@ -609,6 +613,9 @@ do_tile:
         ld hl,slot_lim
         cp (hl)
         jr nc,.ovf
+        IFDEF L2_GLIDE
+        call g_hold             ; the glide interrupt also selects port 303B: off while uploading
+        ENDIF
         ld bc,0x303B
         ld e,a
         srl a
@@ -628,6 +635,9 @@ do_tile:
         call half
         ld hl,c_slot
         inc (hl)
+        IFDEF L2_GLIDE
+        call g_release
+        ENDIF
         or 1
         ret
 .ovf:   xor a
@@ -796,6 +806,7 @@ cl_addr:
         ld l,a
         ret
 
+        IFDEF L2_BEHIND_FLAGS
 ; HL = graphic. Z if behind_flags.asm lists it for this level (0x719C): such a figure stays in the
 ; ULA, under Layer 2, so the scenery hides it as in the original. Table: page BEHIND_PG, entries
 ; level, graphic low, graphic high; level 0 ends it.
@@ -836,6 +847,8 @@ behind_chk:
         pop bc
         ret
 
+        ENDIF                   ; L2_BEHIND_FLAGS
+
         IFDEF L2_GLIDE
 GLIDE_PG EQU 27                 ; bank 13 high half: glide.asm
 ; A = glide.asm entry (0 record, 3 publish): call it with its page in slot 0.
@@ -848,10 +861,59 @@ g_call: push hl
         nextreg 0x50,a
         pop hl
 .j:     call 0
-        jp col_unmap
+.mu:    ld a,(g_miss)           ; steps the interrupt skipped meanwhile
+        or a
+        jp z,col_unmap
+        dec a
+        ld (g_miss),a
+        call 0x0106
+        jr .mu
 g_busy: db 0
+g_miss: db 0
+; Around a pattern upload: the glide interrupt counts the steps it skips (g_busy 2); afterwards
+; they are made up at once (the upload takes a fraction of a frame). Preserve all registers.
+g_hold: push af
+        ld a,2
+        ld (g_busy),a
+        pop af
+        ret
+g_release:
+        push af
+        push bc
+        push hl
+        xor a
+        ld (g_busy),a
+.mu:    ld a,(g_miss)
+        or a
+        jr z,.md
+        dec a
+        ld (g_miss),a
+        ld a,(cur_mmu0)         ; the caller's slot 0 (a colour page) comes back after
+        push af
+        ld a,6
+        call g_call
+        pop af
+        ld (cur_mmu0),a
+        nextreg 0x50,a
+        jr .mu
+.md:    pop hl
+        pop bc
+        pop af
+        ret
+hk_fr:  db 0                    ; frames since the last publish (irq_out)
+hk_last: db 0
 ; 8842: publish with the glide start positions; the interrupt keeps off the sprite port meanwhile.
 glide_publish:
+        ld a,(run_fast)         ; outside play (title) the game's updates alternate 2 and 3 frames;
+        or a                    ; hold each at TITLE_PACE frames: the logo letters move 16 pixels
+        jr nz,.go               ; an update, so 4 gives exactly 4 pixels every frame (owner, 2026-11-17)
+.w:     ld a,(hk_fr)
+        cp TITLE_PACE
+        jr c,.w
+.go:    ld a,(hk_fr)            ; the update's length for glide (counted on every interrupt)
+        ld (hk_last),a
+        xor a
+        ld (hk_fr),a
         ld a,1
         ld (g_busy),a
         ld a,3
@@ -866,13 +928,18 @@ glide_irq:
         ret
         ENDIF
         ld a,(g_busy)
+        cp 2
+        jr z,.miss              ; recording a plot: make the step up afterwards
         or a
-        ret nz
+        ret nz                  ; publishing
         ld a,(cur_mmu0)
         cp GLIDE_PG
-        ret z
+        jr z,.miss              ; the main code is in glide: g_call makes the step up
         nextreg 0x50,GLIDE_PG   ; irq_out maps cur_mmu0 back
         jp 0x0106
+.miss:  ld hl,g_miss
+        inc (hl)
+        ret
         ENDIF
 
 col_map:
@@ -1158,6 +1225,9 @@ emit:   ld a,(ix+3)
         add a,a
         or e                    ; Y mirror
         ld d,a
+        ld a,(r_pal)            ; flash colour (palette offset)
+        or d
+        ld d,a
         ld a,(e_x+1)
         and 1
         or d
@@ -1175,10 +1245,6 @@ emit:   ld a,(ix+3)
         and 0x40
         or 0x80                 ; 4bpp, pattern half
         ld (hl),a
-        ld a,(spr_n)
-        ld hl,spr_part
-        add hl,a
-        ld (hl),0
         ld hl,spr_n
         inc (hl)
 .adv:   ld hl,c_slot
@@ -1291,6 +1357,9 @@ emit_pre:
         add a,a
         or e                    ; Y mirror
         ld d,a
+        ld a,(r_pal)            ; flash colour (palette offset)
+        or d
+        ld d,a
         ld a,(e_x+1)
         and 1
         or d
@@ -1308,10 +1377,6 @@ emit_pre:
         and 0x40
         or 0x80                 ; 4bpp, pattern half
         ld (hl),a
-        ld a,(spr_n)
-        ld hl,spr_part
-        add hl,a
-        ld (hl),0
         ld hl,spr_n
         inc (hl)
 .adv:   ld hl,c_slot
@@ -1513,11 +1578,17 @@ conv_pre:
         bit 0,c
         jr z,.s
         or 0x80                 ; upper 128 bytes of the 8-bit pattern
-.s:     ld bc,0x303B
+.s:     IFDEF L2_GLIDE
+        call g_hold
+        ENDIF
+        ld bc,0x303B
         out (c),a
         ex de,hl
         ld bc,0x805B            ; 128 bytes to the pattern port
         otir
+        IFDEF L2_GLIDE
+        call g_release
+        ENDIF
         ld hl,c_slot
         inc (hl)
         pop hl
@@ -1558,35 +1629,18 @@ spr_pub_body:
         xor a
         out (c),a               ; from sprite 0
         ld c,0x57
-        xor a                   ; whole figures first (on top), then partly
-        call .pass              ; hidden ones behind them
-        ld a,1
-        call .pass
-        jr .hide
-.pass:  ld (.want+1),a
-        ld a,(spr_n)
+        ld a,(spr_n)            ; in plot order: sprite 0 (first plotted) on top
         or a
-        ret z
+        jr z,.hide
         ld d,a
         ld hl,spr_list
-        ld ix,spr_part
-.s:     ld a,(ix+0)
-        inc ix
-.want:  cp 0
-        jr nz,.skip
-        outinb
+.s:     outinb
         outinb
         outinb
         outinb
         outinb
         dec d
         jr nz,.s
-        ret
-.skip:  ld a,5
-        add hl,a
-        dec d
-        jr nz,.s
-        ret
 .hide:  ld a,(spr_n)
         ld e,a
         ld a,(spr_prev)
@@ -1607,8 +1661,12 @@ spr_pub_body:
         cp (hl)
         jr c,.nm
         ld (hl),a
-.nm:    ld a,BUDGET
-        ld (budget),a
+.nm:    ld a,(run_fast)         ; outside play (title) convert everything at once: no scroll to
+        or a                    ; protect, and a figure waiting for conversion steps natively
+        ld a,BUDGET
+        jr nz,.bg
+        ld a,250
+.bg:    ld (budget),a
         ld a,1
         ld (need_reset),a
         xor a
@@ -1689,6 +1747,7 @@ r_col:    db 0
 r_row:    db 0
 r_flip:   db 0
 r_ink:    db 0
+r_pal:    db 0
 nx:       db 0
 ny:       db 0
 c_slot:   db 0
@@ -1708,5 +1767,5 @@ spr_list: ds MAXSPR*5
 cache:    ds MAXENT*ENT
 celltab:  ds CELLW*CELLH*2
 plot_ok:  ds 256
-spr_part: ds MAXSPR
+        DISPLAY "hook page end ",$," FLAGMAP ",FLAGMAP
         ASSERT $ <= FLAGMAP

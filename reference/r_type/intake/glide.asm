@@ -18,10 +18,13 @@ glide_start:
         jp g_record
         jp g_publish
         jp g_frame
+        jp reveal_on            ; 0109 (showpiece.py, spec_hold)
+        jp reveal_off           ; 010C
 
 MAXF    EQU 64                  ; figures per update
+COPPER_AT EQU 0x1800            ; showpiece Copper list, 2048 bytes in this page (showpiece.py)
 FENT    EQU 16                  ; 0-1 IY, 2 order (object), 3 first sprite, 4 sprites, 5 column, 6 row,
-                                ; 7 order (object + graphic), 8-9 graphic
+                                ; 7 order (object + graphic), 8-9 graphic, 10 colour override (8EB1)
 MENT    EQU 13                  ; 0 sprite, 1-2 x, 3 y, 4 attr 2 without x bit 8, 5-6 x offset, 7-8 y offset,
                                 ; 9-10 x step, 11-12 y step (8.8, signed)
 
@@ -94,6 +97,8 @@ g_record:
         ld (ix+8),a
         ld a,(r_src+1)
         ld (ix+9),a
+        ld a,(r_ink)
+        ld (ix+10),a
         ld hl,g_cur_n
         inc (hl)
         pop ix
@@ -108,11 +113,7 @@ g_publish:
         xor a
         ld (g_mov_n),a
         ld (g_k),a
-        ld a,(g_fr)             ; P = frames since the last publish
-        ld c,a
-        xor a
-        ld (g_fr),a
-        ld a,c
+        ld a,(hk_last)          ; P = frames the last update took (hook page, every interrupt)
         cp 2
         jp c,.done              ; one frame or none: nothing to spread
         cp 9
@@ -175,6 +176,9 @@ g_publish:
         djnz .f2
         jp .nx
 .found:                         ; IY = the same figure last update
+        ld a,(ix+10)            ; a flashing figure (colour override) steps as the original:
+        or (iy+10)              ; flash frames and effects sharing an object pair up wrongly
+        jp nz,.nx
         ld a,(ix+5)
         sub (iy+5)
         ld hl,g_ax
@@ -264,7 +268,9 @@ g_publish:
         jp nz,.e
         ld a,(g_kn)
         ld (g_k),a
-.done:  ld hl,g_cur             ; this update becomes the previous one
+.done:  xor a
+        ld (g_miss),a           ; steps skipped before this publish belong to the old moves
+        ld hl,g_cur             ; this update becomes the previous one
         ld de,g_prev
         ld bc,MAXF*FENT
         ldir
@@ -429,6 +435,241 @@ g_frame:
         pop bc
         ret
 
+; ---- start-up showpiece (showpiece.py): the spec screen at 640x256, Copper palette bands -----------
+; The picture is already in Layer 2 screen A (banks 48-52, built in). Upload the Copper list (built
+; into this page at COPPER_AT by l2scroll.py), full-screen clip, start the Copper (restarting every
+; frame) and show Layer 2. Preserves BC, DE and HL.
+reveal_on:
+        push bc
+        push de
+        push hl
+        nextreg 0x62,0          ; Copper stopped, upload index 0
+        nextreg 0x61,0
+        ld a,(COPPER_AT-1)      ; 1: a 320x256 x 256-colour picture and its palette (showpiece.py)
+        or a
+        jr z,.cop
+        nextreg 0x43,0x10       ; Layer 2 first palette, shown
+        nextreg 0x40,0
+        ld hl,COPPER_AT
+        ld b,0
+.pal:   ld a,(hl)
+        nextreg 0x44,a
+        inc hl
+        ld a,(hl)
+        nextreg 0x44,a
+        inc hl
+        djnz .pal
+        nextreg 0x70,0x10       ; 320x256 x 8
+        ld a,1                  ; then the pixelate / depixelate transition from the original
+        ld (tr_on),a
+        jr .show
+.cop:   ld hl,COPPER_AT         ; the list is in this page (no mapping: at start-up the stack is in slot 6)
+        ld bc,2048
+.up:    ld a,(hl)
+        nextreg 0x60,a
+        inc hl
+        dec bc
+        ld a,b
+        or c
+        jr nz,.up
+        nextreg 0x70,0x20       ; 640x256 x 4
+        nextreg 0x62,0xC0       ; Copper on, from the top every frame
+.show:  ld a,(tr_on)
+        or a
+        ld a,48                 ; screen A: the picture
+        jr z,.sa
+        ld a,ORIG_BANK          ; the transition starts from the original, in Layer 2
+.sa:    nextreg 0x12,a
+        nextreg 0x16,0
+        nextreg 0x71,0
+        nextreg 0x17,0
+        nextreg 0x1C,1
+        nextreg 0x18,0          ; the whole layer
+        nextreg 0x18,159
+        nextreg 0x18,0
+        nextreg 0x18,255
+        nextreg 0x69,0x80
+        ld a,(tr_on)
+        or a
+        call nz,transition
+        pop hl
+        pop de
+        pop bc
+        ret
+;---- pixelate the original, swap at the blockiest, depixelate the picture ------------------------
+; Each step draws a mosaic (one source pixel per BxB block: one source column per block, copied
+; across it) into Layer 2 screen B and shows it. Source in slot 7, destination in slot 3 (the start-
+; up stack is in slot 6), both restored; 28MHz while it runs.
+ORIG_BANK EQU 58                ; showpiece.py ORIG_BANK0
+transition:
+        push bc
+        push de
+        push hl
+        ld bc,0x243B
+        ld a,0x07
+        out (c),a
+        inc b
+        in a,(c)
+        ld (tr_spd),a
+        dec b
+        ld a,0x53
+        out (c),a
+        inc b
+        in a,(c)
+        ld (tr_m3),a
+        dec b
+        ld a,0x57
+        out (c),a
+        inc b
+        in a,(c)
+        ld (tr_m7),a
+        nextreg 7,3
+        ld b,15                 ; the original, now on Layer 2 (looks the same)
+        call waitf
+        ld hl,tr_out
+        ld a,ORIG_BANK*2
+        call .seq
+        ld hl,tr_in
+        ld a,96                 ; the picture: page 96 (bank 48)
+        call .seq
+        nextreg 0x12,48         ; full detail
+        ld a,(tr_m3)
+        nextreg 0x53,a
+        ld a,(tr_m7)
+        nextreg 0x57,a
+        ld a,(tr_spd)
+        and 3
+        nextreg 7,a
+        pop hl
+        pop de
+        pop bc
+        ret
+.seq:   ld (tr_src),a
+.s:     ld a,(hl)
+        or a
+        ret z
+        ld (tr_blk),a
+        push hl
+        call mosaic
+        nextreg 0x12,53         ; screen B
+        ld b,2
+        call waitf
+        pop hl
+        inc hl
+        jr .s
+tr_out: db 2,3,4,6,8,12,16,24,0
+tr_in:  db 24,16,12,8,6,4,3,2,0
+
+; One mosaic of block tr_blk from pages tr_src.. into screen B (pages 106..).
+mosaic: ld hl,0
+        ld (tr_x),hl
+.col:   ld hl,(tr_x)
+        ld de,320
+        or a
+        sbc hl,de
+        ret nc
+        ld hl,(tr_x)
+        call colpage            ; A = column / 32
+        ld b,a
+        ld a,(tr_src)
+        add a,b
+        nextreg 0x57,a
+        ld a,l
+        and 31
+        add a,0xE0
+        ld h,a                  ; HL = source column (slot 7)
+        ld d,high colbuf
+        ld e,0
+.rb:    ld l,e
+        ld a,(hl)               ; the block's pixel
+        ld b,0
+        ld c,a
+        ld a,(tr_blk)
+        ld b,a
+        ld a,c
+.fl:    ld (de),a
+        inc e
+        jr z,.cdone
+        djnz .fl
+        jr .rb
+.cdone: ld a,(tr_blk)           ; copy across the block's columns
+        ld b,a
+.cc:    push bc
+        ld hl,(tr_x)
+        ld de,320
+        or a
+        sbc hl,de
+        jr nc,.cx
+        ld hl,(tr_x)
+        call colpage
+        add a,106               ; screen B, page 106 (bank 53)
+        nextreg 0x53,a
+        ld a,l
+        and 31
+        add a,0x60
+        ld d,a
+        ld e,0
+        ld hl,colbuf
+        ld bc,256
+        ldir
+        ld hl,(tr_x)
+        inc hl
+        ld (tr_x),hl
+        pop bc
+        djnz .cc
+        jr .col
+.cx:    pop bc
+        ret
+colpage:                        ; HL = column (0-319) -> A = column / 32
+        ld a,h
+        rlca
+        rlca
+        rlca
+        ld b,a
+        ld a,l
+        rlca
+        rlca
+        rlca
+        and 7
+        or b
+        ret
+waitf:  push bc                 ; B frames
+        ld bc,0x243B
+.w1:    ld a,0x1F
+        out (c),a
+        inc b
+        in a,(c)
+        dec b
+        cp 192
+        jr nz,.w1
+.w2:    ld a,0x1F
+        out (c),a
+        inc b
+        in a,(c)
+        dec b
+        cp 1
+        jr nz,.w2
+        pop bc
+        djnz waitf
+        ret
+tr_on:  db 0
+tr_spd: db 0
+tr_m3:  db 0
+tr_m7:  db 0
+tr_src: db 0
+tr_blk: db 0
+tr_x:   dw 0
+        ALIGN 256
+colbuf: ds 256
+
+; Back to the game: Copper and Layer 2 off, the first Layer 2 palette shown (hook_setup sets the
+; game's Layer 2 registers and palette straight after).
+reveal_off:
+        nextreg 0x62,0
+        nextreg 0x69,0
+        nextreg 0x43,0x10
+        ret
+
 g_recip:  db 0,0,128,85,64,51,43,37,32     ; 256 / P
 g_fr:     db 0
 g_tmp:    db 0
@@ -446,5 +687,5 @@ g_cur:    ds MAXF*FENT
 g_prev:   ds MAXF*FENT
 g_mov:    ds MAXSPR*MENT
 glide_end:
-        ASSERT glide_end <= 0x2000
+        ASSERT glide_end < COPPER_AT     ; COPPER_AT-1: the showpiece mode byte
 ; (the SAVEBIN is in l2sprites.asm / l2sprites_full.asm: the build reads output names from the top file)
