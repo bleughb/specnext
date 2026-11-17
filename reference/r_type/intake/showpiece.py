@@ -19,7 +19,8 @@ from pathlib import Path
 from PIL import Image
 
 HERE = Path(__file__).resolve().parent
-SOURCE = HERE / 'showpiece' / 'spec_screen_user_320x256.png'   # owner's conversion: 320x256, 63 colours
+SOURCE = HERE / 'showpiece' / 'spec_screen_user_320x256_neon.png'   # owner's neon-glow conversion, 320x256
+FIRST_CONVERSION = HERE / 'showpiece' / 'spec_screen_user_320x256.png'   # owner's first conversion, 63 colours
 AI_UPSCALE = HERE / 'showpiece' / 'spec_screen_ai.png'      # owner's AI upscale (Nano Banana), 1195x896
 ORIGINAL = HERE / 'showpiece' / 'spec_screen_256x192.png'
 W, H, BAND = 640, 256, 8
