@@ -160,6 +160,14 @@ spec_hold:
         push de
         ld e,250
 .f:     call .frame
+        IFDEF L2_GLIDE
+        ld a,e                  ; after 2 seconds: the upscaled screen (showpiece.py)
+        cp 150
+        jr nz,.nr
+        ld a,9
+        call g_call
+.nr:
+        ENDIF
         xor a
         in a,(0xFE)
         cpl
@@ -186,7 +194,12 @@ spec_hold:
         dec a
         and 0x1F
         jr nz,.key
-.out:   pop de
+.out:
+        IFDEF L2_GLIDE
+        ld a,12
+        call g_call
+        ENDIF
+        pop de
         pop bc
         pop af
         ret

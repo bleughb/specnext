@@ -129,6 +129,14 @@ def build(src=None, folder=OUT, asm=None, sprites=False, full=False, colours=Non
             glide = blocks.get('glide', b'')    # glide.asm, page 27 (bank 13 high half)
             extra_banks[13] = behind_flags()[:8192]+bytes(0x100)+glide+bytes(8192-0x100-len(glide))
             extra_banks.update(scenery_banks())
+            if full:
+                import showpiece                     # start-up showpiece: picture in Layer 2 screen A, Copper
+                sp = showpiece.build()[0]             # list in the glide page at 1800 (glide.asm COPPER_AT)
+                cop = sp.pop(showpiece.COPPER_BANK)[:2049]   # mode byte, then the list or palette
+                extra_banks.update(sp)
+                b13 = bytearray(extra_banks[13])
+                b13[8192 + 0x17FF:8192 + 0x2000] = cop
+                extra_banks[13] = bytes(b13)
 
         def apply(self, snap):
             super().apply(snap)
