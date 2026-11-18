@@ -22,7 +22,6 @@ MAXENT  EQU 44
 MAXSPR  EQU 128
 BEHIND_PG EQU 26               ; bank 13: the behind-scenery flags (behind_flags.asm)
 FLAGMAP EQU 0x3B00              ; one byte per cell, same layout as the owner map 7E00 (to 3D80; 256-aligned)
-COOL    EQU 50                  ; updates between cache restarts
 TITLE_PACE EQU 4               ; frames per title update (16 / 4 = 4 pixels a frame)
 BUDGET  EQU 24                  ; tiles converted per update
 CACHE_LIM EQU 128               ; pattern slots for cached graphics
@@ -75,14 +74,8 @@ spr_start:
         ld a,250
 .bg:    ld (budget),a
         xor a
-        ld (next_slot),a
         ld (cache_n),a
         ld (spr_n),a
-        ld (spr_ovf),a
-        ld (spr_tight),a
-        ld (spr_cool),a
-        ld a,COOL
-        ld (cool_len),a
         ld a,MAXSPR
         ld (spr_prev),a         ; the next publication hides every stale sprite
         ld a,1
@@ -147,7 +140,10 @@ spr_after:
         jr z,.x
         ld a,(emitted)
         or a
-        jr z,.x
+        jr nz,.ok
+        ld hl,stat_part         ; a plot left to the ULA (8x8 colour blocks)
+        inc (hl)
+        jr .x
         ; Every figure is whole: overlaps follow plot order, pixel by pixel (the old rule, partly
         ; hidden figures behind all others, was removed 2026-11-17).
 .ok:    ld a,(cur_serial)
@@ -191,7 +187,7 @@ spr_gate:
         or a
         pop hl
         jr z,.native
-        xor a                   ; a sprite shows it: the ULA cell must be blank,
+.blank: xor a                   ; a sprite shows it: the ULA cell must be blank,
         ld (hl),a               ; or older pixels show in the figure's colours
         inc h
         ld (hl),a
@@ -209,6 +205,14 @@ spr_gate:
         ld (hl),a
         jp 0x88A9
 .nat:   pop hl
+        IFDEF L2_SHIP
+        ld a,(ship_on)          ; the battleship's cells are on the tilemap (ship.asm)
+        or a
+        jr z,.native
+        ld a,(de)
+        cp 0x9C
+        jr z,.blank
+        ENDIF
 .native:
         ld a,h
         add a,0x20
@@ -253,6 +257,35 @@ spr_rec_body:
         ld a,(0x8EBF)
         cp 0x60
         ret nz                  ; the plotter is drawing scenery straight to the ULA
+        IFDEF L2_SHIP
+        ld a,d                  ; level 3 battleship hull strip (1x13, object 85D9): tilemap
+        cp 13
+        jr nz,.nsh
+        ld a,(0x719C)
+        cp '3'
+        jr nz,.nsh
+        push hl
+        push iy
+        pop hl
+        ld a,l
+        cp 0xD9
+        jr nz,.nsp
+        ld a,h
+        cp 0x85
+.nsp:   pop hl
+        jr nz,.nsh
+        push bc
+        push de
+        push hl
+        xor a
+        call s_call
+        pop hl
+        pop de
+        pop bc
+        or a
+        ret z                   ; ship.asm shows it; the copier gate blanks its ULA cells
+.nsh:
+        ENDIF
         IFDEF L2_BEHIND_FLAGS
         call behind_chk
         ret z                   ; flagged (behind_flags.asm): the game draws it, behind Layer 2
@@ -296,7 +329,7 @@ spr_rec_body:
         ld (serial),a
 .nr:    ld a,(serial)
         inc a
-        jr z,.out               ; more than 255 plots in one update: native
+        jp z,.out               ; more than 255 plots in one update: native
         ld (serial),a
         ld (cur_serial),a
         ld a,(spr_n)
@@ -304,7 +337,7 @@ spr_rec_body:
         ld a,e
         dec a
         cp 16
-        jr nc,.out
+        jp nc,.out
         ld a,d
         dec a
         cp 18                   ; at most 8 x 9 sprites: the entry bitmap is 72 bits
@@ -332,11 +365,13 @@ spr_rec_body:
         jr z,.have
 .stale: call reconvert          ; the game rewrote this graphic in place
         jr c,.out
-.have:  ld a,(spr_n)
+.have:  ld a,(upd)               ; shown this update: not evicted (c_evict)
+        ld (ix+19),a
+        ld a,(spr_n)
         add a,(ix+4)
         jr c,.out
         cp MAXSPR+1
-        jr nc,.out              ; no sprites left: the whole figure stays on the ULA
+        jp nc,.out              ; no sprites left: the whole figure stays on the ULA
         ld a,(ix+16)
         or a
         jr z,.em
@@ -387,56 +422,58 @@ cache_find:
 
 ; ---- convert the graphic at r_src into patterns; carry = no room --------------
 convert:
-        ld a,(cache_n)
-        cp MAXENT
-        jp nc,conv_fail
-        ld a,(spr_ovf)
-        or a
-        jp nz,conv_keep
         call pre_find           ; an outlined graphic: copy its pre-rendered patterns
         jp z,conv_pre
-        ld a,(ny)               ; refuse before any work if it cannot fit even
-        ld b,a                  ; with every tile used
+        ld a,(ny)               ; spread conversion work: at most BUDGET tiles an
+        ld d,a                  ; update, or one figure of any size
         ld a,(nx)
-        ld c,a
-        ld a,(next_slot)
-.need:  add a,c
-        jp c,conv_fail
-        djnz .need
-        cp CACHE_LIM+1
-        jp nc,conv_fail
-        ld hl,next_slot         ; spread conversion work: at most BUDGET tiles an
-        sub (hl)                ; update, or one figure of any size
-        ld c,a                  ; tiles this figure may need
-        ld a,(budget)
-        cp BUDGET
-        jr z,.first
+        ld e,a
+        mul d,e
+        ld c,e                  ; tiles this figure may need
+        ld a,(budget)           ; fits: spend it; too big: only as the update's first
         cp c
-        jr c,conv_later
-        sub c
+        jr nc,.sub
+        cp BUDGET
+        jp nz,conv_later
+        xor a
         jr .spend
-.first: xor a
+.sub:   sub c
 .spend: ld (budget),a
+        call build_cells        ; c_alloc reserves only the tiles that are not empty
+        ld a,0xFF
+        call alloc              ; IX = entry, A = first slot
+        jp c,conv_fail
+        ld (c_slot),a
+        ld hl,ca_n
+        add a,(hl)
+        ld (slot_lim),a
         ld hl,(r_src)
         ld (ix+0),l
         ld (ix+1),h
         ld a,(r_ink)
         ld (ix+2),a
-        ld a,(next_slot)
-        ld (ix+3),a
         ld (ix+16),0
-        ld (c_slot),a
-        ld a,CACHE_LIM
-        ld (slot_lim),a
         call conv_core
         jp c,conv_fail
         ld a,(c_slot)
-        ld (next_slot),a
         sub (ix+3)
-        ld (ix+4),a             ; sprites this figure needs
-        ld hl,cache_n
-        inc (hl)
+        ld (ix+4),a             ; sprites this figure needs (the rest of its slots free again)
         or a
+        ret
+; A = slots wanted: glide.asm c_alloc. IX = entry, A = first slot; carry = no room. Keeps BC, DE, HL.
+alloc:  push bc
+        push de
+        push hl
+        ld (ca_n),a
+        ld a,0x0F
+        call g_call
+        pop hl
+        pop de
+        pop bc
+        ld ix,(ca_ent)
+        ld a,(ca_slot)
+        add a,1                 ; carry when FF
+        dec a
         ret
 ; Same entry, same pattern slots, new pixels. Carry = it no longer fits.
 reconvert:
@@ -453,18 +490,12 @@ reconvert:
         ld (ix+1),0xFF
         scf
         ret
-conv_fail:
-        ld a,(spr_cool)
-        or a
-        jr z,.ask
-        ld a,1                  ; restarted recently and still full: the figures
-        ld (spr_tight),a        ; on screen need more than 128 patterns
-        jr conv_keep
-.ask:   ld a,1
-        ld (spr_ovf),a
+conv_fail:                      ; the figures shown this update need more than 128 patterns
 conv_keep:
         ld hl,stat_drop
         inc (hl)
+        scf
+        ret
 conv_later:
         scf                     ; the figure is drawn natively this update
         ret
@@ -910,7 +941,11 @@ glide_publish:
 .w:     ld a,(hk_fr)
         cp TITLE_PACE
         jr c,.w
-.go:    ld a,(hk_fr)            ; the update's length for glide (counted on every interrupt)
+.go:
+        IFDEF L2_SHIP
+        call ship_tick_h
+        ENDIF
+        ld a,(hk_fr)            ; the update's length for glide (counted on every interrupt)
         ld (hk_last),a
         xor a
         ld (hk_fr),a
@@ -940,6 +975,37 @@ glide_irq:
 .miss:  ld hl,g_miss
         inc (hl)
         ret
+        ENDIF
+
+        IFDEF L2_SHIP
+SHIP_PG EQU 127                 ; bank 63 high half: ship.asm (level 3 battleship tilemap)
+; A = ship.asm entry (0 plot, 3 off, 6 tick): call it with its page in slot 0; A comes back.
+s_call: push hl
+        ld l,a
+        ld h,1
+        ld (.j+1),hl
+        ld a,SHIP_PG
+        ld (cur_mmu0),a
+        nextreg 0x50,a
+        pop hl
+.j:     call 0
+        push af
+        call col_unmap
+        pop af
+        ret
+ship_stop:
+        ld a,(ship_on)
+        or a
+        ret z
+        ld a,3
+        jr s_call
+ship_tick_h:
+        ld a,(ship_on)
+        or a
+        ret z
+        ld a,6
+        jr s_call
+ship_on: db 0                   ; ship.asm holds page 14 (set by its build, cleared by ship_off)
         ENDIF
 
 col_map:
@@ -1487,30 +1553,25 @@ conv_pre:
         inc hl
         ld d,(hl)
         ld (p_map),de
-        ld a,(next_slot)
-        ld hl,p_nt
-        add a,(hl)
-        jp c,.full
-        cp CACHE_LIM+1
-        jp nc,.full
         ld a,(p_nt)
         ld c,a
-        ld a,(budget)
-        cp BUDGET
-        jr z,.first
+        ld a,(budget)           ; fits: spend it; too big: only as the update's first
         cp c
-        jp c,.later
-        sub c
+        jr nc,.sub
+        cp BUDGET
+        jp nz,.later
+        xor a
         jr .spend
-.first: xor a
+.sub:   sub c
 .spend: ld (budget),a
+        ld a,(p_nt)
+        call alloc              ; unmaps the directory: p_* are already read
+        jp c,conv_fail
+        ld (c_slot),a
         ld hl,(r_src)
         ld (ix+0),l
         ld (ix+1),h
         ld (ix+2),0
-        ld a,(next_slot)
-        ld (ix+3),a
-        ld (c_slot),a
         ld a,(p_nt)
         ld (ix+4),a
         ld hl,(r_sum)
@@ -1596,16 +1657,10 @@ conv_pre:
         pop bc
         djnz .u
         call col_unmap
-        ld a,(c_slot)
-        ld (next_slot),a
-        ld hl,cache_n
-        inc (hl)
         or a
         ret
 .later: call col_unmap
         jp conv_later
-.full:  call col_unmap
-        jp conv_fail
 
 ; ---- 8842: show everything recorded since the previous copier call ------------
 spr_publish:
@@ -1661,7 +1716,9 @@ spr_pub_body:
         cp (hl)
         jr c,.nm
         ld (hl),a
-.nm:    ld a,(run_fast)         ; outside play (title) convert everything at once: no scroll to
+.nm:    ld hl,upd
+        inc (hl)
+        ld a,(run_fast)        ; outside play (title) convert everything at once: no scroll to
         or a                    ; protect, and a figure waiting for conversion steps natively
         ld a,BUDGET
         jr nz,.bg
@@ -1671,39 +1728,11 @@ spr_pub_body:
         ld (need_reset),a
         xor a
         ld (spr_n),a
-        ld a,(spr_cool)
-        or a
-        jr z,.c0
-        dec a
-        ld (spr_cool),a
-.c0:    ld a,(spr_ovf)
-        or a
-        ret z
-        ld a,(spr_tight)
-        or a
-        ld a,(cool_len)
-        jr z,.len
-        add a,a                 ; restarting did not make room last time: wait longer
-        jr nc,.len
-        ld a,255
-.len:   ld (cool_len),a
-        ld (spr_cool),a
-        xor a                   ; no room this update: start the cache again
-        ld (spr_tight),a
-        ld (spr_ovf),a
-        ld (next_slot),a
-        ld (cache_n),a
-        ld hl,stat_flush
-        inc (hl)
         ret
 
 spr_on:   db 0
 spr_n:    db 0
 spr_prev: db 0
-spr_ovf:  db 0
-spr_cool: db 0
-spr_tight: db 0
-cool_len: db COOL
 budget:   db BUDGET
 tab_l:    ds 4
 lbuf:     ds 4
@@ -1735,8 +1764,11 @@ stat_part: db 0
 stat_re:  db 0
 slot_lim: db 128
 r_sum:    dw 0
-next_slot: db 0
 cache_n:  db 0
+upd:      db 0                  ; publications so far (wraps): cache entry stamps
+ca_n:     db 0                  ; alloc / c_alloc
+ca_slot:  db 0
+ca_ent:   dw 0
 stat_flush: db 0
 stat_drop: db 0
 stat_max: db 0

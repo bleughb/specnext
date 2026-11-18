@@ -527,7 +527,7 @@ def import_painting(nex, painted, layout=None, output=None, onto=None, replace=F
     from nexclash import coloursheet as cs, recolour as rc
     rc.engines = lambda: {RECORD: sys.modules[__name__]}     # until R-Type has a record
     lay_path = Path(layout or rc.find_layout(painted))
-    lay = json.loads(lay_path.read_text())
+    lay = cs.load_layout(lay_path)
     img = Image.open(painted).convert('RGB')
     painted_faded = collections.Counter()
     for comp in lay['composites']:

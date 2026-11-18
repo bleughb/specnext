@@ -128,6 +128,9 @@ def build(src=None, folder=OUT, asm=None, sprites=False, full=False, colours=Non
             extra_banks = {**extra_banks, **cbanks}
             glide = blocks.get('glide', b'')    # glide.asm, page 27 (bank 13 high half)
             extra_banks[13] = behind_flags()[:8192]+bytes(0x100)+glide+bytes(8192-0x100-len(glide))
+            ship = blocks.get('ship', b'')     # ship.asm, page 127; page 126 keeps page 14 meanwhile
+            if ship:
+                extra_banks[63] = bytes(8192)+bytes(0x100)+ship+bytes(8192-0x100-len(ship))
             extra_banks.update(scenery_banks())
             if full:
                 import showpiece                     # start-up showpiece: picture in Layer 2 screen A, Copper
