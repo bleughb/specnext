@@ -19,6 +19,10 @@ Each game sprite is listed once (2026-11-20):
 - A figure that adds nothing not already shown (a repeat, or a frame built only from shown
   graphics) is left out. The registry still lists it, with `sheet: null`.
 
+Your arrangement is in `r_type_sheets.json`: `add` moves figures from a level sheet onto COMMON
+(the Force pods), and `order` places a run of figures after the `after` figure (the ship's shots,
+balls, Force pods and collectables follow L1-041). Edit it and run `py -3 r_type_colour.py sheets`.
+
 Scenery has its own sheet per level, `r_type_<LEVEL>_PAINTING_SCENERY.png` (see Scenery below).
 
 Related figures sit together: frames of one object (they share artwork, or their artwork is stored

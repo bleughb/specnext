@@ -206,17 +206,28 @@ def update(out_dir, comps_by_level, cmap, rgb, say=print, ident=None):
 COMMON = 'COMMON'
 
 
-def plan_sheets(comps_by_level, ids_by_level):
+def arrangement(path=None):
+    """The owner's sheet arrangement, colours/r_type_sheets.json: {sheet: {add, after, order}}."""
+    p = Path(path) if path else Path(__file__).resolve().parent.parent / 'colours' / 'r_type_sheets.json'
+    return json.loads(p.read_text()) if p.exists() else {}
+
+
+def plan_sheets(comps_by_level, ids_by_level, arrange=None):
     """The sheets to draw: [(name, comps, ids, preshown)]. COMMON first: every figure made only of
     graphics drawn in more than one level (the same artwork in the same colours; r_type_colour
     twins), once, from the lowest level that draws it, plus any shared graphic no such figure shows,
     on its own. Then each level: its other figures, with the shared graphics faded (preshown: painted
     on COMMON). draw_level(drop=True) leaves out figures that show nothing not already shown."""
     from r_type_colour import level_name
+    arrange = arrangement() if arrange is None else arrange
+    moved = set(arrange.get(COMMON, {}).get('add', []))
     common, seen_csig, covered, singles = [], set(), set(), {}
     for lv in sorted(comps_by_level):
         for c, fid in zip(comps_by_level[lv], ids_by_level[lv]):
-            if all(c['shared']):
+            if fid in moved:
+                common.append((c, fid))
+                covered.update(c['plots'])
+            elif all(c['shared']):
                 if c['csig'] not in seen_csig:
                     seen_csig.add(c['csig'])
                     common.append((c, fid))
@@ -236,7 +247,8 @@ def plan_sheets(comps_by_level, ids_by_level):
         pre.update((q[2], q[3]) for p in c['parts'] for q in p['pixels'])
     out = [(COMMON, [c for c, _ in common], [f for _, f in common], frozenset())] if common else []
     for lv in sorted(comps_by_level):
-        keep = [(c, f) for c, f in zip(comps_by_level[lv], ids_by_level[lv]) if not all(c['shared'])]
+        keep = [(c, f) for c, f in zip(comps_by_level[lv], ids_by_level[lv])
+                if not all(c['shared']) and f not in moved]
         if keep:
             out.append((level_name(lv),
                         [c for c, _ in keep], [f for _, f in keep], frozenset(pre)))
@@ -361,6 +373,14 @@ def draw_level(out_dir, lname, comps, ids, fams, figs_reg, fams_reg, cmap, rgb, 
     out_dir = Path(out_dir)
     prefix = prefix or 'r_type_%s' % lname
     order = sheet_order(comps, ids)
+    arr = arrangement().get(lname, {})
+    if arr.get('order'):                # the owner's run of figures, after the `after` figure
+        at = {ids[i]: i for i in order}
+        run = [at[f] for f in arr['order'] if f in at]
+        rest = [i for i in order if i not in set(run)]
+        anchor = at.get(arr.get('after'))
+        k = rest.index(anchor) + 1 if anchor in rest else 0
+        order = rest[:k] + run + rest[k:]
     if drop:                            # only figures that show a graphics pixel not shown before
         kept, sh = [], set(preshown)
         for i in order:
