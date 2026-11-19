@@ -344,11 +344,36 @@ def sheet_order(comps, ids):
     clusters = {}
     for f in keys:
         clusters.setdefault(find(f), []).append(f)
+    # groups in a chain of look-alikes (owner, 2026-11-20): after each group comes the remaining group
+    # that looks most like it (shape as drawn or mirrored, main colours shared); when none does, the
+    # one with the lowest ID
+    simc = {}
+
+    def fsim(a, b):
+        k = (a, b) if a < b else (b, a)
+        if k not in simc:
+            simc[k] = _alike(shapes[a], shapes[b]) * (1.0 if art[a][2] & art[b][2] else 0.6)
+        return simc[k]
+    roots = sorted(clusters, key=lambda r: min(num(i) for f in clusters[r] for i in fams[f]))
+    chain = [roots.pop(0)] if roots else []
+    while roots:
+        sims = [max(fsim(a, b) for a in clusters[chain[-1]] for b in clusters[r]) for r in roots]
+        k = max(range(len(roots)), key=lambda n: sims[n])
+        chain.append(roots.pop(k if sims[k] >= LOOKALIKE else 0))
     order = []
-    for root in sorted(clusters, key=lambda r: min(num(i) for f in clusters[r] for i in fams[f])):
+    for root in chain:
         for f in sorted(clusters[root], key=lambda f: min(num(i) for i in fams[f])):
             order += sorted(fams[f], key=num)
     return order
+
+
+LOOKALIKE = 0.3                         # similarity (0..1) that puts two groups side by side
+
+
+def similarity(a, b):
+    """How alike two figures look (0..1): shape overlap as drawn or mirrored, less when they share
+    neither of their two main colours."""
+    return _alike(_shape(a), _shape(b)) * (1.0 if _art(a)[2] & _art(b)[2] else 0.6)
 
 
 def _fade(c):
@@ -379,6 +404,18 @@ def draw_level(out_dir, lname, comps, ids, fams, figs_reg, fams_reg, cmap, rgb, 
         run = [at[f] for f in arr['order'] if f in at]
         rest = [i for i in order if i not in set(run)]
         anchor = at.get(arr.get('after'))
+        # a figure that looks like one of the run joins it, after the end of that look-alike stretch
+        # of the run (the owner's order of the run itself is never broken up)
+        follow = {i: [] for i in run}
+        for i in list(rest):
+            best = max(run, key=lambda j: similarity(comps[i], comps[j]), default=None)
+            if best is not None and i != anchor and similarity(comps[i], comps[best]) >= 0.5:
+                q = run.index(best)
+                while q + 1 < len(run) and similarity(comps[run[q]], comps[run[q + 1]]) >= LOOKALIKE:
+                    q += 1
+                follow[run[q]].append(i)
+                rest.remove(i)
+        run = [x for j in run for x in [j] + follow[j]]
         k = rest.index(anchor) + 1 if anchor in rest else 0
         order = rest[:k] + run + rest[k:]
     if drop:                            # only figures that show a graphics pixel not shown before
