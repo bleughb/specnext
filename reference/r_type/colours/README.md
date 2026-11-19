@@ -20,8 +20,10 @@ Each game sprite is listed once (2026-11-20):
   graphics) is left out. The registry still lists it, with `sheet: null`.
 
 Your arrangement is in `r_type_sheets.json`: `add` moves figures from a level sheet onto COMMON
-(the Force pods), and `order` places a run of figures after the `after` figure (the ship's shots,
-balls, Force pods and collectables follow L1-041). Edit it and run `py -3 r_type_colour.py sheets`.
+(the Force pods), `remove` keeps shared figures on their own level's sheet instead (enemies; their
+copies in other levels go with them, painted once there), and `order` places a run of figures after
+the `after` figure (the ship, its laser, balls and Force pods, the L4-097..104 group, then the
+collectables, follow L0-007). Edit it and run `py -3 r_type_colour.py sheets`.
 
 Scenery has its own sheet per level, `r_type_<LEVEL>_PAINTING_SCENERY.png` (see Scenery below).
 

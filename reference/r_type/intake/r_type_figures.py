@@ -207,7 +207,8 @@ COMMON = 'COMMON'
 
 
 def arrangement(path=None):
-    """The owner's sheet arrangement, colours/r_type_sheets.json: {sheet: {add, after, order}}."""
+    """The owner's sheet arrangement, colours/r_type_sheets.json: {sheet: {add, remove, after, order}}
+    (COMMON remove: shared figures drawn on their own level's sheet instead, e.g. enemies)."""
     p = Path(path) if path else Path(__file__).resolve().parent.parent / 'colours' / 'r_type_sheets.json'
     return json.loads(p.read_text()) if p.exists() else {}
 
@@ -221,10 +222,15 @@ def plan_sheets(comps_by_level, ids_by_level, arrange=None):
     from r_type_colour import level_name
     arrange = arrangement() if arrange is None else arrange
     moved = set(arrange.get(COMMON, {}).get('add', []))
+    home = set(arrange.get(COMMON, {}).get('remove', []))  # shared figures kept on their own level's sheet
+    home_csig = {c['csig'] for lv in comps_by_level for c, f in zip(comps_by_level[lv], ids_by_level[lv])
+                 if f in home}          # ... with their copies in other levels (painted once, there)
     common, seen_csig, covered, singles = [], set(), set(), {}
     for lv in sorted(comps_by_level):
         for c, fid in zip(comps_by_level[lv], ids_by_level[lv]):
-            if fid in moved:
+            if fid in home or (all(c['shared']) and c['csig'] in home_csig):
+                covered.update(c['plots'])
+            elif fid in moved:
                 common.append((c, fid))
                 covered.update(c['plots'])
             elif all(c['shared']):
@@ -248,7 +254,7 @@ def plan_sheets(comps_by_level, ids_by_level, arrange=None):
     out = [(COMMON, [c for c, _ in common], [f for _, f in common], frozenset())] if common else []
     for lv in sorted(comps_by_level):
         keep = [(c, f) for c, f in zip(comps_by_level[lv], ids_by_level[lv])
-                if not all(c['shared']) and f not in moved]
+                if (f in home or not all(c['shared'])) and f not in moved]
         if keep:
             out.append((level_name(lv),
                         [c for c, _ in keep], [f for _, f in keep], frozenset(pre)))
