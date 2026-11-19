@@ -1,12 +1,25 @@
 # R-Type colour sheets
 
-Two sheets per level, in the game's own colours (what the sprite build shows today), with the same
-figures in the same arrangement:
+Sprite sheets come in pairs, in the game's own colours (what the sprite build shows today), with the
+same figures in the same arrangement:
 
-- `r_type_<LEVEL>_IDENTIFY.png`: every figure at 2x with its ID above it. For finding a figure;
+- `r_type_<SHEET>_IDENTIFY.png`: every figure at 2x with its ID above it. For finding a figure;
   never read back.
-- `r_type_<LEVEL>_PAINTING_SPRITES.png`: the same figures at 1:1 and in the same places (positions
+- `r_type_<SHEET>_PAINTING_SPRITES.png`: the same figures at 1:1 and in the same places (positions
   are the identification sheet's halved), with no text. This is the sheet you paint.
+
+Each game sprite is listed once (2026-11-20):
+
+- `COMMON`: figures drawn the same in more than one level (the ship, Force, shots, explosions,
+  power-ups, the logo and so on), once each. Painting one colours it in every level.
+- `LEVEL1` .. `LEVEL9`: only that level's own figures. A shared graphic inside one of them is
+  shown faded (paint it on COMMON).
+- "The same" means the same artwork in the same colours. A figure a level draws in other colours
+  stays on that level's sheet, so it can be painted differently there.
+- A figure that adds nothing not already shown (a repeat, or a frame built only from shown
+  graphics) is left out. The registry still lists it, with `sheet: null`.
+
+Scenery has its own sheet per level, `r_type_<LEVEL>_PAINTING_SCENERY.png` (see Scenery below).
 
 Related figures sit together: frames of one object (they share artwork, or their artwork is stored
 back to back at a similar size and in the same colours) and look-alike figures are grouped, in
@@ -23,8 +36,7 @@ order of their lowest ID.
   faded. Painting the bright copy colours every figure that uses that graphic. Paint on a faded
   copy is ignored, and the import names the figure so you can repaint the bright copy.
 - Flash frames (a hit enemy drawn in one forced colour) keep the forced colour.
-- LEVEL1 also holds the title-screen "R-TYPE" letters: the title is drawn by the original screen,
-  so painting them has no effect.
+- COMMON also holds the "R-TYPE" logo letters, as drawn on the title and continue screens.
 
 ## Import
 
@@ -95,3 +107,18 @@ py -3 r_type_colour.py restyle BUILD.nex          -> BUILD_styled.nex
 
 The identification sheets show the borders. During a hit flash an outlined figure is drawn without
 its border, in the flash colour.
+
+## Scenery
+
+`r_type_<LEVEL>_PAINTING_SCENERY.png`: the whole level as it scrolls, in bands of 80 columns (640
+pixels) one under the other, in the colours the build draws: black that connects to open sky is
+grey (see-through).
+
+- The build knows a scenery cell (8x8) only by its content, so every place a cell is used shows the
+  same paint. Each distinct cell is bright the first time it appears and faded after.
+- Paint with the swatches; paint grey to make a pixel see-through, or paint a see-through pixel to
+  make it solid.
+- Import exactly like a sprite sheet: `py -3 r_type_colour.py recolour BUILD.nex
+  r_type_LEVEL1_PAINTING_SCENERY_painted.png`. The bundle redraws the scenery sheet with the new
+  colours. Scenery keys sit in the same colours file as the sprite keys.
+- Builds from 2026-11-20 carry the scenery paint banks (64-71). An older build is refused.

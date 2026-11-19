@@ -75,12 +75,15 @@ def scenery_banks():
     the 8-byte masks in the same order (l2scroll.asm mask_find)."""
     import scenery_masks as SM
     out = {}
-    for level, (table, stats) in SM.all_levels().items():
+    first = 0                           # paint record of a level's cell n: first + n (r_type_scenery)
+    for level, (table, stats) in sorted(SM.all_levels().items()):
         keys = sorted(table)
-        assert len(keys) <= (8192 - 2) // 9 and len(keys) <= 1024, (level, len(keys))
+        assert len(keys) <= (8192 - 4) // 9 and len(keys) <= 1024, (level, len(keys))
         kp = bytearray(8192)
         mp = bytearray(8192)
         kp[0:2] = bytes([len(keys) & 255, len(keys) >> 8])
+        kp[8190:8192] = bytes([first & 255, first >> 8])
+        first += len(keys)
         for n, k in enumerate(keys):
             kp[2 + 9 * n:11 + 9 * n] = bytes([k[0]]) + bytes(k[1])
             mp[8 * n:8 * n + 8] = bytes(table[k])

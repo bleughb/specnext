@@ -16,7 +16,8 @@
 ; same copier call as the ULA. The copier gate blanks owner-9C cells on the ULA (spr_gate).
 ;
 ; Lives in page SHIP_PG (bank 63 high half) at 0x0100, mapped into slot 0 while it runs (s_call).
-; Entries: 0100 plot (HL graphic, B row, C column; A = 0 if the tilemap shows it), 0103 off, 0106 tick.
+; Entries: 0100 plot (HL graphic, B row, C column; A = 0 if the tilemap shows it), 0103 off, 0106 tick,
+; 0109 scenery cell lookup (scn_find: this page is also the build's spare code page).
 
         MMU 0,SHIP_PG
         ORG 0x0100
@@ -24,6 +25,7 @@ ship_start:
         jp ship_plot
         jp ship_off
         jp ship_tick
+        jp scn_find             ; 0109: scenery mask and paint of a cell (l2scroll put_cell)
 
 NSTRIP  EQU 46
 STRIP0  EQU 0x28                ; table entry of the first strip (A = 29, entry A-1)
@@ -387,6 +389,193 @@ ship_off:
 .z:     xor a
         ld (built),a
         jp seen_clear
+
+; ---- scenery cell lookup (put_cell, every level; the hook page has no room) ----------------------------
+; pc_key (attribute | 80, pc_src) -> pc_mask (see-through pixels) and pc_paint (64 bytes, column by column:
+; 0 = the game's colour, 1-15 a painted colour, 80 = painted see-through; r_type_scenery.py). The level's
+; sorted keys (page MASK_PAGE0 + 2*(level-1): count, 9-byte keys, first paint record at 8190) and its masks
+; (next page) are searched with that page in slot 2. Keeps BC, DE, HL; returns A = 0.
+SCN_PG0 EQU 128                 ; paint records: banks 64-71, 40 bytes each, 204 to a page
+REC_PP  EQU 204
+scn_find:
+        push bc
+        push de
+        push hl
+        xor a
+        ld hl,pc_mask
+        ld b,8
+.z1:    ld (hl),a
+        inc hl
+        djnz .z1
+        ld hl,pc_paint
+        ld b,64
+.z2:    ld (hl),a
+        inc hl
+        djnz .z2
+        ld a,(pc_blk)
+        cp 8
+        jp nz,.out              ; not scenery
+        ld a,(0x719C)
+        sub '1'
+        cp 8
+        jp nc,.out
+        add a,a
+        add a,MASK_PAGE0
+        ld (sf_pg),a
+        ld e,a
+        ld a,i
+        push af
+        di
+        ld a,e
+        nextreg 0x52,a
+        ld hl,(0x4000)
+        ld (sf_n),hl
+        ld hl,0
+        ld (sf_lo),hl
+.bs:    ld hl,(sf_n)
+        ld a,h
+        or l
+        jp z,.done              ; not listed: no mask, no paint
+        srl h
+        rr l
+        ld (sf_h),hl
+        ld de,(sf_lo)
+        add hl,de
+        ld (sf_mid),hl
+        ld d,h
+        ld e,l
+        add hl,hl
+        add hl,hl
+        add hl,hl
+        add hl,de
+        ld de,0x4002
+        add hl,de               ; 4002 + 9 * mid
+        ld de,pc_key
+        ld b,9
+.cmp:   ld a,(de)
+        cp (hl)
+        jp nz,.ne
+        inc hl
+        inc de
+        djnz .cmp
+        ld hl,(0x4000+8190)     ; found: record = the level's first + mid
+        ld de,(sf_mid)
+        add hl,de
+        ld (sf_rec),hl
+        ld a,(sf_pg)
+        inc a
+        nextreg 0x52,a
+        ex de,hl                ; HL = mid
+        add hl,hl
+        add hl,hl
+        add hl,hl
+        ld de,0x4000
+        add hl,de
+        ld de,pc_mask
+        ld bc,8
+        ldir
+        ld hl,(sf_rec)
+        ld c,SCN_PG0
+        ld de,REC_PP
+.dv:    or a
+        sbc hl,de
+        jr c,.dd
+        inc c
+        jr .dv
+.dd:    add hl,de               ; L = slot in the page
+        ld a,c
+        nextreg 0x52,a
+        ld d,l
+        ld e,40
+        mul d,e
+        ld hl,0x4000
+        add hl,de
+        ld (sf_rec),hl          ; the record
+        ld c,0                  ; C = line
+.row:   ld hl,(sf_rec)
+        ld a,c
+        add a,a
+        add a,a
+        add hl,a                ; 4 bytes of nibbles, left pixel high
+        ld de,pc_paint
+        ld a,e
+        add a,c
+        ld e,a
+        ld b,4
+.nb:    ld a,(hl)
+        inc hl
+        push af
+        rrca
+        rrca
+        rrca
+        rrca
+        and 15
+        ld (de),a
+        ld a,e
+        add a,8
+        ld e,a
+        pop af
+        and 15
+        ld (de),a
+        ld a,e
+        add a,8
+        ld e,a
+        djnz .nb
+        ld hl,(sf_rec)
+        ld a,32
+        add a,c
+        add hl,a
+        ld de,pc_paint
+        ld a,e
+        add a,c
+        ld e,a
+        ld a,(hl)               ; see-through mask, bit 7 = leftmost
+        ld b,8
+.mk:    rlca
+        jr nc,.mn
+        push af
+        ld a,0x80
+        ld (de),a
+        pop af
+.mn:    push af
+        ld a,e
+        add a,8
+        ld e,a
+        pop af
+        djnz .mk
+        inc c
+        ld a,c
+        cp 8
+        jr nz,.row
+.done:  nextreg 0x52,0x0A
+        pop af
+        jp po,.out
+        ei
+.out:   pop hl
+        pop de
+        pop bc
+        xor a
+        ret
+.ne:    jr c,.left              ; key below this entry
+        ld hl,(sf_mid)
+        inc hl
+        ld (sf_lo),hl
+        ld hl,(sf_n)
+        ld de,(sf_h)
+        or a
+        sbc hl,de
+        dec hl
+        ld (sf_n),hl
+        jp .bs
+.left:  ld hl,(sf_h)
+        ld (sf_n),hl
+        jp .bs
+sf_pg:  db 0
+sf_n:   dw 0
+sf_lo:  dw 0
+sf_h:   dw 0
+sf_mid: dw 0
+sf_rec: dw 0
 
 built:  db 0                    ; 1 tiles ready (page 14 kept in 126), 2 build failed
 shown:  db 0

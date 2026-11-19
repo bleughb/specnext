@@ -52,9 +52,20 @@ def level_tag(lv):
 
 
 def _load(path):
+    """The registry: committed gzipped (path + '.gz'); a plain .json is read when no .gz exists."""
+    import gzip
+    gz = Path(str(path) + '.gz')
+    if gz.exists():
+        return json.loads(gzip.decompress(gz.read_bytes()))
     if path.exists():
         return json.loads(path.read_text())
     return {}
+
+
+def _save(path, reg):
+    import gzip
+    Path(str(path) + '.gz').write_bytes(gzip.compress((json.dumps(reg, indent=1) + '\n').encode(), mtime=0))
+    Path(path).unlink(missing_ok=True)
 
 
 def _families(comps):
@@ -117,7 +128,7 @@ def update(out_dir, comps_by_level, cmap, rgb, say=print, ident=None):
     reg = dict(old)
     reg.update(schema=SCHEMA, game='r_type', note=__doc__.split('\n\n')[0], scale=SCALE,
                palette=[list(c) for c in rgb], layers=LAYERS)
-    figs, fams, levels = {}, {}, {}
+    figs, fams, levels, ids_by_level = {}, {}, {}, {}
     font = _font()
     for lv, comps in sorted(comps_by_level.items()):
         tag = level_tag(lv)
@@ -157,23 +168,29 @@ def update(out_dir, comps_by_level, cmap, rgb, say=print, ident=None):
             fams[best] = fam
             for i in group:
                 comps[i]['family'] = best
-        sheet, paint, order, place, height = draw_level(out_dir, lname, comps, ids, fams, old_figs, old_fams,
-                                                        cmap, rgb, ident)
-        levels[lname] = dict(level=lv, tag=tag, identify=sheet, painting=paint, width=WIDTH * SCALE,
-                             height=height * SCALE, figures=[ids[i] for i in order])
-        for i in order:
-            c = comps[i]
+        for i, c in enumerate(comps):
             prev = old_figs.get(ids[i], {})
             keys = {q[2] for p in c['parts'] for q in p['pixels'] if q[4]}
             f = dict(prev)
             f.update(sig=c['sig'], level=lname, family=c['family'], name=prev.get('name'),
                      layer=prev.get('layer'), outline=prev.get('outline'), count=c['count'],
-                     size=[place[i][2], place[i][3]], parts=c['shape'],
-                     box=[place[i][0] * SCALE, place[i][1] * SCALE, place[i][2] * SCALE, place[i][3] * SCALE],
-                     keys=len(keys), painted=sum(1 for k in keys if k in cmap))
+                     parts=c['shape'], keys=len(keys), painted=sum(1 for k in keys if k in cmap),
+                     sheet=None, box=None)
             figs[ids[i]] = f
-        say('%-8s %3d figures, %3d families -> %s, %s' % (lname, len(comps), len({c['family'] for c in comps}),
-                                                          sheet, paint))
+        ids_by_level[lv] = ids
+    for sname, comps, ids, pre in plan_sheets(comps_by_level, ids_by_level):
+        sheet, paint, order, place, height = draw_level(out_dir, sname, comps, ids, fams, old_figs, old_fams,
+                                                        cmap, rgb, ident, preshown=pre, drop=True)
+        lv = comps[0]['group'] if sname != COMMON else None
+        levels[sname] = dict(level=lv, tag=level_tag(lv) if lv else 'C', identify=sheet, painting=paint,
+                             width=WIDTH * SCALE, height=height * SCALE, figures=[ids[i] for i in order])
+        for i in order:
+            f = figs.get(ids[i])
+            if f is None:               # a shared graphic on its own (COMMON sheet), not a figure
+                continue
+            f.update(sheet=sname, size=[place[i][2], place[i][3]],
+                     box=[place[i][0] * SCALE, place[i][1] * SCALE, place[i][2] * SCALE, place[i][3] * SCALE])
+        say('%-8s %3d of %3d figures -> %s, %s' % (sname, len(order), len(comps), sheet, paint))
     # figures no longer seen keep their entry (a shorter recording must not lose names)
     for fid, f in old_figs.items():
         if fid not in figs:
@@ -182,8 +199,56 @@ def update(out_dir, comps_by_level, cmap, rgb, say=print, ident=None):
         if k not in fams:
             fams[k] = dict(f, unseen=True)
     reg.update(levels=levels, families=dict(sorted(fams.items())), figures=dict(sorted(figs.items())))
-    reg_path.write_text(json.dumps(reg, indent=1) + '\n')
+    _save(reg_path, reg)
     return reg
+
+
+COMMON = 'COMMON'
+
+
+def plan_sheets(comps_by_level, ids_by_level):
+    """The sheets to draw: [(name, comps, ids, preshown)]. COMMON first: every figure made only of
+    graphics drawn in more than one level (the same artwork in the same colours; r_type_colour
+    twins), once, from the lowest level that draws it, plus any shared graphic no such figure shows,
+    on its own. Then each level: its other figures, with the shared graphics faded (preshown: painted
+    on COMMON). draw_level(drop=True) leaves out figures that show nothing not already shown."""
+    from r_type_colour import level_name
+    common, seen_csig, covered, singles = [], set(), set(), {}
+    for lv in sorted(comps_by_level):
+        for c, fid in zip(comps_by_level[lv], ids_by_level[lv]):
+            if all(c['shared']):
+                if c['csig'] not in seen_csig:
+                    seen_csig.add(c['csig'])
+                    common.append((c, fid))
+                covered.update(c['plots'])
+            else:
+                for n, (g, sh) in enumerate(zip(c['plots'], c['shared'])):
+                    if sh and g not in singles:
+                        singles[g] = (c, fid, n)
+    for g, (c, fid, n) in singles.items():
+        if g in covered:
+            continue
+        part = dict(c['parts'][n], dx=0, dy=0, x=0, y=0)
+        common.append((dict(c, parts=[part], shape=[dict(c['shape'][n], dx=0, dy=0)], plots=[g], shared=[True]),
+                       '%s.%d' % (fid, n + 1)))
+    pre = set()
+    for c, _ in common:
+        pre.update((q[2], q[3]) for p in c['parts'] for q in p['pixels'])
+    out = [(COMMON, [c for c, _ in common], [f for _, f in common], frozenset())] if common else []
+    for lv in sorted(comps_by_level):
+        keep = [(c, f) for c, f in zip(comps_by_level[lv], ids_by_level[lv]) if not all(c['shared'])]
+        if keep:
+            out.append((level_name(lv),
+                        [c for c, _ in keep], [f for _, f in keep], frozenset(pre)))
+    return out
+
+
+def _idnum(fid):
+    """Sort number of an ID: L3-036 -> 36.0, a single graphic L3-036.2 -> 36.2."""
+    try:
+        return float(fid.split('-', 1)[1])
+    except ValueError:
+        return 1e9
 
 
 def _shape(comp):
@@ -238,7 +303,7 @@ def sheet_order(comps, ids):
     stored back to back (one figure's graphic starts where another's ends), at a similar size
     (within 4 pixels) and in the same main colours, or their shapes overlap by half or more as drawn
     or mirrored. Groups in order of their lowest ID, figures by ID inside. IDs never change."""
-    num = lambda i: int(ids[i].split('-')[1])
+    num = lambda i: _idnum(ids[i])
     fams = {}
     for i, c in enumerate(comps):
         fams.setdefault(c['family'], []).append(i)
@@ -280,7 +345,8 @@ def _fade(c):
     return tuple(int(b + (v - b) * 0.35) for v, b in zip(c, cs.BG_RGB))
 
 
-def draw_level(out_dir, lname, comps, ids, fams, figs_reg, fams_reg, cmap, rgb, ident=None, prefix=None):
+def draw_level(out_dir, lname, comps, ids, fams, figs_reg, fams_reg, cmap, rgb, ident=None, prefix=None,
+               preshown=frozenset(), drop=False):
     """Both sheets of a level, in the same order and arrangement:
     r_type_<LEVEL>_IDENTIFY.png  every figure at 2x with its ID, borders as built (never read back);
     r_type_<LEVEL>_PAINTING_SPRITES.png + _layout.json  the same figures at 1:1, no text. The first
@@ -295,6 +361,14 @@ def draw_level(out_dir, lname, comps, ids, fams, figs_reg, fams_reg, cmap, rgb, 
     out_dir = Path(out_dir)
     prefix = prefix or 'r_type_%s' % lname
     order = sheet_order(comps, ids)
+    if drop:                            # only figures that show a graphics pixel not shown before
+        kept, sh = [], set(preshown)
+        for i in order:
+            px = {(q[2], q[3]) for p in comps[i]['parts'] for q in p['pixels']}
+            if px - sh:
+                kept.append(i)
+                sh |= px
+        order = kept
     top = cs.SW + 4
     place, x, y, rowh, last = {}, 2, top, 0, None
     for i in order:
@@ -340,7 +414,7 @@ def draw_level(out_dir, lname, comps, ids, fams, figs_reg, fams_reg, cmap, rgb, 
         for yy in range(1, 1 + cs.SW):
             for xx in range(cs.SW):
                 pimg.putpixel((1 + (n - 1) * (cs.SW + 2) + xx, yy), rgb[n])
-    shown, lay = set(), []
+    shown, lay = set(preshown), []
     for i in order:
         comp = comps[i]
         bx, by, w, h = place[i]
@@ -380,7 +454,10 @@ def draw_level(out_dir, lname, comps, ids, fams, figs_reg, fams_reg, cmap, rgb, 
                     '(dim) are copies of graphics already shown and are not read back')
     if ident:
         out['identity'] = ident
-    (out_dir / (prefix + '_PAINTING_SPRITES_layout.json')).write_text(_json.dumps(out))
+    import gzip                         # committed layouts are gzipped (recolour.find_layout reads both)
+    (out_dir / (prefix + '_PAINTING_SPRITES_layout.json')).unlink(missing_ok=True)
+    (out_dir / (prefix + '_PAINTING_SPRITES_layout.json.gz')).write_bytes(
+        gzip.compress(_json.dumps(out).encode(), mtime=0))
     return ident_name, paint_name, order, place, height
 
 
@@ -421,6 +498,6 @@ def apply(out_dir, patch, say=print):
                 n += 1
     if bad:
         raise ValueError('nothing applied:\n  ' + '\n  '.join(bad))
-    reg_path.write_text(json.dumps(reg, indent=1) + '\n')
+    _save(reg_path, reg)
     say('%d name / layer change(s) applied to %s' % (n, reg_path.name))
     return reg

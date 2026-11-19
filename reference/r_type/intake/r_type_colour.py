@@ -63,6 +63,12 @@ def level_name(lv):
     return LEVEL_NAMES.get(lv, 'LEVEL%d' % (lv - 0x30))
 
 
+def level_byte(name):
+    """Inverse of level_name: 'TEXT' -> 0x30, 'LEVEL3' -> 0x33."""
+    inv = {v: k for k, v in LEVEL_NAMES.items()}
+    return inv[name] if name in inv else 0x30 + int(name[5:])
+
+
 def corpus():
     return json.loads(gzip.decompress((HERE / 'continuation' / 'assets.json.gz').read_bytes()))
 
@@ -99,9 +105,74 @@ def plain_cell(cell):
     return cell['ink'] == (((a & 7) + (8 if a & 64 else 0)) or 8)
 
 
-def composites(data):
-    """{level: [composite]} for coloursheet.write: one composite per distinct figure (game object)."""
+def _bkey(c, line):
+    return '%02X:%04X' % (c['level'], (c['address'] + 1 + line) & 0xFFFF)
+
+
+def _content(data, p):
+    """A plot's artwork without its level or address: size and every cell's attribute and pixels."""
+    cells = data['cells']
+    return (p['w'], p['h'], tuple((cx, cy, cells[ck]['attribute'], tuple(cells[ck]['bits']))
+                                  for cx, cy, ck in p['cells']))
+
+
+def content_groups(data):
+    """{content: [plot keys]}, first = the lowest (level, address): the same artwork in the same
+    colours is one graphic wherever and in whichever level it is stored. The same pixels in other
+    colours are another graphic (levels that colour a figure differently keep their own)."""
+    groups = collections.defaultdict(list)
+    for pk, p in data['plots'].items():
+        groups[_content(data, p)].append(pk)
+    for g in groups.values():
+        g.sort(key=lambda k: (data['plots'][k]['level'], data['plots'][k]['address']))
+    return groups
+
+
+def twins(data):
+    """{graphics byte key: its canonical key}, for every byte of a graphic that is also stored
+    elsewhere (the canonical copy is the lowest level and address). The sheets show only canonical
+    keys; tables() gives every copy its canonical copy's colours."""
     cells, plots = data['cells'], data['plots']
+    tw = {}
+    for g in content_groups(data).values():
+        rep = plots[g[0]]
+        for pk in g[1:]:
+            for (_, _, ck), (_, _, rk) in zip(plots[pk]['cells'], rep['cells']):
+                for line in range(8):
+                    a, b = _bkey(cells[ck], line), _bkey(cells[rk], line)
+                    if a != b:
+                        tw.setdefault(a, b)
+    for k in list(tw):                  # overlapping plots: follow to the end of a chain
+        seen = {k}
+        while tw[k] in tw and tw[k] not in seen:
+            seen.add(tw[k])
+            tw[k] = tw[tw[k]]
+    return tw
+
+
+def expand(cmap, data=None):
+    """The colour map with every copy of a graphic given its canonical copy's colours (a copy's own
+    entry, painted before the sheets were shared, is kept)."""
+    data = data or corpus()
+    out = dict(cmap)
+    for k, c in twins(data).items():
+        if k not in out and c in cmap:
+            out[k] = cmap[c]
+    return out
+
+
+def composites(data):
+    """{level: [composite]} for coloursheet.write: one composite per distinct figure (game object).
+    Pixel keys are canonical (twins); each composite has `csig` (its artwork, level-free) and
+    `levels` (the levels each of its graphics is drawn in, smallest set)."""
+    cells, plots = data['cells'], data['plots']
+    tw = twins(data)
+    groups = content_groups(data)
+    span, gid = {}, {}
+    for n, (content, g) in enumerate(groups.items()):
+        lv = {plots[k]['level'] for k in g}
+        for k in g:
+            span[k], gid[k] = lv, g[0]
     parts_cache = {}
 
     def part(pk):
@@ -113,7 +184,9 @@ def composites(data):
                 ok &= plain_cell(c)
                 px += cell_part_pixels(c, cx, cy)
                 for line, byte in enumerate(c['bits']):
-                    ent['%02X:%04X' % (c['level'], (c['address'] + 1 + line) & 0xFFFF)] = [byte, 'g']
+                    k = _bkey(c, line)
+                    ent[tw.get(k, k)] = [byte, 'g']
+            px = [q[:2] + (tw.get(q[2], q[2]),) + q[3:] for q in px]
             parts_cache[pk] = (dict(id=pk, size=len(p['cells']), w=p['w'], h=p['h'], pixels=px,
                                     entries=ent), ok)
         return parts_cache[pk]
@@ -130,8 +203,13 @@ def composites(data):
             shape = [dict(graphic='%04X' % plots[q['plot']]['address'], w=plots[q['plot']]['w'],
                           h=plots[q['plot']]['h'], dx=q['dx'], dy=q['dy'], flip=q['flip']) for q in fig['parts']]
             sig = hashlib.sha1(json.dumps([fig['level'], shape]).encode()).hexdigest()[:12]
+            art = [[gid[q['plot']], q['dx'], q['dy'], q['flip']] for q in fig['parts']]
+            csig = hashlib.sha1(json.dumps(art).encode()).hexdigest()[:12]
+            levels = set.intersection(*[span[q['plot']] for q in fig['parts']])
             out[fig['level']].append(dict(count=fig['count'], group=fig['level'], parts=built,
-                                          sig=sig, shape=shape))
+                                          sig=sig, shape=shape, csig=csig, levels=levels,
+                                          plots=[gid[q['plot']] for q in fig['parts']],
+                                          shared=[len(span[q['plot']]) > 1 for q in fig['parts']]))
     return out
 
 
@@ -182,7 +260,9 @@ def sheets(out_dir=None, colours=None, say=print):
     rgb = cs.palette_rgb(PALETTE)
     import r_type_figures as F
     F.update(out_dir, composites(data), cmap, rgb, say, ident)
-    made = sorted(out_dir.glob('r_type_*_PAINTING_SPRITES.png'))
+    import r_type_scenery as SC
+    SC.sheets(out_dir, cmap, rgb, ident, say)
+    made = sorted(out_dir.glob('r_type_*_PAINTING_S*.png'))
     return made
 
 
@@ -190,8 +270,8 @@ FIGURES = REF / 'colours' / 'r_type_figures.json'
 
 
 def registry(path=None):
-    p = Path(path or os.environ.get('RTYPE_FIGURES') or FIGURES)
-    return json.loads(p.read_text()) if p.exists() else {}
+    import r_type_figures as F
+    return F._load(Path(path or os.environ.get('RTYPE_FIGURES') or FIGURES))
 
 
 def outline_colour(v):
@@ -217,7 +297,7 @@ def outline_wanted(reg=None):
         col = outline_colour(v)
         if col is None:
             continue
-        lv = reg['levels'][f['level']]['level']
+        lv = level_byte(f['level'])
         for p in f['parts']:
             g = int(p['graphic'], 16)
             if want.get((lv, g), col) != col:
@@ -430,6 +510,7 @@ def tables(cmap, data=None, reg=None, fill=True):
     and wrong check bytes are ignored and counted; more painted cells than the directory holds is an
     error."""
     data = data or corpus()
+    cmap = expand(cmap, data)           # sheets paint one copy of a shared graphic: give it to all
     if fill:
         cmap = with_fill(cmap, data, reg)
     pre, oinfo = outlined_patterns(cmap, data, reg)
@@ -437,6 +518,8 @@ def tables(cmap, data=None, reg=None, fill=True):
     recs = {}
     info = collections.Counter()
     for key, e in cmap.items():
+        if key.startswith('S'):         # scenery: r_type_scenery.banks
+            continue
         if key not in idx:
             info['map entries for no drawn graphics byte'] += 1
             continue
@@ -471,6 +554,9 @@ def tables(cmap, data=None, reg=None, fill=True):
     info['painted cells'] = n
     info.update(oinfo)
     banks = {b: bytes(pages[2 * b]) + bytes(pages[2 * b + 1]) for b in COLOUR_BANKS}
+    import r_type_scenery as SC
+    sbanks, info['painted scenery cells'] = SC.banks(cmap)
+    banks.update(sbanks)
     return banks, dict(info)
 
 
@@ -490,7 +576,8 @@ def recolour(nex, cmap):
     from nexclash import recolour as rc
     import l2scroll as L
     off = rc.nex_offsets(nex)
-    need = set(COLOUR_BANKS) | {0, 2, 5, 12}
+    import r_type_scenery as SC
+    need = set(COLOUR_BANKS) | set(range(SC.SCN_BANK0, SC.SCN_BANK0 + SC.SCN_BANKS)) | {0, 2, 5, 12}
     if not need <= set(off):
         raise ValueError('not an R-Type Layer 2 sprite build: banks %s missing' % sorted(need - set(off)))
     bank = lambda b: bytes(nex[off[b]:off[b] + 16384])
@@ -543,14 +630,23 @@ def import_painting(nex, painted, layout=None, output=None, onto=None, replace=F
     try:
         clean = work / Path(painted).name
         img.save(clean)
-        out = rc.run(nex, str(clean), layout=str(lay_path), output=output or str(
+        plain = work / (clean.stem + '_layout.json')    # recolour.run reads the layout as plain JSON
+        plain.write_text(json.dumps(lay))
+        out = rc.run(nex, str(clean), layout=str(plain), output=output or str(
             Path(nex).with_name(Path(nex).stem + '_painted.nex')), onto=onto, replace=replace, say=say)
     finally:
         shutil.rmtree(work, ignore_errors=True)
     # redraw both sheets of this level with the merged colours, as the bundle's sheets
     ostem = Path(out).with_suffix('')
     merged = cs.load(str(ostem) + '_colours.json')
-    lname = lay_path.name.split('_')[2]
+    if lay.get('kind') == 'scenery':
+        import r_type_scenery as SC
+        lv = level_byte(lay['sheet']) - 0x30
+        SC.sheets(Path(out).parent, merged, cs.palette_rgb(PALETTE), say=lambda *a: None, only=lv,
+                  prefix='%s_r_type_%s' % (ostem.name, lay['sheet']))
+        say('-> %s_r_type_%s_PAINTING_SCENERY.png (redrawn with the new colours)' % (ostem, lay['sheet']))
+        return out
+    lname = lay.get('identify', lay_path.name).split('_')[2]    # r_type_<SHEET>_IDENTIFY.png
     redraw_level(lname, merged, Path(out).parent, '%s_r_type_%s' % (ostem.name, lname))
     say('-> %s_r_type_%s_PAINTING_SPRITES.png / _IDENTIFY.png (redrawn with the new colours)' % (ostem, lname))
     return out
@@ -561,15 +657,17 @@ def redraw_level(lname, cmap, out_dir, prefix):
     from nexclash import coloursheet as cs, z80tonex as Z
     import r_type_figures as F
     reg = registry()
-    lv = reg['levels'][lname]['level']
-    comps = composites(corpus())[lv]
     by_sig = {f['sig']: k for k, f in reg['figures'].items()}
-    ids = [by_sig[c['sig']] for c in comps]
-    for c, fid in zip(comps, ids):
-        c['family'] = reg['figures'][fid]['family']
+    comps_by_level, ids_by_level = composites(corpus()), {}
+    for lv, comps in comps_by_level.items():
+        ids_by_level[lv] = [by_sig[c['sig']] for c in comps]
+        for c, fid in zip(comps, ids_by_level[lv]):
+            c['family'] = reg['figures'][fid]['family']
     ident = colour_identity(Peek(Z.Z80Snapshot(str(REF / 'Rtype.z80')).banks))
-    F.draw_level(out_dir, lname, comps, ids, reg['families'], reg['figures'], reg['families'], cmap,
-                 cs.palette_rgb(PALETTE), ident, prefix=prefix)
+    for sname, comps, ids, pre in F.plan_sheets(comps_by_level, ids_by_level):
+        if sname == lname:
+            F.draw_level(out_dir, lname, comps, ids, reg['families'], reg['figures'], reg['families'], cmap,
+                         cs.palette_rgb(PALETTE), ident, prefix=prefix, preshown=pre, drop=True)
 
 
 def main(argv):

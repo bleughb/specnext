@@ -127,7 +127,8 @@ def open_black(cells, width):
 
 
 def level_masks(data):
-    """{(attr, rows): mask} by content, majority per pixel; plus stats."""
+    """{(attr, rows): mask} by content for every distinct scenery cell (mask all zero when nothing
+    is see-through), majority per pixel; plus stats."""
     cells, width = level_cells(data)
     opened = open_black(cells, width)
     votes = collections.defaultdict(list)
@@ -146,7 +147,7 @@ def level_masks(data):
             mask.append(v)
         if any(mask):
             opened_cells += 1
-            table[key] = tuple(mask)
+        table[key] = tuple(mask)        # every distinct cell: the runtime index is also its paint record
     return table, dict(width_cells=width, scenery_cells=len(opened), distinct=len(votes),
                        distinct_with_see_through=opened_cells, distinct_with_conflicts=conflicts)
 

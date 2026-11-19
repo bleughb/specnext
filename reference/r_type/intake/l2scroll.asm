@@ -390,7 +390,15 @@ l2_convert:
         inc hl
         djnz .z
         pop bc
-.col:   ld l,b
+.col:   ld l,c                  ; Layer 2 column: 32 + 8 * col
+        ld h,0
+        add hl,hl
+        add hl,hl
+        add hl,hl
+        ld de,32
+        add hl,de
+        ld (pc_x),hl
+        ld l,b
         ld h,0
         add hl,hl
         add hl,hl
@@ -423,31 +431,20 @@ l2_convert:
         rrca
         or c
         ld l,a                  ; HL = ULA cell
-        push hl
-        ld a,c                  ; Layer 2 column: 32 + 8 * col
-        ld l,a
-        ld h,0
-        add hl,hl
-        add hl,hl
-        add hl,hl
-        ld de,32
-        add hl,de
-        ld (pc_x),hl
-        pop hl
         pop af
         call put_cell
         pop bc
         jr .next
-.sky:   push bc                 ; sky: draw it clear, so screen B's first byte carries the half
-        ld a,c                  ; pixel of the scenery to its left (else right edges shimmer)
-        ld l,a
-        ld h,0
-        add hl,hl
-        add hl,hl
-        add hl,hl
-        ld de,32
+.sky:   ld a,c                  ; sky fast path: both screens are already clear, so only a sky cell
+        or a                    ; right of scenery is drawn (its screen B first byte carries the half
+        jr z,.next              ; pixel of the scenery to its left, else right edges shimmer). That
+        dec hl                  ; cell also zeroes the carry, so the skipped cells after it need none.
+        ld de,0x7E00            ; Level 1: 533 of 543 sky cells skipped.
         add hl,de
-        ld (pc_x),hl
+        ld a,(hl)
+        inc a
+        jr nz,.next
+        push bc
         ld a,0x2C               ; INC L: zero8 is consecutive bytes
         ld (put_cell.step),a
         xor a
@@ -562,13 +559,31 @@ put_cell:
         add a,a
         add a,a
         ld (pc_y),a             ; play row of the cell's top line
+        IFDEF L2_SHIP
+        ld hl,pc_paint
+        ld (pc_pp),hl
+        ENDIF
         ld c,0x80               ; pixel mask, leftmost first
         ld hl,(pc_x)
         ld (pc_c),hl
 .colm:  ld de,pc_idx            ; this pixel column's 8 colour indices
         ld hl,pc_src
         ld b,8
-.ix:    ld a,(hl)
+        IFDEF L2_SHIP
+        ld ix,(pc_pp)           ; painted scenery (r_type_scenery.py): 1-15 a colour, 80 see-through
+        ENDIF
+.ix:
+        IFDEF L2_SHIP
+        ld a,(ix+0)
+        inc ix
+        or a
+        jr z,.dflt
+        jp p,.st
+        xor a
+        jr .st
+.dflt:
+        ENDIF
+        ld a,(hl)
         and c
         ld a,(pc_ink)
         jr nz,.ok
@@ -593,6 +608,9 @@ put_cell:
         inc hl
         inc de
         djnz .ix
+        IFDEF L2_SHIP
+        ld (pc_pp),ix
+        ENDIF
         ld hl,(pc_c)            ; page and offset of this column
         ld a,l
         and 31
@@ -663,6 +681,11 @@ put_cell:
 ; pc_key (attribute | 80, then pc_src) -> pc_mask: binary search of this level's sorted keys (page
 ; MASK_PAGE0 + 2*(level-1): count, then 9-byte keys), masks in the next page (8 bytes each). Returns
 ; with Z set (found or not: the mask is zero when the cell is not listed).
+        IFDEF L2_SHIP
+mask_find:                      ; ship.asm scn_find: also the cell's paint (pc_paint)
+        ld a,9
+        jp s_call
+        ELSE
 mask_find:
         push bc
         push de
@@ -753,6 +776,11 @@ mf_n:   dw 0
 mf_lo:  dw 0
 mf_h:   dw 0
 mf_mid: dw 0
+        ENDIF
+        IFDEF L2_SHIP
+pc_paint EQU 0x3D80             ; 64 bytes after the flag map (ship.asm scn_find)
+pc_pp:  dw 0
+        ENDIF
 
 ; RRRGGGBB for the eight normal then the eight bright Spectrum colours (sprite palette).
 col_tab: db 0x00,0x02,0xA0,0xA2,0x14,0x16,0xB4,0xB6
