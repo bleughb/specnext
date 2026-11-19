@@ -204,6 +204,7 @@ def update(out_dir, comps_by_level, cmap, rgb, say=print, ident=None):
 
 
 COMMON = 'COMMON'
+ENEMY_LIKE = 0.6                        # similarity that sends a shared figure with a removed one
 
 
 def arrangement(path=None):
@@ -223,8 +224,17 @@ def plan_sheets(comps_by_level, ids_by_level, arrange=None):
     arrange = arrangement() if arrange is None else arrange
     moved = set(arrange.get(COMMON, {}).get('add', []))
     home = set(arrange.get(COMMON, {}).get('remove', []))  # shared figures kept on their own level's sheet
-    home_csig = {c['csig'] for lv in comps_by_level for c, f in zip(comps_by_level[lv], ids_by_level[lv])
-                 if f in home}          # ... with their copies in other levels (painted once, there)
+    stay = set(arrange.get(COMMON, {}).get('keep', [])) | moved | set(arrange.get(COMMON, {}).get('order', []))
+    allc = [(c, f) for lv in sorted(comps_by_level) for c, f in zip(comps_by_level[lv], ids_by_level[lv])]
+    # a shared figure that looks like a removed one (another frame or colouring of that enemy) goes too
+    hc = [c for c, f in allc if f in home]
+    home_csig = {c['csig'] for c in hc}     # ... with their copies in other levels (shown once)
+    for c, f in allc:
+        if f not in home and f not in stay and all(c['shared']) and c['csig'] not in home_csig and \
+                any(similarity(c, h) >= ENEMY_LIKE for h in hc):
+            home.add(f)
+            hc.append(c)
+            home_csig.add(c['csig'])
     common, seen_csig, covered, singles = [], set(), set(), {}
     for lv in sorted(comps_by_level):
         for c, fid in zip(comps_by_level[lv], ids_by_level[lv]):

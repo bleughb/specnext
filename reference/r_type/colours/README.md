@@ -21,7 +21,8 @@ Each game sprite is listed once (2026-11-20):
 
 Your arrangement is in `r_type_sheets.json`: `add` moves figures from a level sheet onto COMMON
 (the Force pods), `remove` keeps shared figures on their own level's sheet instead (enemies; their
-copies in other levels go with them, painted once there), and `order` places a run of figures after
+copies in other levels and look-alike frames go with them, painted once there; `keep` lists shared
+figures the look-alike rule must leave on COMMON), and `order` places a run of figures after
 the `after` figure (the ship, its laser, balls and Force pods, the L4-097..104 group, then the
 collectables, follow L0-007). Edit it and run `py -3 r_type_colour.py sheets`.
 
