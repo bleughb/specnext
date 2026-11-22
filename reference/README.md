@@ -426,6 +426,19 @@ recolour commands, validation scope and the CSpect/Next checklist.
 ## Atic Atac - `atic_atac/` (games/atic_atac.md; Dean's build 59493b75 and Jon Attree's .nxc v1.3 rework, hardware untested): Atic_Atac_1983_Ultimate_Play_The_Game_a.z80 06b11e63 (the record's snapshot; the archive file "Atic Atac (1983)(Ultimate Play The Game)[a8][a8].z80"); walk1 7775e035, walk2 9915aed9, t c289ea58 .rzx (bot recordings, the rework's verify; Dean's AticAtac.rzx 3e3845a6 is not here: record "missing"); atic_atac_loading.scr ae29b447 (tape screen), atic_atac_enhanced_colours.json cce668d1 (Enhanced set read back from the published build; from the MVV package's .256, local only); atic_atac.nex e710fa87, atic_atac_sprites.nex 59493b75 (Dean's); atic_atac_v13_sprites b87774a2, _enhanced 47f0e72c, _sprites_qaop 19318e4f, _enhanced_qaop 1f58e936 (the rework, NEXCLASH_REWORK=atic_atac_v13 = nxc.py --bare)
 ## Rainbow Islands sky fix - `rainbow_z80n/` + `rainbow_islands/` (games/rainbow_z80n.md "Rework (opt-in)"; Jon Attree's .nxc v1.0, hardware untested): rainbow_islands/rainbow_z80n_loading.scr d91477c3 (tape screen, the stub in bank 32); rainbow_z80n/rainbow_z80n_sky_sprites.nex d7b2345c (= nxc.py --bare), _sky_sprites_diag.nex 305a6ed7 (NEXCLASH_REWORK=rainbow_z80n_sky); its verify uses Dean's two recordings and 13 of the leebee/ round cuts
 
+## Castle Master (48K, Freescape) - `castle_master/` (games/castle_master.md; Layer 2 colour build M3e, .nxc v1.1, on hardware 2026-11-22)
+
+Owner's Castlemaster1.tap 25850b04 (the .nxc's game file) and castle.rzx f426221d (5,233 screen updates); castle_master.z80 887a3b52
+extracted from the recording (the build input). castle_master_loading.scr b6c2a126 = the tape's screen (offset 513).
+castle_master_m3d_08.nex c16644fc (colour) and castle_master_m3d_08_original.nex e281eb67 (col_on = 0: the original's two
+colours, smooth views kept): not a sprite build and not made by selftest.py; no record in nexclash yet.
+`nxc/`: the patch a175b6bb and its .nfo (rebuilds c16644fc; build_screen=513 needs the loader of jattree/nxc PR 9),
+cm_cheats.pok, cm_nxc_make.sh. `build/`: the sources of that build as they stood (cm12*.asm, m2_build.py, m2_lib.py, the
+models, simulator and gates m0_* to m3_*, timing_map.md); they expect to run from C:/1NEXT/castle_master_work with the
+files above beside them, and their binary state caches (m0_states.bin and others) are not here: the scripts rebuild them.
+Hardware (owner's Next): loads from the patch with the loading screen from ENTER, played, colours on and off; the two
+trainers are not played.
+
 ## R-Type (128K) - `r_type/` (games/r_type.md; feasibility in progress)
 
 Owner's Rtype.tap 2d1e17ef, Rtype.rzx fb4a142a (90,102 frames); Rtype.z80 5a2179b4
