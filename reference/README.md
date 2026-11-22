@@ -457,11 +457,11 @@ Separate downloadable game builds, hashes, source PR and hardware handoff: [vali
 | File | MD5 | What |
 |---|---|---|
 | Elite.tap | 0d9d78ee2f8d05edaa1e2dc9e82fa2a7 | tape as sent (Russian 128K hack of Elite; not loaded or checked yet) |
-| DockingElite.rzx | 1d0381333261f05b4a07bbb5c0a2562a | recording by SARD: manual dock at Lave (7501 frames) |
-| PoliceAnarchyElite.rzx | a0f0596e0f2ff29c2347369e0f85eb82 | Lave police fight, then anarchy system Reidquat (68635 frames) |
-| HavocElite.rzx | 95803475a6489c346c71104c8b1c125c | piracy at Zaonce, sun-skim, Tionisla (54517 frames) |
-| WitchElite.rzx | bc7b406d0a9b5da12a33097ca573f6ee | witchspace, Thargoids (53371 frames) |
-| ReidquatElite.rzx | 2be185834d6fa8988b9645e0dcd94ffe | warzone Reidquat (41969 frames) |
+| DockingElite.rzx | 1d0381333261f05b4a07bbb5c0a2562a | recording by SARD: manual dock at Lave (7501 frames; ends docked, 7186.3 Cr) |
+| PoliceAnarchyElite.rzx | a0f0596e0f2ff29c2347369e0f85eb82 | Lave police fight, then anarchy system Reidquat (68635 frames; ends at Riedquat, 7342.8 Cr) |
+| HavocElite.rzx | 95803475a6489c346c71104c8b1c125c | piracy at Zaonce, sun-skim, Tionisla (54517 frames; ends docked at Tionisla, 7252.3 Cr) |
+| WitchElite.rzx | bc7b406d0a9b5da12a33097ca573f6ee | witchspace, Thargoids (53371 frames; starts in flight, ends on inventory with Alien Items; checked by replay, 2026-11-22) |
+| ReidquatElite.rzx | 2be185834d6fa8988b9645e0dcd94ffe | warzone Reidquat (41969 frames; Lave to Riedquat, ends at Riedquat 7483.2 Cr) |
 | DockingElite.z80 | 800d9e11bfd7d01d1478abfe3a7b2406 | first snapshot of DockingElite.rzx (`nexclash.py rzx extract`) |
 | PoliceAnarchyElite.z80 | e4850ea099c97e19e27cb310c2cd9c4c | same, PoliceAnarchyElite.rzx |
 | HavocElite.z80 | a00f6c47bcaf89364a593d924d939d26 | same, HavocElite.rzx |
