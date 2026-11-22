@@ -368,3 +368,53 @@ checks below supersede early scopes. Quiet0.82% pace does not replace peak accep
 - 2026-11-10 Stage 1 in progress: owner approved all effects, see-through, no outlines; authorized
   one capacity reviewer. Full access scan and plain NEXLOAD boot/negative proof pass.
 - 2026-11-10 Stage1 checkpoint: owner confirms plain JNext/hardware; corrected capacity retained. Card policy403 blocked timing; ISR scan interrupted then. No sprite build.
+
+# Moved 2026-11-22 (nexclash games/r_type.md, kept within its budget)
+
+## Spec-screen intro (2026-11-20)
+A separate front end, not part of the l2scroll build: the technical-specification screen redrawn with a
+new 3D R-9 model (top, front, side views), then the game. Owner-tested on a real 2 MB Next as
+R-Type_SpecNext_V1.2.NEX: screen, animations, joystick view and the load into the game all work.
+- Sources (outside specnext, owner's r9-wireframe folder): `r9-wireframe/r4/next_spec/specanim.asm`
+  (program; `-DALLDIR -DGAME` for this build), `make_spec_next.py` (ship pictures, text list, Layer 2
+  title/logo; run from r4 with PYTHONPATH=.), `make_rtype_spec.py [GAME.nex]` (assembles and appends the
+  game; default C:\1NEXT\rtype_builds\rtype_ship.nex, only read). Output `next_spec/RTYPESPC.NEX`
+  (2.5 MB); any file name works. Details and history: r4/HANDOVER.md.
+- Flow (RC1): the tape loading screen (NEX SCR, "no palette" flag) for at least 4 s (page checksums;
+  blue border = a page failed), fade, then the ships turn; the stick view (33x33 views + flips) once.
+  Today's flow: Next session.
+- Ships are stored pictures (the model needs a per-pixel depth test; live drawing is not feasible),
+  packed 1-bit, built in page 220 and copied to the ULA screen in the bottom border. Title, logo and
+  text on Layer 2 in front. Pages used: 18-23 Layer 2, 24-219 pictures, 220 work, 222 loader.
+- Game load: the NEX keeps its file open (`savenex cfg 0,nexhandle,...`); the game's banks follow
+  the intro in the same file. The loader runs from A000 (bank 2) in the standard 128K layout (see
+  Lessons), reads 8K at a time into 8000 and copies each piece to its page; the game's banks 0-7 wait
+  in pages 180-195 until the file is closed. Code planted at 4000 in the game's (blanked) screen puts
+  bank 2 in place, pages the entry bank and jumps to the game's PC/SP. Next register 8E is restored.
+  Border while loading: yellow open, cyan/green read, white place; red = open failed; red/yellow
+  flashing = read failed.
+- Changes to the copy of the game: the `call spec_hold` in the hook page (bank 12, found by the bytes
+  ED 92 05 C1 F1 CD) is NOPped, so the game starts at its logo animation (no original spec screen or
+  showpiece); the original spec picture in bank 5 is blanked. make_rtype_spec.py asserts these are
+  found once and that the game uses no page from 180 up; a changed hook page needs the pattern updated.
+- Checks (CSpect): ship pictures pixel-exact against the model's renderer at stops in every state;
+  all 100 game pages byte-exact at the jump to the game (r4/scratch_v19/verify_load.py); title and
+  level 1 play.
+
+
+## Lessons of the parked cell-recognition route (moved 2026-11-22)
+- [local: total budget first] Live costs14.176ms legacy display and9.961ms identity/bridge. Consumer/native-credit budget precedes replacement; gross CPU/waits are not free. See live-budget-review.md.
+- [local: native code modes] Initial BG changes plot destination8EBF, RET condition8F10 and four clip operands; native flip table01->00 exposes compiler mismatch. Preserve live modes/table and original-time/R credit; see background-consumer-review.md.
+- [local: packed source lifetime] Uniqueness is not immutability. Validate packed bytes/attributes/skip markers per invocation; unknown art/generation needs native fallback. Dispatch/invalidation remain open.
+- [local: book comparison]96-byte SCROLL6 matches8914. Binary follow-up identifies owner/dirty maps with IRQ readers and independent BG stream;24 native initializations pass. Ingest labels alone were insufficient.
+- [local: review of encoded pause sites] A test must inspect converter output: separately emitting the right CALL masked the builder's wrong JP. Actual-key testing also found repeated pause calls; save/fold once per pause.
+- [local: timing credit includes its cost] Broad timer windows counted wrapper work as original producer time and regressed pace. Cell credit is checked against complete original/hook CPU costs; retain fractional units and remeasure natural play.
+- [local: hardware text tile route] Native1bpp tiles remove ZX-to4bpp expansion while preserving exact visible colours; per-pixel painting still needs a separately measured override path.
+- [local: clone entry phase] Fixed170 waiting added9.80%; guard below210/from249. Current peak pace is recorded above.
+- [local: empty pattern quadrants] Demonstrated: ordinary-DMA zero fill avoids per-cell blank writes; live23-sprite preparation47.687ms including native IRQs, down from66.915ms.105-sprite component also passes.
+- [local: source-hole oracle] Demonstrated: post-IRQ sentinel expectations must count IRQs through the wait to the tail transition; broad restoration loses the sentinel and the negative fails.
+- [local: publication timing] Native beeper IRQs break CPU row schedules; stage copier/ULA and non-display state before IRQ-free DMA publication.
+- [local: tile plotters] Observed: screen-writer ranking identifies the refresh, not the figure
+  plotters; scanning its source buffer locates the four tile drawers. No removal-safety claim yet.
+- [local: credits share an enemy slot] Independent review: peak owner-grid scene includes THANK-YOU
+  text. Graphic identity, not global owner exclusion, gives105 sprites in the full corrected census.
