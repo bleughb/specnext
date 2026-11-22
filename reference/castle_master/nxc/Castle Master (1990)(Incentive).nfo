@@ -1,0 +1,74 @@
+     _   _ __  __  ____
+    | \ | |\ \/ / / ___|   .nxc patch for the ZX Spectrum Next
+    |  \| | \  / | |       colour clash removed with hardware sprites
+    | |\  | /  \ | |___    (built with NexClash)
+    |_| \_|/_/\_\ \____|
+
+-- GAME ----------------------------------------------------------------------
+  Title       Castle Master
+  Publisher   Incentive, 1990
+  Version     1.1
+
+-- YOU NEED ------------------------------------------------------------------
+  Your own copy of the original game, saved beside this patch:
+
+  File        Castle Master (1990)(Incentive).tap
+  MD5         25850b04407125dfc4cb9a0fd652e71a
+
+  The patch carries none of the game's code. It only works with that exact
+  dump, under that name or any other: anything else is refused, with a
+  message naming the file it wants.
+
+-- WHAT IT DOES --------------------------------------------------------------
+  Moving figures become Next hardware sprites, so they keep their own colours
+  and no longer take on the scenery's (colour clash). Game logic is unchanged.
+
+  Pace        original (+5% measured in NexClash simulator)
+
+  Changes     1.1: the loading screen shows from ENTER while the game is
+              built, with Patching and a dot for each bank, and is no longer
+              held 4 seconds
+
+  Note        Not a sprite build: the 3D view is redrawn by a Next renderer on
+              Layer 2, each surface in its own colour with the original's
+              dither kept, and extra in-between views make movement smoother
+              while the game keeps its own pace. The sight, pointer and
+              messages are sprites over the view. The original loading screen
+              shows from ENTER while the loader builds the game. Original
+              colours on the menu gives the game's own two colours with the
+              smooth views. Keys as the original.
+
+-- MENU ----------------------------------------------------------------------
+   1  Infinite strength
+   2  Bubble does not move
+
+  Cheats come from the archive's POKEs for this release.
+
+-- CREDITS -------------------------------------------------------------------
+  Patch by    Bleugh
+  Credit      Built with NexClash by Dean Woodyatt (Bleugh.biz,
+              bleughb/nexclash, GPL-3.0-or-later)
+  Original    Incentive, 1990, by its original authors. All rights to the game
+              remain theirs.
+
+-- TESTING -------------------------------------------------------------------
+
+  Replay      every view of 524 sampled screen updates of one recording equal
+              per pixel to a model of the original's renderer; the game's own
+              RAM and registers equal at each; all 18 dissolve views
+
+  Emulator    CSpect 4.5.9: loading screen, menu, walk to the castle (version
+              1.0's build, which differs only in holding the loading screen)
+
+  Coverage    one recording (5,233 updates); neither cheat played
+
+  Hardware    ZX Spectrum Next (owner's): loaded from this patch through the
+              loader's build screen and played; Original colours seen in
+              version 1.0
+
+  Nothing here claims a result on real hardware unless the line above says so.
+
+-- HOW TO USE ----------------------------------------------------------------
+  Put this .nxc and the game file in the same folder on the Next's card and
+  choose the .nxc in the Browser. See README.txt.
+------------------------------------------------------------------------------
