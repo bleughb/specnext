@@ -451,3 +451,10 @@ sampled copier-removal experiment and independent capacity review.
 ## Experimental Rainbow sky DMA v0.1
 
 Separate downloadable game builds, hashes, source PR and hardware handoff: [validation notes](../docs/rainbow_dma_v01_validation.md). Pinned files above are unchanged. The [complete bundle and separate NXC patch](rainbow_z80n/experimental_dma_v01/README.md) are now hosted here at the owner's request.
+
+## Hard Drivin' (128K) - `hard_drivin/` (games/hard_drivin.md; steps build default, smooth and plain; on hardware 2026-11-23)
+
+hard_drivin.z80 18809405 (snapshot 0 of the recording, title screen; from the owner's tape, MD5 02e1f96c) and
+hard_drivin.rzx c649e04c (22,116 frames, driving, crashes, replay, time-out, race end): the record's snapshot and
+recording. hard_drivin_loading.scr 92c6cbc7 (6,912 bytes, owner-supplied; equals the game's title screen): the
+.nxc loading screen. selftest: `python selftest.py ../specnext/reference --game hard_drivin --verify`.
