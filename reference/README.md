@@ -452,9 +452,23 @@ sampled copier-removal experiment and independent capacity review.
 
 Separate downloadable game builds, hashes, source PR and hardware handoff: [validation notes](../docs/rainbow_dma_v01_validation.md). Pinned files above are unchanged. The [complete bundle and separate NXC patch](rainbow_z80n/experimental_dma_v01/README.md) are now hosted here at the owner's request.
 
-## Hard Drivin' (128K) - `hard_drivin/` (games/hard_drivin.md; steps build default, smooth and plain; on hardware 2026-11-23)
 
-hard_drivin.z80 18809405 (snapshot 0 of the recording, title screen; from the owner's tape, MD5 02e1f96c) and
-hard_drivin.rzx c649e04c (22,116 frames, driving, crashes, replay, time-out, race end): the record's snapshot and
-recording. hard_drivin_loading.scr 92c6cbc7 (6,912 bytes, owner-supplied; equals the game's title screen): the
-.nxc loading screen. selftest: `python selftest.py ../specnext/reference --game hard_drivin --verify`.
+## Elite - `elite/` (games/elite.md; stage 0 intake only, no engine yet)
+
+| File | MD5 | What |
+|---|---|---|
+| Elite.tap | 0d9d78ee2f8d05edaa1e2dc9e82fa2a7 | tape as sent (Russian 128K hack of Elite; not loaded or checked yet) |
+| DockingElite.rzx | 1d0381333261f05b4a07bbb5c0a2562a | recording by SARD: manual dock at Lave (7501 frames; ends docked, 7186.3 Cr) |
+| PoliceAnarchyElite.rzx | a0f0596e0f2ff29c2347369e0f85eb82 | Lave police fight, then anarchy system Reidquat (68635 frames; ends at Riedquat, 7342.8 Cr) |
+| HavocElite.rzx | 95803475a6489c346c71104c8b1c125c | piracy at Zaonce, sun-skim, Tionisla (54517 frames; ends docked at Tionisla, 7252.3 Cr) |
+| WitchElite.rzx | bc7b406d0a9b5da12a33097ca573f6ee | witchspace, Thargoids (53371 frames; starts in flight, ends on inventory with Alien Items; checked by replay, 2026-11-22) |
+| ReidquatElite.rzx | 2be185834d6fa8988b9645e0dcd94ffe | warzone Reidquat (41969 frames; Lave to Riedquat, ends at Riedquat 7483.2 Cr) |
+| DockingElite.z80 | 800d9e11bfd7d01d1478abfe3a7b2406 | first snapshot of DockingElite.rzx (`nexclash.py rzx extract`) |
+| PoliceAnarchyElite.z80 | e4850ea099c97e19e27cb310c2cd9c4c | same, PoliceAnarchyElite.rzx |
+| HavocElite.z80 | a00f6c47bcaf89364a593d924d939d26 | same, HavocElite.rzx |
+| WitchElite.z80 | 5fe4ae2cc13c5b8de7aecac075683b80 | same, WitchElite.rzx (PC 0xAB64, others PC 0xFEFE) |
+| ReidquatElite.z80 | c0eefc54f52bd9a7c4c580cafdbc7302 | same, ReidquatElite.rzx |
+| eliteRZX.txt | 9ea3c0773628599f7f5153588df98530 | the author's notes on the recordings |
+
+
+
