@@ -1,0 +1,21 @@
+{
+ "default": "winter_sports_sprites.nex",
+ "plain": "winter_sports.nex",
+ "colours": {
+  "Enhanced": {
+   "default": "winter_sports_enhanced.nex"
+  }
+ },
+ "toggles": {
+  "Original pace": {
+   "logic": false,
+   "what": "the free-running pace of the original instead of the even 25 updates a second",
+   "default": "winter_sports_origpace.nex",
+   "colours": {
+    "Enhanced": {
+     "default": "winter_sports_enhanced_origpace.nex"
+    }
+   }
+  }
+ }
+}
