@@ -469,6 +469,35 @@ Separate downloadable game builds, hashes, source PR and hardware handoff: [vali
 | WitchElite.z80 | 5fe4ae2cc13c5b8de7aecac075683b80 | same, WitchElite.rzx (PC 0xAB64, others PC 0xFEFE) |
 | ReidquatElite.z80 | c0eefc54f52bd9a7c4c580cafdbc7302 | same, ReidquatElite.rzx |
 | eliteRZX.txt | 9ea3c0773628599f7f5153588df98530 | the author's notes on the recordings |
+## Green Beret - `green_beret/` (games/green_beret.md; 1.3, verified on 4 recordings for both colour choices)
 
+| File | MD5 | What |
+|---|---|---|
+| green_beret.z80 | c1a76349d08289810323bae0e62a9102 | the original snapshot (TOSEC Green Beret (1986)(Imagine)[a2][a2].z80) |
+| gb_nocheat.rzx | 611ba6de6e0153c602c902b6364e4939 | recording, no cheats, 16,778 frames |
+| gb_cheat.rzx | 0bcc05b3d80db4bceadc34612b213f59 | recording with cheats, three stage intros, 26,018 frames |
+| gb_weap.rzx | 1c17398d4693cd650925a084aa085215 | recording, the weapons, 12,012 frames |
+| gb_stage4.rzx | 215f89d38964f24b0d34881ad1b6469d | recording, stage 4, 30,002 frames |
+| green_beret-loading.scr | 3338d3e48b286e44d151d0bbee1b9391 | the tape's loading screen as its loader leaves it (TOSEC Imagine tzx); the start screen and the _loading builds |
+| green_beret.nex | 283484a93a6eda05a4ecc5c7a9d1447b | plain conversion |
+| green_beret_sprites.nex | f9ee0661576e11216db9598d3d591bf4 | sprites, Spectrum colours with the dark grey ring |
+| green_beret_sprites_loading.nex | 3bc3373216912fff9f31b76aaf187167 | the same with the loading screen (the published 1.3 default) |
+| green_beret_enhanced.nex | efb07e67b9148eb57f6e6289e037b5e2 | Enhanced: Jon's painting on per-group palettes, black lines, coloured stage intros |
+| green_beret_enhanced_loading.nex | 75b25faf2d651d2177f7effd21496354 | the same with the loading screen (the published 1.3 Enhanced) |
 
+## The Great Escape - `great_escape/` (games/great_escape.md; 1.1, inputs only for now: the built games follow with the cooler fix)
+
+| File | MD5 | What |
+|---|---|---|
+| great_escape.z80 | ff5eae3b61188cb5095a6177c3c34a06 | the original snapshot |
+| recordings/great_escape_play1.rzx | a620b9acd1a3cb40e99d1b934a831712 | play recording |
+| recordings/great_escape_play2.rzx | 671be60eff313f3bd5c2749ddea66ca0 | play recording |
+| recordings/great_escape_restart.rzx | 616fb43369de50f27a1eb8dbf55a4afd | recording through a restart |
+| recordings/great_escape_result.rzx | 23055077eb67b146c63c380791e891e7 | controlled native result fixture; not a natural completion |
+| input/great_escape-loading.scr | 6261b45324944deeea455a48a126444c | the original loading picture; not a recording |
+| input/great_escape.pok | 7f61c780cc1d94e0fc2407c4e34206a4 | the archive trainers; not a recording |
+| art/period-v5-mess/colours.bin | 5a370ac41ba0a573bde0315652d66d09 | painting input: Jon's sprite edits and thinner outlines, a first scenery pass, McQueen's film look, the mess hall people (2026-11-09 to 11-27) |
+| art/period-v5-mess/world.bin | 911344b8380ecd217e92669187817dda | painting input (scenery) |
+| art/period-v5-mess/palette.bin | 95b816890860ca9e9f2b32804d87596e | painting input (day palette) |
+| art/period-v5-mess/palette-dusk.bin | 19ff7210d18b3d263c826d6610ee078f | painting input (dusk palette) |
 
