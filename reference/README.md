@@ -485,7 +485,7 @@ Separate downloadable game builds, hashes, source PR and hardware handoff: [vali
 | green_beret_enhanced.nex | efb07e67b9148eb57f6e6289e037b5e2 | Enhanced: Jon's painting on per-group palettes, black lines, coloured stage intros |
 | green_beret_enhanced_loading.nex | 75b25faf2d651d2177f7effd21496354 | the same with the loading screen (the published 1.3 Enhanced) |
 
-## The Great Escape - `great_escape/` (games/great_escape.md; 1.1, inputs only for now: the built games follow with the cooler fix)
+## The Great Escape - `great_escape/` (games/great_escape.md; 1.1 with the cooler fix, verified on 4 recordings)
 
 | File | MD5 | What |
 |---|---|---|
@@ -500,4 +500,16 @@ Separate downloadable game builds, hashes, source PR and hardware handoff: [vali
 | art/period-v5-mess/world.bin | 911344b8380ecd217e92669187817dda | painting input (scenery) |
 | art/period-v5-mess/palette.bin | 95b816890860ca9e9f2b32804d87596e | painting input (day palette) |
 | art/period-v5-mess/palette-dusk.bin | 19ff7210d18b3d263c826d6610ee078f | painting input (dusk palette) |
-
+| great_escape.nex | 326a79986f348693816f6a7d6b6bf535 | plain conversion |
+| great_escape_cpu.nex | 6d59598f8664a8256978bd2cac6497b8 | CPU copy path |
+| great_escape_cpu_enhanced.nex | 0e00340b42de04b2241276b4fcc36cc3 | CPU copy path, Enhanced |
+| great_escape_cpu_enhanced_loading.nex | 2625dae7297a996c26d49285c6f34fb9 | CPU copy path, Enhanced with the loading screen |
+| great_escape_cpu_loading.nex | 9400b357cd6454f94f47a3cc03311d8b | CPU copy path with the loading screen |
+| great_escape_enhanced.nex | cf5a145118186b702f6b56b76e696e6c | Enhanced: period colours on Layer 2 |
+| great_escape_enhanced_loading.nex | b0a2eb65b2196d81ab26704b7558fb5c | Enhanced: period colours on Layer 2 with the loading screen |
+| great_escape_mcqueen.nex | 8681d7ef8491c8a5c71b17ea89f88a31 | McQueen outfit |
+| great_escape_mcqueen_enhanced.nex | 23981f529b0a4e6ca57ce359c203a868 | McQueen + Enhanced (the cooler ball, facing the wall) |
+| great_escape_mcqueen_enhanced_loading.nex | cd20b24059632b6900aa296f71f293a5 | McQueen + Enhanced (the cooler ball, facing the wall) with the loading screen |
+| great_escape_mcqueen_loading.nex | 72dd767a771dcd33690555b63f7f3fe2 | McQueen outfit with the loading screen |
+| great_escape_sprites.nex | ee15439f43bc1cbbe2b87a3ca8856487 | default (the original picture) |
+| great_escape_sprites_loading.nex | 3afab68205cb2cf33f9034889ed5d516 | default (the original picture) with the loading screen |
